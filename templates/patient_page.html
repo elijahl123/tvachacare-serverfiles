@@ -1,0 +1,350 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <style>
+        h4 {
+            color: #FC9C34;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        .carousel-indicators li {
+            background-color: black;
+        }
+
+        .carousel-inner img {
+            max-height: 500px;
+            max-width: 100%;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+
+    <script>
+        $(document).ready(function () {
+            $('.carousel').carousel('pause');
+        });
+    </script>
+    <main>
+        <div class="container d-flex d-xl-flex flex-column align-items-center align-items-xl-center"
+             style="padding: 30px 50px;background-color: white;">
+            <div id="Div_Promo_Carousel" class="carousel slide">
+                <div class="carousel-inner" role="listbox">
+                    {% if patient.image1 %}
+                        <div class="carousel-item active">
+                            <img class="d-block m-auto" alt="Slide Image"
+                                 src="{{ patient.image1.url }}"/>
+                        </div>
+                    {% else %}
+                        <div class="carousel-item active">
+                            <img class="d-block m-auto" alt="Slide Image"
+                                 src="{% static '/img/placeholder_patient.png' %}"/>
+                        </div>
+                    {% endif %}
+                    {% if patient.image2 %}
+                        <div class="carousel-item">
+                            <img class="d-block m-auto" alt="Slide Image"
+                                 src="{{ patient.image2.url }}"/>
+                        </div>
+                    {% endif %}
+                    {% if patient.image3 %}
+                        <div class="carousel-item">
+                            <img class="d-block m-auto" alt="Slide Image"
+                                 src="{{ patient.image3.url }}"/>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <div><a class="carousel-control-prev" role="button" data-slide="prev" href="#Div_Promo_Carousel">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Prev </span>
+                </a>
+                    <a class="carousel-control-next" role="button" data-slide="next" href="#Div_Promo_Carousel">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next </span>
+                    </a>
+                </div>
+                <ul class="carousel-indicators" role>
+                    <li class="active" data-slide-to="0" data-target="#Div_Promo_Carousel"></li>
+                    {% if patient.image2 %}
+                        <li data-slide-to="1" data-target="#Div_Promo_Carousel"></li>
+                    {% endif %}
+                    {% if patient.image3 %}
+                        <li data-slide-to="2" data-target="#Div_Promo_Carousel"></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <h1 class="text-center" style="color: #FC9C34;padding: 20px;">{{ patient.firstName }} {{ patient.lastName }}</h1>
+            <div class="row d-xl-flex" style="width: 100%;">
+                <div class="col-md-6 d-xl-flex flex-column align-items-xl-center">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient
+                                Record Number</h4>
+                            <p class="text-center"
+                               style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.patientRecordNumber }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Date of
+                                Birth</h4>
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.dateOfBirth }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Preferred
+                                Name</h4>
+                            <p class="text-center"
+                               style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.preferredName }}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Age at
+                                Surgery</h4>
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.ageAtSurgery }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom: 30px;">
+                <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient Sex</h4>
+                <p class="text-center"
+                   style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.patientSex }}</p>
+            </div>
+            <div class="table-responsive" style="margin-bottom: 30px;">
+                <table class="table">
+                    <thead style="border-radius: 0px;border-width: 0px;">
+                    <tr>
+                        <th>Site Country</th>
+                        <th>Site Region</th>
+                        <th>Hospital Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td style="font-family: 'Open Sans', sans-serif;">{{ patient.siteCountry }}</td>
+                        <td style="font-family: 'Open Sans', sans-serif;">{{ patient.siteRegion }}</td>
+                        <td style="font-family: 'Open Sans', sans-serif;">{{ patient.hospitalName }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row d-md-flex d-lg-flex d-xl-flex justify-content-md-center justify-content-lg-center"
+                 style="width: 100%;">
+                <div class="col-md-6 col-xl-12 d-xl-flex flex-column align-items-xl-center">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                Preoperative Diagnostics
+                                1</h4>
+                            <p class="text-center"
+                               style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.preoperativeDiagnostic1 }}</p>
+                        </div>
+                    </div>
+                    {% if patient.preoperativeDiagnostic2 %}
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col">
+                                <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                    Preoperative Diagnostics
+                                    2</h4>
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.preoperativeDiagnostic2 }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if patient.preoperativeDiagnostic3 %}
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col">
+                                <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                    Preoperative Diagnostics
+                                    3</h4>
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.preoperativeDiagnostic3 }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if patient.preoperativeDiagnostic4 %}
+                        <div class="row" style="margin-bottom: 20px;">
+                            <div class="col">
+                                <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                    Preoperative Diagnostics
+                                    4</h4>
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.preoperativeDiagnostic4 }}</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row d-xl-flex" style="width: 100%;">
+                <div class="col-md-6 d-xl-flex flex-column align-items-xl-center">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Burn
+                                Injury?</h4>
+                            {% if patient.burnInjury == True %}
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">Yes</p>
+                            {% elif patient.burnInjury == False %}
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">No</p>
+                                {% else %}
+                                <p class="text-center"
+                                   style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">No</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Degree Of
+                                Burn</h4>
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.degreeOfBurn }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                Approximate Year of
+                                Injury</h4>
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.approximateYearOfInjury }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient
+                                Address</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.patientAddress }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Parent
+                                Name</h4>
+                            {% if patient.parentFirstName and patient.parentLastName %}
+                                {% if patient.parentMiddleName %}
+                                    <p class="text-center"
+                                       style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.parentFirstName }} {{ patient.parentMiddleName }} {{ patient.parentLastName }}</p>
+                                {% else %}
+                                    <p class="text-center"
+                                       style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.parentFirstName }} {{ patient.parentLastName }}</p>
+                                {% endif %}
+                            {% else %}
+                                <p class="text-center"
+                                   style="color: black;font-family: 'Open Sans', sans-serif;">None</p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                Referral</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.referral }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient
+                                Height (cm)</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.patientHeight }}cm</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row" style="margin-bottom: 30px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">TBSA</h4>
+                            <p class="text-center"
+                               style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">{{ patient.TBSA }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Cause of
+                                Burn</h4>
+                            {% if patient.causeOfBurn %}
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.causeOfBurn }}</p>
+                            {% else %}
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">None</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                Occupation</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.occupation }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient
+                                Phone Number</h4>
+                            <p class="text-center"
+                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.patientPhoneNumber }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">
+                                Relationship to Parent</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.relationshipToParent }}</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Patient
+                                Weight (kg)</h4>
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.patientWeight }}kg</p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col">
+                            <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Current
+                                Medication</h4>
+                            {% if patient.currentMedication %}
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                {{ patient.currentMedication }}</p>
+                            {% else %}
+                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                None</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if account.group == 'Approver' and patient.is_approved == False %}
+                <div class="row d-flex justify-content-center" style="width: 100%;">
+                    <div class="col-xl-12 d-sm-flex d-xl-flex justify-content-sm-center justify-content-xl-center">
+                        <div class="btn-group btn-group-lg" role="group" style="width: 100%;"><a class="btn btn-danger"
+                                                                                                 role="button"
+                                                                                                 style="padding: 15px;font-family: Raleway, sans-serif;font-weight: 400;">Don&#39;t
+                            Approve</a>
+                            <button class="btn btn-success" type="button"
+                                    style="padding: 15px;font-family: Raleway, sans-serif;font-weight: 400;">Approve
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+
+{% endblock %}

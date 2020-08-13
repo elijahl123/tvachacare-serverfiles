@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+    <main class="d-flex justify-content-md-center align-items-md-center align-items-xl-center page landing-page"
+          style="color: white;overflow: auto;padding: 0;"></main>
+    <div class="d-flex">
+        <div class="container d-flex d-md-flex justify-content-center align-items-center justify-content-md-center">
+            <div class="row d-flex d-md-flex">
+                <div class="col-md-12 d-flex d-sm-flex d-md-flex flex-column justify-content-center align-items-center justify-content-sm-center align-items-sm-center justify-content-md-center align-items-md-center"
+                     style="height: 100vh;width: 100%;">
+                    <h1 style="margin-bottom: 18px;font-family: Raleway, sans-serif;font-weight: 700;">Log In As:</h1>
+                    <div class="btn-group-vertical btn-group-lg d-flex" role="group">
+                        <a class="btn btn-primary" type="button"
+                           style="font-family: 'Open Sans', sans-serif;background-color: #fc9c34;border-color: #fc9c34;border-radius: 3px;"
+                           href="{% url 'loginAdmin' %}">Administrator</a>
+                        <a class="btn btn-primary" type="button"
+                           style="font-family: 'Open Sans', sans-serif;background-color: #fc9c34;border-color: #fc9c34;border-radius: 3px;margin-bottom: 15px;margin-top: 15px;"
+                           href="{% url 'loginAdmin' %}">Approver</a>
+                        <a class="btn btn-primary" type="button"
+                           style="font-family: 'Open Sans', sans-serif;background-color: #fc9c34;border-color: #fc9c34;border-radius: 3px;"
+                           href="{% url 'loginAdmin' %}">Data Entry Specialist</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,108 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="description"
+          content="TvachaCare is a medical billing database for medical professionals to store and query documents regarding burn victims.">
+    <link rel="icon" type="image/png" sizes="500x452" href="/patientInformation/static/img/logoNoText.png">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="icon" type="image/png" href="{% static '/img/logoNoText.png' %}">
+    {% block header %}
+    {% endblock %}
+</head>
+<body style="background-color: #128807" class="{% block bodyclass %}{% endblock %}">
+
+<nav class="navbar navbar-light navbar-expand-lg fixed-top bg-white d-flex d-xl-flex align-items-center align-items-xl-end clean-navbar"
+     style="color: white !important;background-color: #092327 !important;position: relative;">
+    <div class="container" style="color: white !important;">
+        <img class="d-flex justify-content-center align-items-center" src="{% static '/img/logoTvacha.png' %}"
+             height="30px" style="min-height: 30px;max-height: 38px;">
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
+                style="background-color: #fc9c34;">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fas fa-ellipsis-h" style="color: #092327;"></i>
+        </button>
+        <div
+                class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center">
+                {% if account %}
+                    <li class="nav-item" role="presentation" style="padding-right: 0;">
+                        <a class="nav-link active" href="{% url 'home' %}"
+                           style="font-family: Open Sans,sans-serif;color: white;">Home</a>
+                    </li>
+                    {% if account.group == 'Data Entry' %}
+                        <li class="nav-item" role="presentation" style="padding-right: 0;">
+                            <a class="nav-link" href="{% url 'addPatient' %}"
+                               style="font-family: Open Sans,sans-serif;color: white;">Add
+                                patient</a>
+                        </li>
+                    {% elif account.is_superuser == True %}
+                        {% load admin_urls %}
+                        <li class="nav-item" role="presentation" style="padding-right: 0;">
+                            <a class="nav-link" href="{% url 'admin:index' %}"
+                               style="font-family: Open Sans,sans-serif;color: white;">Admin Console</a>
+                        </li>
+                    {% endif %}
+                    <li role="presentation" class="nav-item" style="padding-right: 0;">
+                        <a class="btn text-white log-out" href="{% url 'logout' %}"
+                           style="font-size: 16px;font-family: 'Open Sans', sans-serif;font-weight: bold;border: 2px solid white;">Log
+                            Out</a>
+                    </li>
+                {% else %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="page-footer dark" style="background-color: #092327 !important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;font-weight: 700;">Get started</h5>
+                <ul>
+                    <li><a href="{% url 'home' %}" style="font-family: 'Open Sans', sans-serif;">Home</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;">About us</h5>
+                <ul>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Company Information</a></li>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Contact us</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;">Legal</h5>
+                <ul>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Terms of Service</a></li>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Terms of Use</a></li>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2020 TvachaCare</p>
+    </div>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+<script src="{% static '/js/smoothproducts.min.js' %}"></script>
+<script src="{% static '/js/theme.js' %}"></script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+.patient-name {
+    color: #092327;
+}
+.patient-name:hover {
+    color: #092327;
+}
+
+.search-patients {
+    font-family: 'Open Sans', sans-serif;
+    width: 100%;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+}
+.edit-icon {
+    color: white;
+    margin-top: 5px;
+    margin-right: 0px !important;
+    margin-left: 2px;
+    margin-bottom: 5px;
+}
