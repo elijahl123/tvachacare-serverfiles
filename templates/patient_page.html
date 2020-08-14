@@ -17,64 +17,25 @@
             max-width: 100%;
         }
     </style>
+    <title>{{ patient }}</title>
 {% endblock %}
 {% block content %}
 
-    <script>
-        $(document).ready(function () {
-            $('.carousel').carousel('pause');
-        });
-    </script>
     <main>
         <div class="container d-flex d-xl-flex flex-column align-items-center align-items-xl-center"
              style="padding: 30px 50px;background-color: white;">
-            <div id="Div_Promo_Carousel" class="carousel slide">
-                <div class="carousel-inner" role="listbox">
-                    {% if patient.image1 %}
-                        <div class="carousel-item active">
-                            <img class="d-block m-auto" alt="Slide Image"
-                                 src="{{ patient.image1.url }}"/>
-                        </div>
-                    {% else %}
-                        <div class="carousel-item active">
-                            <img class="d-block m-auto" alt="Slide Image"
-                                 src="{% static '/img/placeholder_patient.png' %}"/>
-                        </div>
-                    {% endif %}
-                    {% if patient.image2 %}
-                        <div class="carousel-item">
-                            <img class="d-block m-auto" alt="Slide Image"
-                                 src="{{ patient.image2.url }}"/>
-                        </div>
-                    {% endif %}
-                    {% if patient.image3 %}
-                        <div class="carousel-item">
-                            <img class="d-block m-auto" alt="Slide Image"
-                                 src="{{ patient.image3.url }}"/>
-                        </div>
-                    {% endif %}
-
+            <div class="row" style="width: 100%;">
+                <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"
+                     style="padding: 0;overflow: hidden;border-right: 1px white solid;">
+                    <img src="{% static '/img/placeholder_patient.png' %}" width="100%"/>
                 </div>
-                <div><a class="carousel-control-prev" role="button" data-slide="prev" href="#Div_Promo_Carousel">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Prev </span>
-                </a>
-                    <a class="carousel-control-next" role="button" data-slide="next" href="#Div_Promo_Carousel">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next </span>
-                    </a>
+                <div class="col-xl-6 d-xl-flex justify-content-xl-center align-items-xl-center"
+                     style="padding: 0;overflow: hidden;border-right: 1px white solid;">
+                    <img src="{% static '/img/placeholder_injury.png' %}" width="100%"/>
                 </div>
-                <ul class="carousel-indicators" role>
-                    <li class="active" data-slide-to="0" data-target="#Div_Promo_Carousel"></li>
-                    {% if patient.image2 %}
-                        <li data-slide-to="1" data-target="#Div_Promo_Carousel"></li>
-                    {% endif %}
-                    {% if patient.image3 %}
-                        <li data-slide-to="2" data-target="#Div_Promo_Carousel"></li>
-                    {% endif %}
-                </ul>
             </div>
-            <h1 class="text-center" style="color: #FC9C34;padding: 20px;">{{ patient.firstName }} {{ patient.lastName }}</h1>
+            <h1 class="text-center"
+                style="color: #FC9C34;padding: 20px;">{{ patient.firstName }} {{ patient.lastName }}</h1>
             <div class="row d-xl-flex" style="width: 100%;">
                 <div class="col-md-6 d-xl-flex flex-column align-items-xl-center">
                     <div class="row" style="margin-bottom: 30px;">
@@ -195,7 +156,7 @@
                             {% elif patient.burnInjury == False %}
                                 <p class="text-center"
                                    style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">No</p>
-                                {% else %}
+                            {% else %}
                                 <p class="text-center"
                                    style="color: black;margin-bottom: 0;font-family: 'Open Sans', sans-serif;">No</p>
                             {% endif %}
@@ -275,11 +236,11 @@
                             <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Cause of
                                 Burn</h4>
                             {% if patient.causeOfBurn %}
-                            <p class="text-center"
-                               style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.causeOfBurn }}</p>
+                                <p class="text-center"
+                                   style="color: black;font-family: 'Open Sans', sans-serif;">{{ patient.causeOfBurn }}</p>
                             {% else %}
-                            <p class="text-center"
-                               style="color: black;font-family: 'Open Sans', sans-serif;">None</p>
+                                <p class="text-center"
+                                   style="color: black;font-family: 'Open Sans', sans-serif;">None</p>
                             {% endif %}
                         </div>
                     </div>
@@ -320,11 +281,11 @@
                             <h4 class="text-center d-xl-flex justify-content-xl-center align-items-xl-center">Current
                                 Medication</h4>
                             {% if patient.currentMedication %}
-                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
-                                {{ patient.currentMedication }}</p>
+                                <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                    {{ patient.currentMedication }}</p>
                             {% else %}
-                            <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
-                                None</p>
+                                <p class="text-center" style="color: black;font-family: 'Open Sans', sans-serif;">
+                                    None</p>
                             {% endif %}
                         </div>
                     </div>
