@@ -18,3 +18,7 @@ obj
 tvachacare-serverfiles.pyproj
 
 mydatabase
+
+patientInformation/migrations
+
+media_cdn

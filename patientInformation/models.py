@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 
 def upload_location(instance, filename):
-    file_path = 'patientInformation/{id}/{filename}'.format(
-        id=str(instance.id), filename=filename)
+    file_path = 'patientInformation/{patientRecordNumber}/{filename}'.format(
+        patientRecordNumber=str(instance.patientRecordNumber), filename=filename)
     return file_path
 
 

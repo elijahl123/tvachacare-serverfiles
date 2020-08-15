@@ -27,11 +27,15 @@
             <div class="row" style="width: 100%;">
                 <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"
                      style="padding: 0;overflow: hidden;border-right: 1px white solid;">
-                    <img src="{% static '/img/placeholder_patient.png' %}" width="100%"/>
+                    {% if patient.patient_image %}
+                        <img src="{{ patient.patient_image.url }}" width="100%"/>
+                    {% else %}
+                    <img src="{% static 'img/placeholder_patient.png' %}" width="100%"/>
+                    {% endif %}
                 </div>
                 <div class="col-xl-6 d-xl-flex justify-content-xl-center align-items-xl-center"
                      style="padding: 0;overflow: hidden;border-right: 1px white solid;">
-                    <img src="{% static '/img/placeholder_injury.png' %}" width="100%"/>
+                    <img src="{% static 'img/placeholder_injury.png' %}" width="100%"/>
                 </div>
             </div>
             <h1 class="text-center"
