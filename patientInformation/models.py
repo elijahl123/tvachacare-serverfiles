@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 
 def upload_location(instance, filename):
-    file_path = 'patientInformation/{patientRecordNumber}/{filename}'.format(
-        patientRecordNumber=str(instance.patientRecordNumber), filename=filename)
+    file_path = 'patientInformation/{id}/{filename}'.format(
+        id=str(instance.id), filename=filename)
     return file_path
 
 
@@ -51,9 +51,8 @@ class PatientInformation(models.Model):
     patientWeight = models.IntegerField(blank=True, null=True)
     patientHeight = models.IntegerField(blank=True, null=True)
     currentMedication = models.TextField(blank=True, null=True)
-    image1 = models.ImageField(upload_to=upload_location, null=True, blank=True)
-    image2 = models.ImageField(upload_to=upload_location, null=True, blank=True)
-    image3 = models.ImageField(upload_to=upload_location, null=True, blank=True)
+    patient_image = models.ImageField(upload_to=upload_location, null=True, blank=True)
+    injury_image = models.ImageField(upload_to=upload_location, null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True, null=True)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
 

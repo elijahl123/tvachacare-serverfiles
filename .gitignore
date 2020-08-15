@@ -10,3 +10,11 @@ SECURITY.md
 TvachaCare
 
 venv
+
+.vs
+
+obj
+
+tvachacare-serverfiles.pyproj
+
+mydatabase

@@ -87,7 +87,6 @@ class AddPatient(forms.ModelForm):
             'patientWeight',
             'patientHeight',
             'currentMedication',
-            'image1',
-            'image2',
-            'image3'
+            'patient_image',
+            'injury_image',
         ]
