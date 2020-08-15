@@ -16,26 +16,35 @@
             max-height: 500px;
             max-width: 100%;
         }
+        @media (max-width: 1200px ){
+            .img-patient {
+                max-height: none !important;
+            }
+        }
     </style>
     <title>{{ patient }}</title>
 {% endblock %}
 {% block content %}
 
     <main>
-        <div class="container d-flex d-xl-flex flex-column align-items-center align-items-xl-center"
+        <div class="container d-flex d-md-flex flex-column align-items-center align-items-md-center"
              style="padding: 30px 50px;background-color: white;">
             <div class="row" style="width: 100%;">
-                <div class="col d-xl-flex justify-content-xl-center align-items-xl-center"
-                     style="padding: 0;overflow: hidden;border-right: 1px white solid;">
+                <div class="col d-flex justify-content-center align-items-center img-patient"
+                     style="padding: 0;overflow: hidden;border-right: 1px white solid;max-height: 500px">
                     {% if patient.patient_image %}
                         <img src="{{ patient.patient_image.url }}" width="100%"/>
                     {% else %}
                     <img src="{% static 'img/placeholder_patient.png' %}" width="100%"/>
                     {% endif %}
                 </div>
-                <div class="col-xl-6 d-xl-flex justify-content-xl-center align-items-xl-center"
-                     style="padding: 0;overflow: hidden;border-right: 1px white solid;">
+                <div class="col-xl-6 d-flex justify-content-xl-center align-items-xl-center img-patient"
+                     style="padding: 0;overflow: hidden;border-right: 1px white solid;max-height: 500px">
+                    {% if patient.injury_image %}
+                        <img src="{{ patient.injury_image.url }}" width="100%"/>
+                    {% else %}
                     <img src="{% static 'img/placeholder_injury.png' %}" width="100%"/>
+                    {% endif %}
                 </div>
             </div>
             <h1 class="text-center"

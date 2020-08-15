@@ -68,18 +68,19 @@
         }
 
         .container-profile-picture img {
-            width: 50vh;
+            width: 30vw;
             object-fit: cover;
             cursor: pointer;
-            height: 50vh;
+            height: 30vw;
         }
     </style>
 {% endblock %}
 
 {% block content %}
-    <main class="d-flex d-lg-flex flex-column justify-content-center justify-content-lg-center align-items-lg-center"
+    <main class="d-flex d-flex flex-column justify-content-center justify-content-center align-items-center"
           style="min-height: 100vh;">
-        <div class="container" style="background-color: #fff;">
+        <div class="container" style="background-color: #fff; max-width: 100% !important;
+    min-height: 100vh;">
             <div class="row">
                 <div class="col-md-12">
                     <h1 style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold;">
