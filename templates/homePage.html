@@ -3,7 +3,7 @@
 
 {% block header %}
     <link rel="stylesheet" href="{% static 'homePage.css' %}">
-    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/jquery.min.js' %}"></script>
     <script>
 
         $(document).ready(function () {
@@ -146,7 +146,7 @@
                                         {% else %}
                                             <div class="container-profile-picture" style="position: relative">
                                                 <img class="rounded-circle"
-                                                     src="{% static '/img/avatarTvachaCare.png' %}" width="30%"
+                                                     src="{% static 'img/avatarTvachaCare.png' %}" width="30%"
                                                      alt="Profile Picture"/>
                                                 <div class="overlay-profile">
                                                     <input accept="image/*" id="profile_picture_path"
