@@ -19,7 +19,9 @@
     <title>TvachaCare</title>
     <style>
         .display-none {
-            display: none;
+            display: none !important;
+            transition-duration: 0.2s;
+            
         }
 
         .edit-input {
@@ -268,12 +270,14 @@
 
         function editForm() {
             $('.form-span').addClass('display-none')
+            $('.edit button').addClass('display-none')
             $('.save button').removeClass('display-none')
             $('.edit-input').removeClass('display-none')
         }
 
         function resetForm() {
             $('.form-span').removeClass('display-none')
+            $('.edit button').removeClass('display-none')
             $('.save button').addClass('display-none')
             $('.edit-input').addClass('display-none')
         }
