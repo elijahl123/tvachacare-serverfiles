@@ -73,6 +73,11 @@
             cursor: pointer;
             height: 30vw;
         }
+        @media (min-width: 500px) {
+            .container-h1{
+                font-size: x-large;
+            }
+        }
     </style>
 {% endblock %}
 
@@ -82,7 +87,7 @@
         <div class="container" style="background-color: #fff;">
             <div class="row">
                 <div class="col-md-12">
-                    <h1 style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold; font-size: revert">
+                    <h1 class="container-h1" style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold; font-size: revert">
                         Hello, {{ account.first_name }}!</h1>
                 </div>
             </div>
