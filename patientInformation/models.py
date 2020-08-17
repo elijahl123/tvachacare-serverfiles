@@ -133,9 +133,8 @@ class Account(AbstractBaseUser):
 
 @receiver(post_delete, sender=PatientInformation)
 def submission_delete(sender, instance, **kwargs):
-    instance.image1.delete(False)
-    instance.image2.delete(False)
-    instance.image3.delete(False)
+    instance.patient_image.delete(True)
+    instance.injury_image.delete(True)
 
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
