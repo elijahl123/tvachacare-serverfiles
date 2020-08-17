@@ -164,10 +164,10 @@
                                                value="{{ account.name }}" style="width: auto; margin-top: 20px"/>
                                         <hr>
                                         <div class="row" style="width: 100%;">
-                                            <div class="col d-xl-flex flex-column justify-content-xl-center">
+                                            <div class="col d-flex flex-column justify-content-center" style="padding-right: 0; padding-left: 0">
                                                 <ul class="list-group" style="border-style: none;">
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
-                                                        style="border-style: none;width: 100%;">
+                                                        style="border-style: none;width: 100%;padding: .75rem 0;">
                                                         <strong style="color: #fc9c34;">Email:</strong>
                                                         <span class="form-span"
                                                               style="color: #fc9c34;padding-left: 10px;">{{ account.email }}</span>
@@ -181,7 +181,7 @@
                                                         </button>
                                                     </li>
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
-                                                        style="border-style: none;width: 100%;">
+                                                        style="border-style: none;width: 100%;padding: .75rem 0;">
                                                         <strong style="color: #fc9c34;">First Name:</strong>
                                                         <span class="form-span"
                                                               style="color: #fc9c34;padding-left: 10px;">{{ account.first_name }}</span>
@@ -190,13 +190,13 @@
                                                                name="first_name"
                                                                value="{{ account.first_name }}"/>
                                                         <button onclick="editForm()"
-                                                                class="btn d-lg-flex justify-content-lg-center align-items-lg-center"
+                                                                class="btn d-lg-flex justify-content-lg-center align-items-lg-center invisible"
                                                                 type="button" style="background-color: #fc9c34;">
                                                             <i class="fas fa-edit edit-icon"></i>
                                                         </button>
                                                     </li>
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
-                                                        style="border-style: none;width: 100%;">
+                                                        style="border-style: none;width: 100%;padding: .75rem 0;">
                                                         <strong style="color: #fc9c34;">Last Name:</strong>
                                                         <span class="form-span"
                                                               style="color: #fc9c34;padding-left: 10px;">{{ account.last_name }}</span>
@@ -221,7 +221,14 @@
                                                         <p>{{ account_form.non_field_errors }}</p>
                                                     </div>
                                                 {% endif %}
-                                                <div role="group" class="btn-group">
+                                                <div role="group" class="btn-group edit">
+                                                    <button onclick="editForm()"
+                                                                class="btn d-flex justify-content-center align-items-center"
+                                                                type="button" style="background-color: #fc9c34;">
+                                                            <i class="fas fa-edit edit-icon"></i>
+                                                        </button>
+                                                </div>
+                                                <div role="group" class="btn-group save">
                                                     <button class="btn btn-danger display-none" onclick="resetForm()"
                                                             type="reset">Cancel
                                                     </button>
@@ -256,13 +263,13 @@
 
         function editForm() {
             $('.form-span').addClass('display-none')
-            $('.btn-group button').removeClass('display-none')
+            $('.save button').removeClass('display-none')
             $('.edit-input').removeClass('display-none')
         }
 
         function resetForm() {
             $('.form-span').removeClass('display-none')
-            $('.btn-group button').addClass('display-none')
+            $('.save button').addClass('display-none')
             $('.edit-input').addClass('display-none')
         }
 

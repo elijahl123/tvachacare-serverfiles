@@ -52,6 +52,11 @@ class AccountUpdateForm(forms.ModelForm):
             last_name = self.cleaned_data['last_name']
             return last_name
 
+    def clean_profile_picture_path(self):
+        if self.is_valid():
+            profile_picture_path = self.cleaned_data['profile_picture_path']
+            return profile_picture_path
+
 
 class AddPatient(forms.ModelForm):
     class Meta:
