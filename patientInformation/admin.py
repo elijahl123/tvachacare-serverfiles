@@ -18,8 +18,8 @@ class AccountAdmin(UserAdmin):
 
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ('firstName', 'lastName', 'patientRecordNumber', 'ageAtSurgery')
-    search_fields = ('firstName', 'lastName', 'patientRecordNumber')
+    list_display = ('first_name', 'last_name', 'registration_number', 'age')
+    search_fields = ('first_name', 'last_name', 'registration_number')
     readonly_fields = ()
 
     filter_horizontal = ()

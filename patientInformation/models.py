@@ -6,8 +6,8 @@ from django.utils.text import slugify
 
 
 def upload_location(instance, filename):
-    file_path = 'patientInformation/{patientRecordNumber}/{filename}'.format(
-        patientRecordNumber=str(instance.patientRecordNumber), filename=filename)
+    file_path = 'patientInformation/{registration_number}/{filename}'.format(
+        registration_number=str(instance.registration_number), filename=filename)
     return file_path
 
 
@@ -18,46 +18,55 @@ def upload_profile_picture(instance, filename):
     return file_path
 
 
+class Image(models.Model):
+    image = models.ImageField(upload_to=upload_location, blank=True, null=True)
+
+
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
-    firstName = models.CharField(blank=True, max_length=120, null=True)
-    lastName = models.CharField(blank=True, max_length=120, null=True)
-    patientRecordNumber = models.SlugField(blank=True, max_length=11, null=True, unique=True)
-    preferredName = models.CharField(max_length=120, blank=True, null=True)
-    dateOfBirth = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
-    ageAtSurgery = models.IntegerField(blank=True, null=True)
-    patientSex = models.CharField(blank=True, max_length=6, choices=SEXCHOICES, default='male')
-    siteCountry = models.CharField(blank=True, max_length=120, null=True)
-    siteRegion = models.CharField(blank=True, max_length=120, null=True)
-    hospitalName = models.TextField(blank=True, null=True)
-    preoperativeDiagnostic1 = models.TextField(blank=True, null=True)
-    preoperativeDiagnostic2 = models.TextField(blank=True, null=True)
-    preoperativeDiagnostic3 = models.TextField(blank=True, null=True)
-    preoperativeDiagnostic4 = models.TextField(blank=True, null=True)
-    burnInjury = models.BooleanField(blank=True, null=True, default=False)
-    TBSA = models.FloatField(blank=True, null=True)
-    degreeOfBurn = models.IntegerField(blank=True, null=True)
-    causeOfBurn = models.TextField(blank=True, null=True)
-    approximateYearOfInjury = models.IntegerField(blank=True, null=True)
-    occupation = models.CharField(blank=True, max_length=120, null=True)
-    patientAddress = models.TextField(blank=True, null=True)
-    patientPhoneNumber = models.CharField(max_length=12, blank=True, null=True)
-    parentFirstName = models.CharField(max_length=120, blank=True, null=True)
-    parentMiddleName = models.CharField(max_length=120, blank=True, null=True)
-    parentLastName = models.CharField(max_length=120, blank=True, null=True)
-    relationshipToParent = models.CharField(max_length=120, blank=True, null=True)
+    registration_number = models.SlugField(blank=True, null=True, unique=True)
+    date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
+    first_name = models.CharField(max_length=120, blank=True, null=True)
+    middle_name = models.CharField(max_length=120, blank=True, null=True)
+    last_name = models.CharField(max_length=120, blank=True, null=True)
+    date_of_birth = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+    age = models.IntegerField(blank=True, null=True)
+    gender = models.CharField(blank=True, max_length=6, choices=SEXCHOICES, default='male')
+    race = models.CharField(max_length=120, null=True, blank=True)
+    address = models.TextField(blank=True, null=True)
+    telephone_number = models.CharField(max_length=15, blank=True, null=True)
+    parents = models.TextField(blank=True, null=True)
+    relationship = models.CharField(max_length=120, blank=True, null=True)
+    hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
-    patientWeight = models.IntegerField(blank=True, null=True)
-    patientHeight = models.IntegerField(blank=True, null=True)
-    currentMedication = models.TextField(blank=True, null=True)
-    patient_image = models.ImageField(upload_to=upload_location, null=True, blank=True)
-    injury_image = models.ImageField(upload_to=upload_location, null=True, blank=True)
+    diagnosis = models.TextField(blank=True, null=True)
+    weight = models.IntegerField(blank=True, null=True)
+    height = models.IntegerField(blank=True, null=True)
+    prior_surgery = models.TextField(blank=True, null=True)
+    drug_allergy = models.TextField(blank=True, null=True)
+    name_of_evaluation = models.CharField(max_length=120, blank=True, null=True)
+    date_of_evaluation = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+    cause_of_burn = models.TextField(blank=True, null=True)
+    year_of_burn = models.IntegerField(blank=True, null=True)
+    diagnosis_admission = models.TextField(blank=True, null=True)
+    date_of_admission = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+    date_of_surgery = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+    date_of_discharge = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+    surgeons = models.TextField(blank=True, null=True)
+    anaesthesiologist = models.CharField(max_length=120, blank=True, null=True)
+    anaesthesia = models.CharField(max_length=120, blank=True, null=True)
+    duration = models.TimeField(blank=True, null=True)
+    burn_operation_number = models.SlugField(blank=True, null=True, unique=True)
+    type_of_surgery = models.TextField(blank=True, null=True)
+    area_operated = models.CharField(max_length=120, blank=True, null=True)
+    complications = models.TextField(blank=True, null=True)
+    images = models.ManyToManyField(Image, related_name='+', null=True, blank=True)
     slug = models.SlugField(blank=True, unique=True, null=True)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
-        return self.patientRecordNumber
+        return self.registration_number
 
 
 class MyAccountManager(BaseUserManager):
@@ -131,15 +140,14 @@ class Account(AbstractBaseUser):
         return True
 
 
-@receiver(post_delete, sender=PatientInformation)
+@receiver(post_delete, sender=Image)
 def submission_delete(sender, instance, **kwargs):
-    instance.patient_image.delete(True)
-    instance.injury_image.delete(True)
+    instance.image.delete(True)
 
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.patientRecordNumber)
+        instance.slug = slugify(instance.registration_number)
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
