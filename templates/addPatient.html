@@ -5,6 +5,17 @@
     <title>Add A Patient</title>
     <link rel="stylesheet" href="{% static 'Responsive-Form.css' %}">
     <link rel="stylesheet" href="{% static 'upload.css' %}">
+    <style>
+        #add-images {
+            transition-duration: 0.2s !important;
+        }
+
+        #add-images:hover {
+            background-color: gray;
+            color: white !important;
+            transition-duration: 0.2s !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -14,450 +25,399 @@
             <div>
                 <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
                     A Patient</h1>
-                <form class="d-flex" method="post" enctype="multipart/form-data">{% csrf_token %}
+                <form class="d-flex">
                     <div class="form-group" style="width: 100%;">
                         <div id="formdiv" style="color: #fc9c34;font-family: Raleway, sans-serif;">
-                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
-                                <div class="col-md-10 offset-md-1" style="padding-bottom: 20px;">
-                                    <div id="Div_Promo_Carousel" class="carousel">
-                                        <div class="carousel-inner" role="listbox">
-                                            <div class="d-xl-flex justify-content-xl-center align-items-xl-center carousel-item active">
-                                                <div class="dashed_upload">
-                                                    <div class="wrapper">
-                                                        <div class="drop">
-                                                            <img id="output1"
-                                                                 style="max-width: 60%;max-height: 60%;border-radius: 20px; margin-top: 5%;"/>
-                                                            <div class="cont" id="cont1"><i
-                                                                    class="fa fa-cloud-upload"></i>
-                                                                <div class="tit">
-                                                                    Drag &amp; Drop
-                                                                </div>
-                                                                <div class="desc">
-                                                                    or
-                                                                </div>
-                                                                <div class="browse">
-                                                                    click here to browse
-                                                                </div>
-                                                            </div>
-                                                            <output id="list"></output>
-                                                            <input accept="image/*" id="files" name="image1"
-                                                                   type="file" onchange="loadFile1(event)"/></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="carousel-item">
-                                                <div class="dashed_upload">
-                                                    <div class="wrapper">
-                                                        <div class="drop">
-                                                            <img id="output2"
-                                                                 style="max-width: 60%;max-height: 60%;border-radius: 20px; margin-top: 5%;"/>
-                                                            <div class="cont" id="cont2"><i
-                                                                    class="fa fa-cloud-upload"></i>
-                                                                <div class="tit">
-                                                                    Drag &amp; Drop
-                                                                </div>
-                                                                <div class="desc">
-                                                                    or
-                                                                </div>
-                                                                <div class="browse">
-                                                                    click here to browse
-                                                                </div>
-                                                            </div>
-                                                            <output id="list"></output>
-                                                            <input accept="image/*" id="files" name="image2"
-                                                                   type="file" onchange="loadFile2(event)"/></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="carousel-item">
-                                                <div class="dashed_upload">
-                                                    <div class="wrapper">
-                                                        <div class="drop">
-                                                            <img id="output3"
-                                                                 style="max-width: 60%;max-height: 60%;border-radius: 20px; margin-top: 5%;"/>
-                                                            <div class="cont" id="cont3"><i
-                                                                    class="fa fa-cloud-upload"></i>
-                                                                <div class="tit">
-                                                                    Drag &amp; Drop
-                                                                </div>
-                                                                <div class="desc">
-                                                                    or
-                                                                </div>
-                                                                <div class="browse">
-                                                                    click here to browse
-                                                                </div>
-                                                            </div>
-                                                            <output id="list"></output>
-                                                            <input accept="image/*" id="files" name="image3"
-                                                                   type="file" onchange="loadFile3(event)"/></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <script>
-                                            let loadFile1 = function (event) {
-                                                let image = document.getElementById('output1');
-                                                image.src = URL.createObjectURL(event.target.files[0]);
-                                                $("#cont1").addClass('invisible');
-                                                $('.carousel').carousel('pause');
-                                            };
-                                            let loadFile2 = function (event) {
-                                                let image = document.getElementById('output2');
-                                                image.src = URL.createObjectURL(event.target.files[0]);
-                                                $("#cont2").addClass('invisible');
-                                                $('.carousel').carousel('pause');
-                                            };
-                                            let loadFile3 = function (event) {
-                                                let image = document.getElementById('output3');
-                                                image.src = URL.createObjectURL(event.target.files[0]);
-                                                $("#cont3").addClass('invisible');
-                                                $('.carousel').carousel('pause');
-                                            };
-                                        </script>
-                                        <div><a class="carousel-control-prev" role="button" data-slide="prev"
-                                                href="#Div_Promo_Carousel"><span
-                                                class="carousel-control-prev-icon"
-                                                aria-hidden="true"></span><span
-                                                class="sr-only">Prev </span></a><a class="carousel-control-next"
-                                                                                   role="button"
-                                                                                   data-slide="next"
-                                                                                   href="#Div_Promo_Carousel"><span
-                                                class="carousel-control-next-icon"
-                                                aria-hidden="true"></span><span
-                                                class="sr-only">Next </span></a></div>
-                                        <ul class="carousel-indicators" role>
-                                            <li class="active" data-slide-to="0"
-                                                data-target="#Div_Promo_Carousel">
-                                            </li>
-                                            <li data-slide-to="1" data-target="#Div_Promo_Carousel"></li>
-                                            <li data-slide-to="2" data-target="#Div_Promo_Carousel"></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>First Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="firstName"
-                                           placeholder="First Name" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Last Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="lastName"
-                                           placeholder="Last Name" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Record Number</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="patientRecordNumber"
-                                           placeholder="Patient Record Number" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label">
-                                        <strong>Preferred Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="preferredName"
-                                           placeholder="Preferred Name"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Date of Birth</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input class="form-control" name="dateOfBirth" type="date" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Age at Surgery</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="Age" min="0"
-                                           name="ageAtSurgery" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Sex</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <select class="form-control" name="patientSex">
-                                    <option value="Male" selected>Male</option>
-                                    <option value="Female">Female</option>
-                                </select></div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Site Country</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1"><input class="form-control"
-                                                                          name="siteCountry"
-                                                                          placeholder="Site Country" required>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Site Region</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="siteRegion"
-                                           placeholder="Site Region" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Hospital Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             required placeholder="Hospital Name"
-                                                                             name="hospitalName"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Preoperative Diagnostic 1</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <textarea class="form-control" name="preoperativeDiagnostic1"
-                                              placeholder="Preoperative Diagnostic 1" required></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Preoperative Diagnostic 2</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <textarea class="form-control" name="preoperativeDiagnostic2"
-                                              placeholder="Preoperative Diagnostic 2"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Preoperative Diagnostic 3</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <textarea class="form-control" name="preoperativeDiagnostic3"
-                                              placeholder="Preoperative Diagnostic 3"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Preoperative Diagnostic 4</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <textarea class="form-control" name="preoperativeDiagnostic4"
-                                              placeholder="Preoperative Diagnostic 4"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-10 offset-md-1">
-                                    <div class="form-check">
-                                        <input type="checkbox" name="burnInjury" class="form-check-input"
-                                               id="formCheck-1"/>
-                                        <label class="form-check-label" for="formCheck-1">Burn Injury?</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>TBSA</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="TBSA" name="TBSA"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Degree Of Burn</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="Degree of Burn"
-                                           min="1"
-                                           max="3" name="degreeOfBurn"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Cause of Burn</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             placeholder="Cause of Burn"
-                                                                             name="causeOfBurn"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Approximate Year of Injury</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="Year" min="1900"
-                                           name="approximateYearOfInjury"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Occupation</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="occupation"
-                                           placeholder="Occupation" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Address</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             required placeholder="Address"
-                                                                             name="patientAddress"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Phone Number</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="patientPhoneNumber"
-                                           placeholder="Phone Number" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Parent First Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="parentFirstName"
-                                           placeholder="First Name"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Parent Middle Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="parentMiddleName"
-                                           placeholder="Middle Name"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Parent Last Name</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="parentLastName"
-                                           placeholder="Last Name"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Relationship to Parent</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="relationshipToParent"
-                                           placeholder="Relationship to Parent"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Referral</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="text" class="form-control" name="referral"
-                                           placeholder="Referral"/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Weight (kg)</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="Weight" min="0"
-                                           name="patientWeight" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Patient Height (cm)</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1">
-                                    <input type="number" class="form-control" placeholder="Height" min="0"
-                                           name="patientHeight" required/>
-                                </div>
-                            </div>
-                            <div class="form-row" style="margin-right:0;margin-left:0;padding-top:24px;">
-                                <div class="col-md-8 offset-md-1">
-                                    <p class="paragraph-label"><strong>Current Medication</strong>
-                                    </p>
-                                </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             placeholder="Medication"
-                                                                             name="currentMedication"></textarea>
+                            <div class="form-row d-flex justify-content-center align-items-center"
+                                 style="padding-top: 30px;">
+                                <div class="col d-flex justify-content-center align-items-center">
+                                    <a
+                                            class="btn d-flex flex-column justify-content-center align-items-center"
+                                            role="button" id="add-images"
+                                            style="color: gray;height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid gray;border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"><i
+                                            class="fa fa-plus" style="font-size: 40px;"></i>Add Images</a>
                                 </div>
                             </div>
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
-                                <div class="col-12 col-md-4 offset-md-4 d-flex justify-content-center">
-                                    <button class="btn btn-danger btn-lg"
-                                            style="font-family:Raleway, sans-serif;"
-                                            type="reset">Clear
-                                    </button>
-                                    <button class="btn btn-success btn-lg" style="margin-left:16px;"
-                                            type="submit">
-                                        Submit
-                                    </button>
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Registration Number</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="registration_number"
+                                           placeholder="Registration Number" required/>
                                 </div>
                             </div>
-                            {% for field in form %}
-                                {% for error in field.errors %}
-                                    <p style="color: red;">{{ error }}</p>
-                                {% endfor %}
-                            {% endfor %}
-
-                            {% if form.non_field_errors %}
-                                <div style="color:red;">
-                                    <p>{{ form.non_field_errors }}</p>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>First Name</strong></p>
                                 </div>
-                            {% endif %}
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control" style="margin-left:
+                                                                          0px;font-family: 'Open Sans', sans-serif;"
+                                           name="first_name" placeholder="First Name"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Middle Name</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="middle_name" placeholder="Middle Name"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Last Name</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="last_name" placeholder="Last Name"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Birth</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           name="date_of_birth" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Age</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="number" class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           placeholder="Age" name="age"/></div>
+                            </div>
+                            <div class="form-row"
+                                 style="margin-right:0px;margin-left:0px;padding-top:24px;margin-top:-16px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Gender</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <select class="form-control" style="font-family: 'Open Sans', sans-serif;"
+                                            name="gender">
+                                        <option value="Male" selected>Male</option>
+                                        <option value="Female">Female</option>
+                                    </select></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Race</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="race" placeholder="Race"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Address</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Address"
+                                              name="address"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Telephone Number</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="telephone_number"
+                                           placeholder="Telephone Number"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Parents</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Parents"
+                                              name="parents"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Relationship</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="relationship"
+                                           placeholder="Relationship"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Hospital</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Hospital"
+                                              name="hospital"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Referral</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="referral" placeholder="Referral"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Diagnosis</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Diagnosis"
+                                              name="diagnosis"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Weight (kg)</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="number" class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           placeholder="Weight" name="weight" min="0"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Height (cm)</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="number" class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           placeholder="Height" name="height" min="0"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Prior Surgery</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Prior Surgery"
+                                              name="prior_surgery"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Drug Allergy</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Drug Allergy"
+                                              name="drug_allergy"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Name of Evaluation</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="name_of_evaluation"
+                                           placeholder="Name of Evaluation"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Evaluation</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           name="date_of_evaluation" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Cause of Burn</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Cause of Burn"
+                                              name="cause_of_burn"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Year of Burn</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="year_of_burn"
+                                           placeholder="Year of Burn"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Diagnosis Admission</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Diagnosis Admission"
+                                              name="diagnosis_admission"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Admission</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           name="date_of_admission" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Surgery</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           name="date_of_surgery" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Discharge</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;"
+                                           name="date_of_discharge" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Surgeons</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Surgeons"
+                                              name="surgeons"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Anesthesiologist</strong><br/></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="anesthesiologist"
+                                           placeholder="Anesthesiologist"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Anesthesia</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="anesthesia" placeholder="Anesthesia"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Duration</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="duration" placeholder="Duration"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Burn Operation Number</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="burn_operation_number"
+                                           placeholder="Burn Operation Number"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Type of Surgery</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Type of Surgery"
+                                              name="type_of_surgery"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Area Operated</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="text" class="form-control"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           name="area_operated"
+                                           placeholder="Area Operated" required/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Complications</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control"
+                                              style="font-family: 'Open Sans', sans-serif;"
+                                              placeholder="Complications"
+                                              name="complications"></textarea></div>
+                            </div>
                         </div>
                     </div>
                 </form>
