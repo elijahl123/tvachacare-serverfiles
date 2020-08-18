@@ -56,7 +56,7 @@ class PatientInformation(models.Model):
     surgeons = models.TextField(blank=True, null=True)
     anesthesiologist = models.CharField(max_length=120, blank=True, null=True)
     anesthesia = models.CharField(max_length=120, blank=True, null=True)
-    duration = models.TimeField(blank=True, null=True)
+    duration = models.CharField(max_length=120, blank=True, null=True)
     burn_operation_number = models.SlugField(blank=True, null=True, unique=True)
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
