@@ -25,7 +25,7 @@
             <div>
                 <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
                     A Patient</h1>
-                <form class="d-flex">
+                <form class="d-flex" method="post">{% csrf_token %}
                     <div class="form-group" style="width: 100%;">
                         <div id="formdiv" style="color: #fc9c34;font-family: Raleway, sans-serif;">
                             <div class="form-row d-flex justify-content-center align-items-center"
