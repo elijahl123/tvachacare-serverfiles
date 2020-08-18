@@ -124,7 +124,7 @@
                                         {% for patients in object %}
                                             <li class="list-group-item">
                                                 <a href="{% url 'patient_page' patients.slug %}"
-                                                   class='patient-name'>{{ patients.lastName }}, {{ patients.firstName }}</a>
+                                                   class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
                                             </li>
                                         {% endfor %}
                                     </ul>
