@@ -75,6 +75,7 @@ class AddPatient(forms.ModelForm):
             'parents',
             'relationship',
             'hospital',
+            'referral',
             'diagnosis',
             'weight',
             'height',
@@ -95,6 +96,5 @@ class AddPatient(forms.ModelForm):
             'burn_operation_number',
             'type_of_surgery',
             'area_operated',
-            'complications',
-            'images',
+            'complications'
         ]
