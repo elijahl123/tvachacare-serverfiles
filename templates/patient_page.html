@@ -3,22 +3,52 @@
 
 {% block header %}
     <style>
-    #view-images:hover {
-        color: white !important;
-        background-color: gray;
-        transition-duration: 0.3s !important;
-    }
-    #view-images {
-        transition-duration: 0.2s !important;
-    }
+        #view-images:hover {
+            color: white !important;
+            background-color: gray;
+            transition-duration: 0.3s !important;
+        }
+
+        #view-images {
+            transition-duration: 0.2s !important;
+        }
+        .display-none {
+            display: none !important;
+        }
     </style>
+    <script>
+        $(document).ready(function (){
+           $("button").click(function (){
+              $(".delete-patient").removeClass("display-none");
+              console.log("Executed Correctly")
+           });
+        });
+    </script>
     <title>{{ patient }}</title>
 {% endblock %}
 {% block content %}
-
+    <div class="justify-content-center align-items-center delete-patient display-none"
+         style="display: flex;top: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
+        <div class="d-flex flex-column"
+             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px gray;">
+            <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">Are
+                you sure?</h1>
+            <div role="group" class="btn-group">
+                <button class="btn btn-secondary" type="button" onclick="closeMenu()" style="border-radius: 5px;margin: 3px;">Cancel</button>
+                <a class="btn btn-danger" role="button" style="border-radius: 5px;margin: 3px;" href="{% url 'delete_patient' patient.slug %}">Delete</a>
+            </div>
+        </div>
+    </div>
     <main>
         <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
              style="padding: 30px 50px;background-color: white;">
+            <div class="row" style="width: 100%;margin-bottom: 10px;">
+                <div class="col d-flex justify-content-end" style="width: 100%;">
+                    <button type="button" class="btn btn-danger open-menu" onclick="openMenu()" style="border-radius: 7px;">Delete
+                        Patient
+                    </button>
+                </div>
+            </div>
             <div class="row" style="width: 100%;">
                 <div class="col d-flex flex-column" style="height: 25vh;"><a
                         class="btn d-flex justify-content-center align-items-center" role="button" id="view-images"
@@ -467,7 +497,7 @@
                     </div>
                 </div>
             {% endif %}
-            {% if account.group == 'Approver' %}
+            {% if account.group == 'Approver' and patient.is_approved == 'False' %}
                 <div role="group" class="btn-group"
                      style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
                     <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button">Don&#39;t
@@ -503,6 +533,14 @@
                 </div>
             </div>
         </div>
-    </main>
 
+    </main>
+    <script>
+        function openMenu() {
+            $('.delete-patient').removeClass('display-none');
+        }
+        function closeMenu() {
+            $('.delete-patient').addClass('display-none')
+        }
+    </script>
 {% endblock %}

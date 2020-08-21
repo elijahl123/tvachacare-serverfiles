@@ -198,3 +198,12 @@ def patient_page(request, slug):
         return render(request, 'patient_page.html', context)
     else:
         return redirect('login')
+
+
+def delete_patient(request, slug):
+    if request.user.is_authenticated:
+        patient = get_object_or_404(PatientInformation, slug=slug)
+        patient.delete()
+        return redirect('home')
+    else:
+        return redirect('login')
