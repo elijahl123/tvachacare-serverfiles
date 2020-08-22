@@ -99,12 +99,15 @@ def addpatient(request):
         "account": account
     }
 
-    form = AddPatient(request.POST or None, request.FILES or None)
-    if form.is_valid():
-        obj = form.save(commit=False)
-        obj.save()
-        form = AddPatient()
-        return redirect('home')
+    if request.POST:
+        form = AddPatient(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            form = AddPatient()
+            return redirect('home')
+    else:
+        form = AddPatient
 
     context['form'] = form
 

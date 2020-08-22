@@ -55,11 +55,22 @@
                     </button>
                 </div>
             </div>
-            <div class="row" style="width: 100%;">
-                <div class="col d-flex flex-column" style="height: 25vh;"><a
-                        class="btn d-flex justify-content-center align-items-center" role="button" id="view-images"
-                        style="color: Gray;border-width: 3px;border-color: Gray;width: 100%;height: 100%;font-family: Raleway, sans-serif;font-size: 30px;border-radius: 10px;font-weight: 700;font-style: normal;">View
-                    Images</a></div>
+            <div class="row" style="width: 100%;height: 500px;">
+                <div class="col d-flex flex-column justify-content-center align-items-center"
+                     style="overflow: hidden;height: 500px;">
+                    {% if patient.patient_image %}
+                    <img src="{{ patient.patient_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                    {% else %}
+                    <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
+                    {% endif %}
+                </div>
+                <div class="col d-flex flex-column justify-content-center align-items-center">
+                    {% if patient.injury_image %}
+                    <img src="{{ patient.injury_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                    {% else %}
+                    <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image" />
+                    {% endif %}
+                </div>
             </div>
             <div class="row justify-content-center" style="margin-top: 20px;width: 85%;">
                 <div class="col-lg-12 col-xl-12">
@@ -323,8 +334,8 @@
                                                      style="color: white;background-color: #fc9c34;">5</a></li>
                             <li class="page-item">
                                 <a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;"
-                                                     aria-label="Next"><span aria-hidden="true">+</span></a>
+                                   style="color: white;background-color: #fc9c34;"
+                                   aria-label="Next"><span aria-hidden="true">+</span></a>
                             </li>
                         </ul>
                     </nav>
