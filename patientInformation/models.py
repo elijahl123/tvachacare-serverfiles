@@ -166,9 +166,13 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Deletes file from filesystem
     when corresponding `MediaFile` object is deleted.
     """
-    if instance.file:
-        if os.path.isfile(instance.file.path):
-            os.remove(instance.file.path)
+    if instance.patient_image:
+        if os.path.isfile(instance.patient_image.path):
+            os.remove(instance.patient_image.path)
+
+    if instance.injury_image:
+        if os.path.isfile(instance.injury_image.path):
+            os.remove(instance.injury_image.path)
 
 
 @receiver(post_delete, sender=Image)
