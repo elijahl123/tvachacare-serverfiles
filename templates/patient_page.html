@@ -64,7 +64,8 @@
                     <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
                     {% endif %}
                 </div>
-                <div class="col d-flex flex-column justify-content-center align-items-center">
+                <div class="col d-flex flex-column justify-content-center align-items-center"
+                     style="overflow: hidden;height: 500px;">
                     {% if patient.injury_image %}
                     <img src="{{ patient.injury_image.url }}" style="width: 100%;" alt="Patient Image"/>
                     {% else %}
