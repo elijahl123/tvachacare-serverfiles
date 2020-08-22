@@ -84,7 +84,7 @@ class SurgeryInformation(models.Model):
 
 
 class Image(models.Model):
-    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE)
+    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
 
 
