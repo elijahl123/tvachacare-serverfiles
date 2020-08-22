@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.contrib.postgres.fields import ArrayField
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
@@ -162,6 +161,12 @@ class Account(AbstractBaseUser):
 @receiver(post_delete, sender=Image)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(True)
+
+
+@receiver(post_delete, sender=PatientInformation)
+def submission_delete(sender, instance, **kwargs):
+    instance.patient_image.delete(True)
+    instance.injury_image.delete(True)
 
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
