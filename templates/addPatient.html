@@ -80,7 +80,7 @@
             <div>
                 <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
                     A Patient</h1>
-                <form class="d-flex" method="post"> {% csrf_token %}
+                <form class="d-flex" method="post" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="d-flex justify-content-center align-items-center invisible images-container"
                          style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 1000;top: 0;right: 0;left: 0;bottom: 0;">
                         <div class="d-flex flex-row justify-content-center align-items-center flex-wrap"
