@@ -62,7 +62,10 @@ class AddPatient(forms.ModelForm):
     class Meta:
         model = PatientInformation
         fields = [
-            'registration_number',
+            'helping_hands_file_number',
+            'resurge_outreach_number',
+            'patient_image',
+            'injury_image',
             'first_name',
             'middle_name',
             'last_name',
@@ -74,33 +77,21 @@ class AddPatient(forms.ModelForm):
             'telephone_number',
             'parents',
             'relationship',
-            'hospital',
-            'referral',
             'diagnosis',
             'weight',
             'height',
+            'burn_injury',
+            'cleft_injury',
+            'hand_injury',
             'prior_surgery',
-            'drug_allergy',
-            'name_of_evaluation',
-            'date_of_evaluation',
-            'cause_of_burn',
-            'year_of_burn',
-            'diagnosis_admission',
-            'date_of_admission',
-            'date_of_surgery',
-            'date_of_discharge',
-            'surgeons',
-            'anesthesiologist',
-            'anesthesia',
-            'duration',
-            'burn_operation_number',
-            'type_of_surgery',
-            'area_operated',
-            'complications',
+            'doctor_notes'
         ]
+
 
 class ImageForm(forms.ModelForm):
     image = forms.ImageField(label='Image')
+
     class Meta:
         model = Image
-        fields = ('image', )
+        fields = ('image',)
+

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import PatientInformation, Account, Image
+from .models import PatientInformation, Account, Image, SurgeryInformation
 
 
 # Register your models here.
@@ -18,8 +18,8 @@ class AccountAdmin(UserAdmin):
 
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'registration_number', 'age')
-    search_fields = ('first_name', 'last_name', 'registration_number')
+    list_display = ('first_name', 'last_name', 'helping_hands_file_number', 'age')
+    search_fields = ('first_name', 'last_name', 'helping_hands_file_number')
     readonly_fields = ()
 
     filter_horizontal = ()
@@ -30,3 +30,4 @@ class PatientAdmin(admin.ModelAdmin):
 admin.site.register(Account, AccountAdmin)
 admin.site.register(PatientInformation, PatientAdmin)
 admin.site.register(Image)
+admin.site.register(SurgeryInformation)

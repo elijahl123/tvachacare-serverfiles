@@ -7,8 +7,15 @@ from django.utils.text import slugify
 
 
 def upload_location(instance, filename):
-    file_path = 'patientInformation/{registration_number}/{filename}'.format(
-        registration_number=str(instance.registration_number), filename=filename)
+    file_path = 'patientInformation/{surgery}/{filename}'.format(
+        surgery=str(instance.surgery), filename=filename)
+    return file_path
+
+
+def upload_patient_images(instance, filename):
+    file_path = 'patientInformation/{helping_hands_file_number}/{filename}'.format(
+        helping_hands_file_number=str(instance.helping_hands_file_number), filename=filename
+    )
     return file_path
 
 
@@ -22,8 +29,10 @@ def upload_profile_picture(instance, filename):
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
-    registration_number = models.SlugField(blank=True, null=True, unique=True)
-    date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
+    helping_hands_file_number = models.SlugField(blank=True, null=True, unique=True)
+    resurge_outreach_number = models.SlugField(blank=True, null=True, unique=True)
+    patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
+    injury_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     first_name = models.CharField(max_length=120, blank=True, null=True)
     middle_name = models.CharField(max_length=120, blank=True, null=True)
     last_name = models.CharField(max_length=120, blank=True, null=True)
@@ -35,12 +44,26 @@ class PatientInformation(models.Model):
     telephone_number = models.CharField(max_length=15, blank=True, null=True)
     parents = models.TextField(blank=True, null=True)
     relationship = models.CharField(max_length=120, blank=True, null=True)
-    hospital = models.TextField(blank=True, null=True)
-    referral = models.CharField(max_length=120, blank=True, null=True)
     diagnosis = models.TextField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
+    burn_injury = models.TextField(blank=True, null=True)
+    cleft_injury = models.TextField(blank=True, null=True)
+    hand_injury = models.TextField(blank=True, null=True)
     prior_surgery = models.TextField(blank=True, null=True)
+    doctor_notes = models.TextField(blank=True, null=True)
+    slug = models.SlugField(blank=True, unique=True, null=True)
+    is_approved = models.BooleanField(default=False, blank=True, null=True)
+
+    def __str__(self):
+        return self.helping_hands_file_number
+
+
+class SurgeryInformation(models.Model):
+    patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
+    date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
+    hospital = models.TextField(blank=True, null=True)
+    referral = models.CharField(max_length=120, blank=True, null=True)
     drug_allergy = models.TextField(blank=True, null=True)
     name_of_evaluation = models.CharField(max_length=120, blank=True, null=True)
     date_of_evaluation = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
@@ -58,15 +81,10 @@ class PatientInformation(models.Model):
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
-    slug = models.SlugField(blank=True, unique=True, null=True)
-    is_approved = models.BooleanField(default=False, blank=True, null=True)
-
-    def __str__(self):
-        return self.registration_number
 
 
 class Image(models.Model):
-    patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
+    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
 
 
@@ -148,7 +166,7 @@ def submission_delete(sender, instance, **kwargs):
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.registration_number)
+        instance.slug = slugify(instance.helping_hands_file_number)
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)

@@ -1,10 +1,8 @@
 from django.contrib.auth import logout as lgout, authenticate, login
-from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import RequestContext
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm
-from .models import PatientInformation, Image
+from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient
+from .models import PatientInformation
 
 
 # Create your views here.
@@ -97,31 +95,10 @@ def addpatient(request):
         'group': request.user.group,
     } if request.user.is_authenticated else None
 
-    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
-    if request.method == 'POST':
-        patientForm = AddPatient(request.POST)
-        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
-
-        if patientForm.is_valid() and formset.is_valid():
-            patient_form = patientForm.save(commit=False)
-            patient_form.save()
-
-            for form in formset.cleaned_data:
-                image = form['image']
-                photo = Image(post=patient_form, image=image)
-                photo.save()
-            return redirect('home')
-    else:
-        patientForm = AddPatient()
-        formset = ImageFormSet(queryset=Image.objects.none())
-
     context = {
-        "account": account,
-        'patientForm': patientForm,
-        'formset': formset,
+        "account": account
     }
 
-    '''
     form = AddPatient(request.POST or None, request.FILES or None)
     if form.is_valid():
         obj = form.save(commit=False)
@@ -130,7 +107,7 @@ def addpatient(request):
         return redirect('home')
 
     context['form'] = form
-    '''
+
     if request.user.is_authenticated:
         if request.user.group == 'Data Entry':
             return render(request, 'addPatient.html', context)
