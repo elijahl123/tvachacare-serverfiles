@@ -211,7 +211,7 @@ def delete_patient(request, slug):
     if request.user.is_authenticated:
         patient = get_object_or_404(PatientInformation, slug=slug)
         patient.delete()
-        return redirect('delete_images')
+        return redirect('delete_images', slug=slug)
     else:
         return redirect('login')
 
