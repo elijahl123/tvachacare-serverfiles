@@ -118,6 +118,24 @@
                                     <h2 style="color: #092327;">Patients</h2>
                                 {% endif %}
                                 <input type="search" placeholder="Search for Patients..." class="search-patients"/>
+                            {% if account.group == 'Approver' %}
+                                {% if object %}
+                                    <ul class="list-group"
+                                        style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
+                                        {% for patients in object %}
+                                            {% if patients.is_approved == False %}
+                                            <li class="list-group-item">
+                                                <a href="{% url 'patient_page' patients.slug %}"
+                                                   class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                            </li>
+                                            {% else %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="m-auto">None</p>
+                                {% endif %}
+                            {% else %}
                                 {% if object %}
                                     <ul class="list-group"
                                         style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
@@ -131,6 +149,7 @@
                                 {% else %}
                                     <p class="m-auto">None</p>
                                 {% endif %}
+                            {% endif %}
                             </div>
                             <div role="tabpanel" class="tab-pane" id="tab-3">
                                 <form method="post" enctype="multipart/form-data"
