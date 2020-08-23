@@ -45,6 +45,7 @@ class PatientInformation(models.Model):
     telephone_number = models.CharField(max_length=15, blank=True, null=True)
     parents = models.TextField(blank=True, null=True)
     relationship = models.CharField(max_length=120, blank=True, null=True)
+    parent_occupation = models.TextField(null=True, blank=True)
     diagnosis = models.TextField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)

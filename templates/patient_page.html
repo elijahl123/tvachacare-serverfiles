@@ -127,7 +127,7 @@
                 </div>
             {% endif %}
             {% if patient.gender %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Gender</h3>
@@ -155,7 +155,7 @@
                 </div>
             {% endif %}
             {% if patient.address %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Address</h3>
@@ -183,7 +183,7 @@
                 </div>
             {% endif %}
             {% if patient.parents %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parents</h3>
@@ -210,8 +210,22 @@
                     </div>
                 </div>
             {% endif %}
+            {% if patient.parent_occupation %}
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parent Occupation</h3>
+                    </div>
+                    <div class="col-xl-8 d-flex justify-content-center align-content-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.parent_occupation }}</p>
+                    </div>
+                </div>
+            {% endif %}
             {% if patient.diagnosis %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Diagnosis</h3>
@@ -225,7 +239,7 @@
                 </div>
             {% endif %}
             {% if patient.weight %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Weight</h3>
@@ -239,7 +253,7 @@
                 </div>
             {% endif %}
             {% if patient.height %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Height</h3>
@@ -253,7 +267,7 @@
                 </div>
             {% endif %}
             {% if patient.burn_injury %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Burn Injury</h3>
@@ -267,7 +281,7 @@
                 </div>
             {% endif %}
             {% if patient.cleft_injury %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Cleft Injury</h3>
@@ -281,7 +295,7 @@
                 </div>
             {% endif %}
             {% if patient.hand_injury %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Hand Injury</h3>
@@ -295,7 +309,7 @@
                 </div>
             {% endif %}
             {% if patient.prior_surgery %}
-                <div class="row" style="width: 100%;margin-bottom: 15px;">
+                <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                          style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Prior Surgery</h3>

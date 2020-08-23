@@ -77,6 +77,7 @@ class AddPatient(forms.ModelForm):
             'telephone_number',
             'parents',
             'relationship',
+            'parent_occupation',
             'diagnosis',
             'weight',
             'height',
