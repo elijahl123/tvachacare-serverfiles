@@ -1,11 +1,68 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block header %}
-<title>Login</title>
+    <title>Login</title>
+    <style>
+        .loader-wrapper {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 99999;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            animation: flickerAnimation 2s infinite;
+        }
+
+        .loader img {
+            width: 150px;
+            border-radius: 30px;
+        }
+
+        @keyframes flickerAnimation { /* flame pulses */
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+    <script>
+        function fadeOut() {
+            $('.loader-wrapper').fadeOut("slow", 0);
+        }
+
+        window.onload = fadeOut
+    </script>
 {% endblock %}
 
 {% block content %}
 
+
+
+    <div class="loader-wrapper" onload="fadeOut()">
+        <div class="loader">
+            <img src="{% static 'img/logoTvachaSolidBackground.png' %}" alt="Loading Image">
+            <h1 style="color: #fc9c34; text-align: center; margin-top: 10px">Loading...</h1>
+        </div>
+    </div>
 
     <main class="d-flex justify-content-md-center align-items-md-center align-items-xl-center page landing-page"
           style="color: white;overflow: auto;padding: 0;"></main>
