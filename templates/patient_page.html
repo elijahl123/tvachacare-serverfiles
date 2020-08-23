@@ -55,21 +55,22 @@
                     </button>
                 </div>
             </div>
-            <div class="row d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row" style="width: 100%;height: 500px;">
+            <div class="row d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row"
+                 style="width: 100%;height: 500px;">
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.patient_image %}
-                    <img src="{{ patient.patient_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.patient_image.url }}" style="width: 100%;" alt="Patient Image"/>
                     {% else %}
-                    <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
                     {% endif %}
                 </div>
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.injury_image %}
-                    <img src="{{ patient.injury_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.injury_image.url }}" style="width: 100%;" alt="Patient Image"/>
                     {% else %}
-                    <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image" />
+                        <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image"/>
                     {% endif %}
                 </div>
             </div>
@@ -325,10 +326,11 @@
             {% if account.group == 'Approver' and patient.is_approved == False %}
                 <div role="group" class="btn-group"
                      style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
-                    <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button">Don&#39;t
+                    <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button"
+                       href="{% url 'delete_patient' patient.slug %}">Don&#39;t
                         Approve</a>
                     <a class="btn btn-success d-flex justify-content-center align-items-center"
-                       role="button">Approve</a>
+                       role="button" href="{% url 'approve_patient' patient.slug %}">Approve</a>
                 </div>
             {% endif %}
             <div class="row"

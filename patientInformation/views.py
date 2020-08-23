@@ -214,3 +214,12 @@ def delete_patient(request, slug):
         return redirect('home')
     else:
         return redirect('login')
+
+
+def approve_patient(request, slug):
+    if request.user.is_authenticated:
+        patient = get_object_or_404(PatientInformation, slug=slug)
+        patient.is_approved = True
+        return redirect('home')
+    else:
+        return redirect('login')
