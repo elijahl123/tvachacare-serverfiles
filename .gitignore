@@ -21,8 +21,8 @@ mydatabase
 
 patientInformation/migrations
 
-media_cdn
-static_cdn
+media_cdn/
+static_cdn/
 
 __pycache__
 patientInformation/__pycache__
