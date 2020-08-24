@@ -1,0 +1,330 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Add a Surgery</title>
+    <link rel="stylesheet" href="{% static 'Responsive-Form.css' %}">
+    <link rel="stylesheet" href="{% static 'upload.css' %}">
+    <style>
+        #add-images {
+            transition-duration: 0.2s !important;
+        }
+
+        #add-images:hover {
+            background-color: gray;
+            color: white !important;
+            transition-duration: 0.2s !important;
+        }
+    </style>
+    <script>
+        function openImages() {
+            $('.images-container').removeClass('invisible');
+        }
+
+        function closeImages() {
+            $('.images-container').addClass('invisible');
+        }
+
+        function drugAllergy() {
+            if ($('.drugAllergy-checkbox').prop("checked") === true) {
+                $('.drugAllergy').removeClass('d-none');
+            } else {
+                $('.drugAllergy').addClass('d-none');
+            }
+        }
+
+        let numOfForms = 1
+
+        function cloneMore() {
+            const newElement = $('div.image-container')
+            newElement.prepend("<div class=\"d-flex flex-column justify-content-center align-items-center\"\n" +
+                "                                     style=\"background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;\">\n" +
+                "                                    <h1 style=\"font-size: 30px;font-weight: normal;\">Add Image</h1>\n" +
+                "                                    <div class=\"flex-column custom-file\">\n" +
+                "                                        <label class=\"custom-file-label\">Upload File</label>\n" +
+                "                                        <input type=\"file\" class=\"custom-file-input\" accept=\"image/*\" \n" +
+                "                                               style=\"font-family: 'Open Sans', sans-serif;\" id=\"id_form-" + numOfForms + "-image\"\n" +
+                "                                               name=\"form-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
+                "                                    </div>\n" +
+                "                                <button class=\"btn btn-danger btn-sm\" type=\"button\" style=\"margin-top: 10px;border-color: transparent;\" onclick=\"deleteImage(this)\">Delete</button>\n" +
+                "                                </div>")
+            let totalForms = $('input#id_form-TOTAL_FORMS');
+            totalForms.val(numOfForms + 1)
+            numOfForms++
+        }
+
+        function deleteImage(element) {
+            let parent = $(element).parent();
+            parent.remove()
+            numOfForms--
+            let totalForms = $('input#id_form-TOTAL_FORMS');
+            totalForms.val(numOfForms)
+        }
+
+        function loadImage(event, element) {
+            let image = URL.createObjectURL(event.target.files[0]);
+            let parent = $(element).parent();
+            let grandparent = parent.parent();
+            let heading = grandparent.find('h1');
+            grandparent.css("background-image", "url(" + image + ")");
+            heading.addClass('d-none');
+            parent.css('display', 'none');
+        }
+
+
+
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container" style="background-color: white;padding: 50px 0;">
+            <div>
+                <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
+                    A Surgery</h1>
+                <form class="d-flex" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}{{ formset.management_form }}
+                    <input type="text" class="d-none" name="patient" value="{{ patient.id }}"/>
+                    <div class="d-flex justify-content-center align-items-center invisible images-container"
+                         style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 1000;top: 0;right: 0;left: 0;bottom: 0;">
+                        <div class="d-flex flex-row justify-content-center align-items-center flex-wrap image-container"
+                             style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
+                            {% for form in formset %}
+                                <div class="d-flex flex-column justify-content-center align-items-center"
+                                     style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;">
+                                    <h1 style="font-size: 30px;font-weight: normal;">Add Image</h1>
+                                    <div class="flex-column custom-file">
+                                        <label class="custom-file-label">Upload File</label>
+                                        <input type="file" class="custom-file-input" accept="image/*"
+                                               style="font-family: 'Open Sans', sans-serif;" id="{{ form.image.id_for_label }}"
+                                               name="{{ form.image.html_name }}" onchange="loadImage(event, this)"/>
+                                    </div>
+                                <button class="btn btn-danger btn-sm" type="button" style="margin-top: 10px;border-color: transparent;" onclick="deleteImage(this)">Delete</button>
+                                </div>
+                            {% endfor %}
+                            <button class="btn btn-primary" id="add_more" type="button"
+                                    style="width: 250px;height: 200px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;" onclick="cloneMore()">
+                                <i class="fa fa-plus" style="font-size: 50px;"></i></button>
+                            <button class="btn" type="button" onclick="closeImages()"
+                                    style="position: absolute;top: 3px;right: 7px;color: black;font-weight: bold;font-family: Raleway, sans-serif;">
+                                x
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="width: 100%;">
+                        <div id="formdiv" style="color: #fc9c34;font-family: Raleway, sans-serif;padding-bottom: 20px;">
+                            <div class="form-row d-flex justify-content-center align-items-center"
+                                 style="padding-top: 30px;">
+                                <div class="col d-flex justify-content-center align-items-center">
+                                    <button class="btn d-flex flex-column justify-content-center align-items-center"
+                                            role="button" type="button" id="add-images"
+                                            style="color: gray;height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid gray;border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
+                                            onclick="openImages()"><i
+                                            class="fa fa-plus" style="font-size: 40px;"></i>Add Images
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Hospital</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
+                                                                             style="font-family: 'Open Sans', sans-serif;"
+                                                                             name="hospital"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Referral</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="referral" required/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1 d-flex align-items-center align-self-center"
+                                     style="font-size: 25px;font-weight: bold;margin-bottom: 10px;">
+                                    <div class="form-check d-flex align-items-center"><input type="checkbox"
+                                                                                             class="form-check-input drugAllergy-checkbox"
+                                                                                             id="formCheck-5"
+                                                                                             onclick="drugAllergy()"
+                                                                                             style="margin-top: 0;"/>
+                                        <label
+                                                class="form-check-label" for="formCheck-5">Drug Allergy?</label></div>
+                                </div>
+                                <div class="col-md-10 offset-md-1 d-none drugAllergy"><textarea class="form-control"
+                                                                                                style="font-family: 'Open Sans', sans-serif;"
+                                                                                                name="drug_allergy"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Name of Evaluation</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="name_of_evaluation"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Evaluation</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input class="form-control"
+                                                                          style="font-family: 'Open Sans', sans-serif;"
+                                                                          name="date_of_evaluation" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Cause of Burn</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
+                                                                             style="font-family: 'Open Sans', sans-serif;"
+                                                                             name="cause_of_burn"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Year of Burn</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="number" class="form-control"
+                                                                          style="font-family: 'Open Sans', sans-serif;"
+                                                                          name="year_of_burn" min="1900"/></div>
+                            </div>
+                            <div class="form-row"
+                                 style="margin-right:0px;margin-left:0px;padding-top:24px;margin-top:-16px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Diagnosis Admission</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="diagnosis_admission"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Admission</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input class="form-control"
+                                                                          style="font-family: 'Open Sans', sans-serif;"
+                                                                          name="date_of_admission" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Surgery</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input class="form-control"
+                                                                          style="font-family: 'Open Sans', sans-serif;"
+                                                                          name="date_of_surgery" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Date of Discharge</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input class="form-control"
+                                                                          style="font-family: 'Open Sans', sans-serif;"
+                                                                          name="date_of_discharge" type="date"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Surgeons</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
+                                                                             style="font-family: 'Open Sans', sans-serif;"
+                                                                             name="surgeons"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Anesthesiologist</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="anesthesiologist"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Anesthesia</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="anesthesia"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Duration</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="duration"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Burn Operation Number</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="burn_operation_number" required/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Type of Surgery</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
+                                                                             style="font-family: 'Open Sans', sans-serif;"
+                                                                             name="type_of_surgery"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Area Operated</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                                                          name="area_operated"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Complications</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
+                                                                             style="font-family: 'Open Sans', sans-serif;"
+                                                                             name="complications"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin: 0;margin-top: 20px;">
+                                <div class="col d-flex justify-content-center align-items-center"
+                                     style="height: 60px;margin: 10px;margin-bottom: 0px;">
+                                    <div role="group" class="btn-group"
+                                         style="height: 100%;width: 100%;border-style: none;">
+                                        <button class="btn btn-danger" type="reset"
+                                                style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                                            Reset
+                                        </button>
+                                        <button class="btn btn-success" type="submit"
+                                                style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

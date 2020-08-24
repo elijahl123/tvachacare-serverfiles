@@ -26,8 +26,16 @@ class PatientAdmin(admin.ModelAdmin):
     list_filter = ()
     fieldsets = ()
 
+class SurgeryAdmin(admin.ModelAdmin):
+    list_display = ('patient', 'burn_operation_number')
+    search_fields = ('patient', 'burn_operation_number')
+    readonly_fields = ()
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(PatientInformation, PatientAdmin)
 admin.site.register(Image)
-admin.site.register(SurgeryInformation)
+admin.site.register(SurgeryInformation, SurgeryAdmin)

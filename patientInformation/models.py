@@ -79,10 +79,13 @@ class SurgeryInformation(models.Model):
     anesthesiologist = models.CharField(max_length=120, blank=True, null=True)
     anesthesia = models.CharField(max_length=120, blank=True, null=True)
     duration = models.CharField(max_length=120, blank=True, null=True)
-    burn_operation_number = models.SlugField(blank=True, null=True, unique=True)
+    burn_operation_number = models.SlugField(null=True, unique=True)
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.burn_operation_number
 
 
 class Image(models.Model):

@@ -1,8 +1,9 @@
 from django.contrib.auth import logout as lgout, authenticate, login
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient
-from .models import PatientInformation
+from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm
+from .models import PatientInformation, Image, SurgeryInformation
 
 
 # Create your views here.
@@ -200,7 +201,9 @@ def patient_page(request, slug):
         "account": account,
     }
     patient = get_object_or_404(PatientInformation, slug=slug)
+    surgery = SurgeryInformation.objects.filter(patient=patient.id)
     context['patient'] = patient
+    context['surgery'] = surgery
     if request.user.is_authenticated:
         return render(request, 'patient_page.html', context)
     else:
@@ -234,5 +237,86 @@ def approve_patient(request, slug):
         patient.is_approved = True
         patient.save()
         return redirect('home')
+    else:
+        return redirect('login')
+
+
+def add_surgery(request, slug):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "first_name": request.user.first_name,
+        "last_name": request.user.last_name,
+        "is_superuser": request.user.is_superuser,
+        'group': request.user.group,
+    } if request.user.is_authenticated else None
+
+    if request.user.is_authenticated:
+        patient = get_object_or_404(PatientInformation, slug=slug)
+        ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=1)
+
+        if request.method == 'POST':
+            surgeryForm = SurgeryForm(request.POST)
+            formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+            if surgeryForm.is_valid() and formset.is_valid():
+                surgery_form = surgeryForm.save(commit=False)
+                surgery_form.save()
+
+                for form in formset.cleaned_data:
+                    image = form['image']
+                    photo = Image(surgery=surgery_form, image=image)
+                    photo.save()
+                return redirect('patient_page', slug)
+        else:
+            surgeryForm = SurgeryForm()
+            formset = ImageFormSet(queryset=Image.objects.none())
+        return render(request, 'addSurgery.html',
+                      {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient})
+    else:
+        return redirect('login')
+
+
+def surgery_page(request, slug, id):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {
+        "account": account,
+    }
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgeries = SurgeryInformation.objects.filter(patient=patient.id)
+    images = Image.objects.filter(surgery=surgery.id)
+    context['patient'] = patient
+    context['surgery'] = surgery
+    context['images'] = images
+    context['surgeries'] = surgeries
+    if request.user.is_authenticated:
+        return render(request, 'surgery_page.html', context)
+    else:
+        return redirect('login')
+
+def delete_surgery(request, slug, id):
+    if request.user.is_authenticated:
+        surgery = get_object_or_404(SurgeryInformation, id=id)
+        surgery.delete()
+        return redirect('delete_images', slug=slug, id=id)
+    else:
+        return redirect('login')
+
+
+def delete_surgery_images(request, slug, id):
+    if request.user.is_authenticated:
+        surgery = SurgeryInformation.objects.filter(id=id)
+        if surgery:
+            surgery.delete()
+            return redirect('home')
+        else:
+            return redirect('home')
     else:
         return redirect('login')

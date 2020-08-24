@@ -339,18 +339,12 @@
                     <h1 class="text-center" style="color: #fc9c34;font-size: 30px;margin-bottom: 5px;">Surgeries</h1>
                     <nav>
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;">4</a></li>
-                            <li class="page-item"><a class="page-link" href="#"
-                                                     style="color: white;background-color: #fc9c34;">5</a></li>
+                            {% for surgery in surgery %}
+                            <li class="page-item"><a class="page-link" href="{% url 'surgery_page' patient.slug surgery.id %}"
+                                                     style="color: white;background-color: #fc9c34;">{{ forloop.counter }}</a></li>
+                            {% endfor %}
                             <li class="page-item">
-                                <a class="page-link" href="#"
+                                <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
                                    style="color: white;background-color: #fc9c34;"
                                    aria-label="Next"><span aria-hidden="true">+</span></a>
                             </li>
