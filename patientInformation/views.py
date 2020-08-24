@@ -259,6 +259,8 @@ def add_surgery(request, slug):
         if request.method == 'POST':
             surgeryForm = SurgeryForm(request.POST)
             formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+            patient.is_approved = False
+            patient.save()
             if surgeryForm.is_valid() and formset.is_valid():
                 surgery_form = surgeryForm.save(commit=False)
                 surgery_form.save()
@@ -300,6 +302,7 @@ def surgery_page(request, slug, id):
         return render(request, 'surgery_page.html', context)
     else:
         return redirect('login')
+
 
 def delete_surgery(request, slug, id):
     if request.user.is_authenticated:
