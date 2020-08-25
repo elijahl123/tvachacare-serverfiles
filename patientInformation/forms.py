@@ -62,8 +62,7 @@ class AddPatient(forms.ModelForm):
     class Meta:
         model = PatientInformation
         fields = [
-            'helping_hands_file_number',
-            'resurge_outreach_number',
+            'patient_record_number',
             'patient_image',
             'injury_image',
             'first_name',

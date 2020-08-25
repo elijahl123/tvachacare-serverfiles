@@ -90,18 +90,18 @@
                      style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
                     <i class="fa fa-barcode" style="font-size: 35px;"></i>
                     <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Helping Hands File Number</h1>
+                        Patient Record Number</h1>
                     <h1 class="text-center"
                         style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">
-                        {{ patient.helping_hands_file_number }}</h1>
+                        {{ patient.patient_record_number }}</h1>
                 </div>
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
-                    <i class="fa fa-barcode" style="font-size: 35px;"></i>
+                    <i class="fa fa-calendar" style="font-size: 35px;"></i>
                     <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Resurge Outreach Number</h1>
+                        Date of Birth</h1>
                     <h1 class="text-break text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.resurge_outreach_number }}</h1>
+                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.date_of_birth }}</h1>
                 </div>
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
@@ -112,21 +112,6 @@
                         style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.age }}</h1>
                 </div>
             </div>
-            {% if patient.date_of_birth %}
-                <div class="row"
-                     style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
-                        <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                            style="color: white;font-weight: bold;margin-bottom: 0;">Date of Birth</h3>
-                    </div>
-                    <div class="col-xl-8"
-                         style="padding: 15px 20px;background-color: whitesmoke;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">
-                        <p class="lead d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                           style="color: #444444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
-                            {{ patient.date_of_birth }}</p>
-                    </div>
-                </div>
-            {% endif %}
             {% if patient.gender %}
                 <div class="row" style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="col d-flex justify-content-center align-items-center align-self-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"

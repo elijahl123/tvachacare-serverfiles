@@ -18,13 +18,14 @@ class AccountAdmin(UserAdmin):
 
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'helping_hands_file_number', 'age')
-    search_fields = ('first_name', 'last_name', 'helping_hands_file_number')
+    list_display = ('first_name', 'last_name', 'patient_record_number', 'age')
+    search_fields = ('first_name', 'last_name', 'patient_record_number')
     readonly_fields = ()
 
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
+
 
 class SurgeryAdmin(admin.ModelAdmin):
     list_display = ('patient', 'burn_operation_number')
@@ -34,6 +35,7 @@ class SurgeryAdmin(admin.ModelAdmin):
     filter_horizontal = ()
     list_filter = ()
     fieldsets = ()
+
 
 admin.site.register(Account, AccountAdmin)
 admin.site.register(PatientInformation, PatientAdmin)

@@ -14,8 +14,8 @@ def upload_location(instance, filename):
 
 
 def upload_patient_images(instance, filename):
-    file_path = 'patientInformation/{helping_hands_file_number}/{filename}'.format(
-        helping_hands_file_number=str(instance.helping_hands_file_number), filename=filename
+    file_path = 'patientInformation/{patient_record_number}/{filename}'.format(
+        patient_record_number=str(instance.patient_record_number), filename=filename
     )
     return file_path
 
@@ -30,8 +30,7 @@ def upload_profile_picture(instance, filename):
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
-    helping_hands_file_number = models.SlugField(blank=True, null=True, unique=True)
-    resurge_outreach_number = models.SlugField(blank=True, null=True, unique=True)
+    patient_record_number = models.SlugField(blank=True, null=True, unique=True)
     patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     injury_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     first_name = models.CharField(max_length=120, blank=True, null=True)
@@ -58,7 +57,7 @@ class PatientInformation(models.Model):
     is_approved = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
-        return self.helping_hands_file_number
+        return self.patient_record_number
 
 
 class SurgeryInformation(models.Model):
@@ -178,7 +177,7 @@ def submission_delete(sender, instance, **kwargs):
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.helping_hands_file_number)
+        instance.slug = slugify(instance.patient_record_number)
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
