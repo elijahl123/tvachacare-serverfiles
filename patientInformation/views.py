@@ -395,7 +395,9 @@ def send_file(request):
     from wsgiref.util import FileWrapper
     import mimetypes
 
-    filename = "filter.csv"  # Select your file here.
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+    filename = os.path.join(BASE_DIR, 'filter.csv')  # Select your file here.
     download_name = "filter.csv"
     wrapper = FileWrapper(open(filename))
     content_type = mimetypes.guess_type(filename)[0]
