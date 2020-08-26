@@ -1,8 +1,11 @@
+import csv
+
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.forms import modelformset_factory
+from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm
+from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm
 from .models import PatientInformation, Image, SurgeryInformation
 
 
@@ -323,3 +326,80 @@ def delete_surgery_images(request, slug, id):
             return redirect('home')
     else:
         return redirect('login')
+
+
+def filter_by_date(request):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {
+        "account": account,
+    }
+
+    submitbutton = request.POST.get('submit')
+
+    context['submitbutton'] = submitbutton
+
+    form = CSVForm(request.POST or None)
+    if form.is_valid():
+        date_start = form.cleaned_data.get('date_start')
+        date_end = form.cleaned_data.get('date_end')
+        write_response(date_start, date_end)
+        return redirect('send_file')
+
+    context['form'] = form
+
+    if request.user.is_authenticated:
+        return render(request, 'filter.html', context)
+    else:
+        return redirect('login')
+
+
+def write_response(date_start, date_end):
+    with open('filter.csv', 'w', newline="") as myfile:
+        wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end])
+        if surgeries:
+            header = ['Gender', 'Age', 'Address', 'Diagnosis', 'Cause of Burn', 'Year of Burn', 'Type of Surgery',
+                      'Date of Surgery', 'Duration', 'Area Operated']
+            wr.writerows([header])
+            for surgery in surgeries:
+                patient = surgery.patient
+                information = [str(patient.gender),
+                               str(patient.age),
+                               str(patient.address),
+                               str(patient.diagnosis),
+                               str(surgery.cause_of_burn),
+                               str(surgery.year_of_burn),
+                               str(surgery.type_of_surgery),
+                               str(surgery.date_of_surgery),
+                               str(surgery.duration),
+                               str(surgery.area_operated)
+                               ]
+                wr.writerows([information])
+
+        else:
+            wr.writerows('')
+    with open('filter.csv', 'r') as myfile:
+        response = HttpResponse(myfile, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename=filter.csv'
+        return response
+
+
+def send_file(request):
+    import os
+    from wsgiref.util import FileWrapper
+    import mimetypes
+
+    filename = "filter.csv"  # Select your file here.
+    download_name = "filter.csv"
+    wrapper = FileWrapper(open(filename))
+    content_type = mimetypes.guess_type(filename)[0]
+    response = HttpResponse(wrapper, content_type=content_type)
+    response['Content-Length'] = os.path.getsize(filename)
+    response['Content-Disposition'] = "attachment; filename=%s" % download_name
+    return response

@@ -121,3 +121,8 @@ class SurgeryForm(forms.ModelForm):
             'area_operated',
             'complications',
         ]
+
+
+class CSVForm(forms.Form):
+    date_start = forms.DateField()
+    date_end = forms.DateField()
