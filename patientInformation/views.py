@@ -362,25 +362,24 @@ def filter_by_date(request):
 def write_response(date_start, date_end):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end])
+        surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end]).values_list(
+            'patient__gender',
+            'patient__age',
+            'patient__address',
+            'patient__diagnosis',
+            'cause_of_burn',
+            'year_of_burn',
+            'type_of_surgery',
+            'date_of_surgery',
+            'duration',
+            'area_operated'
+        )
         if surgeries:
             header = ['Gender', 'Age', 'Address', 'Diagnosis', 'Cause of Burn', 'Year of Burn', 'Type of Surgery',
                       'Date of Surgery', 'Duration', 'Area Operated']
-            wr.writerows([header])
+            wr.writerow(header)
             for surgery in surgeries:
-                patient = surgery.patient
-                information = [str(patient.gender),
-                               str(patient.age),
-                               str(patient.address),
-                               str(patient.diagnosis),
-                               str(surgery.cause_of_burn),
-                               str(surgery.year_of_burn),
-                               str(surgery.type_of_surgery),
-                               str(surgery.date_of_surgery),
-                               str(surgery.duration),
-                               str(surgery.area_operated)
-                               ]
-                wr.writerows([information])
+                wr.writerow(surgery)
 
         else:
             wr.writerows('')
