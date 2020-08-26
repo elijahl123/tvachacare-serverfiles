@@ -384,6 +384,7 @@ def write_response(date_start, date_end):
 
         else:
             wr.writerows('')
+        wr.writerow('')
     with open('filter.csv', 'r') as myfile:
         response = HttpResponse(myfile, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=filter.csv'
