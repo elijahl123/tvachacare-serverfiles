@@ -1,9 +1,11 @@
 import csv
+import os
 
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.static import serve
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm
 from .models import PatientInformation, Image, SurgeryInformation
@@ -391,17 +393,6 @@ def write_response(date_start, date_end):
 
 
 def send_file(request):
-    import os
-    from wsgiref.util import FileWrapper
-    import mimetypes
+    filepath = 'filter.csv'
 
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-    filename = os.path.join(BASE_DIR, 'filter.csv')  # Select your file here.
-    download_name = "filter.csv"
-    wrapper = FileWrapper(open(filename))
-    content_type = mimetypes.guess_type(filename)[0]
-    response = HttpResponse(wrapper, content_type=content_type)
-    response['Content-Length'] = os.path.getsize(filename)
-    response['Content-Disposition'] = "attachment; filename=%s" % download_name
-    return response
+    return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
