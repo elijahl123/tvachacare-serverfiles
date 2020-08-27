@@ -313,7 +313,7 @@ def delete_surgery(request, slug, id):
     if request.user.is_authenticated:
         surgery = get_object_or_404(SurgeryInformation, id=id)
         surgery.delete()
-        return redirect('delete_images', slug=slug, id=id)
+        return redirect('delete_surgery_images', slug=slug, id=id)
     else:
         return redirect('login')
 
