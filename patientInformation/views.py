@@ -393,6 +393,10 @@ def write_response(date_start, date_end):
 
 
 def send_file(request):
-    filepath = 'filter.csv'
+
+    from pathlib import Path
+    BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
+    filepath = os.path.join(BASE_DIR, 'filter.csv')
 
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
