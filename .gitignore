@@ -26,3 +26,5 @@ static_cdn/
 
 __pycache__
 patientInformation/__pycache__
+
+filter.csv
