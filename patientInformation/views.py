@@ -362,7 +362,7 @@ def filter_by_date(request):
 
 
 def write_response(date_start, date_end):
-    with open('filter.csv', 'w', newline="") as myfile:
+    with open('media/filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end]).values_list(
             'patient__gender',
@@ -386,13 +386,16 @@ def write_response(date_start, date_end):
         else:
             wr.writerows('')
         wr.writerow('')
-    with open('filter.csv', 'r') as myfile:
+    with open('media/filter.csv', 'r') as myfile:
         response = HttpResponse(myfile, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=filter.csv'
         return response
 
 
 def send_file(request):
-    filepath = 'filter.csv'
+    response = HttpResponse(content_type='application/force-download')
+    response["Content-Disposition"] = 'attachment; filename="media/filter.csv"'
+    response['X-Accel-Redirect'] = 'media/filter.csv'
+    return response
 
-    return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
