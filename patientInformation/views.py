@@ -399,7 +399,7 @@ def send_file(request):
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
     response = HttpResponse(content_type='application/force-download')
-    response["Content-Disposition"] = 'attachment; filename="media/filter.csv"'
-    response['X-Accel-Redirect'] = 'media/filter.csv'
+    response["Content-Disposition"] = 'attachment; filename="{filename}".format(filename=filepath)'
+    response['X-Accel-Redirect'] = '{filename}'.format(filename=filepath)
     return response
 
