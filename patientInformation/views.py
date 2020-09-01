@@ -8,7 +8,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.static import serve
 
-from TvachaCare import settings
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm
 from .models import PatientInformation, Image, SurgeryInformation
 
@@ -79,7 +78,7 @@ def loginadmin(request):
 
             if user:
                 login(request, user)
-                return redirect(settings.LOGIN_REDIRECT_URL)
+                return redirect('home')
 
     else:
         form = AccountAuthenticationForm()
