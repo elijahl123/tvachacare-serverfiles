@@ -2,6 +2,7 @@ import csv
 import os
 
 from django.contrib.auth import logout as lgout, authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -319,6 +320,7 @@ def write_response(date_start, date_end, fields):
         return response
 
 
+@login_required
 def send_file(request):
     from pathlib import Path
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
