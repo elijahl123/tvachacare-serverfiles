@@ -6,12 +6,27 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        let fields = []
+        function addFields(checkbox) {
+            if ($(checkbox).prop("checked") === true) {
+                fields.push($(checkbox).attr("name"))
+            }
+            else {
+                let index = fields.indexOf($(checkbox).attr("name"))
+                fields.splice(index, 1)
+            }
+            $('input#fields').val(fields)
+            console.log($('input#fields').val())
+        }
+    </script>
     <main class="d-flex justify-content-center align-items-center"
           style="background-color: #128807;font-family: 'Open Sans', sans-serif;font-size: 20px;min-height: 100vh">
-        <form method="post" action="" style="padding: 50px; background-color: white;border-radius: 15px;">{% csrf_token %}
+        <form method="post" action="" style="padding: 50px; background-color: white;border-radius: 15px;max-width: 700px">{% csrf_token %}
             <div class="form-row">
                 <div class="col">
-                    <h1 class="text-center" style="color: #fc9c34;margin-bottom: 10px;font-weight: bold;">Filter by Date</h1>
+                    <h1 class="text-center" style="color: #fc9c34;margin-bottom: 10px;font-weight: bold;">Filter by
+                        Date</h1>
                 </div>
             </div>
             <div class="form-row">
@@ -26,12 +41,302 @@
                     <input class="form-control" type="date" name="date_end"/></div>
             </div>
             <div class="form-row">
+                <div class="col">
+                    <h4 class="text-center" style="color: #fc9c34;margin-bottom: 15px;">Select fields to include:</h4>
+                </div>
+            </div>
+            <div class="form-row" style="margin-bottom: 20px;">
+                <div class="col d-inline-flex justify-content-center flex-wrap">
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input
+                            type="checkbox" onchange="addFields(this)" class="form-check-input" id="formCheck-1" style="margin-top: 0;"
+                            name="patient__patient_record_number"/><label class="form-check-label" for="formCheck-1"
+                                                                          style="color: #fc9c34;font-size: 15px;">Patient
+                        Record Number</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input
+                            type="checkbox" onchange="addFields(this)" class="form-check-input" id="formCheck-2" style="margin-top: 0;"
+                            name="patient__first_name"/><label class="form-check-label" for="formCheck-1"
+                                                               style="color: #fc9c34;font-size: 15px;">First
+                        Name</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px"><input type="checkbox" onchange="addFields(this)"
+                                                                    class="form-check-input"
+                                                                    id="formCheck-5"
+                                                                    style="margin-top: 0;"
+                                                                    name="patient__middle_name"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Middle
+                        Name</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-4" style="margin-top: 0;"
+                                                                     name="patient__last_name"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Last
+                        Name</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-3" style="margin-top: 0;"
+                                                                     name="patient__date_of_birth"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Birth</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-6" style="margin-top: 0;"
+                                                                     name="patient__age"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Age</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-7" style="margin-top: 0;"
+                                                                     name="patient__gender"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Gender</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-8" style="margin-top: 0;"
+                                                                     name="patient__race"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Race</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-9" style="margin-top: 0;"
+                                                                     name="patient__address"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Address</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-10" style="margin-top: 0;"
+                                                                     name="patient__telephone_number"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Telephone
+                        Number</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;">
+                        <input
+                                type="checkbox" onchange="addFields(this)" class="form-check-input" id="formCheck-11" style="margin-top: 0;"
+                                name="patient__parents"/>
+                        <label class="form-check-label" for="formCheck-1"
+                               style="color: #fc9c34;font-size: 15px;">Parents</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-12" style="margin-top: 0;"
+                                                                     name="patient__relationship"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Relationship</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-13" style="margin-top: 0;"
+                                                                     name="patient__parent_occupation"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Parent
+                        Occupation</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;">
+                        <input
+                                type="checkbox" onchange="addFields(this)" class="form-check-input" id="formCheck-14" style="margin-top: 0;"
+                                name="patient__diagnosis"/><label class="form-check-label" for="formCheck-1"
+                                                                  style="color: #fc9c34;font-size: 15px;">Diagnosis</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-15" style="margin-top: 0;"
+                                                                     name="patient__weight"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Weight</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-16" style="margin-top: 0;"
+                                                                     name="patient__height"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Height</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-17" style="margin-top: 0;"
+                                                                     name="patient__burn_injury"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Burn
+                        Injury?</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-18" style="margin-top: 0;"
+                                                                     name="patient__cleft_injury"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Cleft
+                        Injury?</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-19" style="margin-top: 0;"
+                                                                     name="patient__hand_injury"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Hand
+                        Injury?</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-20" style="margin-top: 0;"
+                                                                     name="patient__prior_surgery"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Prior
+                        Surgery</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-21" style="margin-top: 0;"
+                                                                     name="patient__doctor_notes"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Doctor
+                        Notes</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-22" style="margin-top: 0;"
+                                                                     name="patient__story"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Story</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-23" style="margin-top: 0;"
+                                                                     name="date_of_upload"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Upload</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-24" style="margin-top: 0;"
+                                                                     name="hospital"/><label class="form-check-label"
+                                                                                             for="formCheck-1"
+                                                                                             style="color: #fc9c34;font-size: 15px;">Hospital</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-25" style="margin-top: 0;"
+                                                                     name="referral"/><label class="form-check-label"
+                                                                                             for="formCheck-1"
+                                                                                             style="color: #fc9c34;font-size: 15px;">Referral</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-26" style="margin-top: 0;"
+                                                                     name="drug_allergy"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Drug
+                        Allergy</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-27" style="margin-top: 0;"
+                                                                     name="name_of_evaluation"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Name of
+                        Evaluation</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-28" style="margin-top: 0;"
+                                                                     name="date_of_evaluation"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Evaluation</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-29" style="margin-top: 0;"
+                                                                     name="cause_of_burn"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Cause of
+                        Burn</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-30" style="margin-top: 0;"
+                                                                     name="year_of_burn"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Year of
+                        Burn</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-31" style="margin-top: 0;"
+                                                                     name="type_of_burn"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Type of
+                        Burn</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-32" style="margin-top: 0;"
+                                                                     name="diagnosis_admission"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Diagnosis
+                        Admission</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-33" style="margin-top: 0;"
+                                                                     name="date_of_admission"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Admission</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-34" style="margin-top: 0;"
+                                                                     name="date_of_surgery"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Surgery</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-35" style="margin-top: 0;"
+                                                                     name="date_of_discharge"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Date of
+                        Discharge</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-36" style="margin-top: 0;"
+                                                                     name="surgeons"/><label class="form-check-label"
+                                                                                             for="formCheck-1"
+                                                                                             style="color: #fc9c34;font-size: 15px;">Surgeons</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-37" style="margin-top: 0;"
+                                                                     name="anesthesiologist"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Anesthesiologist</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-38" style="margin-top: 0;"
+                                                                     name="anesthesia"/><label class="form-check-label"
+                                                                                               for="formCheck-1"
+                                                                                               style="color: #fc9c34;font-size: 15px;">Anesthesia</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-39" style="margin-top: 0;"
+                                                                     name="duration"/><label class="form-check-label"
+                                                                                             for="formCheck-1"
+                                                                                             style="color: #fc9c34;font-size: 15px;">Duration</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-40" style="margin-top: 0;"
+                                                                     name="burn_operation_number"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Burn
+                        Operation Number</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;">
+                        <input
+                                type="checkbox" onchange="addFields(this)" class="form-check-input" id="formCheck-41" style="margin-top: 0;"
+                                name="type_of_surgery"/>
+                        <label class="form-check-label" for="formCheck-1"
+                               style="color: #fc9c34;font-size: 15px;">Type of
+                            Surgery</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-42" style="margin-top: 0;"
+                                                                     name="area_operated"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Area
+                        Operated</label></div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-44" style="margin-top: 0;"
+                                                                     name="complications"/><label
+                            class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">Complications</label>
+                    </div>
+                    <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-43" style="margin-top: 0;"
+                                                                     name="consent"/><label class="form-check-label"
+                                                                                            for="formCheck-1"
+                                                                                            style="color: #fc9c34;font-size: 15px;">Consent?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="col d-flex justify-content-center align-items-center">
                     <button class="btn btn-success btn-lg" type="submit" style="border-radius: 10px;">
                         Generate Excel Spreadsheet
                     </button>
                 </div>
             </div>
+            <label>
+                <input class="d-none" id="fields" type="text" name="fields" value="">
+            </label>
         </form>
     </main>
 {% endblock %}

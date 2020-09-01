@@ -108,6 +108,7 @@ class SurgeryForm(forms.ModelForm):
             'date_of_evaluation',
             'cause_of_burn',
             'year_of_burn',
+            'type_of_burn',
             'diagnosis_admission',
             'date_of_admission',
             'date_of_surgery',
@@ -120,9 +121,11 @@ class SurgeryForm(forms.ModelForm):
             'type_of_surgery',
             'area_operated',
             'complications',
+            'consent'
         ]
 
 
 class CSVForm(forms.Form):
     date_start = forms.DateField()
     date_end = forms.DateField()
+    fields = forms.TextInput(attrs=None)

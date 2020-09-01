@@ -33,7 +33,7 @@
             }
         }
 
-        let numOfForms = 1
+        let numOfForms = 0
 
         function cloneMore() {
             const newElement = $('div.image-container')
@@ -72,6 +72,9 @@
         }
 
 
+        $("#id_burn_operation_number").change(function () {
+            console.log($("#id_burn_operation_number").val());
+        });
 
 
     </script>
@@ -97,14 +100,19 @@
                                     <div class="flex-column custom-file">
                                         <label class="custom-file-label">Upload File</label>
                                         <input type="file" class="custom-file-input" accept="image/*"
-                                               style="font-family: 'Open Sans', sans-serif;" id="{{ form.image.id_for_label }}"
+                                               style="font-family: 'Open Sans', sans-serif;"
+                                               id="{{ form.image.id_for_label }}"
                                                name="{{ form.image.html_name }}" onchange="loadImage(event, this)"/>
                                     </div>
-                                <button class="btn btn-danger btn-sm" type="button" style="margin-top: 10px;border-color: transparent;" onclick="deleteImage(this)">Delete</button>
+                                    <button class="btn btn-danger btn-sm" type="button"
+                                            style="margin-top: 10px;border-color: transparent;"
+                                            onclick="deleteImage(this)">Delete
+                                    </button>
                                 </div>
                             {% endfor %}
                             <button class="btn btn-primary" id="add_more" type="button"
-                                    style="width: 250px;height: 200px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;" onclick="cloneMore()">
+                                    style="width: 250px;height: 200px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;"
+                                    onclick="cloneMore()">
                                 <i class="fa fa-plus" style="font-size: 50px;"></i></button>
                             <button class="btn" type="button" onclick="closeImages()"
                                     style="position: absolute;top: 3px;right: 7px;color: black;font-weight: bold;font-family: Raleway, sans-serif;">
@@ -275,6 +283,7 @@
                                         <strong>Burn Operation Number</strong></p>
                                 </div>
                                 <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
+                                                                          id="id_burn_operation_number"
                                                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
                                                                           name="burn_operation_number" required/></div>
                             </div>

@@ -126,72 +126,6 @@ def addpatient(request):
             return redirect('home')
     else:
         return redirect('login')
-    '''
-    if request.POST:
-        form = AddPatient(request.POST)
-        if form.is_valid():
-            firstName = request.POST['firstName']
-            lastName = request.POST['lastName']
-            patientRecordNumber = request.POST['patientRecordNumber']
-            preferredName = request.POST['preferredName']
-            dateOfBirth = request.POST['dateOfBirth']
-            ageAtSurgery = request.POST['ageAtSurgery']
-            patientSex = request.POST['patientSex']
-            siteCountry = request.POST['siteCountry']
-            siteRegion = request.POST['siteRegion']
-            hospitalName = request.POST['hospitalName']
-            preoperativeDiagnostic1 = request.POST['preoperativeDiagnostic1']
-            preoperativeDiagnostic2 = request.POST['preoperativeDiagnostic2']
-            preoperativeDiagnostic3 = request.POST['preoperativeDiagnostic3']
-            preoperativeDiagnostic4 = request.POST['preoperativeDiagnostic4']
-            burnInjury = request.POST['burnInjury']
-            TBSA = request.POST['TBSA']
-            degreeOfBurn = request.POST['degreeOfBurn']
-            causeOfBurn = request.POST['causeOfBurn']
-            approximateYearOfInjury = request.POST['approximateYearOfInjury']
-            occupation = request.POST['occupation']
-            patientAddress = request.POST['patientAddress']
-            patientPhoneNumber = request.POST['patientPhoneNumber']
-            parentFirstName = request.POST['parentFirstName']
-            parentMiddleName = request.POST['parentMiddleName']
-            parentLastName = request.POST['parentLastName']
-            relationshipToParent = request.POST['relationshipToParent']
-            referral = request.POST['referral']
-            patientWeight = request.POST['patientWeight']
-            patientHeight = request.POST['patientHeight']
-            currentMedication = request.POST['currentMedication']
-            image1 = request.POST['image1']
-            image2 = request.POST['image2']
-            image3 = request.POST['image3']
-            patient = authenticate(
-                firstName=firstName, lastName=lastName, patientRecordNumber=patientRecordNumber,
-                preferredName=preferredName, dateOfBirth=dateOfBirth, ageAtSurgery=ageAtSurgery,
-                patientSex=patientSex, siteCountry=siteCountry, siteRegion=siteRegion, hospitalName=hospitalName,
-                preoperativeDiagnostic1=preoperativeDiagnostic1, preoperativeDiagnostic2=preoperativeDiagnostic2,
-                preoperativeDiagnostic3=preoperativeDiagnostic3, preoperativeDiagnostic4=preoperativeDiagnostic4,
-                burnInjury=burnInjury, TBSA=TBSA, degreeOfBurn=degreeOfBurn, causeOfBurn=causeOfBurn,
-                approximateYearOfInjury=approximateYearOfInjury, occupation=occupation, patientAddress=patientAddress,
-                patientPhoneNumber=patientPhoneNumber, parentFirstName=parentFirstName,
-                parentMiddleName=parentMiddleName,
-                parentLastName=parentLastName, relationshipToParent=relationshipToParent,
-                referral=referral, patientWeight=patientWeight, patientHeight=patientHeight,
-                currentMedication=currentMedication,
-                image1=image1, image2=image2, image3=image3)
-            if patient:
-                return redirect('home')
-        else:
-            form = AddPatient
-
-        context['addpatient_form'] = form
-
-    if request.user.is_authenticated:
-        if request.user.group == 'Data Entry':
-            return render(request, 'addPatient.html', context)
-        else:
-            return redirect('home')
-    else:
-        return redirect('login')
-    '''
 
 
 def patient_page(request, slug):
@@ -259,14 +193,14 @@ def add_surgery(request, slug):
 
     if request.user.is_authenticated:
         patient = get_object_or_404(PatientInformation, slug=slug)
-        ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=1)
+        ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
 
         if request.method == 'POST':
             surgeryForm = SurgeryForm(request.POST)
             formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
             patient.is_approved = False
             patient.save()
-            if surgeryForm.is_valid() and formset.is_valid():
+            if surgeryForm.is_valid() or formset.is_valid():
                 surgery_form = surgeryForm.save(commit=False)
                 surgery_form.save()
 
@@ -350,7 +284,8 @@ def filter_by_date(request):
     if form.is_valid():
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
-        write_response(date_start, date_end)
+        fields = request.POST.get('fields')
+        write_response(date_start, date_end, fields)
         return redirect('send_file')
 
     context['form'] = form
@@ -361,24 +296,16 @@ def filter_by_date(request):
         return redirect('login')
 
 
-def write_response(date_start, date_end):
+def write_response(date_start, date_end, fields):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
+        fields_array = fields.split(',')
         surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end]).values_list(
-            'patient__gender',
-            'patient__age',
-            'patient__address',
-            'patient__diagnosis',
-            'cause_of_burn',
-            'year_of_burn',
-            'type_of_surgery',
-            'date_of_surgery',
-            'duration',
-            'area_operated'
-        )
+            *fields_array)
         if surgeries:
-            header = ['Gender', 'Age', 'Address', 'Diagnosis', 'Cause of Burn', 'Year of Burn', 'Type of Surgery',
-                      'Date of Surgery', 'Duration', 'Area Operated']
+            header = [s.replace('patient__', '') for s in fields_array]
+            header = [s.replace('_', ' ') for s in header]
+            header = [s.title() for s in header]
             wr.writerow(header)
             for surgery in surgeries:
                 wr.writerow(surgery)
@@ -393,10 +320,8 @@ def write_response(date_start, date_end):
 
 
 def send_file(request):
-
     from pathlib import Path
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
-

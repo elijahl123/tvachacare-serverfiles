@@ -53,6 +53,7 @@ class PatientInformation(models.Model):
     hand_injury = models.TextField(blank=True, null=True)
     prior_surgery = models.TextField(blank=True, null=True)
     doctor_notes = models.TextField(blank=True, null=True)
+    story = models.TextField(blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True, null=True)
     is_approved = models.BooleanField(default=False, blank=True, null=True)
 
@@ -70,6 +71,7 @@ class SurgeryInformation(models.Model):
     date_of_evaluation = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     cause_of_burn = models.TextField(blank=True, null=True)
     year_of_burn = models.IntegerField(blank=True, null=True)
+    type_of_burn = models.CharField(max_length=120, blank=True, null=True)
     diagnosis_admission = models.TextField(blank=True, null=True)
     date_of_admission = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     date_of_surgery = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
@@ -82,6 +84,7 @@ class SurgeryInformation(models.Model):
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
+    consent = models.BooleanField(default=False)
 
     def __str__(self):
         return self.burn_operation_number
@@ -161,7 +164,6 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
-
 
 
 @receiver(post_delete, sender=Image)
