@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.static import serve
 
+from TvachaCare import settings
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm
 from .models import PatientInformation, Image, SurgeryInformation
 
@@ -24,6 +25,8 @@ def index(request):
             patient = PatientInformation.objects.filter(is_approved=False)
         else:
             patient = PatientInformation.objects.all()
+    if not request.user.is_authenticated:
+        return redirect('login')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -34,9 +37,6 @@ def index(request):
         'group': request.user.group,
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
-
-    if not request.user.is_authenticated:
-        return redirect('login')
 
     context = {
         'object': patient,
@@ -69,8 +69,6 @@ def loginadmin(request):
     context = {}
 
     user = request.user
-    if user.is_authenticated:
-        return redirect("home")
 
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
@@ -81,7 +79,7 @@ def loginadmin(request):
 
             if user:
                 login(request, user)
-                return redirect('home')
+                return redirect(settings.LOGIN_REDIRECT_URL)
 
     else:
         form = AccountAuthenticationForm()
@@ -90,6 +88,7 @@ def loginadmin(request):
     return render(request, 'loginAdmin.html', context)
 
 
+@login_required
 def addpatient(request):
     account = {
         "id": request.user.id,
@@ -118,17 +117,15 @@ def addpatient(request):
 
     context['form'] = form
 
-    if request.user.is_authenticated:
-        if request.user.group == 'Data Entry':
-            return render(request, 'addPatient.html', context)
-        elif request.user.is_superuser:
-            return render(request, 'addPatient.html', context)
-        else:
-            return redirect('home')
+    if request.user.group == 'Data Entry':
+        return render(request, 'addPatient.html', context)
+    elif request.user.is_superuser:
+        return render(request, 'addPatient.html', context)
     else:
-        return redirect('login')
+        return redirect('home')
 
 
+@login_required
 def patient_page(request, slug):
     account = {
         "id": request.user.id,
@@ -144,43 +141,35 @@ def patient_page(request, slug):
     surgery = SurgeryInformation.objects.filter(patient=patient.id)
     context['patient'] = patient
     context['surgery'] = surgery
-    if request.user.is_authenticated:
-        return render(request, 'patient_page.html', context)
-    else:
-        return redirect('login')
+    return render(request, 'patient_page.html', context)
 
 
+@login_required
 def delete_patient(request, slug):
-    if request.user.is_authenticated:
-        patient = get_object_or_404(PatientInformation, slug=slug)
-        patient.delete()
-        return redirect('delete_images', slug=slug)
-    else:
-        return redirect('login')
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    patient.delete()
+    return redirect('delete_images', slug=slug)
 
 
+@login_required
 def delete_images(request, slug):
-    if request.user.is_authenticated:
-        patient = PatientInformation.objects.filter(slug=slug)
-        if patient:
-            patient.delete()
-            return redirect('home')
-        else:
-            return redirect('home')
-    else:
-        return redirect('login')
-
-
-def approve_patient(request, slug):
-    if request.user.is_authenticated:
-        patient = get_object_or_404(PatientInformation, slug=slug)
-        patient.is_approved = True
-        patient.save()
+    patient = PatientInformation.objects.filter(slug=slug)
+    if patient:
+        patient.delete()
         return redirect('home')
     else:
-        return redirect('login')
+        return redirect('home')
 
 
+@login_required
+def approve_patient(request, slug):
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    patient.is_approved = True
+    patient.save()
+    return redirect('home')
+
+
+@login_required
 def add_surgery(request, slug):
     account = {
         "id": request.user.id,
@@ -192,33 +181,31 @@ def add_surgery(request, slug):
         'group': request.user.group,
     } if request.user.is_authenticated else None
 
-    if request.user.is_authenticated:
-        patient = get_object_or_404(PatientInformation, slug=slug)
-        ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
 
-        if request.method == 'POST':
-            surgeryForm = SurgeryForm(request.POST)
-            formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
-            patient.is_approved = False
-            patient.save()
-            if surgeryForm.is_valid() or formset.is_valid():
-                surgery_form = surgeryForm.save(commit=False)
-                surgery_form.save()
+    if request.method == 'POST':
+        surgeryForm = SurgeryForm(request.POST)
+        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
+        patient.is_approved = False
+        patient.save()
+        if surgeryForm.is_valid() or formset.is_valid():
+            surgery_form = surgeryForm.save(commit=False)
+            surgery_form.save()
 
-                for form in formset.cleaned_data:
-                    image = form['image']
-                    photo = Image(surgery=surgery_form, image=image)
-                    photo.save()
-                return redirect('patient_page', slug)
-        else:
-            surgeryForm = SurgeryForm()
-            formset = ImageFormSet(queryset=Image.objects.none())
-        return render(request, 'addSurgery.html',
-                      {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient})
+            for form in formset.cleaned_data:
+                image = form['image']
+                photo = Image(surgery=surgery_form, image=image)
+                photo.save()
+            return redirect('patient_page', slug)
     else:
-        return redirect('login')
+        surgeryForm = SurgeryForm()
+        formset = ImageFormSet(queryset=Image.objects.none())
+    return render(request, 'addSurgery.html',
+                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient})
 
 
+@login_required
 def surgery_page(request, slug, id):
     account = {
         "id": request.user.id,
@@ -238,33 +225,27 @@ def surgery_page(request, slug, id):
     context['surgery'] = surgery
     context['images'] = images
     context['surgeries'] = surgeries
-    if request.user.is_authenticated:
-        return render(request, 'surgery_page.html', context)
-    else:
-        return redirect('login')
+    return render(request, 'surgery_page.html', context)
 
 
+@login_required
 def delete_surgery(request, slug, id):
-    if request.user.is_authenticated:
-        surgery = get_object_or_404(SurgeryInformation, id=id)
-        surgery.delete()
-        return redirect('delete_surgery_images', slug=slug, id=id)
-    else:
-        return redirect('login')
+    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgery.delete()
+    return redirect('delete_surgery_images', slug=slug, id=id)
 
 
+@login_required
 def delete_surgery_images(request, slug, id):
-    if request.user.is_authenticated:
-        surgery = SurgeryInformation.objects.filter(id=id)
-        if surgery:
-            surgery.delete()
-            return redirect('home')
-        else:
-            return redirect('home')
+    surgery = SurgeryInformation.objects.filter(id=id)
+    if surgery:
+        surgery.delete()
+        return redirect('home')
     else:
-        return redirect('login')
+        return redirect('home')
 
 
+@login_required
 def filter_by_date(request):
     account = {
         "id": request.user.id,
@@ -291,10 +272,7 @@ def filter_by_date(request):
 
     context['form'] = form
 
-    if request.user.is_authenticated:
-        return render(request, 'filter.html', context)
-    else:
-        return redirect('login')
+    return render(request, 'filter.html', context)
 
 
 def write_response(date_start, date_end, fields):
