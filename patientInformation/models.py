@@ -1,5 +1,3 @@
-import os
-
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
@@ -30,6 +28,7 @@ def upload_profile_picture(instance, filename):
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
+    current_time = models.DateTimeField(auto_now=True)
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
     patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     injury_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
@@ -66,6 +65,8 @@ class SurgeryInformation(models.Model):
     date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
     hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
+    patient_district = models.IntegerField(blank=True, null=True)
+    type_of_sponsor = models.TextField(blank=True, null=True)
     drug_allergy = models.TextField(blank=True, null=True)
     name_of_evaluation = models.CharField(max_length=120, blank=True, null=True)
     date_of_evaluation = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
@@ -179,7 +180,7 @@ def submission_delete(sender, instance, **kwargs):
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify(instance.patient_record_number)
+        instance.slug = slugify("HUI-" + abs(hash(str(instance.current_time))) % (10 ** 10))
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)

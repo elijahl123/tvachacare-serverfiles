@@ -103,6 +103,8 @@ class SurgeryForm(forms.ModelForm):
             'patient',
             'hospital',
             'referral',
+            'patient_district',
+            'type_of_sponsor',
             'drug_allergy',
             'name_of_evaluation',
             'date_of_evaluation',

@@ -17,6 +17,7 @@
         }
     </style>
     <script>
+
         function openImages() {
             $('.images-container').removeClass('invisible');
         }
@@ -72,15 +73,51 @@
         }
 
 
-        $("#id_burn_operation_number").change(function () {
-            console.log($("#id_burn_operation_number").val());
-        });
-
-
     </script>
 {% endblock %}
 
 {% block content %}
+    <script>
+        let fields = []
+
+        function addFields(checkbox) {
+            if ($(checkbox).prop("checked") === true) {
+                fields.push(" " + $(checkbox).attr("name"))
+            } else {
+                let index = fields.indexOf(" " + $(checkbox).attr("name"))
+                fields.splice(index, 1)
+            }
+            $('input#id_area_operated').val(fields)
+            console.log($('input#id_area_operated').val())
+        }
+
+        let otherFields = []
+
+        $(document).on("change", "select", function () {
+            $("option[value=" + this.value + "]", this)
+                .attr("selected", true).siblings()
+                .removeAttr("selected")
+        });
+
+
+        function selected(selector) {
+            if ($('#other_option').is(':selected')) {
+                $('#id_other').removeClass('d-none');
+            } else {
+                $('#id_other').addClass('d-none');
+            }
+        }
+
+
+        function addToOther(input) {
+            otherFields = []
+            otherFields.push($(input).val())
+
+            $('#other_option').val(otherFields)
+            console.log(otherFields)
+        }
+
+    </script>
     <main>
         <div class="container" style="background-color: white;padding: 50px 0;">
             <div>
@@ -150,7 +187,40 @@
                                 </div>
                                 <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
                                                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
-                                                                          name="referral" required/></div>
+                                                                          name="referral"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Patient District</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <input type="number" class="form-control"
+                                           style="font-family: 'Open Sans', sans-serif;" name="patient_district" min="1"
+                                           max="13" step="1"/>
+                                </div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Type of Sponsor</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <select class="form-control" style="font-family: 'Open Sans', sans-serif;"
+                                            name="type_of_sponsor" id="id_type_of_sponsor" onchange="selected()">
+                                        <option value selected="selected"></option>
+                                        <option value="Resurge">Resurge</option>
+                                        <option value="HUI">HUI</option>
+                                        <option value="Private">Private</option>
+                                        <option value="Government">Government</option>
+                                        <option value="Third Party">Third Party</option>
+                                        <option id="other_option" value="Other">Other</option>
+                                    </select>
+                                    <input type="text" class="form-control d-none"
+                                           style="margin: 10px 0;font-family: 'Open Sans', sans-serif;"
+                                           id="id_other" placeholder="Specify..."
+                                           name="other" onchange="addToOther(this)"/>
+                                </div>
                             </div>
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                                 <div class="col-md-8 offset-md-1 d-flex align-items-center align-self-center"
@@ -191,9 +261,14 @@
                                     <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
                                         <strong>Cause of Burn</strong></p>
                                 </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             style="font-family: 'Open Sans', sans-serif;"
-                                                                             name="cause_of_burn"></textarea></div>
+                                <div class="col-md-10 offset-md-1"><select class="form-control"
+                                                                           style="font-family: 'Open Sans', sans-serif;"
+                                                                           name="cause_of_burn">
+                                    <option value selected></option>
+                                    <option value="Accidental">Accidental</option>
+                                    <option value="Suicidal">Suicidal</option>
+                                    <option value="Homicidal">Homicidal</option>
+                                </select></div>
                             </div>
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                                 <div class="col-md-8 offset-md-1">
@@ -203,6 +278,22 @@
                                 <div class="col-md-10 offset-md-1"><input type="number" class="form-control"
                                                                           style="font-family: 'Open Sans', sans-serif;"
                                                                           name="year_of_burn" min="1900"/></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Type of Burn</strong></p>
+                                </div>
+                                <div class="col-md-10 offset-md-1">
+                                    <select class="form-control" style="font-family: 'Open Sans', sans-serif;"
+                                            name="type_of_burn">
+                                        <option value selected></option>
+                                        <option value="Scald Burn">Scald Burn</option>
+                                        <option value="Open Flame">Open Flame</option>
+                                        <option value="Chemical Burn">Chemical Burn</option>
+                                        <option value="Gasoline Burn">Gasoline Burn</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row"
                                  style="margin-right:0px;margin-left:0px;padding-top:24px;margin-top:-16px;">
@@ -273,9 +364,16 @@
                                     <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
                                         <strong>Duration</strong></p>
                                 </div>
-                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
-                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
-                                                                          name="duration"/></div>
+                                <div class="col-md-10 offset-md-1">
+                                    <select class="form-control" style="font-family: 'Open Sans', sans-serif;"
+                                            name="duration">
+                                        <option value selected></option>
+                                        <option value="Up to 1 Hour">Up to 1 Hour</option>
+                                        <option value="1.5 - 2 Hours">1.5 - 2 Hours</option>
+                                        <option value="2-3 Hours">2-3 Hours</option>
+                                        <option value="3+ Hours">3+ Hours</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                                 <div class="col-md-8 offset-md-1">
@@ -301,9 +399,63 @@
                                     <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
                                         <strong>Area Operated</strong></p>
                                 </div>
-                                <div class="col-md-10 offset-md-1"><input type="text" class="form-control"
-                                                                          style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
-                                                                          name="area_operated"/></div>
+                                <div class="col-md-10 offset-md-1">
+                                    <div class="dropdown show d-flex justify-content-center">
+                                        <button class="btn dropdown-toggle d-flex justify-content-between align-items-center form-control"
+                                                data-toggle="dropdown" aria-expanded="false" type="button"
+                                                style="width: 100%;border: 1px solid #ced4da;">
+                                        </button>
+                                        <div role="menu"
+                                             class="dropdown-menu flex-row justify-content-center align-items-center flex-wrap"
+                                             style="width: 100%;">
+                                            <div class="form-check d-flex align-items-center dropdown-item"
+                                                 style="margin: 10px;" role="presentation">
+                                                <input type="checkbox" onchange="addFields(this)"
+                                                       class="form-check-input" id="formCheck-2"
+                                                       style="margin-top: 0;" name="Lower Extremities"/>
+                                                <label class="form-check-label" for="formCheck-2"
+                                                       style="font-size: 20px;">Lower
+                                                    Extremities</label></div>
+                                            <div class="form-check d-flex align-items-center dropdown-item"
+                                                 style="margin: 10px;" role="presentation">
+                                                <input type="checkbox" onchange="addFields(this)"
+                                                       class="form-check-input" id="formCheck-2"
+                                                       style="margin-top: 0;" name="Upper Extremities"/>
+                                                <label class="form-check-label" for="formCheck-2"
+                                                       style="font-size: 20px;">Upper
+                                                    Extremities</label></div>
+                                            <div class="form-check d-flex align-items-center dropdown-item"
+                                                 style="margin: 10px;" role="presentation">
+                                                <input type="checkbox" class="form-check-input" id="formCheck-6"
+                                                       style="margin-top: 0;" onchange="addFields(this)"
+                                                       name="Face"/>
+                                                <label class="form-check-label" for="formCheck-2"
+                                                       style="font-size: 20px;">Face</label>
+                                            </div>
+                                            <div class="form-check d-flex align-items-center dropdown-item"
+                                                 style="margin: 10px;" role="presentation">
+                                                <input type="checkbox" class="form-check-input" id="formCheck-6"
+                                                       style="margin-top: 0;" onchange="addFields(this)"
+                                                       name="Neck"/>
+                                                <label class="form-check-label" for="formCheck-2"
+                                                       style="font-size: 20px;">Neck</label>
+                                            </div>
+                                            <div class="form-check d-flex align-items-center dropdown-item"
+                                                 style="margin: 10px;" role="presentation">
+                                                <input type="checkbox" onchange="addFields(this)"
+                                                       class="form-check-input" id="formCheck-4"
+                                                       style="margin-top: 0;" name="Torso"/>
+
+                                                <label class="form-check-label" for="formCheck-2"
+                                                       style="font-size: 20px;">Torso</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control d-none"
+                                           style="margin-left: 0px;font-family: 'Open Sans', sans-serif;"
+                                           id="id_area_operated"
+                                           name="area_operated"/>
+                                </div>
                             </div>
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                                 <div class="col-md-8 offset-md-1">
@@ -313,6 +465,16 @@
                                 <div class="col-md-10 offset-md-1"><textarea class="form-control"
                                                                              style="font-family: 'Open Sans', sans-serif;"
                                                                              name="complications"></textarea></div>
+                            </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 col-xl-10 offset-md-1">
+                                    <div class="form-check d-flex align-items-center">
+                                        <input type="checkbox" class="form-check-input" id="formCheck-1"
+                                               style="margin-top: 0px;" name="consent"/>
+                                        <label class="form-check-label" for="formCheck-1" style="font-size: 20px;">Does
+                                            this patient give consent to use photos?</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row" style="margin: 0;margin-top: 20px;">
                                 <div class="col d-flex justify-content-center align-items-center"
