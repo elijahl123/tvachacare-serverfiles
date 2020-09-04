@@ -186,13 +186,13 @@
                             style="color: #fc9c34;font-size: 15px;">Story</label></div>
                     {% for field in surgeries %}
                         {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' %}
-                    <div class="form-check d-flex align-items-center"
-                         style="color: #fc9c34;margin: 10px;">
-                        <input type="checkbox" onchange="addFields(this)" class="form-check-input"
-                                                                     id="formCheck-43" style="margin-top: 0;"
-                                                                     name="{{ field.name }}"/>
-                        <label class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">{{ field.verbose_name|title }}</label>
-                    </div>
+                            <div class="form-check d-flex align-items-center"
+                                 style="color: #fc9c34;margin: 10px;">
+                                <input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                       id="formCheck-43" style="margin-top: 0;"
+                                       name="{{ field.name }}"/>
+                                <label class="form-check-label" for="formCheck-1" style="color: #fc9c34;font-size: 15px;">{{ field.verbose_name|title }}</label>
+                            </div>
                         {% endif %}
                     {% endfor %}
                 </div>
@@ -210,3 +210,4 @@
         </form>
     </main>
 {% endblock %}
+

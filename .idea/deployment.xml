@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="bitnami@www.tvachacare.com:22 key" autoUploadExternalChanges="true">
+  <component name="PublishConfigData" serverName="bitnami@www.tvachacare.com:22 key">
     <serverData>
       <paths name="bitnami@www.tvachacare.com:22 key">
         <serverdata>
@@ -15,6 +15,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
