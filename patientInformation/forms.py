@@ -116,6 +116,7 @@ class SurgeryForm(forms.ModelForm):
             'date_of_surgery',
             'date_of_discharge',
             'surgeons',
+            'details_of_surgery',
             'anesthesiologist',
             'anesthesia',
             'duration',

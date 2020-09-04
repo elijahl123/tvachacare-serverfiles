@@ -261,6 +261,9 @@ def filter_by_date(request):
 
     context['submitbutton'] = submitbutton
 
+    surgeries = SurgeryInformation._meta.get_fields()
+    context['surgeries'] = surgeries
+
     form = CSVForm(request.POST or None)
     if form.is_valid():
         date_start = form.cleaned_data.get('date_start')

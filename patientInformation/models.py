@@ -78,6 +78,7 @@ class SurgeryInformation(models.Model):
     date_of_surgery = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     date_of_discharge = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     surgeons = models.TextField(blank=True, null=True)
+    details_of_surgery = models.TextField(blank=True, null=True)
     anesthesiologist = models.CharField(max_length=120, blank=True, null=True)
     anesthesia = models.CharField(max_length=120, blank=True, null=True)
     duration = models.CharField(max_length=120, blank=True, null=True)
@@ -85,7 +86,7 @@ class SurgeryInformation(models.Model):
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
-    consent = models.BooleanField(default=False)
+    consent = models.BooleanField(default=False, verbose_name='Consent?')
 
     def __str__(self):
         return self.burn_operation_number
