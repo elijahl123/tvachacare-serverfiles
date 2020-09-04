@@ -18,8 +18,8 @@ class AccountAdmin(UserAdmin):
 
 
 class PatientAdmin(admin.ModelAdmin):
-    list_display = ('first_name', 'last_name', 'patient_record_number', 'age')
-    search_fields = ('first_name', 'last_name', 'patient_record_number')
+    list_display = ('first_name', 'last_name', 'patient_record_number', 'slug')
+    search_fields = ('first_name', 'last_name', 'patient_record_number', 'slug')
     readonly_fields = ()
 
     filter_horizontal = ()
@@ -28,8 +28,8 @@ class PatientAdmin(admin.ModelAdmin):
 
 
 class SurgeryAdmin(admin.ModelAdmin):
-    list_display = ('patient', 'burn_operation_number')
-    search_fields = ('patient', 'burn_operation_number')
+    list_display = ('id', 'patient', 'burn_operation_number')
+    search_fields = ('id', 'patient', 'burn_operation_number')
     readonly_fields = ()
 
     filter_horizontal = ()
