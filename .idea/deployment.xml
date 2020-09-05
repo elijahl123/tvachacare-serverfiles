@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="bitnami@www.tvachacare.com:22 key">
+  <component name="PublishConfigData" autoUpload="On explicit save action" serverName="bitnami@www.tvachacare.com:22 key" autoUploadExternalChanges="true">
     <serverData>
       <paths name="bitnami@www.tvachacare.com:22 key">
         <serverdata>
           <mappings>
             <mapping deploy="/patientInformation" local="$PROJECT_DIR$/patientInformation" web="/" />
             <mapping deploy="/templates" local="$PROJECT_DIR$/templates" web="/" />
+            <mapping deploy="/tvachacare" local="$PROJECT_DIR$/TvachaCare" web="/" />
+            <mapping deploy="/static" local="$PROJECT_DIR$/static" web="/" />
           </mappings>
           <excludedPaths>
             <excludedPath path="/patientInformation/migrations" />
             <excludedPath path="/patientInformation/__pycache__" />
+            <excludedPath path="/tvachacare/__pycache__" />
+            <excludedPath path="/tvachacare/__init__.py" />
+            <excludedPath path="/tvachacare/asgi.py" />
+            <excludedPath path="/tvachacare/settings.py" />
+            <excludedPath path="/tvachacare/wsgi.py" />
           </excludedPaths>
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ON_EXPLICIT_SAVE" />
   </component>
 </project>
