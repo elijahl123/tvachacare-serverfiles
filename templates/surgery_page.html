@@ -60,7 +60,7 @@
                         {% if images %}
                             {% for image in images %}
                                 <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}"><img
-                                        class="m-auto d-block" style="height: 700px" src="{{ image.image.url }}"
+                                        class="m-auto d-block" style="max-height: 100%; max-width: 100%" src="{{ image.image.url }}"
                                         alt="Slide Image"/></div>
                             {% endfor %}
                         {% else %}
@@ -395,7 +395,7 @@
             {% endif %}
             <div class="row"
                  style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                <div class="col align-self-center"
+                <div class="col"
                      style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
                     <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                         style="color: white;font-weight: bold;margin-bottom: 0;font-size: 24px;">Burn Operation

@@ -57,7 +57,7 @@ class PatientInformation(models.Model):
     is_approved = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
-        return self.patient_record_number
+        return self.first_name + ' ' + self.last_name
 
 
 class SurgeryInformation(models.Model):

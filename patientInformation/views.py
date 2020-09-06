@@ -3,12 +3,13 @@ import os
 
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
+from django.core.mail import send_mail
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.static import serve
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm
+from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm
 from .models import PatientInformation, Image, SurgeryInformation
 
 
@@ -138,6 +139,30 @@ def patient_page(request, slug):
     }
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = SurgeryInformation.objects.filter(patient=patient.id)
+    form = EmailForm(request.POST or None)
+    if form.is_valid():
+        recipients = request.POST.get('recipients')
+        title = request.POST.get('title')
+        if patient.story:
+            story = patient.story
+        else:
+            story = ''
+        message = request.POST.get('message')
+        plain_text = str(story + message)
+        recipients = recipients.split(',')
+        html_message = str('<main style="width: 90%;background-color: white;padding: 50px;"><h1 style="color: ' +
+                           '#fc9c34;font-family: Raleway, sans-serif;font-weight: bold;">' + patient.first_name + ' ' +
+                           patient.last_name + '</h1><p style="color: #fc9c34;">' + story +
+                           '</p><p style="color: #fc9c34;">' + message + '</p></main>')
+        send_mail(
+            subject=title,
+            from_email=request.user.email,
+            message=plain_text,
+            recipient_list=recipients,
+            html_message=html_message,
+        )
+
+    context['form'] = form
     context['patient'] = patient
     context['surgery'] = surgery
     return render(request, 'patient_page.html', context)
@@ -307,4 +332,3 @@ def send_file(request):
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
-

@@ -132,3 +132,9 @@ class CSVForm(forms.Form):
     date_start = forms.DateField()
     date_end = forms.DateField()
     fields = forms.TextInput(attrs=None)
+
+
+class EmailForm(forms.Form):
+    recipients = forms.TextInput()
+    title = forms.TextInput()
+    message = forms.TextInput()
