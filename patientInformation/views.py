@@ -170,9 +170,9 @@ def patient_page(request, slug):
         )
         email.content_subtype = 'html'
         if patient.patient_image:
-            email.attach_file(patient.patient_image.url)
+            email.attach_file(patient.patient_image.name)
         if patient.injury_image:
-            email.attach_file(patient.injury_image.url)
+            email.attach_file(patient.injury_image.name)
         email.send()
 
     context['form'] = form
