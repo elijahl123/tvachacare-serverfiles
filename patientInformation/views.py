@@ -3,7 +3,7 @@ import os
 
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -141,26 +141,39 @@ def patient_page(request, slug):
     surgery = SurgeryInformation.objects.filter(patient=patient.id)
     form = EmailForm(request.POST or None)
     if form.is_valid():
-        recipients = request.POST.get('recipients')
-        title = request.POST.get('title')
+        to = request.POST.get('to')
+        cc = request.POST.get('cc')
+        bcc = request.POST.get('bcc')
+        from_email = request.POST.get('from_email')
+        title = str('<From: ' + from_email + '>' + request.POST.get('title'))
         if patient.story:
             story = patient.story
         else:
             story = ''
         message = request.POST.get('message')
         plain_text = str(story + message)
-        recipients = recipients.split(',')
+        to = to.split(',')
+        cc = cc.split(',')
+        bcc = bcc.split(',')
         html_message = str('<main style="width: 90%;background-color: white;padding: 50px;"><h1 style="color: ' +
                            '#fc9c34;font-family: Raleway, sans-serif;font-weight: bold;">' + patient.first_name + ' ' +
                            patient.last_name + '</h1><p style="color: #fc9c34;">' + story +
                            '</p><p style="color: #fc9c34;">' + message + '</p></main>')
-        send_mail(
+        email = EmailMessage(
             subject=title,
-            from_email=request.user.email,
-            message=plain_text,
-            recipient_list=recipients,
-            html_message=html_message,
+            body=html_message,
+            to=to,
+            cc=cc,
+            bcc=bcc,
+            from_email=from_email,
+            headers={'From': from_email}
         )
+        email.content_subtype = 'html'
+        if patient.patient_image:
+            email.attach_file(patient.patient_image.path)
+        if patient.injury_image:
+            email.attach_file(patient.injury_image.path)
+        email.send()
 
     context['form'] = form
     context['patient'] = patient

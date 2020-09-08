@@ -105,11 +105,12 @@
             <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;text-align: center;">
                 Email Story</h1>
             <p style="color: #FC9C34; text-align: center">Separate email recipients by commas</p>
-            <input type="text" class="form-control" name="recipients" placeholder="Recipient(s)" required
-                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="to" placeholder="To" required style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="cc" placeholder="Cc" style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="bcc" placeholder="Bcc" style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="from_email" required placeholder="From" style="font-size: 20px;margin-bottom: 5px;"/>
             <input type="text" class="form-control" name="title" placeholder="Title" style="font-size: 20px;" required/>
-            <textarea class="form-control" name="message" placeholder="Other Info..."
-                      style="margin: 10px 0;font-size: 20px;"></textarea>
+            <textarea class="form-control" name="message" placeholder="Other Info..." style="margin: 10px 0;font-size: 20px;"></textarea>
             <div role="group" class="btn-group">
                 <button class="btn btn-secondary" onclick="closeStory()" type="button"
                         style="border-radius:5px;margin: 0 2.5px;">Cancel

@@ -135,6 +135,9 @@ class CSVForm(forms.Form):
 
 
 class EmailForm(forms.Form):
-    recipients = forms.TextInput()
+    to = forms.TextInput()
+    cc = forms.TextInput()
+    bcc = forms.TextInput()
+    from_email = forms.EmailInput()
     title = forms.TextInput()
     message = forms.TextInput()
