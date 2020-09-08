@@ -9,6 +9,7 @@ from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.static import serve
+import requests
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm
 from .models import PatientInformation, Image, SurgeryInformation
@@ -171,11 +172,11 @@ def patient_page(request, slug):
         )
         email.content_subtype = 'html'
         if patient.patient_image:
-            response = request.get(patient.patient_image.url)
-            email.attach('Patient Image', response.read())
+            response = requests.get(patient.patient_image.url)
+            email.attach('Patient Image', response.content)
         if patient.injury_image:
-            response = request.get(patient.injury_image.url)
-            email.attach('Injury Image', response.read())
+            response = requests.get(patient.injury_image.url)
+            email.attach('Injury Image', response.content)
         email.send()
 
     context['form'] = form
