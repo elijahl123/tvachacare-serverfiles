@@ -173,10 +173,10 @@ def patient_page(request, slug):
         email.content_subtype = 'html'
         if patient.patient_image:
             response = requests.get(patient.patient_image.url)
-            email.attach('Patient Image', response.content)
+            email.attach('Patient Image', response.content, mimetype='image')
         if patient.injury_image:
             response = requests.get(patient.injury_image.url)
-            email.attach('Injury Image', response.content)
+            email.attach('Injury Image', response.content, mimetype='image')
         email.send()
 
     context['form'] = form
