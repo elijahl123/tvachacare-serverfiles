@@ -171,9 +171,11 @@ def patient_page(request, slug):
         )
         email.content_subtype = 'html'
         if patient.patient_image:
-            email.attach_file(os.path.join(settings.MEDIA_ROOT, patient.patient_image.path))
+            response = request.get(patient.patient_image.url)
+            email.attach('Patient Image', response.read())
         if patient.injury_image:
-            email.attach_file(os.path.join(settings.MEDIA_ROOT, patient.injury_image.path))
+            response = request.get(patient.injury_image.url)
+            email.attach('Injury Image', response.read())
         email.send()
 
     context['form'] = form
