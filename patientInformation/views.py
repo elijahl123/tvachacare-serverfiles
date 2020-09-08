@@ -1,6 +1,7 @@
 import csv
 import os
 
+from django.conf import settings
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
@@ -170,9 +171,9 @@ def patient_page(request, slug):
         )
         email.content_subtype = 'html'
         if patient.patient_image:
-            email.attach_file(patient.patient_image.name)
+            email.attach_file(os.path.join(settings.MEDIA_ROOT, patient.patient_image.name))
         if patient.injury_image:
-            email.attach_file(patient.injury_image.name)
+            email.attach_file(os.path.join(settings.MEDIA_ROOT, patient.injury_image.name))
         email.send()
 
     context['form'] = form
