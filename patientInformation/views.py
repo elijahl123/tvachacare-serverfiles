@@ -1,5 +1,6 @@
 import csv
 import os
+from pathlib import Path
 
 from django.conf import settings
 from django.contrib.auth import logout as lgout, authenticate, login
@@ -344,7 +345,6 @@ def write_response(date_start, date_end, fields):
 
 @login_required
 def send_file(request):
-    from pathlib import Path
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')

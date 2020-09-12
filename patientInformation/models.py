@@ -38,7 +38,6 @@ class PatientInformation(models.Model):
     date_of_birth = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     age = models.IntegerField(blank=True, null=True)
     gender = models.CharField(blank=True, max_length=6, choices=SEXCHOICES, default='male')
-    race = models.CharField(max_length=120, null=True, blank=True)
     address = models.TextField(blank=True, null=True)
     telephone_number = models.CharField(max_length=15, blank=True, null=True)
     parents = models.TextField(blank=True, null=True)

@@ -71,7 +71,6 @@ class AddPatient(forms.ModelForm):
             'date_of_birth',
             'age',
             'gender',
-            'race',
             'address',
             'telephone_number',
             'parents',
