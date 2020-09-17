@@ -89,10 +89,11 @@ class AddPatient(forms.ModelForm):
 
 class ImageForm(forms.ModelForm):
     image = forms.ImageField(label='Image')
+    date_of_upload_image = forms.DateField(label="Date of Upload")
 
     class Meta:
         model = Image
-        fields = ('image',)
+        fields = ('image', 'date_of_upload_image')
 
 
 class SurgeryForm(forms.ModelForm):

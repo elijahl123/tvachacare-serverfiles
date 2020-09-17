@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
@@ -28,7 +30,6 @@ def upload_profile_picture(instance, filename):
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
-    current_time = models.DateTimeField(auto_now=True)
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
     patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     injury_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
@@ -94,6 +95,7 @@ class SurgeryInformation(models.Model):
 class Image(models.Model):
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
+    date_of_upload_image = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
 
 
 class MyAccountManager(BaseUserManager):
@@ -180,7 +182,7 @@ def submission_delete(sender, instance, **kwargs):
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify("HUI-" + abs(hash(str(instance.current_time))) % (10 ** 10))
+        instance.slug = slugify("HUI-" + abs(hash(str(datetime.datetime))) % (10 ** 10))
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)

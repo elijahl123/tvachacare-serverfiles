@@ -5,9 +5,9 @@
     <title>{{ patient.first_name }} {{ patient.last_name }}</title>
     <style>
 
-    .carousel-item {
-        background-color: lightgray;
-    }
+        .carousel-item {
+            background-color: lightgray;
+        }
 
     </style>
     <script>
@@ -59,9 +59,13 @@
                     <div role="listbox" class="carousel-inner">
                         {% if images %}
                             {% for image in images %}
-                                <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}"><img
-                                        class="m-auto d-block" style="max-height: 100%; max-width: 100%" src="{{ image.image.url }}"
-                                        alt="Slide Image"/></div>
+                                <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+                                    <img class="m-auto d-block" loading="lazy" style="max-height: 500px; max-width: 100%" src="{{ image.image.url }}"
+                                            alt="Slide Image"/>
+                                    <div class="d-flex justify-content-center w-100">
+                                        <p style="background: white;color: #fc9c34;position: absolute;bottom: 30px;padding: 5px;text-align: center;box-shadow: 0px 0px 5px 1px darkgray;border-radius: 5px;">Uploaded: {{ image.date_of_upload_image }}</p>
+                                    </div>
+                                </div>
                             {% endfor %}
                         {% else %}
                             <div class="carousel-item"><img class="w-100 d-block"

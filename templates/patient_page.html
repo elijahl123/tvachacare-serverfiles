@@ -147,7 +147,7 @@
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.patient_image %}
-                        <img src="{{ patient.patient_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.patient_image.url }}" loading="lazy" style="width: 100%;" alt="Patient Image"/>
                     {% else %}
                         <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
                     {% endif %}
@@ -155,7 +155,7 @@
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.injury_image %}
-                        <img src="{{ patient.injury_image.url }}" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.injury_image.url }}" loading="lazy" style="width: 100%;" alt="Patient Image"/>
                     {% else %}
                         <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image"/>
                     {% endif %}

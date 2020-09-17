@@ -38,16 +38,25 @@
 
         function cloneMore() {
             const newElement = $('div.image-container')
-            newElement.prepend("<div class=\"d-flex flex-column justify-content-center align-items-center\"\n" +
-                "                                     style=\"background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;\">\n" +
-                "                                    <h1 style=\"font-size: 30px;font-weight: normal;\">Add Image</h1>\n" +
-                "                                    <div class=\"flex-column custom-file\">\n" +
-                "                                        <label class=\"custom-file-label\">Upload File</label>\n" +
-                "                                        <input type=\"file\" class=\"custom-file-input\" accept=\"image/*\" \n" +
-                "                                               style=\"font-family: 'Open Sans', sans-serif;\" id=\"id_form-" + numOfForms + "-image\"\n" +
+            newElement.prepend("<div class=\"d-flex flex-column justify-content-between align-items-center\"\n" +
+                "                                     style=\"width: 350px;height: 300px;background: #fc9c34;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid #fc9c34;position: relative;\">\n" +
+                "                                    <img style=\"max-width: 100%;max-height: 190px;border-radius: 10px;\"\n" +
+                "                                         src=\"{% static 'img/placeholder_patient.png' %}\"/>\n" +
+                "                                    <div class=\"d-flex flex-column\" style=\"width: 100%;\">\n" +
+                "                                        <div class=\"d-flex justify-content-center align-items-center\"\n" +
+                "                                             style=\"border-radius: 5px;margin-bottom: 5px;\">\n" +
+                "                                            <h6 style=\"width: 270px;margin: 0 0 0 5px;\">Date of Upload:</h6>\n" +
+                "                                            <input class=\"form-control\" style=\"border-style: none;\" placeholder=\"Date of Upload\"\n" +
+                "                                                   type=\"date\" name=\"form-" + numOfForms + "-date_of_upload_image\"/>\n" +
+                "                                        </div>\n" +
+                "                                        <div class=\"custom-file\">\n" +
+                "                                            <input type=\"file\" class=\"custom-file-input\" id=\"id_form-" + numOfForms + "-image\"\n" +
                 "                                               name=\"form-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
+                "                                            <label class=\"custom-file-label\" style=\"border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;\">Upload File</label>\n" +
+                "                                        </div>\n" +
                 "                                    </div>\n" +
-                "                                <button class=\"btn btn-danger btn-sm\" type=\"button\" style=\"margin-top: 10px;border-color: transparent;\" onclick=\"deleteImage(this)\">Delete</button>\n" +
+                "                                    <button class=\"btn d-flex justify-content-center align-items-center\" type=\"button\"\n" +
+                "                                            style=\"border-style: none;color: white;background: red;position: absolute;right: 0;\" onclick=\"deleteImage(this)\">x</button>\n" +
                 "                                </div>")
             let totalForms = $('input#id_form-TOTAL_FORMS');
             totalForms.val(numOfForms + 1)
@@ -66,10 +75,8 @@
             let image = URL.createObjectURL(event.target.files[0]);
             let parent = $(element).parent();
             let grandparent = parent.parent();
-            let heading = grandparent.find('h1');
-            grandparent.css("background-image", "url(" + image + ")");
-            heading.addClass('d-none');
-            parent.css('display', 'none');
+            let image_html = grandparent.parent().find('img');
+            image_html.attr("src", image)
         }
 
 
@@ -92,6 +99,7 @@
         }
 
         let otherFields = []
+        let otherTypeFields = []
 
         $(document).on("change", "select", function () {
             $("option[value=" + this.value + "]", this)
@@ -108,6 +116,13 @@
             }
         }
 
+        function selectedType(selector) {
+            if ($('#other_option_type').is(':selected')) {
+                $('#id_other_type').removeClass('d-none');
+            } else {
+                $('#id_other_type').addClass('d-none');
+            }
+        }
 
         function addToOther(input) {
             otherFields = []
@@ -115,6 +130,14 @@
 
             $('#other_option').val(otherFields)
             console.log(otherFields)
+        }
+
+        function addToOtherType(input) {
+            otherTypeFields = []
+            otherTypeFields.push($(input).val())
+
+            $('#other_option_type').val(otherTypeFields)
+            console.log(otherTypeFields)
         }
 
     </script>
@@ -131,24 +154,35 @@
                         <div class="d-flex flex-row justify-content-center align-items-center flex-wrap image-container"
                              style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
                             {% for form in formset %}
-                                <div class="d-flex flex-column justify-content-center align-items-center"
-                                     style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;">
-                                    <h1 style="font-size: 30px;font-weight: normal;">Add Image</h1>
-                                    <div class="flex-column custom-file">
-                                        <label class="custom-file-label">Upload File</label>
-                                        <input type="file" class="custom-file-input" accept="image/*"
-                                               style="font-family: 'Open Sans', sans-serif;"
-                                               id="{{ form.image.id_for_label }}"
-                                               name="{{ form.image.html_name }}" onchange="loadImage(event, this)"/>
+                                <div class="d-flex flex-column justify-content-between align-items-center"
+                                     style="width: 350px;height: 300px;background: #fc9c34;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid #fc9c34;position: relative;">
+                                    <img style="max-width: 100%;max-height: 190px;border-radius: 10px;"
+                                         src="{% static 'img/placeholder_patient.png' %}"/>
+                                    <div class="d-flex flex-column" style="width: 100%;">
+                                        <div class="d-flex justify-content-center align-items-center"
+                                             style="border-radius: 5px;margin-bottom: 5px;">
+                                            <h6 style="width: 270px;margin: 0 0 0 5px;">Date of Upload:</h6>
+                                            <input class="form-control" style="border-style: none;"
+                                                   placeholder="Date of Upload" id="{{ form.date_of_upload_image.id_for_label }}"
+                                                   type="date" name="{{ form.date_of_upload_image.html_name }}"/>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input"
+                                                   id="{{ form.image.id_for_label }}"
+                                                   name="{{ form.image.html_name }}" onchange="loadImage(event, this)"/>
+                                            <label class="custom-file-label"
+                                                   style="border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;">Upload
+                                                File</label>
+                                        </div>
                                     </div>
-                                    <button class="btn btn-danger btn-sm" type="button"
-                                            style="margin-top: 10px;border-color: transparent;"
-                                            onclick="deleteImage(this)">Delete
+                                    <button class="btn d-flex justify-content-center align-items-center" type="button"
+                                            style="border-style: none;color: white;background: red;position: absolute;right: 0;"
+                                            onclick="deleteImage(this)">x
                                     </button>
                                 </div>
                             {% endfor %}
                             <button class="btn btn-primary" id="add_more" type="button"
-                                    style="width: 250px;height: 200px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;"
+                                    style="width: 350px;height: 300px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;"
                                     onclick="cloneMore()">
                                 <i class="fa fa-plus" style="font-size: 50px;"></i></button>
                             <button class="btn" type="button" onclick="closeImages()"
@@ -286,13 +320,20 @@
                                 </div>
                                 <div class="col-md-10 offset-md-1">
                                     <select class="form-control" style="font-family: 'Open Sans', sans-serif;"
-                                            name="type_of_burn">
+                                            name="type_of_burn" onchange="selectedType()">
                                         <option value selected></option>
                                         <option value="Scald Burn">Scald Burn</option>
                                         <option value="Open Flame">Open Flame</option>
                                         <option value="Chemical Burn">Chemical Burn</option>
                                         <option value="Gasoline Burn">Gasoline Burn</option>
+                                        <option value="Electrical Burn">Electrical Burn</option>
+                                        <option value="Contact Burn">Contact Burn</option>
+                                        <option id="other_option_type" value="Other">Other</option>
                                     </select>
+                                    <input type="text" class="form-control d-none"
+                                           style="margin: 10px 0;font-family: 'Open Sans', sans-serif;"
+                                           id="id_other_type" placeholder="Specify..."
+                                           name="other" onchange="addToOtherType(this)"/>
                                 </div>
                             </div>
                             <div class="form-row"

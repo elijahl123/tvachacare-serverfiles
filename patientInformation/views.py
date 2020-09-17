@@ -2,7 +2,7 @@ import csv
 import os
 from pathlib import Path
 
-from django.conf import settings
+import requests
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage
@@ -10,7 +10,6 @@ from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.static import serve
-import requests
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm
 from .models import PatientInformation, Image, SurgeryInformation
@@ -237,7 +236,8 @@ def add_surgery(request, slug):
 
             for form in formset.cleaned_data:
                 image = form['image']
-                photo = Image(surgery=surgery_form, image=image)
+                date_of_upload_image = form['date_of_upload_image']
+                photo = Image(surgery=surgery_form, image=image, date_of_upload_image=date_of_upload_image)
                 photo.save()
             return redirect('patient_page', slug)
     else:
@@ -282,9 +282,9 @@ def delete_surgery_images(request, slug, id):
     surgery = SurgeryInformation.objects.filter(id=id)
     if surgery:
         surgery.delete()
-        return redirect('home')
+        return redirect('patient_page', slug)
     else:
-        return redirect('home')
+        return redirect('patient_page', slug)
 
 
 @login_required
