@@ -21,5 +21,11 @@
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:C:\Users\elijahkane\Documents\tvachacare-serverfiles\mydatabase</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="TvachaCareOther" uuid="59886121-d19d-4bf9-9cbe-5775729355ed">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/defaultdb</jdbc-url>
+    </data-source>
   </component>
 </project>
