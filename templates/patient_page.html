@@ -105,12 +105,17 @@
             <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;text-align: center;">
                 Email Story</h1>
             <p style="color: #FC9C34; text-align: center">Separate email recipients by commas</p>
-            <input type="text" class="form-control" name="to" placeholder="To" required style="font-size: 20px;margin-bottom: 5px;"/>
-            <input type="text" class="form-control" name="cc" placeholder="Cc" style="font-size: 20px;margin-bottom: 5px;"/>
-            <input type="text" class="form-control" name="bcc" placeholder="Bcc" style="font-size: 20px;margin-bottom: 5px;"/>
-            <input type="text" class="form-control" name="from_email" required placeholder="From" style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="to" placeholder="To" required
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="cc" placeholder="Cc"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="bcc" placeholder="Bcc"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="from_email" required placeholder="From"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
             <input type="text" class="form-control" name="title" placeholder="Title" style="font-size: 20px;" required/>
-            <textarea class="form-control" name="message" placeholder="Other Info..." style="margin: 10px 0;font-size: 20px;"></textarea>
+            <textarea class="form-control" name="message" placeholder="Other Info..."
+                      style="margin: 10px 0;font-size: 20px;"></textarea>
             <div role="group" class="btn-group">
                 <button class="btn btn-secondary" onclick="closeStory()" type="button"
                         style="border-radius:5px;margin: 0 2.5px;">Cancel
@@ -123,23 +128,25 @@
     <main>
         <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
              style="padding: 30px 50px;background-color: white;">
-            <div class="row" style="width: 100%;margin-bottom: 10px;">
+            <div class="row d-print-none" style="width: 100%;margin-bottom: 10px;">
                 <div class="col d-flex justify-content-center justify-content-md-center justify-content-lg-end justify-content-xl-end"
                      style="width: 100%;">
-                    <button class="btn btn-lg d-flex justify-content-center align-items-center d-print-none"
-                            type="button"
-                            style="color: white;background-color: #fc9c34;border-radius: 7px;" onclick="openStory()">
-                        <i class="fa fa-envelope" style="margin: 0;"></i>
-                    </button>
-                    <a class="btn d-flex justify-content-center align-items-center" type="button"
-                       onclick="window.print()" role="button"
-                       style="margin: 0 5px;color: white;background-color: #2980ef;border-radius: 7px;">
-                        <i class="fa fa-print d-print-none" style="margin: 0;"></i>
-                    </a>
-                    <button type="button" class="btn btn-danger open-menu" onclick="openMenu()"
-                            style="border-radius: 7px;">Delete
-                        Patient
-                    </button>
+                    <div class="dropdown">
+                        <button class="btn d-flex justify-content-center align-items-center" data-toggle="dropdown"
+                                aria-expanded="false" type="button" style="color: white;background: #fc9c34;"><i
+                                class="fas fa-ellipsis-h" style="font-size: 25px;"></i></button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#" onclick="openMenu()" style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-trash" style="color: red;margin-right: 10px;font-size: 16px;"></i>Delete Patient
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="window.print()" style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-print" style="color: dodgerblue;margin-right: 10px;font-size: 16px;"></i>Print
+                            </a>
+                            <a class="dropdown-item" href="#" onclick="openStory()" style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-envelope" style="color: #fc9c34;margin-right: 10px;font-size: 16px;"></i>Email Story
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row images"
@@ -147,7 +154,8 @@
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.patient_image %}
-                        <img src="{{ patient.patient_image.url }}" loading="lazy" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.patient_image.url }}" loading="lazy" style="width: 100%;"
+                             alt="Patient Image"/>
                     {% else %}
                         <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
                     {% endif %}
@@ -155,7 +163,8 @@
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="overflow: hidden;height: 500px;">
                     {% if patient.injury_image %}
-                        <img src="{{ patient.injury_image.url }}" loading="lazy" style="width: 100%;" alt="Patient Image"/>
+                        <img src="{{ patient.injury_image.url }}" loading="lazy" style="width: 100%;"
+                             alt="Patient Image"/>
                     {% else %}
                         <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image"/>
                     {% endif %}
@@ -172,35 +181,39 @@
                     {% endif %}
                 </div>
             </div>
-        <div style="width: 100%; overflow-x: auto;">
-            <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row" style="min-width:860px;width: 100%;margin: auto auto 20px;">
-                <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                     style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
-                    <i class="fa fa-barcode d-print-none" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Patient Record Number</h1>
-                    <h1 class="text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">
-                        {{ patient.patient_record_number }}</h1>
-                </div>
-                <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                     style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
-                    <i class="fa fa-calendar d-print-none" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Date of Birth</h1>
-                    <h1 class="text-break text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.date_of_birth }}</h1>
-                </div>
-                <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                     style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
-                    <i class="fa fa-clock d-print-none" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Age</h1>
-                    <h1 class="text-break text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.age }}</h1>
+            <div style="width: 100%; overflow-x: auto;">
+                <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row"
+                     style="min-width:860px;width: 100%;margin: auto auto 20px;">
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
+                        <i class="fa fa-barcode d-print-none" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Patient Record Number</h1>
+                        <h1 class="text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">
+                            {{ patient.patient_record_number }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="fa fa-calendar d-print-none" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Date of Birth</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.date_of_birth }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="fa fa-clock d-print-none" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Age</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.age }}</h1>
+                    </div>
                 </div>
             </div>
-        </div>
             {% if patient.gender %}
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
