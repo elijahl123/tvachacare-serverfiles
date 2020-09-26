@@ -83,7 +83,8 @@ class AddPatient(forms.ModelForm):
             'cleft_injury',
             'hand_injury',
             'prior_surgery',
-            'doctor_notes'
+            'doctor_notes',
+            'story'
         ]
 
 
