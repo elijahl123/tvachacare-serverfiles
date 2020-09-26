@@ -349,3 +349,32 @@ def send_file(request):
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
+
+@login_required
+def edit_patient(request, slug):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {
+        "account": account,
+    }
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    if request.POST:
+        form = AddPatient(request.POST or None, request.FILES or None, instance=patient)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            form = AddPatient()
+            return redirect('patient_page', slug)
+    else:
+        form = AddPatient
+
+    context['form'] = form
+    context['patient'] = patient
+
+    return render(request, 'editPatient.html', context)
