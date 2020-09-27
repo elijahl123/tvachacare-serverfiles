@@ -60,6 +60,7 @@ def index(request):
                 }
             )
         context['account_form'] = form
+        context['today'] = datetime.date.today()
     return render(request, 'homePage.html', context)
 
 
@@ -87,6 +88,7 @@ def loginadmin(request):
         form = AccountAuthenticationForm()
 
     context['login_form'] = form
+    context['today'] = datetime.date.today()
     return render(request, 'loginAdmin.html', context)
 
 
@@ -118,6 +120,7 @@ def addpatient(request):
         form = AddPatient
 
     context['form'] = form
+    context['today'] = datetime.date.today()
 
     if request.user.group == 'Data Entry':
         return render(request, 'addPatient.html', context)
@@ -182,6 +185,7 @@ def patient_page(request, slug):
     context['form'] = form
     context['patient'] = patient
     context['surgery'] = surgery
+    context['today'] = datetime.date.today()
     return render(request, 'patient_page.html', context)
 
 
@@ -225,6 +229,7 @@ def add_surgery(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
     ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
 
+
     if request.method == 'POST':
         surgeryForm = SurgeryForm(request.POST)
         formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
@@ -244,7 +249,7 @@ def add_surgery(request, slug):
         surgeryForm = SurgeryForm()
         formset = ImageFormSet(queryset=Image.objects.none())
     return render(request, 'addSurgery.html',
-                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient})
+                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient, 'today': datetime.date.today()})
 
 
 @login_required
@@ -267,6 +272,8 @@ def surgery_page(request, slug, id):
     context['surgery'] = surgery
     context['images'] = images
     context['surgeries'] = surgeries
+    context['today'] = datetime.date.today()
+
     return render(request, 'surgery_page.html', context)
 
 
@@ -316,6 +323,7 @@ def filter_by_date(request):
         return redirect('send_file')
 
     context['form'] = form
+    context['today'] = datetime.date.today()
 
     return render(request, 'filter.html', context)
 
@@ -376,7 +384,7 @@ def edit_patient(request, slug):
 
     context['form'] = form
     context['patient'] = patient
-
+    context['today'] = datetime.date.today()
     return render(request, 'editPatient.html', context)
 
 
