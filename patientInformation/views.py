@@ -46,9 +46,10 @@ def index(request):
     }
 
     if request.POST:
-        form = AccountUpdateForm(request.POST, instance=request.user)
+        form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
             form.save()
+            return redirect('home')
         else:
             form = AccountUpdateForm(
                 initial={

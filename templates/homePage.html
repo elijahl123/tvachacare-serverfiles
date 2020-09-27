@@ -15,6 +15,12 @@
             });
         });
 
+        function profileImage(event) {
+            let image = URL.createObjectURL(event.target.files[0]);
+            $('.profile-image').attr('src', image)
+            console.log(image)
+        }
+
     </script>
     <title>TvachaCare</title>
     <style>
@@ -72,7 +78,6 @@
         .container-profile-picture img {
             width: 30vw;
             object-fit: cover;
-            cursor: pointer;
             height: 30vw;
         }
 
@@ -160,26 +165,26 @@
                                          style="width: 100%;padding: 20px;">
                                         {% if account.profile_picture_path %}
                                             <div class="container-profile-picture" style="position: relative">
-                                                <img class="rounded-circle"
+                                                <img class="rounded-circle profile-image"
                                                      src="{{ account.profile_picture_path.url }}" width="30%"
-                                                     alt="Profile Picture"/>
-                                                <div class="overlay-profile">
+                                                     alt="Profile Picture" />
+                                                <div class="overlay-profile d-none">
                                                     <input accept="image/*" id="profile_picture_path"
                                                            type="file"
-                                                           style="position: absolute; opacity: 0; width: 100%; height: 100%"
+                                                           style="position: absolute; opacity: 0; width: 100%; height: 100%" onchange="profileImage(event)"
                                                            name="profile_picture_path">
                                                     <label for="choose-file"><i class="fa fa-edit"></i></label>
                                                 </div>
                                             </div>
                                         {% else %}
                                             <div class="container-profile-picture" style="position: relative">
-                                                <img class="rounded-circle"
+                                                <img class="rounded-circle profile-image"
                                                      src="{% static 'img/avatarTvachaCare.png' %}" width="30%"
-                                                     alt="Profile Picture"/>
-                                                <div class="overlay-profile">
+                                                     alt="Profile Picture" />
+                                                <div class="overlay-profile d-none">
                                                     <input accept="image/*" id="profile_picture_path"
                                                            type="file"
-                                                           style="position: absolute; opacity: 0; width: 100%; height: 100%"
+                                                           style="position: absolute; opacity: 0; width: 100%; height: 100%" onchange="profileImage(event)"
                                                            name="profile_picture_path">
                                                     <label for="choose-file"><i class="fa fa-edit"></i></label>
                                                 </div>
@@ -295,6 +300,7 @@
             $('.edit button').addClass('display-none')
             $('.save button').removeClass('display-none')
             $('.edit-input').removeClass('display-none')
+            $('.overlay-profile').removeClass('d-none')
         }
 
         function resetForm() {
@@ -302,6 +308,7 @@
             $('.edit button').removeClass('display-none')
             $('.save button').addClass('display-none')
             $('.edit-input').addClass('display-none')
+            $('.overlay-profile').addClass('d-none')
         }
 
     </script>
