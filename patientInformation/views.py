@@ -1,4 +1,6 @@
 import csv
+import calendar
+import datetime
 import os
 from pathlib import Path
 
@@ -40,10 +42,7 @@ def index(request):
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
 
-    context = {
-        'object': patient,
-        'account': account
-    }
+    context = {'object': patient, 'account': account, 'today': datetime.date.today()}
 
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
@@ -379,3 +378,28 @@ def edit_patient(request, slug):
     context['patient'] = patient
 
     return render(request, 'editPatient.html', context)
+
+
+@login_required
+def calendar_events(request, year, current_month):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    this_month = calendar.month_name[int(current_month)]
+    c = calendar.Calendar(6)
+    this_calendar = c.monthdatescalendar(int(year), int(current_month))
+    context = {"account": account,
+               'calendar': this_calendar,
+               'month': this_month,
+               'year': year,
+               'month_num': int(current_month)}
+    patient = PatientInformation.objects.all()
+    surgeries = SurgeryInformation.objects.all()
+    context['patient'] = patient
+    context['surgeries'] = surgeries
+    context['today'] = datetime.date.today()
+    return render(request, 'calendar.html', context)
