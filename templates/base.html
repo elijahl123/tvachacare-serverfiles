@@ -32,22 +32,25 @@
 
         gtag('config', 'UA-172938628-2');
     </script>
-<style>
-    .page-footer h5 {
-        color: #FC9C34 !important;
-    }
-    .clean-navbar.fixed-bottom, .clean-navbar.fixed-top {
-        box-shadow: 0 0 15px rgba(0,0,0,.3) !important;
-    }
-    .navbar-nav {
-        flex-direction: row !important;
-    }
-    @media (max-width: 990px) {
-        .navbar-collapse ul {
-            margin-top: 20px;
+    <style>
+        .page-footer h5 {
+            color: #FC9C34 !important;
         }
-    }
-</style>
+
+        .clean-navbar.fixed-bottom, .clean-navbar.fixed-top {
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3) !important;
+        }
+
+        .navbar-nav {
+            flex-direction: row !important;
+        }
+
+        @media (max-width: 990px) {
+            .navbar-collapse ul {
+                margin-top: 20px;
+            }
+        }
+    </style>
 
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
@@ -67,31 +70,41 @@
             <i class="fas fa-ellipsis-h" style="color: white;"></i>
         </button>
         <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center" style="flex-wrap: nowrap;overflow: auto;max-width: 90vw;white-space: nowrap;">
+            <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center"
+                style="flex-wrap: nowrap;overflow: auto;max-width: 90vw;white-space: nowrap;">
                 {% if account %}
                     <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                         <a class="btn btn-primary d-flex justify-content-center align-items-center"
                            role="button"
-                           style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           onmouseover="$(this).setTimeout($(this).find('span').show(200), 1000);"
+                           onmouseleave="$(this).find('span').hide(200);"
                            href="{% url 'home' %}">
                             <i class="fa fa-home" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Home</span>
                         </a>
                     </li>
                     <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                         <a class="btn btn-primary d-flex justify-content-center align-items-center"
                            role="button"
-                           style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                           onmouseleave="$(this).find('span').hide(200);"
                            href="{% url 'filter_by_date' %}">
                             <i class="fa fa-filter" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Filter by Date</span>
                         </a>
                     </li>
                     {% if account.group == 'Data Entry' %}
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
-                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(200);"
                                href="{% url 'addPatient' %}">
                                 <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Add Patient</span>
                             </a>
                         </li>
                     {% elif account.is_superuser == True %}
@@ -99,25 +112,34 @@
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
-                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(200);"
                                href="{% url 'admin:index' %}">
                                 <i class="fa fa-terminal" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Admin Console</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
-                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(200);"
                                href="{% url 'addPatient' %}">
                                 <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Add Patient</span>
                             </a>
                         </li>
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
-                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(200);"
                                href="{% url 'calendar' today.year today.month %}">
                                 <i class="fa fa-calendar" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Calendar</span>
                             </a>
                         </li>
                     {% endif %}
@@ -138,7 +160,8 @@
 
 {% endblock %}
 
-<footer class="page-footer light" style="box-shadow: 0 0 15px rgba(0,0,0,.2) !important;background-color: whitesmoke !important;">
+<footer class="page-footer light"
+        style="box-shadow: 0 0 15px rgba(0,0,0,.2) !important;background-color: whitesmoke !important;">
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
@@ -170,6 +193,10 @@
 </footer>
 <script src="{% static 'js/smoothproducts.min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>
-
+<script>
+    $('.nav-item').hover(function () {
+        $(this).find('i').toggle(200);
+    })
+</script>
 </body>
 </html>
