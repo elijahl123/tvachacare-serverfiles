@@ -48,6 +48,8 @@
         @media (max-width: 990px) {
             .navbar-collapse ul {
                 margin-top: 20px;
+                overflow-x: auto;
+                overflow-y: visible !important;
             }
         }
     </style>
@@ -71,7 +73,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center"
-                style="flex-wrap: nowrap;overflow: auto;max-width: 90vw;white-space: nowrap;">
+                style="flex-wrap: nowrap;max-width: 90vw;white-space: nowrap;">
                 {% if account %}
                     <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                         <a class="btn btn-primary d-flex justify-content-center align-items-center"
