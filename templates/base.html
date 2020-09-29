@@ -39,6 +39,14 @@
     .clean-navbar.fixed-bottom, .clean-navbar.fixed-top {
         box-shadow: 0 0 15px rgba(0,0,0,.3) !important;
     }
+    .navbar-nav {
+        flex-direction: row !important;
+    }
+    @media (max-width: 990px) {
+        .navbar-collapse ul {
+            margin-top: 20px;
+        }
+    }
 </style>
 
     <link rel="stylesheet" href="{% static 'base.css' %}">
@@ -56,7 +64,7 @@
         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
                 style="background-color: #fc9c34;">
             <span class="sr-only">Toggle navigation</span>
-            <i class="fas fa-ellipsis-h" style="color: #092327;"></i>
+            <i class="fas fa-ellipsis-h" style="color: white;"></i>
         </button>
         <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center">
