@@ -32,16 +32,24 @@
 
         gtag('config', 'UA-172938628-2');
     </script>
+<style>
+    .page-footer h5 {
+        color: #FC9C34 !important;
+    }
+    .clean-navbar.fixed-bottom, .clean-navbar.fixed-top {
+        box-shadow: 0 0 15px rgba(0,0,0,.3) !important;
+    }
+</style>
 
     <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
     {% block header %}
     {% endblock %}
 </head>
-<body style="background-color: #128807; overflow-x: hidden;" class="{% block bodyclass %}{% endblock %}">
+<body style="background-color: #FC9C34; overflow-x: hidden;" class="{% block bodyclass %}{% endblock %}">
 
 <nav class="d-print-none navbar navbar-light navbar-expand-lg fixed-top bg-white d-flex d-xl-flex align-items-center align-items-xl-end clean-navbar"
-     style="color: white !important;background-color: #092327 !important;position: relative;">
+     style="color: white !important;background-color: whitesmoke !important;position: relative;">
     <div class="container-fluid" style="color: white !important;">
         <img class="d-flex justify-content-center align-items-center" src="{% static 'img/logoTvacha.png' %}"
              height="30px" style="min-height: 30px;max-height: 38px;">
@@ -50,43 +58,64 @@
             <span class="sr-only">Toggle navigation</span>
             <i class="fas fa-ellipsis-h" style="color: #092327;"></i>
         </button>
-        <div
-                class="collapse navbar-collapse" id="navcol-1">
+        <div class="collapse navbar-collapse" id="navcol-1">
             <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center">
                 {% if account %}
-                    <li class="nav-item" role="presentation" style="padding-right: 0;">
-                        <a class="nav-link active" href="{% url 'home' %}"
-                           style="font-family: Open Sans,sans-serif;color: white;">Home</a>
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                           role="button"
+                           style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           href="{% url 'home' %}">
+                            <i class="fa fa-home" style="margin: 0;font-size: 20px;"></i>
+                        </a>
                     </li>
-                    <li class="nav-item" role="presentation" style="padding-right: 0;">
-                        <a class="nav-link active" href="{% url 'filter_by_date' %}"
-                           style="font-family: Open Sans,sans-serif;color: white;">Filter by Date</a>
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                           role="button"
+                           style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           href="{% url 'filter_by_date' %}">
+                            <i class="fa fa-filter" style="margin: 0;font-size: 20px;"></i>
+                        </a>
                     </li>
                     {% if account.group == 'Data Entry' %}
-                        <li class="nav-item" role="presentation" style="padding-right: 0;">
-                            <a class="nav-link" href="{% url 'addPatient' %}"
-                               style="font-family: Open Sans,sans-serif;color: white;">Add
-                                patient</a>
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               href="{% url 'addPatient' %}">
+                                <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
+                            </a>
                         </li>
                     {% elif account.is_superuser == True %}
                         {% load admin_urls %}
-                        <li class="nav-item" role="presentation" style="padding-right: 0;">
-                            <a class="nav-link" href="{% url 'admin:index' %}"
-                               style="font-family: Open Sans,sans-serif;color: white;">Admin Console</a>
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               href="{% url 'admin:index' %}">
+                                <i class="fa fa-terminal" style="margin: 0;font-size: 20px;"></i>
+                            </a>
                         </li>
-                        <li class="nav-item" role="presentation" style="padding-right: 0">
-                            <a class="nav-link" href="{% url 'addPatient' %}"
-                               style="font-family: Open Sans,sans-serif;color: white;">Add
-                                patient</a>
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               href="{% url 'addPatient' %}">
+                                <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
+                            </a>
                         </li>
-                        <li class="nav-item" role="presentation" style="">
-                            <a class="nav-link" href="{% url 'calendar' today.year today.month %}"
-                               style="font-family: Open Sans,sans-serif;color: white;">Calendar</a>
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               href="{% url 'calendar' today.year today.month %}">
+                                <i class="fa fa-calendar" style="margin: 0;font-size: 20px;"></i>
+                            </a>
                         </li>
                     {% endif %}
                     <li role="presentation" class="nav-item" style="padding-right: 0;">
-                        <a class="btn text-white log-out" href="{% url 'logout' %}"
-                           style="font-size: 16px;font-family: 'Open Sans', sans-serif;font-weight: bold;border: 2px solid white;">Log
+                        <a class="btn log-out" href="{% url 'logout' %}"
+                           style="margin-left: 10px; border-radius: 50px;padding: 10px 15px; border-color: #FC9C34 !important; color: #FC9C34">Log
                             Out</a>
                     </li>
                 {% else %}
@@ -101,7 +130,7 @@
 
 {% endblock %}
 
-<footer class="page-footer dark" style="background-color: #092327 !important;">
+<footer class="page-footer light" style="box-shadow: 0 0 15px rgba(0,0,0,.2) !important;background-color: whitesmoke !important;">
     <div class="container">
         <div class="row">
             <div class="col-sm-3">
