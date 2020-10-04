@@ -5,8 +5,7 @@
     <link rel="stylesheet" href="{% static 'homePage.css' %}">
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script>
-
-        $(document).ready(function () {
+    $(document).ready(function () {
             $('.search-patients').on('keyup', function () {
                 let information = $(this).val().toLowerCase();
                 $('.list-group li').filter(function () {
@@ -129,18 +128,40 @@
                                     {% if object %}
                                         <ul class="list-group"
                                             style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
-                                            {% for patients in object %}
-                                                {% if patients.is_approved == False %}
-                                                    <li class="list-group-item">
-                                                        <a href="{% url 'patient_page' patients.slug %}"
-                                                           class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                            {% for surgery in object %}
+                                                {% if surgery.is_approved == False and surgery.is_denied == False %}
+                                                    <li class="list-group-item d-flex justify-content-between">
+                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
+                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
                                                     </li>
                                                 {% else %}
                                                 {% endif %}
                                             {% endfor %}
                                         </ul>
+                                        <div class="button-container d-flex justify-content-center" style="width: 100%">
+                                            <button class="btn btn-sm btn-surgeries btn-danger" onclick="openDeniedSurgeries()">View Denied Surgeries</button>
+                                        </div>
+                                        <div class="denied-patients" style="display: none">
+                                            <h5 style="color: #092327;">Denied Surgeries</h5>
+                                        <ul class="list-group"
+                                            style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
+                                            {% for surgery in object %}
+                                                {% if surgery.is_approved == False and surgery.is_denied == True %}
+                                                    <li class="list-group-item d-flex justify-content-between">
+                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
+                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
+                                                    </li>
+                                                {% else %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </ul></div>
+
                                     {% else %}
-                                        <p style="color: gray;text-align: center;margin-top: 10px !important;" class="m-auto">None</p>
+
                                     {% endif %}
                                 {% else %}
                                     {% if object %}
@@ -309,6 +330,15 @@
             $('.save button').addClass('display-none')
             $('.edit-input').addClass('display-none')
             $('.overlay-profile').addClass('d-none')
+        }
+
+        function openDeniedSurgeries() {
+            $('.denied-patients').toggle()
+            if ($('.btn-surgeries').text() === "View Denied Surgeries") {
+                $('.btn-surgeries').text("Stop Viewing Denied Surgeries");
+            } else {
+                $('.btn-surgeries').text("View Denied Surgeries");
+            }
         }
 
     </script>

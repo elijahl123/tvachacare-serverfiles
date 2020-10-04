@@ -9,6 +9,10 @@
             background-color: lightgray;
         }
 
+        .highlighted-row {
+            -webkit-flex-direction: row;
+            -webkit-appearance: none;
+        }
     </style>
     <script>
         function openImages() {
@@ -132,7 +136,8 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="row flex-column flex-md-row flex-lg-row flex-xl-row" style="width: 100%;margin-bottom: 20px;">
+         <div style="width: 100%; overflow-x: auto;">
+            <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row" style="min-width:860px;width: 100%;margin: auto auto 20px;">
                 <div class="col d-flex flex-column justify-content-center align-items-center"
                      style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
                     <i class="fa fa-calendar" style="font-size: 35px;"></i>
@@ -158,6 +163,7 @@
                         style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_discharge }}</h1>
                 </div>
             </div>
+         </div>
             {% if surgery.date_of_upload %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
@@ -472,6 +478,16 @@
                                 No</p>
                         {% endif %}
                     </div>
+                </div>
+            {% endif %}
+            {% if account.group == 'Approver' and surgery.is_approved == False and surgery.is_denied == False %}
+                <div role="group" class="btn-group"
+                     style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                    <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button"
+                       href="{% url 'deny_surgery' surgery.patient.slug surgery.id %}">Don&#39;t
+                        Approve</a>
+                    <a class="btn btn-success d-flex justify-content-center align-items-center"
+                       role="button" href="{% url 'approve_surgery' surgery.patient.slug surgery.id %}">Approve</a>
                 </div>
             {% endif %}
             <div class="row"

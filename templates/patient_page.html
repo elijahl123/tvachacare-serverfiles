@@ -429,16 +429,6 @@
                     </div>
                 </div>
             {% endif %}
-            {% if account.group == 'Approver' and patient.is_approved == False %}
-                <div role="group" class="btn-group"
-                     style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
-                    <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button"
-                       href="{% url 'delete_patient' patient.slug %}">Don&#39;t
-                        Approve</a>
-                    <a class="btn btn-success d-flex justify-content-center align-items-center"
-                       role="button" href="{% url 'approve_patient' patient.slug %}">Approve</a>
-                </div>
-            {% endif %}
             <div class="row surgeries d-print-none"
                  style="margin-top: 20px;border-style: solid;border-color: #fc9c34;border-radius: 7px;width: 100%;">
                 <div class="col d-flex flex-column justify-content-center align-items-center">

@@ -1,5 +1,5 @@
-import csv
 import calendar
+import csv
 import datetime
 import os
 from pathlib import Path
@@ -24,13 +24,6 @@ def logout(request):
 
 
 def index(request):
-    if request.user.is_authenticated:
-        if request.user.group == 'Approver':
-            patient = PatientInformation.objects.filter(is_approved=False)
-        else:
-            patient = PatientInformation.objects.all()
-    if not request.user.is_authenticated:
-        return redirect('login')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -42,7 +35,16 @@ def index(request):
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
 
-    context = {'object': patient, 'account': account, 'today': datetime.date.today()}
+    context = {'account': account, 'today': datetime.date.today()}
+    if request.user.is_authenticated:
+        if request.user.group == 'Approver':
+            surgery = SurgeryInformation.objects.all()
+            context['object'] = surgery
+        else:
+            patient = PatientInformation.objects.all()
+            context['object'] = patient
+    if not request.user.is_authenticated:
+        return redirect('login')
 
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
@@ -207,10 +209,18 @@ def delete_images(request, slug):
 
 
 @login_required
-def approve_patient(request, slug):
-    patient = get_object_or_404(PatientInformation, slug=slug)
-    patient.is_approved = True
-    patient.save()
+def approve_surgery(request, slug, id):
+    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgery.is_approved = True
+    surgery.save()
+    return redirect('home')
+
+
+@login_required
+def deny_surgery(request, slug, id):
+    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgery.is_denied = True
+    surgery.save()
     return redirect('home')
 
 
@@ -229,12 +239,9 @@ def add_surgery(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
     ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
 
-
     if request.method == 'POST':
         surgeryForm = SurgeryForm(request.POST)
         formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
-        patient.is_approved = False
-        patient.save()
         if surgeryForm.is_valid() or formset.is_valid():
             surgery_form = surgeryForm.save(commit=False)
             surgery_form.save()
@@ -249,7 +256,8 @@ def add_surgery(request, slug):
         surgeryForm = SurgeryForm()
         formset = ImageFormSet(queryset=Image.objects.none())
     return render(request, 'addSurgery.html',
-                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient, 'today': datetime.date.today()})
+                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient,
+                   'today': datetime.date.today()})
 
 
 @login_required

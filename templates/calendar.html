@@ -9,6 +9,20 @@
             $('#form-date').val('{{ year }}-' + formattedNumber)
         })
     </script>
+    <style>
+        .btn {
+            -webkit-appearance: none;
+        }
+
+        @media (max-width: 580px) {
+            .month-header {
+                font-size: 30px;
+            }
+            .form-control {
+                font-size: 30px;
+            }
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -117,43 +131,43 @@
                                     <div class="col">
                                         {% for surgery in surgeries %}
                                             {% if surgery.date_of_upload == day %}
-                                                <div role="alert" class="alert alert-primary d-block"
-                                                     style="overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
+                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-primary d-block"
+                                                     style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
-                                                          style="cursor: default; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Surgery Uploaded</span>
+                                                          style="cursor: pointer; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Surgery Uploaded</span>
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_evaluation == day %}
-                                                <div role="alert" class="alert alert-success d-block"
-                                                     style="overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
+                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-success d-block"
+                                                     style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
-                                                          style="cursor: default; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Evaluation</span>
+                                                          style="cursor: pointer; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Evaluation</span>
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_admission == day %}
-                                                <div role="alert" class="alert alert-warning d-block"
-                                                     style="overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
+                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-warning d-block"
+                                                     style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
-                                                          style="cursor: default; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Admitted</span>
+                                                          style="cursor: pointer; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Admitted</span>
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_surgery == day %}
-                                                <div role="alert" class="alert alert-danger d-block"
-                                                     style="overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
+                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-danger d-block"
+                                                     style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
-                                                          style="cursor: default; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Surgery Performed</span>
+                                                          style="cursor: pointer; white-space: nowrap; font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Surgery Performed</span>
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_discharge == day %}
-                                                <div role="alert" class="alert alert-secondary d-block"
-                                                     style="overflow: hidden; width: 100%;margin: 0;padding: 0 10px;">
+                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-secondary d-block"
+                                                     style="cursor: pointer; overflow: hidden; width: 100%;margin: 0;padding: 0 10px;">
                                             <span onmouseover="$(this).css('white-space', 'normal')"
                                                   onmouseleave="$(this).css('white-space', 'nowrap')"
-                                                  style="cursor: default; border: none; white-space: nowrap;padding: 0;font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Discharged</span>
+                                                  style="cursor: pointer; border: none; white-space: nowrap;padding: 0;font-size: 13px; font-weight: normal;"><strong>{{ surgery.patient }}:</strong> Discharged</span>
                                                 </div>
                                             {% endif %}
                                         {% endfor %}
@@ -170,15 +184,20 @@
         function addDate() {
             let dateArray = $('#form-date').val().split('-')
             $('.date-form').attr('action', '/calendar/' + dateArray[0] + '/' + dateArray[1])
-            var input = document.getElementById("form-date");
-            input.addEventListener("keyup", function (event) {
-                if (event.keyCode === 13) {
-                    // Cancel the default action, if needed
-                    event.preventDefault();
-                    // Trigger the button element with a click
-                    $('.date-form').submit()
-                }
-            })
+            const input = document.getElementById("form-date");
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                $('.date-form').submit()
+            } else {
+                input.addEventListener("keyup", function (event) {
+                    if (event.keyCode === 13) {
+                        // Cancel the default action, if needed
+                        event.preventDefault();
+                        // Trigger the button element with a click
+                        $('.date-form').submit()
+                    }
+                })
+            }
+
         }
     </script>
 {% endblock %}

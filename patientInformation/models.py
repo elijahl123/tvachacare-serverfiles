@@ -54,7 +54,6 @@ class PatientInformation(models.Model):
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True, null=True)
-    is_approved = models.BooleanField(default=False, blank=True, null=True)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
@@ -87,6 +86,9 @@ class SurgeryInformation(models.Model):
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
     consent = models.BooleanField(default=False, verbose_name='Consent?')
+    is_approved = models.BooleanField(default=False, blank=True, null=True)
+    is_denied = models.BooleanField(default=False, blank=True, null=True)
+    patient_codes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.burn_operation_number

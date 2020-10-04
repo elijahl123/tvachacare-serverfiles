@@ -93,10 +93,21 @@
                            onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
                            onmouseleave="$(this).find('span').hide(200);"
                            href="{% url 'filter_by_date' %}">
-                            <i class="fa fa-filter" style="margin: 0;font-size: 20px;"></i>
-                            <span style="display: none">Filter by Date</span>
+                            <i class="fa fa-table" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Reports</span>
                         </a>
                     </li>
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(200);"
+                               href="{% url 'calendar' today.year today.month %}">
+                                <i class="fa fa-calendar" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Calendar</span>
+                            </a>
+                        </li>
                     {% if account.group == 'Data Entry' %}
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
@@ -131,17 +142,6 @@
                                href="{% url 'addPatient' %}">
                                 <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
                                 <span style="display: none">Add Patient</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
-                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
-                               role="button"
-                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
-                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
-                               onmouseleave="$(this).find('span').hide(200);"
-                               href="{% url 'calendar' today.year today.month %}">
-                                <i class="fa fa-calendar" style="margin: 0;font-size: 20px;"></i>
-                                <span style="display: none">Calendar</span>
                             </a>
                         </li>
                     {% endif %}
