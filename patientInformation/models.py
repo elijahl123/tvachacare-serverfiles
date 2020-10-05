@@ -30,6 +30,7 @@ def upload_profile_picture(instance, filename):
 # Create your models here.
 class PatientInformation(models.Model):
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
+    uploaded = models.DateField(auto_now_add=True, verbose_name='date of upload')
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
     patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
     injury_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
@@ -88,6 +89,7 @@ class SurgeryInformation(models.Model):
     consent = models.BooleanField(default=False, verbose_name='Consent?')
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     is_denied = models.BooleanField(default=False, blank=True, null=True)
+    reason = models.TextField(blank=True, null=True)
     patient_codes = models.TextField(blank=True, null=True)
 
     def __str__(self):

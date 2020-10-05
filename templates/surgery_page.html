@@ -64,10 +64,12 @@
                         {% if images %}
                             {% for image in images %}
                                 <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-                                    <img class="m-auto d-block" loading="lazy" style="max-height: 500px; max-width: 100%" src="{{ image.image.url }}"
-                                            alt="Slide Image"/>
+                                    <img class="m-auto d-block" loading="lazy"
+                                         style="max-height: 500px; max-width: 100%" src="{{ image.image.url }}"
+                                         alt="Slide Image"/>
                                     <div class="d-flex justify-content-center w-100">
-                                        <p style="background: white;color: #fc9c34;position: absolute;bottom: 30px;padding: 5px;text-align: center;box-shadow: 0px 0px 5px 1px darkgray;border-radius: 5px;">Uploaded: {{ image.date_of_upload_image }}</p>
+                                        <p style="background: white;color: #fc9c34;position: absolute;bottom: 30px;padding: 5px;text-align: center;box-shadow: 0px 0px 5px 1px darkgray;border-radius: 5px;">
+                                            Uploaded: {{ image.date_of_upload_image }}</p>
                                     </div>
                                 </div>
                             {% endfor %}
@@ -136,34 +138,38 @@
                     {% endif %}
                 </div>
             </div>
-         <div style="width: 100%; overflow-x: auto;">
-            <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row" style="min-width:860px;width: 100%;margin: auto auto 20px;">
-                <div class="col d-flex flex-column justify-content-center align-items-center"
-                     style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
-                    <i class="fa fa-calendar" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Date of Admission</h1>
-                    <h1 class="text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">{{ surgery.date_of_admission }}</h1>
-                </div>
-                <div class="col d-flex flex-column justify-content-center align-items-center"
-                     style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
-                    <i class="fa fa-calendar" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Date of Surgery</h1>
-                    <h1 class="text-break text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_surgery }}</h1>
-                </div>
-                <div class="col d-flex flex-column justify-content-center align-items-center"
-                     style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
-                    <i class="fa fa-calendar" style="font-size: 35px;"></i>
-                    <h1 class="text-center" style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
-                        Date of Discharge</h1>
-                    <h1 class="text-break text-center"
-                        style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_discharge }}</h1>
+            <div style="width: 100%; overflow-x: auto;">
+                <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row"
+                     style="min-width:860px;width: 100%;margin: auto auto 20px;">
+                    <div class="col d-flex flex-column justify-content-center align-items-center"
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
+                        <i class="fa fa-calendar" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Date of Admission</h1>
+                        <h1 class="text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">{{ surgery.date_of_admission }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center"
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="fa fa-calendar" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Date of Surgery</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_surgery }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center"
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="fa fa-calendar" style="font-size: 35px;"></i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Date of Discharge</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_discharge }}</h1>
+                    </div>
                 </div>
             </div>
-         </div>
             {% if surgery.date_of_upload %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
@@ -481,15 +487,44 @@
                 </div>
             {% endif %}
             {% if account.group == 'Approver' and surgery.is_approved == False and surgery.is_denied == False %}
-                <div role="group" class="btn-group"
-                     style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
-                    <a class="btn btn-danger d-flex justify-content-center align-items-center" role="button"
-                       href="{% url 'deny_surgery' surgery.patient.slug surgery.id %}">Don&#39;t
-                        Approve</a>
-                    <a class="btn btn-success d-flex justify-content-center align-items-center"
-                       role="button" href="{% url 'approve_surgery' surgery.patient.slug surgery.id %}">Approve</a>
-                </div>
+                <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
+                    <p class="lead"
+                       style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: #FC9C34; margin-bottom: 5px">
+                        <strong>Notes for Approval or Denial</strong></p>
+                    <textarea style="margin-bottom: 15px" name="reason" id="reason" class="form-control"></textarea>
+                    <div role="group" class="btn-group"
+                         style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                        <input class="btn btn-danger d-flex justify-content-center align-items-center" type="submit"
+                        value="Deny" name="deny">
+                        <input class="btn btn-success d-flex justify-content-center align-items-center"
+                                type="submit" value="Approve" name="approve">
+                    </div>
+                </form>
+
             {% endif %}
+            {% if surgery.is_denied == True and account.group == 'Approver' %}
+                    <div role="group" class="btn-group"
+                         style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                        <a class="btn btn-danger d-flex justify-content-center align-items-center"
+                                role="button" href="{% url 'approve_surgery' surgery.patient.slug surgery.id %}">
+                            Appeal Denial
+                        </a>
+                    </div>
+            {% endif %}
+
+        {% if surgery.is_denied == True and account.group != 'Approver' %}
+                    <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
+                    <p class="lead"
+                       style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: #FC9C34; margin-bottom: 5px">
+                        <strong>Reason for Appeal</strong></p>
+                    <textarea style="margin-bottom: 15px" name="appeal_request" id="appeal_request" class="form-control"></textarea>
+                    <div role="group" class="btn-group" style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                        <input class="btn btn-danger d-flex justify-content-center align-items-center appeal-button" type="submit"
+                        value="Request Appeal" name="appeal">
+                    </div>
+                </form>
+            {% endif %}
+
             <div class="row"
                  style="margin-top: 20px;border-style: solid;border-color: #fc9c34;border-radius: 7px;width: 100%;">
                 <div class="col d-flex flex-column justify-content-center align-items-center">
@@ -513,5 +548,6 @@
             </div>
         </div>
     </main>
-
+    <script>
+    </script>
 {% endblock %}

@@ -7,14 +7,15 @@ from pathlib import Path
 import requests
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, send_mail
 from django.forms import modelformset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.template.loader import render_to_string
 from django.views.static import serve
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm
-from .models import PatientInformation, Image, SurgeryInformation
+from .models import PatientInformation, Image, SurgeryInformation, Account
 
 
 # Create your views here.
@@ -42,7 +43,10 @@ def index(request):
             context['object'] = surgery
         else:
             patient = PatientInformation.objects.all()
+            surgery = SurgeryInformation.objects.all()
             context['object'] = patient
+            context['surgery'] = surgery
+
     if not request.user.is_authenticated:
         return redirect('login')
 
@@ -212,6 +216,7 @@ def delete_images(request, slug):
 def approve_surgery(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_approved = True
+    surgery.is_denied = False
     surgery.save()
     return redirect('home')
 
@@ -220,6 +225,7 @@ def approve_surgery(request, slug, id):
 def deny_surgery(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_denied = True
+    surgery.is_approved = False
     surgery.save()
     return redirect('home')
 
@@ -276,12 +282,33 @@ def surgery_page(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgeries = SurgeryInformation.objects.filter(patient=patient.id)
     images = Image.objects.filter(surgery=surgery.id)
+
     context['patient'] = patient
     context['surgery'] = surgery
     context['images'] = images
     context['surgeries'] = surgeries
     context['today'] = datetime.date.today()
-
+    if request.POST:
+        if 'approve' in request.POST:
+            surgery.reason = request.POST['reason']
+            surgery.save()
+            approve_surgery(request, surgery.patient.slug, surgery.id)
+            return redirect('home')
+        elif 'deny' in request.POST:
+            surgery.reason = request.POST['reason']
+            surgery.save()
+            deny_surgery(request, surgery.patient.slug, surgery.id)
+            return redirect('home')
+        elif 'appeal' in request.POST:
+            subject = 'Appeal Request for ' + patient.first_name + ' ' + patient.last_name + ' Surgery ID #' + str(
+                surgery.id)
+            to_emails = Account.objects.filter(group='Approver').values_list('email', flat=True)
+            message = request.POST.get('appeal_request')
+            html_message = render_to_string('appeal_email.html',
+                                            {'patient': patient, 'account': account, 'message': message,
+                                             'surgery': surgery})
+            for email in to_emails:
+                send_mail(subject, message, from_email='tvachacare@gmail.com', recipient_list=[email], html_message=html_message)
     return render(request, 'surgery_page.html', context)
 
 

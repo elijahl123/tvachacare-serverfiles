@@ -11,7 +11,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://db-postgresql-sfo2-36006-do-user-7877358-0.a.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
+      <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="Django default" uuid="f08c9846-a1f3-479f-ba25-a23f93eddd61">
       <driver-ref>sqlite.xerial</driver-ref>
