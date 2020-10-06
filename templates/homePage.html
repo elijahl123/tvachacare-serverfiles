@@ -309,6 +309,9 @@
                                                                             {% else %}
                                                                             <span class="badge badge-pill badge-secondary">Awaiting Approval</span>
                                                                         {% endif %}
+                                                                        <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
+                                                                           class='patient-name'>Uploaded {{ surgeries.date_of_upload }}</a>
+
 
                                                                     </li>
                                                                 </ul>

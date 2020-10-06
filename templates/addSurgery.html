@@ -15,6 +15,29 @@
             color: white !important;
             transition-duration: 0.2s !important;
         }
+
+        .chip {
+            display: inline-block;
+            padding: 0 25px;
+            height: 50px;
+            font-size: 16px;
+            line-height: 50px;
+            border-radius: 25px;
+            background-color: #f1f1f1;
+        }
+
+        .closebtn {
+            padding-left: 10px;
+            color: #888;
+            font-weight: bold;
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .closebtn:hover {
+            color: #000;
+        }
     </style>
     <script>
 
@@ -35,6 +58,7 @@
         }
 
         let numOfForms = 0
+        let numOfProcedureCodes = 0
 
         function cloneMore() {
             const newElement = $('div.image-container')
@@ -47,27 +71,53 @@
                 "                                             style=\"border-radius: 5px;margin-bottom: 5px;\">\n" +
                 "                                            <h6 style=\"width: 270px;margin: 0 0 0 5px;\">Date of Upload:</h6>\n" +
                 "                                            <input class=\"form-control\" style=\"border-style: none;\" placeholder=\"Date of Upload\"\n" +
-                "                                                   type=\"date\" name=\"form-" + numOfForms + "-date_of_upload_image\"/>\n" +
+                "                                                   type=\"date\" name=\"images-" + numOfForms + "-date_of_upload_image\"/>\n" +
                 "                                        </div>\n" +
                 "                                        <div class=\"custom-file\">\n" +
-                "                                            <input type=\"file\" class=\"custom-file-input\" id=\"id_form-" + numOfForms + "-image\"\n" +
-                "                                               name=\"form-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
+                "                                            <input type=\"file\" class=\"custom-file-input\" id=\"id_images-" + numOfForms + "-image\"\n" +
+                "                                               name=\"images-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
                 "                                            <label class=\"custom-file-label\" style=\"border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;\">Upload File</label>\n" +
                 "                                        </div>\n" +
                 "                                    </div>\n" +
                 "                                    <button class=\"btn d-flex justify-content-center align-items-center\" type=\"button\"\n" +
                 "                                            style=\"border-style: none;color: white;background: red;position: absolute;right: 0;\" onclick=\"deleteImage(this)\">x</button>\n" +
                 "                                </div>")
-            let totalForms = $('input#id_form-TOTAL_FORMS');
+            let totalForms = $('input#id_images-TOTAL_FORMS');
             totalForms.val(numOfForms + 1)
             numOfForms++
+        }
+
+        function addProcedure() {
+            const newElement = $('div.procedure-container')
+            newElement.prepend("<div class=\"col-md-10 offset-md-1\"\n" +
+                "                                             style=\"padding: 0;display:flex;margin-bottom: 10px; \">\n" +
+                "                                            <input class=\"form-control\" type=\"text\"\n" +
+                "                                                   style=\"font-family: 'Open Sans', sans-serif;\"\n" +
+                "                                                   id=\"id_procedures-" + numOfProcedureCodes + "-procedure_codes\"\n" +
+                "                                                   name=\"procedures-" + numOfProcedureCodes + "-procedure_codes\">\n" +
+                "                                            <button class=\"btn btn-danger\" type=\"button\" onclick=\"deleteProcedure(this)\" style=\"position: absolute; right: 0\">\n" +
+                "                                                <i class=\"fa fa-trash\"></i>\n" +
+                "                                            </button>\n" +
+                "                                        </div>")
+            let totalForms = $('input#id_procedures-TOTAL_FORMS');
+            totalForms.val(numOfProcedureCodes + 1)
+            numOfProcedureCodes++
+        }
+
+        function deleteProcedure(element) {
+            let parent = $(element).parent()
+            parent.remove()
+            numOfProcedureCodes--
+            let totalForms = $('input#id_procedures-TOTAL_FORMS');
+            totalForms.val(numOfProcedureCodes)
+
         }
 
         function deleteImage(element) {
             let parent = $(element).parent();
             parent.remove()
             numOfForms--
-            let totalForms = $('input#id_form-TOTAL_FORMS');
+            let totalForms = $('input#id_images-TOTAL_FORMS');
             totalForms.val(numOfForms)
         }
 
@@ -163,7 +213,8 @@
                                              style="border-radius: 5px;margin-bottom: 5px;">
                                             <h6 style="width: 270px;margin: 0 0 0 5px;">Date of Upload:</h6>
                                             <input class="form-control" style="border-style: none;"
-                                                   placeholder="Date of Upload" id="{{ form.date_of_upload_image.id_for_label }}"
+                                                   placeholder="Date of Upload"
+                                                   id="{{ form.date_of_upload_image.id_for_label }}"
                                                    type="date" name="{{ form.date_of_upload_image.html_name }}"/>
                                         </div>
                                         <div class="custom-file">
@@ -512,10 +563,41 @@
                                     <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
                                         <strong>Complications</strong></p>
                                 </div>
-                                <div class="col-md-10 offset-md-1"><textarea class="form-control"
-                                                                             style="font-family: 'Open Sans', sans-serif;"
-                                                                             name="complications"></textarea></div>
+                                <div class="col-md-10 offset-md-1">
+                                    <textarea class="form-control" style="font-family: 'Open Sans', sans-serif;"
+                                              name="complications"></textarea>
+                                </div>
                             </div>
+                            <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                <div class="col-md-8 offset-md-1">
+                                    <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                        <strong>Procedure Codes</strong></p>
+                                </div>
+                                {{ formset_procedure_codes.management_form }}
+                                <div class="procedure-container" style="width: 100%">
+
+                                    {% for procedure_form in formset_procedure_codes %}
+                                        <div class="col-md-10 offset-md-1"
+                                             style="padding: 0;display:flex;margin-bottom: 10px; ">
+                                            <input class="form-control" type="text"
+                                                   style="font-family: 'Open Sans', sans-serif;"
+                                                   id="{{ procedure_form.procedure_codes.id_for_label }}"
+                                                   name="{{ procedure_form.procedure_codes.html_name }}">
+                                            <button class="btn btn-danger" type="button" onclick="deleteProcedure(this)" style="position: absolute; right: 0">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    {% endfor %}
+                                    <div class="col-md-10 offset-md-1" style="padding: 0">
+                                        <button class="btn text-white" type="button"
+                                                style="background-color: #FC9C34; width: 100%;"
+                                                onclick="addProcedure()">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
                                 <div class="col-md-8 col-xl-10 offset-md-1">
                                     <div class="form-check d-flex align-items-center">

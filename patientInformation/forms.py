@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 
-from .models import Account, PatientInformation, Image, SurgeryInformation
+from .models import Account, PatientInformation, Image, SurgeryInformation, ProcedureCodes
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -89,12 +89,15 @@ class AddPatient(forms.ModelForm):
 
 
 class ImageForm(forms.ModelForm):
-    image = forms.ImageField(label='Image')
-    date_of_upload_image = forms.DateField(label="Date of Upload")
-
     class Meta:
         model = Image
         fields = ('image', 'date_of_upload_image')
+
+
+class ProcedureForm(forms.ModelForm):
+    class Meta:
+        model = ProcedureCodes
+        fields = ('procedure_codes',)
 
 
 class SurgeryForm(forms.ModelForm):
@@ -125,7 +128,7 @@ class SurgeryForm(forms.ModelForm):
             'type_of_surgery',
             'area_operated',
             'complications',
-            'consent'
+            'consent',
         ]
 
 

@@ -486,6 +486,20 @@
                     </div>
                 </div>
             {% endif %}
+            {% for procedure_code in procedure_codes %}
+            <div class="row"
+                     style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
+                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                        <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                            style="color: white;font-weight: bold;margin-bottom: 0;">Procedure Code {{ forloop.counter }}</h3>
+                    </div>
+                    <div class="col-xl-8"
+                         style="padding: 15px 20px;background-color: whitesmoke;border-radius: 10px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">
+                        <p class="lead d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                           style="color: #444444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;border-radius: 10px;">{{ procedure_code.procedure_codes }}</p>
+                    </div>
+                </div>
+            {% endfor %}
             {% if account.group == 'Approver' and surgery.is_approved == False and surgery.is_denied == False %}
                 <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
                     <p class="lead"

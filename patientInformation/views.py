@@ -8,14 +8,15 @@ import requests
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
-from django.forms import modelformset_factory
+from django.forms import modelformset_factory, formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm
-from .models import PatientInformation, Image, SurgeryInformation, Account
+from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm, \
+    ProcedureForm
+from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes
 
 
 # Create your views here.
@@ -243,12 +244,14 @@ def add_surgery(request, slug):
     } if request.user.is_authenticated else None
 
     patient = get_object_or_404(PatientInformation, slug=slug)
-    ImageFormSet = modelformset_factory(Image, form=ImageForm, extra=0)
+    ImageFormSet = formset_factory(ImageForm, extra=0)
+    ProcedureFormSet = formset_factory(ProcedureForm, extra=0)
 
     if request.method == 'POST':
         surgeryForm = SurgeryForm(request.POST)
-        formset = ImageFormSet(request.POST, request.FILES, queryset=Image.objects.none())
-        if surgeryForm.is_valid() or formset.is_valid():
+        formset = ImageFormSet(request.POST, request.FILES, prefix='images')
+        formset_procedure_codes = ProcedureFormSet(request.POST, request.FILES, prefix='procedures')
+        if surgeryForm.is_valid() or formset.is_valid() or formset_procedure_codes.is_valid():
             surgery_form = surgeryForm.save(commit=False)
             surgery_form.save()
 
@@ -257,13 +260,18 @@ def add_surgery(request, slug):
                 date_of_upload_image = form['date_of_upload_image']
                 photo = Image(surgery=surgery_form, image=image, date_of_upload_image=date_of_upload_image)
                 photo.save()
+            for form in formset_procedure_codes.cleaned_data:
+                procedure_codes = form['procedure_codes']
+                procedure = ProcedureCodes(surgery=surgery_form, procedure_codes=procedure_codes)
+                procedure.save()
             return redirect('patient_page', slug)
     else:
         surgeryForm = SurgeryForm()
-        formset = ImageFormSet(queryset=Image.objects.none())
+        formset = ImageFormSet(prefix='images')
+        formset_procedure_codes = ProcedureFormSet(prefix='procedures')
     return render(request, 'addSurgery.html',
-                  {'surgeryForm': surgeryForm, 'formset': formset, 'account': account, 'patient': patient,
-                   'today': datetime.date.today()})
+                  {'surgeryForm': surgeryForm, 'formset': formset, 'formset_procedure_codes': formset_procedure_codes,
+                   'account': account, 'patient': patient, 'today': datetime.date.today()})
 
 
 @login_required
@@ -282,11 +290,13 @@ def surgery_page(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgeries = SurgeryInformation.objects.filter(patient=patient.id)
     images = Image.objects.filter(surgery=surgery.id)
+    procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
 
     context['patient'] = patient
     context['surgery'] = surgery
     context['images'] = images
     context['surgeries'] = surgeries
+    context['procedure_codes'] = procedure_codes
     context['today'] = datetime.date.today()
     if request.POST:
         if 'approve' in request.POST:
@@ -308,7 +318,8 @@ def surgery_page(request, slug, id):
                                             {'patient': patient, 'account': account, 'message': message,
                                              'surgery': surgery})
             for email in to_emails:
-                send_mail(subject, message, from_email='tvachacare@gmail.com', recipient_list=[email], html_message=html_message)
+                send_mail(subject, message, from_email='tvachacare@gmail.com', recipient_list=[email],
+                          html_message=html_message)
     return render(request, 'surgery_page.html', context)
 
 

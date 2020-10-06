@@ -59,6 +59,9 @@ class PatientInformation(models.Model):
     def __str__(self):
         return self.first_name + ' ' + self.last_name
 
+    class Meta:
+        ordering = ['uploaded']
+
 
 class SurgeryInformation(models.Model):
     patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
@@ -90,16 +93,23 @@ class SurgeryInformation(models.Model):
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     is_denied = models.BooleanField(default=False, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
-    patient_codes = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.burn_operation_number
+
+    class Meta:
+        ordering = ['date_of_upload']
 
 
 class Image(models.Model):
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
     date_of_upload_image = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+
+
+class ProcedureCodes(models.Model):
+    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
+    procedure_codes = models.TextField(blank=True, null=True)
 
 
 class MyAccountManager(BaseUserManager):
