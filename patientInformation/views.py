@@ -16,7 +16,7 @@ from django.views.static import serve
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm, \
     ProcedureForm
-from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes
+from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes, EventLog
 
 
 # Create your views here.
@@ -89,6 +89,8 @@ def loginadmin(request):
 
             if user:
                 login(request, user)
+                event = EventLog(user=email, event_type='Login', notes='Logged In')
+                event.save()
                 return redirect('home')
 
     else:

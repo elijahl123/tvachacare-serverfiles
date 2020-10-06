@@ -183,6 +183,16 @@ class Account(AbstractBaseUser):
         return True
 
 
+class EventLog(models.Model):
+    user = models.EmailField(blank=True, null=True)
+    event_type = models.CharField(blank=True, null=True, max_length=60)
+    event_time = models.DateTimeField(auto_now_add=True)
+    notes = models.TextField(blank=True, null=True)
+
+    class Meta:
+        ordering = ['event_time']
+
+
 @receiver(post_delete, sender=Image)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(True)

@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import PatientInformation, Account, Image, SurgeryInformation
+from .models import PatientInformation, Account, Image, SurgeryInformation, EventLog
 
 
 # Register your models here.
@@ -37,7 +37,18 @@ class SurgeryAdmin(admin.ModelAdmin):
     fieldsets = ()
 
 
+class EventAdmin(admin.ModelAdmin):
+    list_display = ('user', 'event_type', 'event_time', 'notes')
+    search_fields = ('user', 'event_type', 'event_time', 'notes')
+    readonly_fields = ()
+
+    filter_horizontal = ()
+    list_filter = ()
+    fieldsets = ()
+
+
 admin.site.register(Account, AccountAdmin)
 admin.site.register(PatientInformation, PatientAdmin)
 admin.site.register(Image)
 admin.site.register(SurgeryInformation, SurgeryAdmin)
+admin.site.register(EventLog, EventAdmin)
