@@ -64,8 +64,10 @@
 <nav class="d-print-none navbar navbar-light navbar-expand-lg fixed-top bg-white d-flex d-xl-flex align-items-center align-items-xl-end clean-navbar"
      style="color: white !important;background-color: whitesmoke !important;position: relative;">
     <div class="container-fluid" style="color: white !important;">
-        <img class="d-flex justify-content-center align-items-center" src="{% static 'img/logoTvacha.png' %}"
-             height="30px" style="min-height: 30px;max-height: 38px;">
+        <a href="{% url 'home' %}">
+            <img class="d-flex justify-content-center align-items-center" src="{% static 'img/logoTvacha.png' %}"
+             height="30px" style="min-height: 30px;max-height: 38px;"></a>
+
         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
                 style="background-color: #fc9c34;">
             <span class="sr-only">Toggle navigation</span>
@@ -92,7 +94,7 @@
                            style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
                            onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
                            onmouseleave="$(this).find('span').hide(200);"
-                           href="{% url 'filter_by_date' %}">
+                           href="{% if account.group != 'Approver' %}{% url 'filter_by_date' %}{% else %}{% url 'hui_report' %}{% endif %}">
                             <i class="fa fa-table" style="margin: 0;font-size: 20px;"></i>
                             <span style="display: none">Reports</span>
                         </a>

@@ -8,7 +8,7 @@ import requests
 from django.contrib.auth import logout as lgout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
-from django.forms import modelformset_factory, formset_factory
+from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -274,7 +274,8 @@ def add_surgery(request, slug):
         if surgeryForm.is_valid() or formset.is_valid() or formset_procedure_codes.is_valid():
             surgery_form = surgeryForm.save(commit=False)
             surgery_form.save()
-            event_notes = 'Surgery Burn Operation Number #' + str(request.POST['burn_operation_number']) + ' was uploaded'
+            event_notes = 'Surgery Burn Operation Number #' + str(
+                request.POST['burn_operation_number']) + ' was uploaded'
             event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
             event.save()
 
@@ -383,6 +384,9 @@ def filter_by_date(request):
         "account": account,
     }
 
+    if request.user.group == 'Approver':
+        return redirect('home')
+
     submitbutton = request.POST.get('submit')
 
     context['submitbutton'] = submitbutton
@@ -398,7 +402,11 @@ def filter_by_date(request):
         event_notes = 'Filter.csv was created'
         event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
         event.save()
-        write_response(date_start, date_end, fields)
+        if not request.POST.get('procedure_codes'):
+            write_response(date_start, date_end, fields)
+        else:
+            write_response(date_start, date_end, fields, procedure_code_boolean=True)
+
         return redirect('send_file')
 
     context['form'] = form
@@ -407,19 +415,42 @@ def filter_by_date(request):
     return render(request, 'filter.html', context)
 
 
-def write_response(date_start, date_end, fields):
+def write_response(date_start, date_end, fields, procedure_code_boolean=False):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
         fields_array = fields.split(',')
-        surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end]).values_list(
-            *fields_array)
+        surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end])
         if surgeries:
             header = [s.replace('patient__', '') for s in fields_array]
             header = [s.replace('_', ' ') for s in header]
             header = [s.title() for s in header]
+            if procedure_code_boolean:
+                for surgery in surgeries:
+                    procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
+                    if procedure_codes:
+                        for procedure_code in procedure_codes:
+                            header.append('Procedure Code')
             wr.writerow(header)
             for surgery in surgeries:
-                wr.writerow(surgery)
+                csv_array = []
+                fields_array = [s.replace('patient__', 'patient.') for s in fields_array]
+                if fields_array:
+                    for field in fields_array:
+                        if 'patient.' in field:
+                            field = field.replace('patient.', '')
+                            attr = getattr(getattr(surgery, 'patient'), field)
+                            csv_array.append(attr)
+                        elif '' not in fields_array:
+                            attr = getattr(surgery, field)
+                            csv_array.append(attr)
+                        else:
+                            break
+                if procedure_code_boolean:
+                    procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
+                    if procedure_codes:
+                        for procedure_code in procedure_codes:
+                            csv_array.append(procedure_code.procedure_codes)
+                wr.writerow(csv_array)
 
         else:
             wr.writerows('')
@@ -493,3 +524,40 @@ def calendar_events(request, year, current_month):
     context['surgeries'] = surgeries
     context['today'] = datetime.date.today()
     return render(request, 'calendar.html', context)
+
+
+def hui_report(request):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {
+        "account": account,
+    }
+
+    submitbutton = request.POST.get('submit')
+
+    context['submitbutton'] = submitbutton
+
+    surgeries = SurgeryInformation._meta.get_fields()
+    context['surgeries'] = surgeries
+
+    form = CSVForm(request.POST or None)
+    if form.is_valid():
+        date_start = form.cleaned_data.get('date_start')
+        date_end = form.cleaned_data.get('date_end')
+        fields = 'patient__first_name,patient__last_name,date_of_surgery,patient__patient_record_number,is_approved'
+        event_notes = 'HUI Report was created'
+        event = EventLog(user=request.user.email, event_type='Report Created', notes=event_notes)
+        event.save()
+        write_response(date_start, date_end, fields, procedure_code_boolean=True)
+
+        return redirect('send_file')
+
+    context['form'] = form
+    context['today'] = datetime.date.today()
+
+    return render(request, 'hui_filter.html', context)

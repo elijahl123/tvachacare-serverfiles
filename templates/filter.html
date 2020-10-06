@@ -9,7 +9,7 @@
     <script>
         let fields = []
         function addFields(checkbox) {
-            if ($(checkbox).prop("checked") === true) {
+            if ($(checkbox).prop("checked") === true && $(checkbox).attr('name') !== 'procedure_codes') {
                 fields.push($(checkbox).attr("name"))
             }
             else {
@@ -195,6 +195,12 @@
                             </div>
                         {% endif %}
                     {% endfor %}
+                <div class="form-check d-flex align-items-center"
+                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)" class="form-check-input"
+                                                                     id="formCheck-22" style="margin-top: 0;"
+                                                                     name="procedure_codes"/><label
+                            class="form-check-label" for="formCheck-1"
+                            style="color: #fc9c34;font-size: 15px;">Procedure Codes</label></div>
                 </div>
             </div>
             <div class="form-row">
