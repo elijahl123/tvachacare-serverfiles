@@ -429,6 +429,7 @@
                     </div>
                 </div>
             {% endif %}
+        {% if account.group != 'Approver' %}
             <div class="row surgeries d-print-none"
                  style="margin-top: 20px;border-style: solid;border-color: #fc9c34;border-radius: 7px;width: 100%;">
                 <div class="col d-flex flex-column justify-content-center align-items-center">
@@ -450,6 +451,7 @@
                     </nav>
                 </div>
             </div>
+        {% endif %}
         </div>
     </main>
     <script>

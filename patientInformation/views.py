@@ -21,6 +21,9 @@ from .models import PatientInformation, Image, SurgeryInformation, Account, Proc
 
 # Create your views here.
 def logout(request):
+    event_notes = 'Logged Out'
+    event = EventLog(user=request.user.email, event_type='Logged Out', notes=event_notes)
+    event.save()
     lgout(request)
     return redirect("login")
 
@@ -123,6 +126,9 @@ def addpatient(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
+            event_notes = 'Patient ' + str(request.POST['patient_record_number']) + ' was uploaded'
+            event = EventLog(user=request.user.email, event_type='Add Patient', notes=event_notes)
+            event.save()
             form = AddPatient()
             return redirect('home')
     else:
@@ -153,6 +159,9 @@ def patient_page(request, slug):
     }
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = SurgeryInformation.objects.filter(patient=patient.id)
+    event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
+    event = EventLog(user=request.user.email, event_type='Patient Viewed', notes=event_notes)
+    event.save()
     form = EmailForm(request.POST or None)
     if form.is_valid():
         to = request.POST.get('to')
@@ -201,6 +210,9 @@ def patient_page(request, slug):
 @login_required
 def delete_patient(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
+    event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
+    event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
+    event.save()
     patient.delete()
     return redirect('delete_images', slug=slug)
 
@@ -221,6 +233,9 @@ def approve_surgery(request, slug, id):
     surgery.is_approved = True
     surgery.is_denied = False
     surgery.save()
+    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Approved'
+    event = EventLog(user=request.user.email, event_type='Surgery Approved', notes=event_notes)
+    event.save()
     return redirect('home')
 
 
@@ -230,6 +245,9 @@ def deny_surgery(request, slug, id):
     surgery.is_denied = True
     surgery.is_approved = False
     surgery.save()
+    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Denied'
+    event = EventLog(user=request.user.email, event_type='Surgery Denied', notes=event_notes)
+    event.save()
     return redirect('home')
 
 
@@ -256,6 +274,9 @@ def add_surgery(request, slug):
         if surgeryForm.is_valid() or formset.is_valid() or formset_procedure_codes.is_valid():
             surgery_form = surgeryForm.save(commit=False)
             surgery_form.save()
+            event_notes = 'Surgery Burn Operation Number #' + str(request.POST['burn_operation_number']) + ' was uploaded'
+            event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
+            event.save()
 
             for form in formset.cleaned_data:
                 image = form['image']
@@ -294,6 +315,10 @@ def surgery_page(request, slug, id):
     images = Image.objects.filter(surgery=surgery.id)
     procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
 
+    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Viewed'
+    event = EventLog(user=request.user.email, event_type='Surgery Viewed', notes=event_notes)
+    event.save()
+
     context['patient'] = patient
     context['surgery'] = surgery
     context['images'] = images
@@ -328,6 +353,9 @@ def surgery_page(request, slug, id):
 @login_required
 def delete_surgery(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
+    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
+    event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
+    event.save()
     surgery.delete()
     return redirect('delete_surgery_images', slug=slug, id=id)
 
@@ -367,6 +395,9 @@ def filter_by_date(request):
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
         fields = request.POST.get('fields')
+        event_notes = 'Filter.csv was created'
+        event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
+        event.save()
         write_response(date_start, date_end, fields)
         return redirect('send_file')
 
@@ -426,6 +457,9 @@ def edit_patient(request, slug):
             obj = form.save(commit=False)
             obj.save()
             form = AddPatient()
+            event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
+            event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
+            event.save()
             return redirect('patient_page', slug)
     else:
         form = AddPatient
