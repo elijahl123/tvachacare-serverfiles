@@ -12,6 +12,8 @@ from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.views import generic
+from django.views.generic import ListView
 from django.views.static import serve
 
 from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm, \
@@ -95,6 +97,10 @@ def loginadmin(request):
                 event = EventLog(user=email, event_type='Login', notes='Logged In')
                 event.save()
                 return redirect('home')
+        else:
+            email = request.POST['email'] or None
+            event = EventLog(user=email, event_type='Failed Login', notes='Failed Login Attempt')
+            event.save()
 
     else:
         form = AccountAuthenticationForm()
