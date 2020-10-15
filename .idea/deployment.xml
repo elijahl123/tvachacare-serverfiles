@@ -11,13 +11,11 @@
             <mapping deploy="/static" local="$PROJECT_DIR$/static" web="/" />
           </mappings>
           <excludedPaths>
-            <excludedPath path="/patientInformation/migrations" />
-            <excludedPath path="/patientInformation/__pycache__" />
-            <excludedPath path="/tvachacare/__pycache__" />
-            <excludedPath path="/tvachacare/__init__.py" />
-            <excludedPath path="/tvachacare/asgi.py" />
-            <excludedPath path="/tvachacare/settings.py" />
-            <excludedPath path="/tvachacare/wsgi.py" />
+            <excludedPath path="/TvachaCare/__pycache__" />
+            <excludedPath path="/TvachaCare/__init__.py" />
+            <excludedPath path="/TvachaCare/asgi.py" />
+            <excludedPath path="/TvachaCare/settings.py" />
+            <excludedPath path="/TvachaCare/wsgi.py" />
           </excludedPaths>
         </serverdata>
       </paths>
