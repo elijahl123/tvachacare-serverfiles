@@ -5,19 +5,16 @@ import os
 from pathlib import Path
 
 import requests
-from django.contrib.auth import logout as lgout, authenticate, login
+from django.contrib.auth import logout as lgout, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
-from django.views import generic
-from django.views.generic import ListView
 from django.views.static import serve
 
-from .forms import AccountAuthenticationForm, AccountUpdateForm, AddPatient, ImageForm, SurgeryForm, CSVForm, EmailForm, \
-    ProcedureForm
+from .forms import *
 from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes, EventLog
 
 
@@ -211,6 +208,38 @@ def patient_page(request, slug):
     context['surgery'] = surgery
     context['today'] = datetime.date.today()
     return render(request, 'patient_page.html', context)
+
+
+@login_required
+def edit_patient(request, slug):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {
+        "account": account,
+    }
+    patient = get_object_or_404(PatientInformation, slug=slug)
+    if request.POST:
+        form = AddPatient(request.POST or None, request.FILES or None, instance=patient)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            form = AddPatient()
+            event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
+            event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
+            event.save()
+            return redirect('patient_page', slug)
+    else:
+        form = AddPatient
+
+    context['form'] = form
+    context['patient'] = patient
+    context['today'] = datetime.date.today()
+    return render(request, 'editPatient.html', context)
 
 
 @login_required
@@ -476,38 +505,6 @@ def send_file(request):
 
 
 @login_required
-def edit_patient(request, slug):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
-    context = {
-        "account": account,
-    }
-    patient = get_object_or_404(PatientInformation, slug=slug)
-    if request.POST:
-        form = AddPatient(request.POST or None, request.FILES or None, instance=patient)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
-            form = AddPatient()
-            event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
-            event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
-            event.save()
-            return redirect('patient_page', slug)
-    else:
-        form = AddPatient
-
-    context['form'] = form
-    context['patient'] = patient
-    context['today'] = datetime.date.today()
-    return render(request, 'editPatient.html', context)
-
-
-@login_required
 def calendar_events(request, year, current_month):
     account = {
         "id": request.user.id,
@@ -567,3 +564,15 @@ def hui_report(request):
     context['today'] = datetime.date.today()
 
     return render(request, 'hui_filter.html', context)
+
+
+def privacyPolicy(request):
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group,
+    } if request.user.is_authenticated else None
+    context = {"account": account, 'today': datetime.date.today()}
+    return render(request, 'privacyPolicy.html', context)

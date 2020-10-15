@@ -7,7 +7,7 @@
           <mappings>
             <mapping deploy="/patientInformation" local="$PROJECT_DIR$/patientInformation" web="/" />
             <mapping deploy="/templates" local="$PROJECT_DIR$/templates" web="/" />
-            <mapping deploy="/tvachacare" local="$PROJECT_DIR$/TvachaCare" web="/" />
+            <mapping deploy="/TvachaCare" local="$PROJECT_DIR$/TvachaCare" web="/" />
             <mapping deploy="/static" local="$PROJECT_DIR$/static" web="/" />
           </mappings>
           <excludedPaths>
@@ -19,13 +19,6 @@
             <excludedPath path="/tvachacare/settings.py" />
             <excludedPath path="/tvachacare/wsgi.py" />
           </excludedPaths>
-        </serverdata>
-      </paths>
-      <paths name="TvachaCareOther">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
         </serverdata>
       </paths>
     </serverData>
