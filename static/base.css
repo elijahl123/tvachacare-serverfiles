@@ -181,21 +181,6 @@ html, body {
   /*background-color: #fff!important;*/
 }
 
-body {
-  margin: 0;
-  font-family: Montserrat,sans-serif;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: white;
-  text-align: left;
-  /*background-color: #fff;*/
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #fc9c34;
-}
 
 a {
   color: #fc9c34;
