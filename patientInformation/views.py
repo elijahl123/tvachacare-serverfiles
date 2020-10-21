@@ -53,6 +53,9 @@ def index(request):
     if not request.user.is_authenticated:
         return redirect('login')
 
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
+
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
         if form.is_valid():
@@ -93,7 +96,10 @@ def loginadmin(request):
                 login(request, user)
                 event = EventLog(user=email, event_type='Login', notes='Logged In')
                 event.save()
-                return redirect('home')
+                if user.is_accepted:
+                    return redirect('home')
+                else:
+                    return redirect('terms_of_service')
         else:
             email = request.POST['email'] or None
             event = EventLog(user=email, event_type='Failed Login', notes='Failed Login Attempt')
@@ -123,6 +129,9 @@ def addpatient(request):
     context = {
         "account": account
     }
+
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
 
     if request.POST:
         form = AddPatient(request.POST or None, request.FILES or None)
@@ -203,6 +212,9 @@ def patient_page(request, slug):
             email.attach(patient.injury_image.name, response.content, mimetype='image/*')
         email.send()
 
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
+
     context['form'] = form
     context['patient'] = patient
     context['surgery'] = surgery
@@ -236,6 +248,8 @@ def edit_patient(request, slug):
     else:
         form = AddPatient
 
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     context['form'] = form
     context['patient'] = patient
     context['today'] = datetime.date.today()
@@ -244,6 +258,8 @@ def edit_patient(request, slug):
 
 @login_required
 def delete_patient(request, slug):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     patient = get_object_or_404(PatientInformation, slug=slug)
     event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
@@ -254,6 +270,8 @@ def delete_patient(request, slug):
 
 @login_required
 def delete_images(request, slug):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     patient = PatientInformation.objects.filter(slug=slug)
     if patient:
         patient.delete()
@@ -264,6 +282,8 @@ def delete_images(request, slug):
 
 @login_required
 def approve_surgery(request, slug, id):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_approved = True
     surgery.is_denied = False
@@ -276,6 +296,8 @@ def approve_surgery(request, slug, id):
 
 @login_required
 def deny_surgery(request, slug, id):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_denied = True
     surgery.is_approved = False
@@ -288,6 +310,8 @@ def deny_surgery(request, slug, id):
 
 @login_required
 def add_surgery(request, slug):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -335,6 +359,8 @@ def add_surgery(request, slug):
 
 @login_required
 def surgery_page(request, slug, id):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -388,6 +414,8 @@ def surgery_page(request, slug, id):
 
 @login_required
 def delete_surgery(request, slug, id):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
@@ -398,6 +426,8 @@ def delete_surgery(request, slug, id):
 
 @login_required
 def delete_surgery_images(request, slug, id):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     surgery = SurgeryInformation.objects.filter(id=id)
     if surgery:
         surgery.delete()
@@ -408,6 +438,8 @@ def delete_surgery_images(request, slug, id):
 
 @login_required
 def filter_by_date(request):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -498,6 +530,8 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
 
 @login_required
 def send_file(request):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
@@ -506,6 +540,8 @@ def send_file(request):
 
 @login_required
 def calendar_events(request, year, current_month):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -530,6 +566,8 @@ def calendar_events(request, year, current_month):
 
 
 def hui_report(request):
+    if not request.user.is_accepted:
+        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -576,3 +614,18 @@ def privacyPolicy(request):
     } if request.user.is_authenticated else None
     context = {"account": account, 'today': datetime.date.today()}
     return render(request, 'privacyPolicy.html', context)
+
+
+def terms_of_service(request):
+    context = {}
+
+    if request.POST:
+        if 'accept' in request.POST:
+            account = get_object_or_404(Account, id=request.user.id)
+            account.is_accepted = True
+            account.save()
+            return redirect('home')
+        else:
+            return redirect('logout')
+
+    return render(request, 'terms_of_service.html', context)
