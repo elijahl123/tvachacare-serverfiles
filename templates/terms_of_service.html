@@ -123,6 +123,13 @@
                                 THE ABOVE LIMITATIONS OR EXCLUSIONS MAY NOT APPLY, OR MAY NOT FULLY APPLY TO
                                 YOU.</strong><br
                             /></li>
+                            <li><strong>Use of Intellectual Property:</strong>You hereby agree that the Software will
+                                only be used by Helpers United, Inc. and that it will not be
+                                sold, given, or otherwise transferred to any third party. Additionally, the sale of the
+                                Software to you by TvachaCare is non-exclusive.
+                                TvachaCare is permitted to sell or license the Software to third parties so long as it
+                                does not use your name, trademarks or any of your
+                                confidential information.<br/></li>
                             <li><strong>Applicable law - Settlement of Disputes:</strong> These Terms and any dispute,
                                 claim or controversy arising therefrom shall be governed by the laws the State of
                                 California and applicable United States federal law, without
@@ -145,6 +152,8 @@
                     </div>
                 </div>
             </div>
+        {% if request.user.is_authenticated %}
+            {% if not request.user.is_accepted %}
             <div class="row">
                 <div class="col">
                     <form method="post" enctype="multipart/form-data">{% csrf_token %}
@@ -155,6 +164,8 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
+        {% endif %}
         </div>
     </main>
 {% endblock %}
