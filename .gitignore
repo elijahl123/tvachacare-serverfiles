@@ -30,3 +30,5 @@ filter.csv
 
 .vscode/
 .idea/
+
+patientInformation_eventlog.csv

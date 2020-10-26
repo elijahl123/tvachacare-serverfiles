@@ -27,5 +27,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/defaultdb</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="HUITvachaCare" uuid="f88a5aeb-e80b-4289-9f3a-d91a41c4e1da">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
+    </data-source>
   </component>
 </project>
