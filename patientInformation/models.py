@@ -60,7 +60,7 @@ class PatientInformation(models.Model):
         return self.first_name + ' ' + self.last_name
 
     class Meta:
-        ordering = ['uploaded']
+        ordering = ['last_name']
 
 
 class SurgeryInformation(models.Model):
@@ -98,7 +98,7 @@ class SurgeryInformation(models.Model):
         return self.burn_operation_number
 
     class Meta:
-        ordering = ['date_of_upload']
+        ordering = ['-date_of_upload']
 
 
 class Image(models.Model):
