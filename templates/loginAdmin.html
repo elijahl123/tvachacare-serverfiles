@@ -4,11 +4,23 @@
 {% block header %}
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'loginAdmin.css' %}">
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6Lc2F90ZAAAAANxKBpiafss3bELhscOMcd5M0tvy"></script>
     <script>
-        function onSubmit(token) {
-            document.getElementById("login_form").submit();
-        }
+        // 3
+        grecaptcha.ready(function () {
+            // 4
+            $('#login_form').submit(function (e) {
+                const form = this;
+                // 5
+                e.preventDefault()
+                grecaptcha.execute('6Lc2F90ZAAAAANxKBpiafss3bELhscOMcd5M0tvy', {action: 'login_form'}).then(function (token) {
+                    // 6
+                    $('#recaptcha').val(token)
+                    // 7
+                    form.submit()
+                });
+            })
+        });
     </script>
 {% endblock %}
 
@@ -42,10 +54,10 @@
                 </div>
             {% endif %}
 
+            <input type="hidden" name="recaptcha" id="recaptcha">
+
             <div class="form-group">
-                <button class="btn btn-block login g-recaptcha" data-sitekey="6Lc2F90ZAAAAANxKBpiafss3bELhscOMcd5M0tvy"
-                        data-callback='onSubmit'
-                        data-action='submit'>Log In
+                <button class="btn btn-block login g-recaptcha" type="submit">Log In
                 </button>
             </div>
         </form>

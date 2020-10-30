@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 
 import requests
+from django.conf import settings
 from django.contrib.auth import logout as lgout, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
@@ -90,6 +91,21 @@ def loginadmin(request):
         if form.is_valid():
             email = request.POST['email']
             password = request.POST['password']
+            secret_key = settings.RECAPTCHA_SECRET_KEY
+
+            # captcha verification
+            data = {
+                'response': request.POST.get('recaptcha'),
+                'secret': secret_key
+            }
+            resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
+            result_json = resp.json()
+
+            print(result_json)
+
+            if not result_json.get('success'):
+                return render(request, 'loginAdmin.html', {'is_robot': True})
+            # end captcha verification
             user = authenticate(email=email, password=password)
 
             if user:
