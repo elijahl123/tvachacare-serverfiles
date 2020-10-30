@@ -17,6 +17,8 @@
     <orderEntry type="jdk" jdkName="Python 3.8 (tvachacare-serverfiles) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="LandingSite" />
+    <orderEntry type="library" name="font-awesome" level="application" />
+    <orderEntry type="library" name="api" level="application" />
   </component>
   <component name="ReSTService">
     <option name="DOC_DIR" value="C:\Users\elijahkane\Documents\tvachacare-serverfiles" />

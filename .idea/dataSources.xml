@@ -33,5 +33,11 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="postgres@localhost" uuid="362a6177-7a9e-4bd6-8c5e-ac9bdea3c60b">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/postgres</jdbc-url>
+    </data-source>
   </component>
 </project>

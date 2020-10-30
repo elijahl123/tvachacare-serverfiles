@@ -4,45 +4,50 @@
 {% block header %}
     <title>Login</title>
     <link rel="stylesheet" href="{% static 'loginAdmin.css' %}">
+    <script src="https://www.google.com/recaptcha/api.js"></script>
+    <script>
+        function onSubmit(token) {
+            document.getElementById("login_form").submit();
+        }
+    </script>
 {% endblock %}
 
 {% block content %}
 
     <main class="d-flex d-xl-flex justify-content-center align-items-center justify-content-xl-center align-items-xl-center"
           style="height: 100vh;">
-        {% if next %}
-            <form method="post" action="/login/admin/?next={{next}}" style="padding: 30px;background-color: white;">
-        {% else %}
-            <form method="post" action="/login/admin/" style="padding: 30px;background-color: white;">
-        {% endif %}
-        {% csrf_token %}
-        <h2 class="sr-only">Login Form</h2>
-        <div class="d-flex d-xl-flex justify-content-center justify-content-xl-center illustration"
-             style="margin-bottom: 20px;">
-            <img class="rounded-circle" src="{% static 'img/avatarTvachaCare.png' %}" height="100px"/>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="email" name="email" placeholder="Email"/>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password"/>
-        </div>
-
-        {% for field in login_form %}
-            {% for error in field.errors %}
-                <p style="color: red;">{{ error }}</p>
-            {% endfor %}
-        {% endfor %}
-
-        {% if login_form.non_field_errors %}
-            <div style="color:red;">
-                <p>{{ login_form.non_field_errors }}</p>
+        <form method="post" id="login_form" style="padding: 30px;background-color: white;">
+            {% csrf_token %}
+            <h2 class="sr-only">Login Form</h2>
+            <div class="d-flex d-xl-flex justify-content-center justify-content-xl-center illustration"
+                 style="margin-bottom: 20px;">
+                <img class="rounded-circle" src="{% static 'img/avatarTvachaCare.png' %}" height="100px"/>
             </div>
-        {% endif %}
+            <div class="form-group">
+                <input class="form-control" type="email" name="email" placeholder="Email"/>
+            </div>
+            <div class="form-group">
+                <input class="form-control" type="password" name="password" placeholder="Password"/>
+            </div>
 
-        <div class="form-group">
-            <button class="btn btn-block login" type="submit">Log In</button>
-        </div>
+            {% for field in login_form %}
+                {% for error in field.errors %}
+                    <p style="color: red;">{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+
+            {% if login_form.non_field_errors %}
+                <div style="color:red;">
+                    <p>{{ login_form.non_field_errors }}</p>
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <button class="btn btn-block login" data-sitekey="6Lc2F90ZAAAAANxKBpiafss3bELhscOMcd5M0tvy"
+                        data-callback='onSubmit'
+                        data-action='submit'>Log In
+                </button>
+            </div>
         </form>
     </main>
 

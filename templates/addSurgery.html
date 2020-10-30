@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block header %}
+    <!--suppress JSJQueryEfficiency -->
     <title>Add a Surgery</title>
     <link rel="stylesheet" href="{% static 'Responsive-Form.css' %}">
     <link rel="stylesheet" href="{% static 'upload.css' %}">
@@ -69,12 +70,12 @@
                 "                                    <div class=\"d-flex flex-column\" style=\"width: 100%;\">\n" +
                 "                                        <div class=\"d-flex justify-content-center align-items-center\"\n" +
                 "                                             style=\"border-radius: 5px;margin-bottom: 5px;\">\n" +
-                "                                            <h6 style=\"width: 270px;margin: 0 0 0 5px;\">Date of Upload:</h6>\n" +
+                "                                            <h6 style=\"width: 270px;margin: 0 0 0 5px;color: white\">Date of Upload:</h6>\n" +
                 "                                            <input class=\"form-control\" style=\"border-style: none;\" placeholder=\"Date of Upload\"\n" +
                 "                                                   type=\"date\" name=\"images-" + numOfForms + "-date_of_upload_image\"/>\n" +
                 "                                        </div>\n" +
                 "                                        <div class=\"custom-file\">\n" +
-                "                                            <input type=\"file\" class=\"custom-file-input\" id=\"id_images-" + numOfForms + "-image\"\n" +
+                "                                            <input type=\"file\" required class=\"custom-file-input\" id=\"id_images-" + numOfForms + "-image\"\n" +
                 "                                               name=\"images-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
                 "                                            <label class=\"custom-file-label\" style=\"border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;\">Upload File</label>\n" +
                 "                                        </div>\n" +
@@ -92,7 +93,7 @@
             newElement.prepend("<div class=\"col-md-10 offset-md-1\"\n" +
                 "                                             style=\"padding: 0;display:flex;margin-bottom: 10px; \">\n" +
                 "                                            <input class=\"form-control\" type=\"text\"\n" +
-                "                                                   style=\"font-family: 'Open Sans', sans-serif;\"\n" +
+                "                                                   style=\"font-family: 'Open Sans', sans-serif;\" required\n" +
                 "                                                   id=\"id_procedures-" + numOfProcedureCodes + "-procedure_codes\"\n" +
                 "                                                   name=\"procedures-" + numOfProcedureCodes + "-procedure_codes\">\n" +
                 "                                            <button class=\"btn btn-danger\" type=\"button\" onclick=\"deleteProcedure(this)\" style=\"position: absolute; right: 0\">\n" +
@@ -117,6 +118,17 @@
             let parent = $(element).parent();
             parent.remove()
             numOfForms--
+            for (let i = numOfForms; i + 1 > numOfForms;) {
+                let input = 'input#id_images-' + i + '-image'
+                console.log(i)
+                if ($(input).length) {
+                    $(input).attr('id', 'id_images-' + (i - 1) + '-image')
+                    i++
+                    console.log(i)
+                } else {
+                    break
+                }
+            }
             let totalForms = $('input#id_images-TOTAL_FORMS');
             totalForms.val(numOfForms)
         }

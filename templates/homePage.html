@@ -294,10 +294,11 @@
                                                                 Number: {{ patients.telephone_number }}</small>{% endif %}
                                                         <small>Uploaded: {{ patients.uploaded }}</small></div>
                                                     <h5>Surgeries:</h5>
-                                                    {% for surgeries in surgery %}
-                                                        {% if surgeries.patient == patients %}
-                                                            <div class="d-flex justify-content-between">
-                                                                <ul class="list-group w-100">
+
+                                                    <div class="d-flex justify-content-between">
+                                                        <ul class="list-group w-100">
+                                                            {% for surgeries in surgery %}
+                                                                {% if surgeries.patient == patients %}
                                                                     <li class="list-group-item  patient-list"
                                                                         style="display: flex; justify-content: space-between; align-items: center">
                                                                         <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
@@ -312,13 +313,17 @@
                                                                         {% endif %}
                                                                         <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
                                                                            class='patient-name'>Uploaded {{ surgeries.date_of_upload }}</a>
-
-
                                                                     </li>
-                                                                </ul>
-                                                            </div>
-                                                        {% endif %}
-                                                    {% endfor %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            <a href="{% url 'add_surgery' patients.slug %}"
+                                                               class="btn d-flex justify-content-center align-items-center list-group-item"
+                                                               style="background-color: #FC9C34;color: white; border-color: transparent; margin-top: 5px">
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                        </ul>
+                                                    </div>
+
 
                                                 </li>
                                             {% endfor %}
