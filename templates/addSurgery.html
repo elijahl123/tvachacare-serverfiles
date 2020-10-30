@@ -72,10 +72,10 @@
                 "                                             style=\"border-radius: 5px;margin-bottom: 5px;\">\n" +
                 "                                            <h6 style=\"width: 270px;margin: 0 0 0 5px;color: white\">Date of Upload:</h6>\n" +
                 "                                            <input class=\"form-control\" style=\"border-style: none;\" placeholder=\"Date of Upload\"\n" +
-                "                                                   type=\"date\" name=\"images-" + numOfForms + "-date_of_upload_image\"/>\n" +
+                "                                                   type=\"date\" name=\"images-" + numOfForms + "-date_of_upload_image\" id=\"id_images-" + numOfForms + "-date_of_upload_image\" />\n" +
                 "                                        </div>\n" +
                 "                                        <div class=\"custom-file\">\n" +
-                "                                            <input type=\"file\" required class=\"custom-file-input\" id=\"id_images-" + numOfForms + "-image\"\n" +
+                "                                            <input type=\"file\" accept=\"image/*\" required class=\"custom-file-input\" id=\"id_images-" + numOfForms + "-image\"\n" +
                 "                                               name=\"images-" + numOfForms + "-image\" onchange=\"loadImage(event, this)\"/>\n" +
                 "                                            <label class=\"custom-file-label\" style=\"border-bottom-right-radius: 10px;border-bottom-left-radius: 10px;\">Upload File</label>\n" +
                 "                                        </div>\n" +
@@ -96,7 +96,7 @@
                 "                                                   style=\"font-family: 'Open Sans', sans-serif;\" required\n" +
                 "                                                   id=\"id_procedures-" + numOfProcedureCodes + "-procedure_codes\"\n" +
                 "                                                   name=\"procedures-" + numOfProcedureCodes + "-procedure_codes\">\n" +
-                "                                            <button class=\"btn btn-danger\" type=\"button\" onclick=\"deleteProcedure(this)\" style=\"position: absolute; right: 0\">\n" +
+                "                                            <button class=\"btn btn-danger\" type=\"button\" onclick=\"deleteProcedure(this)\" style=\"position: absolute; right: 0;border-bottom-left-radius: 0; border-top-left-radius: 0;\">\n" +
                 "                                                <i class=\"fa fa-trash\"></i>\n" +
                 "                                            </button>\n" +
                 "                                        </div>")
@@ -109,6 +109,18 @@
             let parent = $(element).parent()
             parent.remove()
             numOfProcedureCodes--
+            for (let i = numOfProcedureCodes; i + 1 > numOfProcedureCodes;) {
+                let input = 'input#id_procedures-' + i + '-procedure_codes'
+                console.log(i)
+                if ($(input).length) {
+                    $(input).attr('name', 'procedures-' + (i - 1) + '-procedure_codes')
+                    $(input).attr('id', 'id_procedures-' + (i - 1) + '-procedure_codes')
+                    i++
+                    console.log(i)
+                } else {
+                    break
+                }
+            }
             let totalForms = $('input#id_procedures-TOTAL_FORMS');
             totalForms.val(numOfProcedureCodes)
 
@@ -120,9 +132,13 @@
             numOfForms--
             for (let i = numOfForms; i + 1 > numOfForms;) {
                 let input = 'input#id_images-' + i + '-image'
+                let date_input = 'input#id_images-' + i + '-date_of_upload_image'
                 console.log(i)
                 if ($(input).length) {
+                    $(input).attr('name', 'images-' + (i - 1) + '-image')
+                    $(date_input).attr('name', 'images-' + (i - 1) + '-date_of_upload_image')
                     $(input).attr('id', 'id_images-' + (i - 1) + '-image')
+                    $(date_input).attr('id', 'id_images-' + (i - 1) + '-date_of_upload_image')
                     i++
                     console.log(i)
                 } else {
@@ -230,7 +246,7 @@
                                                    type="date" name="{{ form.date_of_upload_image.html_name }}"/>
                                         </div>
                                         <div class="custom-file">
-                                            <input type="file" class="custom-file-input"
+                                            <input type="file" accept="image/*" class="custom-file-input"
                                                    id="{{ form.image.id_for_label }}"
                                                    name="{{ form.image.html_name }}" onchange="loadImage(event, this)"/>
                                             <label class="custom-file-label"
@@ -595,7 +611,8 @@
                                                    style="font-family: 'Open Sans', sans-serif;"
                                                    id="{{ procedure_form.procedure_codes.id_for_label }}"
                                                    name="{{ procedure_form.procedure_codes.html_name }}">
-                                            <button class="btn btn-danger" type="button" onclick="deleteProcedure(this)" style="position: absolute; right: 0">
+                                            <button class="btn btn-danger" type="button" onclick="deleteProcedure(this)"
+                                                    style="position: absolute; right: 0;border-bottom-left-radius: 0; border-top-left-radius: 0;">
                                                 <i class="fa fa-trash"></i>
                                             </button>
                                         </div>

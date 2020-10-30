@@ -186,7 +186,7 @@ def patient_page(request, slug):
         "account": account,
     }
     patient = get_object_or_404(PatientInformation, slug=slug)
-    surgery = SurgeryInformation.objects.filter(patient=patient.id)
+    surgery = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
     event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
     event = EventLog(user=request.user.email, event_type='Patient Viewed', notes=event_notes)
     event.save()
@@ -389,7 +389,7 @@ def surgery_page(request, slug, id):
     }
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = get_object_or_404(SurgeryInformation, id=id)
-    surgeries = SurgeryInformation.objects.filter(patient=patient.id)
+    surgeries = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
     images = Image.objects.filter(surgery=surgery.id)
     procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
 
