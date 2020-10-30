@@ -40,8 +40,6 @@ def index(request):
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
 
-    print(request.user.group.name)
-
     context = {'account': account, 'today': datetime.date.today()}
     if request.user.is_authenticated:
         if request.user.group.name == 'Approver':
