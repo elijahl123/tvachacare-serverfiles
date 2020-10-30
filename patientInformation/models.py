@@ -150,7 +150,6 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
-    GROUPS = [('Admin', 'Admin'), ('Approver', 'Approver'), ('Data Entry', 'Data Entry')]
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
@@ -162,7 +161,7 @@ class Account(AbstractBaseUser):
     profile_picture_path = models.ImageField(upload_to=upload_profile_picture, null=True, blank=True)
     first_name = models.CharField(max_length=20, null=True)
     last_name = models.CharField(max_length=20, null=True)
-    group = models.CharField(max_length=10, choices=GROUPS, default='Admin')
+    group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True, blank=True)
     is_accepted = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -182,6 +181,13 @@ class Account(AbstractBaseUser):
 
     def has_module_perms(self, app_label):
         return True
+
+
+class Group(models.Model):
+    name = models.CharField(max_length=120, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class EventLog(models.Model):

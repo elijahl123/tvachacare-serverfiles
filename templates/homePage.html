@@ -138,7 +138,7 @@
                 <div class="col">
                     <div>
                         <ul class="nav nav-pills nav-justified">
-                            {% if account.group == 'Approver' %}
+                            {% if account.group.name == 'Approver' %}
                                 <li class="nav-item"><a role="tab" data-toggle="pill" class="nav-link active"
                                                         href="#tab-1"
                                                         style="border-width: 1px;border-style: none;">Awaiting
@@ -153,13 +153,13 @@
                         </ul>
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="tab-1" style="margin: 20px;">
-                                {% if account.group == 'Approver' %}
+                                {% if account.group.name == 'Approver' %}
                                     <h2 style="color: #092327;">Awaiting Approval</h2>
                                 {% else %}
                                     <h2 style="color: #092327;">Patients</h2>
                                 {% endif %}
                                 <input type="search" placeholder="Search for Patients..." class="search-patients"/>
-                                {% if account.group == 'Approver' %}
+                                {% if account.group.name == 'Approver' %}
                                     {% if object %}
                                         <ul class="list-group"
                                             style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">

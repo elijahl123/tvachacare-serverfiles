@@ -16,7 +16,7 @@ from django.template.loader import render_to_string
 from django.views.static import serve
 
 from .forms import *
-from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes, EventLog
+from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes, EventLog, Group
 
 
 # Create your views here.
@@ -40,9 +40,11 @@ def index(request):
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
 
+    print(request.user.group.name)
+
     context = {'account': account, 'today': datetime.date.today()}
     if request.user.is_authenticated:
-        if request.user.group == 'Approver':
+        if request.user.group.name == 'Approver':
             surgery = SurgeryInformation.objects.all()
             context['object'] = surgery
         else:
@@ -78,7 +80,7 @@ def index(request):
 
 
 def loginPage(request):
-    return render(request, 'login.html', {})
+    return render(request, 'login.html', {'groups': Group.objects.all()})
 
 
 def loginadmin(request):
@@ -139,7 +141,7 @@ def addpatient(request):
         "last_name": request.user.last_name,
         "profile_picture_path": request.user.profile_picture_path,
         "is_superuser": request.user.is_superuser,
-        'group': request.user.group,
+        'group': request.user.group.name,
     } if request.user.is_authenticated else None
 
     context = {
@@ -165,7 +167,7 @@ def addpatient(request):
     context['form'] = form
     context['today'] = datetime.date.today()
 
-    if request.user.group == 'Data Entry':
+    if request.user.group.name == 'Data Entry':
         return render(request, 'addPatient.html', context)
     elif request.user.is_superuser:
         return render(request, 'addPatient.html', context)
@@ -180,7 +182,7 @@ def patient_page(request, slug):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {
         "account": account,
@@ -245,7 +247,7 @@ def edit_patient(request, slug):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {
         "account": account,
@@ -335,7 +337,7 @@ def add_surgery(request, slug):
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
         "is_superuser": request.user.is_superuser,
-        'group': request.user.group,
+        'group': request.user.group.name,
     } if request.user.is_authenticated else None
 
     patient = get_object_or_404(PatientInformation, slug=slug)
@@ -382,7 +384,7 @@ def surgery_page(request, slug, id):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {
         "account": account,
@@ -462,13 +464,13 @@ def filter_by_date(request):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {
         "account": account,
     }
 
-    if request.user.group == 'Approver':
+    if request.user.group.name == 'Approver':
         return redirect('home')
 
     submitbutton = request.POST.get('submit')
@@ -564,7 +566,7 @@ def calendar_events(request, year, current_month):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     this_month = calendar.month_name[int(current_month)]
     c = calendar.Calendar(6)
@@ -590,7 +592,7 @@ def hui_report(request):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {
         "account": account,
@@ -627,7 +629,7 @@ def privacyPolicy(request):
         "name": request.user.username,
         "email": request.user.email,
         "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
+        "group": request.user.group.name,
     } if request.user.is_authenticated else None
     context = {"account": account, 'today': datetime.date.today()}
     return render(request, 'privacyPolicy.html', context)
