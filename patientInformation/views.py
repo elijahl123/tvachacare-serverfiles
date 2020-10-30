@@ -104,7 +104,9 @@ def loginadmin(request):
             print(result_json)
 
             if not result_json.get('success'):
-                return render(request, 'loginAdmin.html', {'is_robot': True})
+                context['login_form'] = form
+                context['today'] = datetime.date.today()
+                return render(request, 'loginAdmin.html', context)
             # end captcha verification
             user = authenticate(email=email, password=password)
 
