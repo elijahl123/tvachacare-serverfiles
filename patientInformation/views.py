@@ -102,10 +102,6 @@ def loginadmin(request):
             result_json = resp.json()
 
             print(result_json)
-
-            if not result_json.get('success'):
-                return redirect('loginAdmin')
-            # end captcha verification
             user = authenticate(email=email, password=password)
 
             if user:
