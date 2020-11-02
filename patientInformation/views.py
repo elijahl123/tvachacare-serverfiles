@@ -191,8 +191,8 @@ def patient_page(request, slug):
         to = request.POST.get('to')
         cc = request.POST.get('cc')
         bcc = request.POST.get('bcc')
-        from_email = request.POST.get('from_email')
-        title = str('<From: ' + from_email + '>' + request.POST.get('title'))
+        from_email = request.POST.get('name') + ' <contact@tvachacare.com>'
+        title = str(request.POST.get('title'))
         if patient.story:
             story = patient.story
         else:
@@ -213,14 +213,13 @@ def patient_page(request, slug):
             cc=cc,
             bcc=bcc,
             from_email=from_email,
-            headers={'From': from_email}
         )
         email.content_subtype = 'html'
         if patient.patient_image:
-            response = requests.get(patient.patient_image.url)
+            response = requests.get(request.build_absolute_uri(patient.patient_image.url))
             email.attach(patient.patient_image.name, response.content, mimetype='image/*')
         if patient.injury_image:
-            response = requests.get(patient.injury_image.url)
+            response = requests.get(request.build_absolute_uri(patient.injury_image.url))
             email.attach(patient.injury_image.name, response.content, mimetype='image/*')
         email.send()
 
@@ -413,13 +412,13 @@ def surgery_page(request, slug, id):
         elif 'appeal' in request.POST:
             subject = 'Appeal Request for ' + patient.first_name + ' ' + patient.last_name + ' Surgery ID #' + str(
                 surgery.id)
-            to_emails = Account.objects.filter(group='Approver').values_list('email', flat=True)
+            to_emails = Account.objects.filter(group__name='Approver').values_list('email', flat=True)
             message = request.POST.get('appeal_request')
             html_message = render_to_string('appeal_email.html',
                                             {'patient': patient, 'account': account, 'message': message,
                                              'surgery': surgery})
             for email in to_emails:
-                send_mail(subject, message, from_email='tvachacare@gmail.com', recipient_list=[email],
+                send_mail(subject, message, from_email='contact@tvachacare.com', recipient_list=[email],
                           html_message=html_message)
 
     return render(request, 'surgery_page.html', context)
