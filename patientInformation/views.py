@@ -641,3 +641,9 @@ def terms_of_service(request):
             return redirect('logout')
 
     return render(request, 'terms_of_service.html', context)
+
+
+@login_required
+def admin(request):
+    context = {}
+    return render(request, 'admin.html', context)

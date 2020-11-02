@@ -6,7 +6,9 @@ manage.py
 README.md
 SECURITY.md
 
-TvachaCare
+TvachaCare/__init__.py
+TvachaCare/wsgi.py
+TvachaCare/asgi.py
 
 venv
 
