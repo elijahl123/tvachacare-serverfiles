@@ -477,7 +477,8 @@ def filter_by_date(request):
     if form.is_valid():
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
-        fields = request.POST.get('fields')
+        fields = request.POST.getlist('checks[]')
+        print(fields)
         event_notes = 'Filter.csv was created'
         event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
         event.save()
@@ -497,7 +498,7 @@ def filter_by_date(request):
 def write_response(date_start, date_end, fields, procedure_code_boolean=False):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
-        fields_array = fields.split(',')
+        fields_array = fields
         surgeries = SurgeryInformation.objects.filter(date_of_upload__range=[date_start, date_end])
         if surgeries:
             header = [s.replace('patient__', '') for s in fields_array]
@@ -646,4 +647,13 @@ def terms_of_service(request):
 @login_required
 def admin(request):
     context = {}
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group.name,
+    } if request.user.is_authenticated else None
+    context['account'] = account
+    context['today'] = datetime.date.today()
     return render(request, 'admin.html', context)

@@ -15,13 +15,12 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib import admin
 from django.urls import path, re_path
 
 from patientInformation import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls, name='admin-console'),
+    path('admin/', views.admin, name='admin-console'),
     path('', views.index, name='home'),
     path('login/', views.loginPage, name="login"),
     path('login/admin/', views.loginadmin, name="loginAdmin"),
