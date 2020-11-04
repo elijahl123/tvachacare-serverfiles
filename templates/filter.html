@@ -218,7 +218,7 @@
                             class="form-check-label" for="formCheck-1"
                             style="color: #fc9c34;font-size: 15px;">Story</label></div>
                     {% for field in surgeries %}
-                        {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' %}
+                        {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' and not field.name == 'procedurecodes' %}
                             <div class="form-check d-flex align-items-center"
                                  style="color: #fc9c34;margin: 10px;">
                                 <input type="checkbox" onchange="addFields(this)" class="form-check-input"

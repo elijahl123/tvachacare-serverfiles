@@ -603,7 +603,8 @@ def hui_report(request):
     if form.is_valid():
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
-        fields = 'patient__first_name,patient__last_name,date_of_surgery,patient__patient_record_number,is_approved'
+        fields = ['patient__first_name', 'patient__last_name', 'date_of_surgery', 'patient__patient_record_number',
+                  'is_approved']
         event_notes = 'HUI Report was created'
         event = EventLog(user=request.user.email, event_type='Report Created', notes=event_notes)
         event.save()
