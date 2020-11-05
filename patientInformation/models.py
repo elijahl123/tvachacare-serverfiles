@@ -196,6 +196,9 @@ class EventLog(models.Model):
     event_time = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.event_type
+
     class Meta:
         ordering = ['event_time']
 

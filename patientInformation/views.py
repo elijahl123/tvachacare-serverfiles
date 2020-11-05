@@ -658,3 +658,37 @@ def admin(request):
     context['account'] = account
     context['today'] = datetime.date.today()
     return render(request, 'admin.html', context)
+
+
+@login_required
+def admin_template(request, model: str):
+    context = {}
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group.name,
+    } if request.user.is_authenticated else None
+    context['account'] = account
+    context['today'] = datetime.date.today()
+    model_dict = {}
+    if model == 'accounts':
+        model_dict['title'] = 'Accounts'
+        model_dict['items'] = Account.objects.all()
+    elif model == 'groups':
+        model_dict['title'] = 'Groups'
+        model_dict['items'] = Group.objects.all()
+    elif model == 'event-logs':
+        model_dict['title'] = 'Event Logs'
+        model_dict['items'] = EventLog.objects.all().order_by('-event_time')
+    elif model == 'patients':
+        model_dict['title'] = 'Patients'
+        model_dict['items'] = PatientInformation.objects.all()
+    elif model == 'surgeries':
+        model_dict['title'] = 'Surgeries'
+        model_dict['items'] = SurgeryInformation.objects.all()
+    else:
+        return redirect('admin-console')
+    context['model'] = model_dict
+    return render(request, 'admin_template.html', context)

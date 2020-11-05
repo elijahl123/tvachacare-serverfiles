@@ -42,7 +42,8 @@ urlpatterns = [
     re_path(r'^filter.csv', views.send_file, name='send_file'),
     path('calendar/<year>/<current_month>', views.calendar_events, name='calendar'),
     path('privacy-policy/', views.privacyPolicy, name='privacy_policy'),
-    path('terms-of-service/', views.terms_of_service, name='terms_of_service')
+    path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
+    path('admin/<model>/', views.admin_template, name='admin_template')
 ]
 
 if settings.DEBUG:
