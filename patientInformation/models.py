@@ -95,7 +95,7 @@ class SurgeryInformation(models.Model):
     reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.burn_operation_number
+        return str(self.id)
 
     class Meta:
         ordering = ['-date_of_upload']

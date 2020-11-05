@@ -647,6 +647,8 @@ def terms_of_service(request):
 
 @login_required
 def admin(request):
+    if not request.user.is_superuser:
+        return redirect('home')
     context = {}
     account = {
         "id": request.user.id,
@@ -662,6 +664,8 @@ def admin(request):
 
 @login_required
 def admin_template(request, model: str):
+    if not request.user.is_superuser:
+        return redirect('home')
     context = {}
     account = {
         "id": request.user.id,
@@ -676,9 +680,11 @@ def admin_template(request, model: str):
     if model == 'accounts':
         model_dict['title'] = 'Accounts'
         model_dict['items'] = Account.objects.all()
+        model_dict['highlighted'] = Account.objects.values_list('group__name')
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['items'] = Group.objects.all()
+        model_dict['accounts'] = Account.objects.all()
     elif model == 'event-logs':
         model_dict['title'] = 'Event Logs'
         model_dict['items'] = EventLog.objects.all().order_by('-event_time')

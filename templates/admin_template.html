@@ -10,6 +10,14 @@
         .admin-list:hover {
             background: rgba(255, 222, 173, 0.3) !important;
         }
+
+        .plus-button:hover {
+            background: #eb9132 !important;
+        }
+
+        small {
+            font-weight: bold;
+        }
     </style>
 {% endblock %}
 
@@ -59,16 +67,63 @@
                     </ul>
                 </div>
                 <div class="col d-flex flex-column"
-                     style="height: 60vh;color: slategray;padding: 30px;overflow-y: auto; overflow-x: hidden">
-                    <div class="list-group" style="font-family: Raleway, sans-serif;font-weight: bold;">
+                     style="height: 60vh;color: slategray;overflow-y: auto; overflow-x: hidden; padding: 10px">
+                    <div class="list-group list-group-flush"
+                         style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
                         {% for item in model.items %}
-                            <a href="#" class="list-group-item list-group-item-action">
-                                <span>{{ item }}</span>
-                            </a>
+                            <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
+                                class="list-group-item flex-lg-row flex-column align-items-center">
+                                <a href="{% if model.title == 'Patients' %}
+                                {% url 'patient_page' item.slug %}
+                                {% elif model.title == 'Surgeries' %}
+                                {% url 'surgery_page' item.patient.slug item.id %}
+                                         {% endif %}" class="text-lg-left text-center"
+                                   style="color: slategray;width: 300px;">{{ item }}</a>
+                                {% if model.title == 'Accounts' %}
+                                    <span>{{ item.last_name }}, {{ item.first_name }}</span>
+                                {% elif model.title == 'Groups' %}
+                                {% elif model.title == 'Event Logs' %}
+                                    <span>{{ item.event_time }}</span>
+                                {% elif model.title == 'Patients' %}
+                                    <span>Uploaded: {{ item.uploaded }}</span>
+                                {% elif model.title == 'Surgeries' %}
+                                    <span>Patient: {{ item.patient }}</span>
+                                {% endif %}
+                                <button class="btn d-flex justify-content-center align-items-center"
+                                        style="padding: 5px; border-radius: 50px" onclick="openItem({{ item.id }})">
+                                    <i class="fa fa-cog" style="margin-right: 1px;"></i>
+                                </button>
+                            </li>
+                            <li class="list-group-item list-group-item-secondary item-{{ item.id }}"
+                                style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;padding: 0">
+                                <div role="group" class="btn-group btn-group-sm d-flex"
+                                     style="border-radius: 0 !important;">
+                                    <button class="btn btn-success" type="button" style="border-style: none;">
+                                        <i class="fa fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-danger" type="button" style="border-style: none;">
+                                        <i class="fa fa-trash"></i> Delete
+                                    </button>
+                                    <button class="btn btn-info" type="button"
+                                            style="border-style: none;">
+                                        <i class="fa fa-info-circle"></i> View
+                                    </button>
+                                </div>
+                            </li>
                         {% endfor %}
+                        <button class="list-group-item list-group-item-action d-flex justify-content-center align-items-center plus-button"
+                                style="background: #FC9C34; color: white; border-color: #FC9C34">
+                            <i class="fa fa-plus"></i>
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+    <script>
+        function openItem(itemid) {
+            let itemId = '.item-' + itemid
+            $(itemId).slideToggle(100);
+        }
+    </script>
 {% endblock %}
