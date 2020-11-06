@@ -197,3 +197,9 @@ class GroupForm(forms.ModelForm):
         super(GroupForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+class AccountView(forms.ModelForm):
+    class Meta:
+        model = Account
+        exclude = ['password']

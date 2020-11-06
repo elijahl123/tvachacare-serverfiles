@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <title>Admin - {{ model.title }}</title>
+    <style>
+        .active-list {
+            background: rgba(255, 222, 173, 0.5) !important;
+        }
+
+        .admin-list:hover {
+            background: rgba(255, 222, 173, 0.3) !important;
+        }
+
+        .plus-button:hover {
+            background: #eb9132 !important;
+        }
+
+        small {
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            let inputs = $('input:file')
+            inputs.removeClass('form-control')
+            let checkboxes = $('input:checkbox')
+            checkboxes.removeClass('form-control')
+        })
+    </script>
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex justify-content-center align-items-center" style="min-height: 90vh;">
+        <div class="container-fluid shadow"
+             style="padding: 30px;background: whitesmoke;font-family: Raleway, sans-serif;width: 90%;border-radius: max(0px, min(8px, calc((100vw - 4px - 100%) * 9999))) / 8px;">
+            <div class="row no-gutters">
+                <div class="col-md-12 col-lg-4 col-xl-4" style="border-right: 1px solid lightgray;">
+                    <h1 style="color: #fc9c34;font-family: Raleway, sans-serif;font-weight: bold;text-align: center;margin-bottom: 20px;">
+                        {{ model.title }}</h1>
+                    <ul class="list-group">
+                        <a href="{% url 'admin-console' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;margin-bottom: 10px;background: transparent">
+                            <i class="fas fa-user-cog d-flex flex-column"
+                               style="position: absolute;font-size: 25px;"></i>
+                            <span class="flex-grow-1">Admin</span></a>
+                        <a href="{% url 'admin_template' 'accounts' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Accounts' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="fas fa-user d-flex flex-column" style="position: absolute;font-size: 25px;"></i>
+                            <span class="flex-grow-1">Accounts</span></a>
+                        <a href="{% url 'admin_template' 'groups' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Groups' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="fas fa-users d-flex flex-column" style="position: absolute;font-size: 25px;"></i>
+                            <span class="flex-grow-1">Groups</span></a>
+                        <a href="{% url 'admin_template' 'event-logs' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Event Logs' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="far fa-file-alt d-flex flex-column"
+                               style="position: absolute;font-size: 25px;"></i>
+                            <span class="flex-grow-1">Event Logs</span></a>
+                        <a href="{% url 'admin_template' 'patients' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Patients' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="fas fa-user-md d-flex flex-column"
+                               style="position: absolute;font-size: 25px;"></i>
+                            <span class="flex-grow-1">Patients</span></a>
+                        <a href="{% url 'admin_template' 'surgeries' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Surgeries' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="fas fa-notes-medical d-flex flex-column"
+                               style="position: absolute;font-size: 25px;">
+                            </i><span class="flex-grow-1">Surgeries</span></a>
+                    </ul>
+                </div>
+                <div class="col d-flex flex-column"
+                     style="max-height: 80vh;color: slategray;overflow-y: auto; overflow-x: hidden; padding: 10px">
+                    {% for field in model.item %}
+                        <div class="row information-container"
+                             style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
+                            <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                                 style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                                <h5 style="color: white;font-weight: bold;margin-bottom: 0;">{{ field.label }}</h5>
+                            </div>
+                            <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                                 style="padding: 15px 20px;">
+                                <p
+                                        style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;">
+                                    {{ field.data }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div role="group" class="btn-group d-flex"
+                         style="border-radius: 0 !important;">
+                        <a class="btn btn-secondary" href="{% url 'admin_template' model.model %}"
+                           style="border-style: none;font-weight: bold">
+                            Back
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

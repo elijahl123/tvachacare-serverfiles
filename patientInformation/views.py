@@ -9,7 +9,7 @@ from django.conf import settings
 from django.contrib.auth import logout as lgout, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
-from django.forms import formset_factory
+from django.forms import formset_factory, model_to_dict
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -718,7 +718,7 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Patients'
         model_dict['items'] = PatientInformation.objects.all()
         if request.POST:
-            form = AddPatient(request.POST or None)
+            form = AddPatient(request.POST or None, request.FILES or None)
             if form.is_valid():
                 form.save()
                 return redirect('admin_template', 'patients')
@@ -732,7 +732,16 @@ def admin_template(request, model: str):
         if request.POST:
             form = SurgeryForm(request.POST or None)
             if form.is_valid():
-                form.save()
+                surgery_form = form.save(commit=False)
+                surgery_form.save()
+                images = request.FILES.getlist('surgery_images')
+                procedure_codes = request.POST.getlist('procedure_codes')
+                for image in images:
+                    image_object = Image(surgery=surgery_form, image=image, date_of_upload_image=datetime.date.today())
+                    image_object.save()
+                for code in procedure_codes:
+                    procedure_code = ProcedureCodes(surgery=surgery_form, procedure_codes=code)
+                    procedure_code.save()
                 return redirect('admin_template', 'surgeries')
             else:
                 model_dict['new_form'] = SurgeryForm()
@@ -771,7 +780,7 @@ def admin_edit(request, model, id):
             else:
                 model_dict['form'] = AccountUpdateForm(instance=get_object_or_404(Account, id=id))
         else:
-            model_dict['form'] = AccountUpdateForm(instance=get_object_or_404(Account, id=id))
+            model_dict['form'] = AccountView(instance=get_object_or_404(Account, id=id))
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['items'] = get_object_or_404(Group, id=id)
@@ -800,7 +809,8 @@ def admin_edit(request, model, id):
         model_dict['title'] = 'Patients'
         model_dict['items'] = get_object_or_404(PatientInformation, id=id)
         if request.POST:
-            form = AddPatient(request.POST or None, instance=get_object_or_404(PatientInformation, id=id))
+            form = AddPatient(request.POST or None, request.FILES or None,
+                              instance=get_object_or_404(PatientInformation, id=id))
             if form.is_valid():
                 form.save()
                 return redirect('admin_template', 'patients')
@@ -868,3 +878,39 @@ def admin_delete(request, model, id):
             return redirect('admin_template', 'surgeries')
     else:
         return redirect('admin-console')
+
+
+@login_required
+def admin_view(request, model, id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    context = {}
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group.name,
+    } if request.user.is_authenticated else None
+    context['account'] = account
+    context['today'] = datetime.date.today()
+    model_dict = {'model': model}
+    if model == 'accounts':
+        model_dict['title'] = 'Accounts'
+        model_dict['item'] = AccountView(data=model_to_dict(get_object_or_404(Account, id=id)))
+    elif model == 'groups':
+        model_dict['title'] = 'Groups'
+        model_dict['item'] = GroupForm(data=model_to_dict(get_object_or_404(Group, id=id)))
+    elif model == 'event-logs':
+        model_dict['title'] = 'Event Logs'
+        model_dict['item'] = EventLogForm(data=model_to_dict(get_object_or_404(EventLog, id=id)))
+    elif model == 'patients':
+        model_dict['title'] = 'Patients'
+        model_dict['item'] = AddPatient(data=model_to_dict(get_object_or_404(PatientInformation, id=id)))
+    elif model == 'surgeries':
+        model_dict['title'] = 'Surgeries'
+        model_dict['item'] = SurgeryForm(data=model_to_dict(get_object_or_404(SurgeryInformation, id=id)))
+    else:
+        return redirect('admin-console')
+    context['model'] = model_dict
+    return render(request, 'admin_view.html', context)

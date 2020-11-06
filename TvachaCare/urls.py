@@ -45,7 +45,8 @@ urlpatterns = [
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('admin/<model>/', views.admin_template, name='admin_template'),
     path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),
-    path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete')
+    path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete'),
+    path('admin/<model>/view/<id>/', views.admin_view, name='admin_view')
 ]
 
 if settings.DEBUG:

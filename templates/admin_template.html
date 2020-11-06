@@ -114,17 +114,39 @@
                                        style="border-style: none;">
                                         <i class="fa fa-trash"></i> Delete
                                     </a>
-                                    <button class="btn btn-info" type="button"
-                                            style="border-style: none;">
+                                    <a class="btn btn-info" href="{% url 'admin_view' model.model item.id %}"
+                                       style="border-style: none;">
                                         <i class="fa fa-info-circle"></i> View
-                                    </button>
+                                    </a>
                                 </div>
                             </li>
                         {% endfor %}
                         <li class="list-group-item list-group-item-secondary add-item"
                             style="display: none;padding: 20px; font-family: 'Open Sans', sans-serif; font-weight: normal;">
                             <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                                {% if model.title == 'Surgeries' %}
+                                    <div role="group" class="btn-group d-flex image-button"
+                                         style="border-radius: 0 !important;margin-bottom: 5px">
+                                        <button class="btn btn-secondary" onclick="cloneMore(this)"
+                                                style="border-style: none;font-weight: bold">
+                                            Add Image
+                                        </button>
+                                    </div>
+                                {% endif %}
                                 {{ model.new_form.as_p }}
+                                {% if model.title == 'Surgeries' %}
+                                    <div>
+                                        <div role="group" class="btn-group d-flex image-button"
+                                             style="border-radius: 0 !important;margin-bottom: 10px">
+                                            <button class="btn btn-secondary" type="button"
+                                                    onclick="cloneMoreProcedures(this)"
+                                                    style="border-style: none;font-weight: bold">
+                                                Add Procedure Code
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                {% endif %}
                                 <div role="group" class="btn-group btn-group-sm d-flex"
                                      style="border-radius: 0 !important;">
                                     <button class="btn btn-danger" type="reset" onclick="openNewForm()"
@@ -164,6 +186,42 @@
         function openUpdateForm(itemid) {
             let itemId = '.edit-' + itemid
             $(itemId).slideToggle(100);
+        }
+
+        function cloneMore(element) {
+            $(element).parent().parent().prepend('<p>' +
+                '<div class="image-container" style="background: white; padding: 10px; margin-bottom: 10px; border-radius: 8px">' +
+                '<label>Add image:</label> ' +
+                '<input type="file" name="surgery_images" accept="image/*" class="">' +
+                '</p>' +
+                '<div role="group" class="btn-group btn-group-sm d-flex image-button"\n' +
+                'style="border-radius: 0 !important;margin-bottom: 5px">\n' +
+                '<button class="btn btn-danger" onclick="deleteImage(this)"\n' +
+                'style="border-style: none;font-weight: bold">\n' +
+                'Delete Image\n' +
+                '</button>\n' +
+                '</div>' +
+                '</div>')
+        }
+
+        function deleteImage(element) {
+            $(element).parent().parent().remove()
+        }
+
+        function cloneMoreProcedures(element) {
+            $(element).parent().parent().prepend('<p>' +
+                '<div class="procedure-container" style="background: white; padding: 10px; margin-bottom: 10px; border-radius: 8px">' +
+                '<label>Add Procedure Code:</label> ' +
+                '<input type="text" name="procedure_codes" class="form-control">' +
+                '</p>' +
+                '<div role="group" class="btn-group btn-group-sm d-flex image-button"\n' +
+                'style="border-radius: 0 !important;margin-bottom: 5px">\n' +
+                '<button class="btn btn-danger" onclick="deleteImage(this)"\n' +
+                'style="border-style: none;font-weight: bold">\n' +
+                'Delete Code\n' +
+                '</button>\n' +
+                '</div>' +
+                '</div>')
         }
     </script>
 {% endblock %}
