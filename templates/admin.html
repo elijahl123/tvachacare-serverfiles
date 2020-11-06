@@ -2,6 +2,15 @@
 
 {% block header %}
     <title>Admin Console</title>
+    <style>
+        .active-list {
+            background: rgba(255, 222, 173, 0.5) !important;
+        }
+
+        .admin-list:hover {
+            background: rgba(255, 222, 173, 0.3) !important;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -14,30 +23,35 @@
                         Admin</h1>
                     <ul class="list-group">
                         <a href="{% url 'admin-console' %}"
-                           class="list-group-item d-flex flex-row justify-content-between align-items-center"
-                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;background: rgba(255,222,173,0.5);border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;margin-bottom: 10px;">
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center active-list"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;margin-bottom: 10px;background: transparent">
                             <i class="fas fa-user-cog d-flex flex-column"
                                style="position: absolute;font-size: 25px;"></i>
                             <span class="flex-grow-1">Admin</span></a>
-                        <a href="#" class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                        <a href="{% url 'admin_template' 'accounts' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
                            style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
                             <i class="fas fa-user d-flex flex-column" style="position: absolute;font-size: 25px;"></i>
                             <span class="flex-grow-1">Accounts</span></a>
-                        <a href="#" class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                        <a href="{% url 'admin_template' 'groups' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
                            style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
                             <i class="fas fa-users d-flex flex-column" style="position: absolute;font-size: 25px;"></i>
                             <span class="flex-grow-1">Groups</span></a>
-                        <a href="#" class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                        <a href="{% url 'admin_template' 'event-logs' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
                            style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
                             <i class="far fa-file-alt d-flex flex-column"
                                style="position: absolute;font-size: 25px;"></i>
                             <span class="flex-grow-1">Event Logs</span></a>
-                        <a href="#" class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                        <a href="{% url 'admin_template' 'patients' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
                            style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
                             <i class="fas fa-user-md d-flex flex-column"
                                style="position: absolute;font-size: 25px;"></i>
                             <span class="flex-grow-1">Patients</span></a>
-                        <a href="#" class="list-group-item d-flex flex-row justify-content-between align-items-center"
+                        <a href="{% url 'admin_template' 'surgeries' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center admin-list"
                            style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
                             <i class="fas fa-notes-medical d-flex flex-column"
                                style="position: absolute;font-size: 25px;">

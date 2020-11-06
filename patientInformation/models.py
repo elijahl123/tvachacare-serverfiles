@@ -95,7 +95,7 @@ class SurgeryInformation(models.Model):
     reason = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.burn_operation_number
+        return str(self.id)
 
     class Meta:
         ordering = ['-date_of_upload']
@@ -195,6 +195,9 @@ class EventLog(models.Model):
     event_type = models.CharField(blank=True, null=True, max_length=60)
     event_time = models.DateTimeField(auto_now_add=True)
     notes = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.event_type
 
     class Meta:
         ordering = ['event_time']
