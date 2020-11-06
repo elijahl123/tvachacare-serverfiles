@@ -76,6 +76,7 @@
                 </div>
                 <div class="col d-flex flex-column"
                      style="max-height: 80vh;color: slategray;overflow-y: auto; overflow-x: hidden; padding: 10px">
+                {% block admin_block %}
                     <div class="list-group list-group-flush"
                          style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
                         {% for item in model.items %}
@@ -169,6 +170,7 @@
 
                     </div>
                 </div>
+                {% endblock %}
             </div>
         </div>
     </main>

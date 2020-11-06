@@ -70,7 +70,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = Account
-        fields = ("first_name", "last_name", "email", "username", "group", "password1", "password2")
+        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted']
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
@@ -203,3 +203,8 @@ class AccountView(forms.ModelForm):
     class Meta:
         model = Account
         exclude = ['password']
+
+    def __init__(self, *args, **kwargs):
+        super(AccountView, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
