@@ -43,7 +43,9 @@ urlpatterns = [
     path('calendar/<year>/<current_month>', views.calendar_events, name='calendar'),
     path('privacy-policy/', views.privacyPolicy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
-    path('admin/<model>/', views.admin_template, name='admin_template')
+    path('admin/<model>/', views.admin_template, name='admin_template'),
+    path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),
+    path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete')
 ]
 
 if settings.DEBUG:

@@ -58,6 +58,11 @@ class AccountUpdateForm(forms.ModelForm):
             profile_picture_path = self.cleaned_data['profile_picture_path']
             return profile_picture_path
 
+    def __init__(self, *args, **kwargs):
+        super(AccountUpdateForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class RegistrationForm(UserCreationForm):
     email = forms.EmailField(max_length=60,

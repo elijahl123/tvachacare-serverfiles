@@ -676,7 +676,7 @@ def admin_template(request, model: str):
     } if request.user.is_authenticated else None
     context['account'] = account
     context['today'] = datetime.date.today()
-    model_dict = {}
+    model_dict = {'model': model}
     if model == 'accounts':
         model_dict['title'] = 'Accounts'
         model_dict['items'] = Account.objects.all()
@@ -742,3 +742,129 @@ def admin_template(request, model: str):
         return redirect('admin-console')
     context['model'] = model_dict
     return render(request, 'admin_template.html', context)
+
+
+@login_required
+def admin_edit(request, model, id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    context = {}
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group.name,
+    } if request.user.is_authenticated else None
+    context['account'] = account
+    context['today'] = datetime.date.today()
+    model_dict = {'model': model}
+    if model == 'accounts':
+        model_dict['title'] = 'Accounts'
+        model_dict['items'] = get_object_or_404(Account, id=id)
+        if request.POST:
+            form = AccountUpdateForm(request.POST or None, request.FILES or None,
+                                     instance=get_object_or_404(Account, id=id))
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'accounts')
+            else:
+                model_dict['form'] = AccountUpdateForm(instance=get_object_or_404(Account, id=id))
+        else:
+            model_dict['form'] = AccountUpdateForm(instance=get_object_or_404(Account, id=id))
+    elif model == 'groups':
+        model_dict['title'] = 'Groups'
+        model_dict['items'] = get_object_or_404(Group, id=id)
+        if request.POST:
+            form = GroupForm(request.POST or None, instance=get_object_or_404(Group, id=id))
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'groups')
+            else:
+                model_dict['form'] = GroupForm(instance=get_object_or_404(Group, id=id))
+        else:
+            model_dict['form'] = GroupForm(instance=get_object_or_404(Group, id=id))
+    elif model == 'event-logs':
+        model_dict['title'] = 'Event Logs'
+        model_dict['items'] = get_object_or_404(EventLog, id=id)
+        if request.POST:
+            form = EventLogForm(request.POST or None, instance=get_object_or_404(EventLog, id=id))
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'event-logs')
+            else:
+                model_dict['form'] = EventLogForm(instance=get_object_or_404(EventLog, id=id))
+        else:
+            model_dict['form'] = EventLogForm(instance=get_object_or_404(EventLog, id=id))
+    elif model == 'patients':
+        model_dict['title'] = 'Patients'
+        model_dict['items'] = get_object_or_404(PatientInformation, id=id)
+        if request.POST:
+            form = AddPatient(request.POST or None, instance=get_object_or_404(PatientInformation, id=id))
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'patients')
+            else:
+                model_dict['form'] = AddPatient(instance=get_object_or_404(PatientInformation, id=id))
+        else:
+            model_dict['form'] = AddPatient(instance=get_object_or_404(PatientInformation, id=id))
+    elif model == 'surgeries':
+        model_dict['title'] = 'Surgeries'
+        model_dict['items'] = get_object_or_404(SurgeryInformation, id=id)
+        if request.POST:
+            form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id))
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'surgeries')
+            else:
+                model_dict['form'] = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+        else:
+            model_dict['form'] = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+    else:
+        return redirect('admin-console')
+    context['model'] = model_dict
+    return render(request, 'admin_edit.html', context)
+
+
+@login_required
+def admin_delete(request, model, id):
+    if not request.user.is_superuser:
+        return redirect('home')
+    context = {}
+    account = {
+        "id": request.user.id,
+        "name": request.user.username,
+        "email": request.user.email,
+        "is_superuser": request.user.is_superuser,
+        "group": request.user.group.name,
+    } if request.user.is_authenticated else None
+    context['account'] = account
+    context['today'] = datetime.date.today()
+    if model == 'accounts':
+        item = get_object_or_404(Account, id=id)
+        item.delete()
+        return redirect('admin_template', 'accounts')
+    elif model == 'groups':
+        item = get_object_or_404(Group, id=id)
+        item.delete()
+        return redirect('admin_template', 'groups')
+    elif model == 'event-logs':
+        item = get_object_or_404(EventLog, id=id)
+        item.delete()
+        return redirect('admin_template', 'event-logs')
+    elif model == 'patients':
+        item = get_object_or_404(PatientInformation, id=id)
+        item.delete()
+        if PatientInformation.objects.filter(id=id).exists():
+            return redirect('admin_delete', 'patients', id)
+        else:
+            return redirect('admin_template', 'patients')
+    elif model == 'surgeries':
+        item = get_object_or_404(SurgeryInformation, id=id)
+        item.delete()
+        if SurgeryInformation.objects.filter(id=id).exists():
+            return redirect('admin_delete', 'surgeries', id)
+        else:
+            return redirect('admin_template', 'surgeries')
+    else:
+        return redirect('admin-console')
