@@ -680,20 +680,64 @@ def admin_template(request, model: str):
     if model == 'accounts':
         model_dict['title'] = 'Accounts'
         model_dict['items'] = Account.objects.all()
-        model_dict['highlighted'] = Account.objects.values_list('group__name')
+        if request.POST:
+            form = RegistrationForm(request.POST or None)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'accounts')
+            else:
+                model_dict['new_form'] = RegistrationForm()
+        else:
+            model_dict['new_form'] = RegistrationForm()
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['items'] = Group.objects.all()
         model_dict['accounts'] = Account.objects.all()
+        if request.POST:
+            form = GroupForm(request.POST or None)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'event-logs')
+            else:
+                model_dict['new_form'] = GroupForm()
+        else:
+            model_dict['new_form'] = GroupForm()
     elif model == 'event-logs':
         model_dict['title'] = 'Event Logs'
         model_dict['items'] = EventLog.objects.all().order_by('-event_time')
+        if request.POST:
+            form = EventLogForm(request.POST or None)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'event-logs')
+            else:
+                model_dict['new_form'] = EventLogForm()
+        else:
+            model_dict['new_form'] = EventLogForm()
     elif model == 'patients':
         model_dict['title'] = 'Patients'
         model_dict['items'] = PatientInformation.objects.all()
+        if request.POST:
+            form = AddPatient(request.POST or None)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'patients')
+            else:
+                model_dict['new_form'] = AddPatient()
+        else:
+            model_dict['new_form'] = AddPatient()
     elif model == 'surgeries':
         model_dict['title'] = 'Surgeries'
         model_dict['items'] = SurgeryInformation.objects.all()
+        if request.POST:
+            form = SurgeryForm(request.POST or None)
+            if form.is_valid():
+                form.save()
+                return redirect('admin_template', 'surgeries')
+            else:
+                model_dict['new_form'] = SurgeryForm()
+        else:
+            model_dict['new_form'] = SurgeryForm()
     else:
         return redirect('admin-console')
     context['model'] = model_dict

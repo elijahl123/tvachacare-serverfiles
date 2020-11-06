@@ -1,7 +1,8 @@
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import UserCreationForm
 
-from .models import Account, PatientInformation, Image, SurgeryInformation, ProcedureCodes
+from .models import Account, PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog, Group
 
 
 class AccountAuthenticationForm(forms.ModelForm):
@@ -58,6 +59,20 @@ class AccountUpdateForm(forms.ModelForm):
             return profile_picture_path
 
 
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(max_length=60,
+                             help_text='Required. Add a valid email address')
+
+    class Meta:
+        model = Account
+        fields = ("first_name", "last_name", "email", "username", "group", "password1", "password2")
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
 class AddPatient(forms.ModelForm):
     class Meta:
         model = PatientInformation
@@ -86,6 +101,11 @@ class AddPatient(forms.ModelForm):
             'doctor_notes',
             'story'
         ]
+
+    def __init__(self, *args, **kwargs):
+        super(AddPatient, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class ImageForm(forms.ModelForm):
@@ -131,6 +151,11 @@ class SurgeryForm(forms.ModelForm):
             'consent',
         ]
 
+    def __init__(self, *args, **kwargs):
+        super(SurgeryForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
 
 class CSVForm(forms.Form):
     date_start = forms.DateField()
@@ -145,3 +170,25 @@ class EmailForm(forms.Form):
     from_email = forms.EmailInput()
     title = forms.TextInput()
     message = forms.TextInput()
+
+
+class EventLogForm(forms.ModelForm):
+    class Meta:
+        model = EventLog
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(EventLogForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class GroupForm(forms.ModelForm):
+    class Meta:
+        model = Group
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
