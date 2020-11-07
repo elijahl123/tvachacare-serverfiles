@@ -1,6 +1,16 @@
 {% extends 'admin_template.html' %}
 
 {% block admin_block %}
+    {% if model.title == 'Surgeries' %}
+        {% if images %}
+            <div class="row no-gutters row-cols-4 row-cols-sm-1 justify-content-center" style="margin-bottom: 10px">
+                {% for image in images %}
+                    <div class="col" style="max-width: 200px;margin: 5px;">
+                        <img style="width: 100%;border-radius: 8px;" src="{{ image.image.url }}"/></div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endif %}
     {% for field in model.item %}
         <div class="row information-container no-gutters"
              style="width: 100%;margin-bottom: 15px;background-color: white; border-radius: 8px">
@@ -15,6 +25,25 @@
             </div>
         </div>
     {% endfor %}
+    {% if model.title == 'Surgeries' %}
+        {% if procedure_codes %}
+            {% for code in procedure_codes %}
+                <div class="row information-container no-gutters"
+                     style="width: 100%;margin-bottom: 15px;background-color: white; border-radius: 8px">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: #fc9c34;border-radius: 8px;padding: 15px 20px;">
+                        <h5 style="color: white;font-weight: bold;margin-bottom: 0;">Procedure
+                            Code {{ forloop.counter }}</h5>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;">
+                            {{ code.procedure_codes }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
     <div role="group" class="btn-group d-flex"
          style="border-radius: 0 !important;">
         <a class="btn btn-secondary" href="{% url 'admin_template' model.model %}"

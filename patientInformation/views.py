@@ -910,6 +910,8 @@ def admin_view(request, model, id):
     elif model == 'surgeries':
         model_dict['title'] = 'Surgeries'
         model_dict['item'] = SurgeryForm(data=model_to_dict(get_object_or_404(SurgeryInformation, id=id)))
+        context['images'] = Image.objects.filter(surgery=id)
+        context['procedure_codes'] = ProcedureCodes.objects.filter(surgery=id)
     else:
         return redirect('admin-console')
     context['model'] = model_dict
