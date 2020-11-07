@@ -93,9 +93,10 @@
                                 {% elif model.title == 'Surgeries' %}
                                 {% url 'surgery_page' item.patient.slug item.id %}
                                          {% endif %}" class="text-lg-left text-center"
-                                       style="color: slategray;min-width: 250px">{{ item }}</a>
+                                       style="color: slategray; width: 250px; white-space: nowrap">{{ item }}</a>
                                     {% if model.title == 'Accounts' %}
                                         <span>{{ item.last_name }}, {{ item.first_name }}</span>
+                                        <span>{{ item.username }}</span>
                                     {% elif model.title == 'Groups' %}
                                     {% elif model.title == 'Event Logs' %}
                                         <span>{{ item.event_time }}</span>
@@ -176,8 +177,9 @@
 
 
                         </div>
-                        </div>
+
                     {% endblock %}
+                </div>
             </div>
         </div>
     </main>

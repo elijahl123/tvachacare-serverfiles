@@ -472,6 +472,8 @@ def filter_by_date(request):
 
     surgeries = SurgeryInformation._meta.get_fields()
     context['surgeries'] = surgeries
+    patients = PatientInformation._meta.get_fields()
+    context['patients'] = patients
 
     form = CSVForm(request.POST or None)
     if form.is_valid():

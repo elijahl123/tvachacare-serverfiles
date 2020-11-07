@@ -199,7 +199,7 @@ class GroupForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class AccountView(UserCreationForm):
+class AccountView(forms.ModelForm):
     class Meta:
         model = Account
         exclude = ['password']
