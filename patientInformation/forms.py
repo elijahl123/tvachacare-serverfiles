@@ -23,7 +23,7 @@ class AccountAuthenticationForm(forms.ModelForm):
 class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture_path', 'password')
+        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture_path')
 
     def clean_email(self):
         if self.is_valid():
