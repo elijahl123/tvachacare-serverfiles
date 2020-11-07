@@ -772,13 +772,13 @@ def admin_edit(request, model, id):
         model_dict['title'] = 'Accounts'
         model_dict['items'] = get_object_or_404(Account, id=id)
         if request.POST:
-            form = AccountUpdateForm(request.POST or None, request.FILES or None,
-                                     instance=get_object_or_404(Account, id=id))
+            form = AccountView(request.POST or None, request.FILES or None,
+                               instance=get_object_or_404(Account, id=id))
             if form.is_valid():
                 form.save()
                 return redirect('admin_template', 'accounts')
             else:
-                model_dict['form'] = AccountUpdateForm(instance=get_object_or_404(Account, id=id))
+                model_dict['form'] = AccountView(instance=get_object_or_404(Account, id=id))
         else:
             model_dict['form'] = AccountView(instance=get_object_or_404(Account, id=id))
     elif model == 'groups':

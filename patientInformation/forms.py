@@ -23,7 +23,7 @@ class AccountAuthenticationForm(forms.ModelForm):
 class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = Account
-        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture_path')
+        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture_path', 'password')
 
     def clean_email(self):
         if self.is_valid():
@@ -70,7 +70,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = Account
-        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted']
+        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted', 'password']
 
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
@@ -199,7 +199,7 @@ class GroupForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class AccountView(forms.ModelForm):
+class AccountView(UserCreationForm):
     class Meta:
         model = Account
         exclude = ['password']
