@@ -1,15 +1,22 @@
 {% extends 'admin_template.html' %}
 
 {% block admin_block %}
-    {% if model.title == 'Surgeries' %}
-        {% if images %}
-            <div class="row no-gutters row-cols-4 row-cols-sm-1 justify-content-center" style="margin-bottom: 10px">
-                {% for image in images %}
-                    <div class="col" style="max-width: 200px;margin: 5px;">
-                        <img style="width: 100%;border-radius: 8px;" src="{{ image.image.url }}"/></div>
-                {% endfor %}
-            </div>
-        {% endif %}
+    {% if model.title == 'Surgeries' or model.title == 'Patients' %}
+        <div class="row no-gutters row-cols-4 row-cols-sm-1 justify-content-center" style="margin-bottom: 10px">
+            {% for image in images %}
+                <div class="col" style="max-width: 200px;margin: 5px;">
+                    <img style="width: 100%;border-radius: 8px;" src="{{ image.image.url }}"/></div>
+            {% endfor %}
+            {% if patient.patient_image %}
+                <div class="col" style="max-width: 200px;margin: 5px;">
+                    <img style="width: 100%;border-radius: 8px;" src="{{ patient.patient_image.url }}"/></div>
+            {% endif %}
+            {% if patient.injury_image %}
+                <div class="col" style="max-width: 200px;margin: 5px;">
+                    <img style="width: 100%;border-radius: 8px;" src="{{ patient.injury_image.url }}"/></div>
+            {% endif %}
+        </div>
+
     {% endif %}
     {% for field in model.item %}
         <div class="row information-container no-gutters"

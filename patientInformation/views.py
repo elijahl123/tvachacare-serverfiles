@@ -906,7 +906,8 @@ def admin_view(request, model, id):
         model_dict['item'] = EventLogForm(data=model_to_dict(get_object_or_404(EventLog, id=id)))
     elif model == 'patients':
         model_dict['title'] = 'Patients'
-        model_dict['item'] = AddPatient(data=model_to_dict(get_object_or_404(PatientInformation, id=id)))
+        model_dict['item'] = PatientView(data=model_to_dict(get_object_or_404(PatientInformation, id=id)))
+        context['patient'] = get_object_or_404(PatientInformation, id=id)
     elif model == 'surgeries':
         model_dict['title'] = 'Surgeries'
         model_dict['item'] = SurgeryForm(data=model_to_dict(get_object_or_404(SurgeryInformation, id=id)))

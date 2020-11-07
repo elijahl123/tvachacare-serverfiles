@@ -208,3 +208,9 @@ class AccountView(forms.ModelForm):
         super(AccountView, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+class PatientView(forms.ModelForm):
+    class Meta:
+        model = PatientInformation
+        exclude = ['patient_image', 'injury_image', 'slug']
