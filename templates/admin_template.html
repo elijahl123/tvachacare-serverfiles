@@ -96,7 +96,7 @@
                                        style="color: slategray; width: 250px; white-space: nowrap">{{ item }}</a>
                                     {% if model.title == 'Accounts' %}
                                         <span>{{ item.last_name }}, {{ item.first_name }}</span>
-                                        <span>{{ item.username }}</span>
+                                        <span>{{ item.group.name }}</span>
                                     {% elif model.title == 'Groups' %}
                                     {% elif model.title == 'Event Logs' %}
                                         <span>{{ item.event_time }}</span>

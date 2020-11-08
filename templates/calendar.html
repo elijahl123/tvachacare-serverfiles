@@ -18,6 +18,7 @@
             .month-header {
                 font-size: 30px;
             }
+
             .form-control {
                 font-size: 30px;
             }
@@ -35,8 +36,8 @@
                    style="width: 50px;height: 50px;background: transparent;padding: 0;"><i
                         class="fa fa-angle-left"
                         style="color: #888888;font-size: 35px;margin-right: 4px;margin-bottom: 2px;"></i></a>
-                <h1 class="month-header" onclick="
-                $(this).addClass('d-none');$('.date-form').removeClass('d-none').addClass('d-flex')"
+                <h1 class="month-header"
+                    onclick="$(this).addClass('d-none');$('.date-form').removeClass('d-none').addClass('d-flex')"
                     style="cursor: pointer;color: #888888;margin: 0;">{{ month }} {{ year }}</h1>
                 <form class="d-none date-form" action="">
                     <input onclick="event.stopPropagation();" onchange="addDate()" class="form-control text-center"
@@ -131,7 +132,9 @@
                                     <div class="col">
                                         {% for surgery in surgeries %}
                                             {% if surgery.date_of_upload == day %}
-                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-primary d-block"
+                                                <div role="alert"
+                                                     onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'"
+                                                     class="alert alert-primary d-block"
                                                      style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
@@ -139,7 +142,9 @@
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_evaluation == day %}
-                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-success d-block"
+                                                <div role="alert"
+                                                     onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'"
+                                                     class="alert alert-success d-block"
                                                      style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
@@ -147,7 +152,9 @@
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_admission == day %}
-                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-warning d-block"
+                                                <div role="alert"
+                                                     onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'"
+                                                     class="alert alert-warning d-block"
                                                      style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
@@ -155,7 +162,9 @@
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_surgery == day %}
-                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-danger d-block"
+                                                <div role="alert"
+                                                     onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'"
+                                                     class="alert alert-danger d-block"
                                                      style="cursor: pointer; overflow:hidden; width: 100%;margin: 0;padding: 0 10px;">
                                                     <span onmouseover="$(this).css('white-space', 'normal')"
                                                           onmouseleave="$(this).css('white-space', 'nowrap')"
@@ -163,7 +172,9 @@
                                                 </div>
                                             {% endif %}
                                             {% if surgery.date_of_discharge == day %}
-                                                <div role="alert" onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'" class="alert alert-secondary d-block"
+                                                <div role="alert"
+                                                     onclick="window.location.href = '{% url 'surgery_page' surgery.patient.slug surgery.id %}'"
+                                                     class="alert alert-secondary d-block"
                                                      style="cursor: pointer; overflow: hidden; width: 100%;margin: 0;padding: 0 10px;">
                                             <span onmouseover="$(this).css('white-space', 'normal')"
                                                   onmouseleave="$(this).css('white-space', 'nowrap')"

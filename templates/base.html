@@ -113,7 +113,7 @@
                                 <span style="display: none">Calendar</span>
                             </a>
                         </li>
-                    {% if account.group.name == 'Data Entry' %}
+                    {% if account.group.can_add_patients %}
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
@@ -125,28 +125,17 @@
                                 <span style="display: none">Add Patient</span>
                             </a>
                         </li>
-                    {% elif account.is_superuser == True %}
-                        {% load admin_urls %}
+                    {% endif %}
+                    {% if request.user.group.name == 'Admin' %}
                         <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
                             <a class="btn btn-primary d-flex justify-content-center align-items-center"
                                role="button"
-                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px 7px 14px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
                                onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
                                onmouseleave="$(this).find('span').hide(50);"
                                href="{% url 'admin-console' %}">
-                                <i class="fa fa-terminal" style="margin: 0;font-size: 20px;"></i>
+                                <i class="fa fa-user-cog" style="margin: 0;font-size: 20px;"></i>
                                 <span style="display: none">Admin Console</span>
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0">
-                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
-                               role="button"
-                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
-                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
-                               onmouseleave="$(this).find('span').hide(50);"
-                               href="{% url 'addPatient' %}">
-                                <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
-                                <span style="display: none">Add Patient</span>
                             </a>
                         </li>
                     {% endif %}
@@ -181,7 +170,8 @@
                 <h5 style="font-family: Raleway, sans-serif;">About us</h5>
                 <ul>
                     <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Company Information</a></li>
-                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Contact us</a></li>
+                    <li><a href="https://tvachacare.com#Contact" target="_blank"
+                           style="font-family: 'Open Sans', sans-serif;">Contact us</a></li>
                 </ul>
             </div>
             <div class="col-sm-3">

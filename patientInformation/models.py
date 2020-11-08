@@ -188,9 +188,18 @@ class Account(AbstractBaseUser):
 
 class Group(models.Model):
     name = models.CharField(max_length=120, unique=True)
+    can_approve = models.BooleanField(default=False)
+    can_add_patients = models.BooleanField(default=False)
+    can_add_surgeries = models.BooleanField(default=False)
+    can_add_accounts = models.BooleanField(default=False)
+    can_edit_patients = models.BooleanField(default=False)
+    can_edit_surgeries = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        ordering = ['name']
 
 
 class EventLog(models.Model):
