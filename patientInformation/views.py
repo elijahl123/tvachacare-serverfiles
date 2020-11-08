@@ -826,7 +826,8 @@ def surgery_page(request, slug, id):
                                             {'patient': patient, 'account': account, 'message': message,
                                              'surgery': surgery})
             for email in to_emails:
-                send_mail(subject, message, from_email='contact@tvachacare.com', recipient_list=[email],
+                send_mail(subject, message, from_email='Appeal Request <contact@tvachacare.com>',
+                          recipient_list=[email],
                           html_message=html_message)
 
     return render(request, 'surgery_page.html', context)

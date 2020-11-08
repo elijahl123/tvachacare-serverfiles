@@ -98,6 +98,7 @@
                                         <span>{{ item.last_name }}, {{ item.first_name }}</span>
                                         <span>{{ item.group.name }}</span>
                                     {% elif model.title == 'Groups' %}
+                                        <span>Id: {{ item.id }}</span>
                                     {% elif model.title == 'Event Logs' %}
                                         <span>{{ item.event_time }}</span>
                                         <span class="">{{ item.user }}</span>
