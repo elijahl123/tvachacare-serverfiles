@@ -405,11 +405,11 @@ def calendar_events(request, year, current_month):
     this_month = calendar.month_name[int(current_month)]
     c = calendar.Calendar(6)
     this_calendar = c.monthdatescalendar(int(year), int(current_month))
-    context = {"account": account,
-               'calendar': this_calendar,
-               'month': this_month,
-               'year': year,
-               'month_num': int(current_month)}
+    context['account'] = account
+    context['calendar'] = this_calendar
+    context['month'] = this_month
+    context['year'] = year
+    context['month_num'] = int(current_month)
     patient = PatientInformation.objects.all()
     surgeries = SurgeryInformation.objects.all()
     context['patient'] = patient
@@ -765,7 +765,7 @@ def privacyPolicy(request):
         "is_superuser": request.user.is_superuser,
         "group": request.user.group,
     } if request.user.is_authenticated else None
-    context = {"account": account, 'today': datetime.date.today()}
+    context['account'] = account
     return render(request, 'privacyPolicy.html', context)
 
 
