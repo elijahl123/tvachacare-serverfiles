@@ -646,6 +646,8 @@ def index(request):
 def loginadmin(request):
     user = request.user
 
+    context['account'] = request.user if user.is_authenticated else None
+
     if request.POST:
         form = AccountAuthenticationForm(request.POST)
         if form.is_valid():

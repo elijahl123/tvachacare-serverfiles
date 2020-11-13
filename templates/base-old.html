@@ -1,0 +1,200 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="description"
+          content="TvachaCare is a medical billing database for medical professionals to store and query documents regarding burn victims.">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="icon" type="image/png" sizes="500x452" href="{% static 'img/logoNoText.ico' %}">
+    <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="{% static 'js/jquery.fittext.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172938628-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-172938628-2');
+    </script>
+    <style>
+        .page-footer h5 {
+            color: #FC9C34 !important;
+        }
+
+        .clean-navbar.fixed-bottom, .clean-navbar.fixed-top {
+            box-shadow: 0 0 15px rgba(0, 0, 0, .3) !important;
+        }
+
+        .navbar-nav {
+            flex-direction: row !important;
+        }
+
+        @media (max-width: 990px) {
+            .navbar-collapse ul {
+                margin-top: 20px;
+                overflow-x: auto;
+                overflow-y: visible !important;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="{% static 'base.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
+    {% block header %}
+    {% endblock %}
+</head>
+<body style="background-color: #FC9C34; overflow-x: hidden;" class="{% block bodyclass %}{% endblock %}">
+
+<nav class="d-print-none navbar navbar-light navbar-expand-lg fixed-top bg-white d-flex d-xl-flex align-items-center align-items-xl-end clean-navbar"
+     style="color: white !important;background-color: whitesmoke !important;position: relative;">
+    <div class="container-fluid" style="color: white !important;">
+        <a class="d-inline-flex align-items-center" href="{% url 'home' %}">
+            <img class="d-flex justify-content-center align-items-center" src="{% static 'img/logoTvacha.png' %}"
+                 height="30px" style="min-height: 30px;max-height: 38px;"><span style="font-family: Raleway, sans-serif;
+    font-size: 30px;color: darkgray;font-weight: bold;vertical-align: baseline;margin-left: 5px;display: inline-block;line-height: 30px;margin-top: 4px;">HUI</span>
+        </a>
+
+        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
+                style="background-color: #fc9c34;">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fas fa-ellipsis-h" style="color: white;"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="nav navbar-nav d-xl-flex ml-auto align-items-xl-center"
+                style="flex-wrap: nowrap;max-width: 90vw;white-space: nowrap;">
+                {% if account %}
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                           role="button"
+                           style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           onmouseover="$(this).setTimeout($(this).find('span').show(200), 1000);"
+                           onmouseleave="$(this).find('span').hide(50);"
+                           href="{% url 'home' %}">
+                            <i class="fa fa-home" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Home</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                           role="button"
+                           style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                           onmouseleave="$(this).find('span').hide(50);"
+                           href="
+                                   {% if account.group.name != 'Approver' %}{% url 'filter_by_date' %}{% else %}{% url 'hui_report' %}{% endif %}">
+                            <i class="fa fa-table" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Reports</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                        <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                           role="button"
+                           style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                           onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                           onmouseleave="$(this).find('span').hide(50);"
+                           href="{% url 'calendar' today.year today.month %}">
+                            <i class="fa fa-calendar" style="margin: 0;font-size: 20px;"></i>
+                            <span style="display: none">Calendar</span>
+                        </a>
+                    </li>
+                    {% if account.group.can_add_patients %}
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(50);"
+                               href="{% url 'addPatient' %}">
+                                <i class="fa fa-plus" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Add Patient</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    {% if request.user.group.name == 'Admin' %}
+                        <li class="nav-item" role="presentation" style="margin: 0 10px; padding-right: 0;">
+                            <a class="btn btn-primary d-flex justify-content-center align-items-center"
+                               role="button"
+                               style="min-width: 50px;height: 50px;padding: 7px 10px 7px 14px;font-size: 10px;text-align: center;border-radius: 25px;border-style: none;background: #fc9c34;"
+                               onmouseover="$(this).setTimeout($(this).find('span').show(200), 200);"
+                               onmouseleave="$(this).find('span').hide(50);"
+                               href="{% url 'admin-console' %}">
+                                <i class="fa fa-user-cog" style="margin: 0;font-size: 20px;"></i>
+                                <span style="display: none">Admin Console</span>
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li role="presentation" class="nav-item" style="padding-right: 0;">
+                        <a class="btn log-out" href="{% url 'logout' %}"
+                           style="margin-left: 10px; border-radius: 50px;padding: 10px 15px; border-color: #FC9C34 !important; color: #FC9C34">Log
+                            Out</a>
+                    </li>
+                {% else %}
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+{% block content %}
+
+{% endblock %}
+
+<footer class="page-footer light"
+        style="box-shadow: 0 0 15px rgba(0,0,0,.2) !important;background-color: whitesmoke !important;">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;font-weight: 700;">Get started</h5>
+                <ul>
+                    <li><a href="{% url 'home' %}" style="font-family: 'Open Sans', sans-serif;">Home</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;">About us</h5>
+                <ul>
+                    <li><a href="#" style="font-family: 'Open Sans', sans-serif;">Company Information</a></li>
+                    <li><a href="https://tvachacare.com#Contact" target="_blank"
+                           style="font-family: 'Open Sans', sans-serif;">Contact us</a></li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <h5 style="font-family: Raleway, sans-serif;">Legal</h5>
+                <ul>
+                    <li><a href="{% url 'terms_of_service' %}" style="font-family: 'Open Sans', sans-serif;">Terms of
+                        Service</a></li>
+                    <li><a href="{% url 'privacy_policy' %}" style="font-family: 'Open Sans', sans-serif;">Privacy
+                        Policy</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <p>© 2020 TvachaCare</p>
+    </div>
+</footer>
+<script src="{% static 'js/smoothproducts.min.js' %}"></script>
+<script src="{% static 'js/theme.js' %}"></script>
+<script>
+    $('.nav-item').hover(function () {
+        $(this).find('i').toggle(50);
+    })
+</script>
+</body>
+</html>
