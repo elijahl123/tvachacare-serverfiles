@@ -18,6 +18,7 @@
         small {
             font-weight: bold;
         }
+
     </style>
     <script>
         $(document).ready(function () {
@@ -80,7 +81,7 @@
                             </i><span class="flex-grow-1">Surgeries</span></a>
                     </ul>
                 </div>
-                <div class="col d-flex flex-column"
+                <div class="col d-flex flex-column admin-list-col"
                      style="max-height: 80vh;color: slategray;overflow-y: auto; overflow-x: hidden; padding: 10px; min-height:50vh">
                     {% block admin_block %}
                         <div class="list-group list-group-flush"
@@ -88,11 +89,8 @@
                             {% for item in model.items %}
                                 <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
                                     class="list-group-item flex-lg-row flex-column align-items-center {% if item.email == account.email %}list-group-item-success{% endif %}">
-                                    <a href="{% if model.title == 'Patients' %}
-                                {% url 'patient_page' item.slug %}
-                                {% elif model.title == 'Surgeries' %}
-                                {% url 'surgery_page' item.patient.slug item.id %}
-                                         {% endif %}" class="text-lg-left text-center"
+                                    <a href="{% url 'admin_view' model.model item.id %}"
+                                       class="text-lg-left text-center"
                                        style="color: slategray; width: 250px; white-space: nowrap">{{ item }}</a>
                                     {% if model.title == 'Accounts' %}
                                         <span>{{ item.last_name }}, {{ item.first_name }}</span>
@@ -123,10 +121,6 @@
                                         <a class="btn btn-danger" href="{% url 'admin_delete' model.model item.id %}"
                                            style="border-style: none;">
                                             <i class="fa fa-trash"></i> Delete
-                                        </a>
-                                        <a class="btn btn-info" href="{% url 'admin_view' model.model item.id %}"
-                                           style="border-style: none;">
-                                            <i class="fa fa-info-circle"></i> View
                                         </a>
                                     </div>
                                 </li>
