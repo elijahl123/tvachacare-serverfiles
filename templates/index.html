@@ -124,17 +124,16 @@
 {% endblock %}
 
 {% block content %}
-    <main class="d-flex d-flex flex-column justify-content-center justify-content-center align-items-center"
-          style="min-height: 100vh;">
-        <div class="container rounded shadow" style="background-color: #fff;">
-            <div class="row">
+    <main class="d-flex d-flex flex-column align-items-center">
+        <div class="container-fluid" style="background-color: #fff; min-height: 100vh;padding: 0 30px">
+            <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"
                         style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold;">
                         Hello, {{ account.first_name }}!</h1>
                 </div>
             </div>
-            <div class="row">
+            <div class="row no-gutters">
                 <div class="col">
                     <div>
                         <ul class="nav nav-pills nav-justified">

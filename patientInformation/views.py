@@ -640,7 +640,7 @@ def index(request):
             )
         context['account_form'] = form
 
-    return render(request, 'homePage.html', context)
+    return render(request, 'index.html', context)
 
 
 def loginadmin(request):

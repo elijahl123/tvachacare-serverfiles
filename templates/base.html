@@ -73,13 +73,13 @@
         {% if account %}
             <div class="col-md" style="height: 100%;background: transparent;position: sticky; top: 0">
                 <div class="row no-gutters">
-                    <div class="col d-flex justify-content-center align-items-center"
-                         style="padding: 20px">
+                    <a href="{% url 'home' %}" class="col d-flex justify-content-center align-items-center"
+                       style="padding: 20px; text-decoration: none">
                         <img class="d-flex justify-content-center align-items-center"
                              src="{% static 'img/logoTvacha.png' %}"
                              height="30px" style="min-height: 30px;max-height: 38px;"><span style="font-family: Raleway, sans-serif;
     font-size: 30px;color: darkgray;font-weight: bold;vertical-align: baseline;margin-left: 5px;display: inline-block;line-height: 30px;margin-top: 4px;">HUI</span>
-                    </div>
+                    </a>
                     <div class="col-2 d-flex justify-content-center align-items-center d-md-none"
                          style="padding: 20px">
                         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
