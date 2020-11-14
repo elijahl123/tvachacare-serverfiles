@@ -120,6 +120,38 @@
                 font-size: x-large;
             }
         }
+
+        .search-patients {
+            padding: 15px 15px 15px 40px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FC9C34;
+            font-size: 20px;
+            font-family: Raleway, sans-serif;
+            font-weight: bold;
+            width: 100%;
+            color: white;
+            margin: 0;
+        }
+
+        .search-patients:focus {
+            background-color: white;
+            color: slategray;
+            transition-duration: 0.3s;
+        }
+
+        .search-patients:focus::placeholder {
+            color: slategray;
+        }
+
+        .search-patients::placeholder {
+            color: white;
+            opacity: 0.7;
+            font-family: Raleway, sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
     </style>
 {% endblock %}
 
@@ -129,7 +161,7 @@
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"
-                        style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold;">
+                        style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold;font-family: 'Raleway', sans-serif">
                         Hello, {{ account.first_name }}!</h1>
                 </div>
             </div>
@@ -144,9 +176,10 @@
                                        style="border-width: 1px;border-style: none;">Awaiting
                                         Approval</a></li>
                             {% else %}
-                                <li class="nav-item"><a role="tab" data-toggle="pill" class="nav-link active"
-                                                        href="#tab-1"
-                                                        style="border-width: 1px;border-style: none;">Patients</a></li>
+                                <li class="nav-item">
+                                    <a role="tab" data-toggle="pill" class="nav-link active"
+                                       href="#tab-1"
+                                       style="border-width: 1px;border-style: none;">Patients</a></li>
                             {% endif %}
                             <li class="nav-item"><a role="tab" data-toggle="pill" class="nav-link"
                                                     href="#tab-3">Account</a></li>
@@ -154,11 +187,21 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="tab-1" style="margin: 20px;">
                                 {% if account.group.can_approve %}
-                                    <h2 style="color: #092327;">Awaiting Approval</h2>
+                                    <h2 style="font-family: 'Raleway', sans-serif; color: slategray; font-weight: bold">
+                                        Awaiting Approval</h2>
                                 {% else %}
-                                    <h2 style="color: #092327;">Patients</h2>
+                                    <h2 style="font-family: 'Raleway', sans-serif; color: slategray; font-weight: bold">
+                                        Patients</h2>
                                 {% endif %}
-                                <input type="search" placeholder="Search for Patients..." class="search-patients"/>
+                                <div class="form-group"
+                                     style="position:relative; width: 100%; display: flex; align-items: center; margin: 10px 0">
+                                    <i class="fas fa-search search-icon"
+                                       style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
+                                    <input class="form-control search-patients" id="searchbar-nav"
+                                           onfocusin="$('.search-icon').css('color', 'slategray')"
+                                           onfocusout="$('.search-icon').css('color', 'white')"
+                                           placeholder="Search for patients..." name="search">
+                                </div>
                                 {% if account.group.can_approve %}
                                     {% if object %}
                                         <ul class="list-group"
