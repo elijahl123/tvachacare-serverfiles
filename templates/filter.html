@@ -21,29 +21,32 @@
         }
     </script>
     <main class="d-flex justify-content-center align-items-center"
-          style="background-color: #FC9C34;font-family: 'Open Sans', sans-serif;font-size: 20px;min-height: 100vh">
+          style="background-color: var(--main-color);font-family: 'Open Sans', sans-serif;font-size: 20px;min-height: 100vh">
         <form method="post" action=""
               style="padding: 30px; background-color: white;border-radius: 15px; margin: 15px;max-width: 700px">{% csrf_token %}
             <div class="form-row">
                 <div class="col">
-                    <h1 class="text-center" style="color: #fc9c34;margin-bottom: 10px;font-weight: bold;">Filter by
+                    <h1 class="text-center" style="color: var(--main-color);margin-bottom: 10px;font-weight: bold;">
+                        Filter by
                         Date</h1>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <h4 class="text-center" style="color: #fc9c34;margin-bottom: 15px;">Select range of dates:</h4>
+                    <h4 class="text-center" style="color: var(--main-color);margin-bottom: 15px;">Select range of
+                        dates:</h4>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 15px;">
                 <div class="col d-flex flex-column justify-content-center align-items-center flex-sm-column flex-md-row flex-lg-row flex-xl-row">
                     <input class="form-control" type="date" name="date_start"/>
-                    <span style="color: #fc9c34;margin: 7px;">to</span>
+                    <span style="color: var(--main-color);margin: 7px;">to</span>
                     <input class="form-control" type="date" name="date_end"/></div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <h4 class="text-center" style="color: #fc9c34;margin-bottom: 15px;">Select fields to include:</h4>
+                    <h4 class="text-center" style="color: var(--main-color);margin-bottom: 15px;">Select fields to
+                        include:</h4>
                 </div>
             </div>
             <div class="form-row" style="margin-bottom: 20px;">
@@ -51,34 +54,35 @@
                     {% for field in patients %}
                         {% if not field.name == 'id' and not field.name == 'surgeryinformation' and not field.name == 'uploaded' and not field.name == 'patient_image' and not field.name == 'injury_image' %}
                             <div class="form-check d-flex align-items-center"
-                                 style="color: #fc9c34;margin: 10px;">
+                                 style="color: var(--main-color);margin: 10px;">
                                 <input type="checkbox" onchange="addFields(this)" class="form-check-input"
                                        id="formCheck-2"
                                        style="margin-top: 0;" name="checks[]" value="patient__{{ field.name }}"/>
                                 <label class="form-check-label" for="formCheck-1"
-                                       style="color: #fc9c34;font-size: 15px;">{{ field.verbose_name|title }}</label>
+                                       style="color: var(--main-color);font-size: 15px;">{{ field.verbose_name|title }}</label>
                             </div>
                         {% endif %}
                     {% endfor %}
                     {% for field in surgeries %}
                         {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' and not field.name == 'procedurecodes' %}
                             <div class="form-check d-flex align-items-center"
-                                 style="color: #fc9c34;margin: 10px;">
+                                 style="color: var(--main-color);margin: 10px;">
                                 <input type="checkbox" onchange="addFields(this)" class="form-check-input"
                                        id="formCheck-43" style="margin-top: 0;"
                                        name="checks[]" value="{{ field.name }}"/>
                                 <label class="form-check-label" for="formCheck-1"
-                                       style="color: #fc9c34;font-size: 15px;">{{ field.verbose_name|title }}</label>
+                                       style="color: var(--main-color);font-size: 15px;">{{ field.verbose_name|title }}</label>
                             </div>
                         {% endif %}
                     {% endfor %}
                     <div class="form-check d-flex align-items-center"
-                         style="color: #fc9c34;margin: 10px;"><input type="checkbox" onchange="addFields(this)"
-                                                                     class="form-check-input"
-                                                                     id="formCheck-22" style="margin-top: 0;"
-                                                                     name="procedure_codes"/><label
+                         style="color: var(--main-color);margin: 10px;"><input type="checkbox"
+                                                                               onchange="addFields(this)"
+                                                                               class="form-check-input"
+                                                                               id="formCheck-22" style="margin-top: 0;"
+                                                                               name="procedure_codes"/><label
                             class="form-check-label" for="formCheck-1"
-                            style="color: #fc9c34;font-size: 15px;">Procedure Codes</label></div>
+                            style="color: var(--main-color);font-size: 15px;">Procedure Codes</label></div>
                 </div>
             </div>
             <div class="form-row">

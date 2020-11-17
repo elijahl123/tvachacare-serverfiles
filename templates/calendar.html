@@ -35,26 +35,26 @@
                    href="{% url 'calendar' year month_num|add:"-1" %}"
                    style="width: 50px;height: 50px;background: transparent;padding: 0;"><i
                         class="fa fa-angle-left"
-                        style="color: #888888;font-size: 35px;margin-right: 4px;margin-bottom: 2px;"></i></a>
+                        style="color: var(--accent-color);font-size: 35px;margin-right: 4px;margin-bottom: 2px;"></i></a>
                 <h1 class="month-header"
                     onclick="$(this).addClass('d-none');$('.date-form').removeClass('d-none').addClass('d-flex')"
-                    style="cursor: pointer;color: #888888;margin: 0;">{{ month }} {{ year }}</h1>
+                    style="cursor: pointer;color: var(--accent-color);margin: 0;">{{ month }} {{ year }}</h1>
                 <form class="d-none date-form" action="">
                     <input onclick="event.stopPropagation();" onchange="addDate()" class="form-control text-center"
-                           id="form-date" style="font-size: 2.5rem;color: #888888" type="month" onkeyup="">
+                           id="form-date" style="font-size: 2.5rem;color: var(--accent-color)" type="month" onkeyup="">
                 </form>
                 <a class="btn d-flex justify-content-center align-items-center" type="button"
                    href="{% url 'calendar' year month_num|add:"1" %}"
                    style="width: 50px;height: 50px;background: transparent;padding: 0;"><i
                         class="fa fa-angle-right"
-                        style="color: #888888;font-size: 35px;margin-bottom: 2px;margin-right: 0;margin-left: 2px;"></i>
+                        style="color: var(--accent-color);font-size: 35px;margin-bottom: 2px;margin-right: 0;margin-left: 2px;"></i>
                 </a>
             </div>
             <div class="col d-flex flex-column"
                  style="height: 100%;margin-top: 20px;padding: 0;border: 0.5px solid #c8ced7 ; overflow-y: auto; overflow-x: hidden;">
                 <div class="row" style="margin: 0;">
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -72,7 +72,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -90,7 +90,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -99,7 +99,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="col"
-                         style="padding: 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7;">
+                         style="padding: 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7;">
                         <div class="row flex-column">
                             <div class="col">
                                 <h5 style="text-align: center;font-family: 'Open Sans', sans-serif;margin-bottom: 5px;">
@@ -121,7 +121,7 @@
                     <div class="row" style="height: 100%;margin: 0;">
                         {% for day in week %}
                             <div class="col"
-                                 style="padding: 5px 10px 10px;background: #ffffff;color: #888888;border: 0.5px solid #c8ced7">
+                                 style="padding: 5px 10px 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7">
                                 <div class="row flex-column">
                                     <div class="col d-flex justify-content-center" style="margin-bottom: 10px">
                                         <span style="{% if day == today %}background:dodgerblue;color: white;border-radius: 50px;{% endif %}{% if month_num != day.month %}opacity: 0.5;{% endif %}padding: 5px 30%;text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 20px">

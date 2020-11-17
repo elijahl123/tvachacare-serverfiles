@@ -11,7 +11,7 @@
         }
 
         #add-images:hover {
-            background-color: gray;
+            background-color: var(--accent-color);
             color: white !important;
             transition-duration: 0.2s !important;
         }
@@ -103,14 +103,16 @@
     <main>
         <div class="container" style="background-color: white;padding: 50px 0;">
             <div>
-                <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Edit Patient {{ patient.patient_record_number }}</h1>
+                <h1 class="text-center"
+                    style="color: var(--main-color);margin-bottom: 20px;font-family: Raleway, sans-serif;">Edit
+                    Patient {{ patient.patient_record_number }}</h1>
                 <form class="d-flex" method="post" enctype="multipart/form-data"> {% csrf_token %}
                     <div class="d-flex justify-content-center align-items-center invisible images-container"
                          style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 1000;top: 0;right: 0;left: 0;bottom: 0;">
                         <div class="d-flex flex-row justify-content-center align-items-center flex-wrap"
                              style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
                             <div class="d-flex flex-column justify-content-center align-items-center patient-image-container"
-                                 style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;">
+                                 style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
                                 <h1 class="patient-header" style="font-size: 30px;font-weight: normal;">Patient
                                     Image</h1>
                                 <div class="flex-column custom-file patient-input">
@@ -123,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="d-flex flex-column justify-content-center align-items-center injury-image-container"
-                                 style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: #fc9c34;border: 7px solid #fc9c34 ;">
+                                 style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
                                 <h1 class="injury-header" style="font-size: 30px;">Injury Image</h1>
                                 <div class="custom-file injury-input" style="cursor: pointer">
                                     <label class="custom-file-label">Upload File</label>
@@ -140,13 +142,14 @@
                         </div>
                     </div>
                     <div class="form-group" style="width: 100%;">
-                        <div id="formdiv" style="color: #fc9c34;font-family: Raleway, sans-serif;padding-bottom: 20px;">
+                        <div id="formdiv"
+                             style="color: var(--main-color);font-family: Raleway, sans-serif;padding-bottom: 20px;">
                             <div class="form-row d-flex justify-content-center align-items-center"
                                  style="padding-top: 30px;">
                                 <div class="col d-flex justify-content-center align-items-center">
                                     <button class="btn d-flex flex-column justify-content-center align-items-center"
                                             role="button" type="button" id="add-images"
-                                            style="color: gray;height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid gray;border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
+                                            style="color: var(--accent-color);height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid var(--accent-color);border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
                                             onclick="openImages()"><i
                                             class="fa fa-plus" style="font-size: 40px;"></i>Add Images
                                     </button>

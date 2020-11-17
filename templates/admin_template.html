@@ -36,13 +36,13 @@
              style="padding: 30px;background: whitesmoke;font-family: Raleway, sans-serif;width: 90%;border-radius: max(0px, min(8px, calc((100vw - 4px - 100%) * 9999))) / 8px;">
             <div class="row no-gutters flex-lg-row flex-column align-items-center align-items-lg-start">
                 <button data-toggle="collapse" class="navbar-toggler d-lg-none" data-target="#navcol-2"
-                        style="background-color: #fc9c34;border-color: #FC9C34;width: 50px">
+                        style="background-color: var(--main-color);border-color: var(--main-color);width: 50px">
                     <span class="sr-only">Toggle navigation</span>
                     <i class="fas fa-ellipsis-h" style="color: white;"></i>
                 </button>
                 <div class="col-md-12 col-lg-4 col-xl-4 collapse d-lg-block" id="navcol-2"
                      style="border-right: 1px solid lightgray;">
-                    <h1 style="color: #fc9c34;font-family: Raleway, sans-serif;font-weight: bold;text-align: center;margin-bottom: 20px;">
+                    <h1 style="color: var(--main-color);font-family: Raleway, sans-serif;font-weight: bold;text-align: center;margin-bottom: 20px;">
                         {{ model.title }}</h1>
                     <ul class="list-group">
                         <a href="{% url 'admin-console' %}"
@@ -82,7 +82,7 @@
                     </ul>
                 </div>
                 <div class="col d-flex flex-column admin-list-col"
-                     style="max-height: 80vh;color: slategray;overflow-y: auto; overflow-x: hidden; padding: 10px; min-height:50vh">
+                     style="max-height: 80vh;color: var(--accent-color);overflow-y: auto; overflow-x: hidden; padding: 10px; min-height:50vh">
                     {% block admin_block %}
                         <div class="list-group list-group-flush"
                              style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
@@ -91,7 +91,7 @@
                                     class="list-group-item flex-lg-row flex-column align-items-center {% if item.email == account.email %}list-group-item-success{% endif %}">
                                     <a href="{% url 'admin_view' model.model item.id %}"
                                        class="text-lg-left text-center"
-                                       style="color: slategray; width: 250px; white-space: nowrap">{{ item }}</a>
+                                       style="color: var(--accent-color); width: 250px; white-space: nowrap">{{ item }}</a>
                                     {% if model.title == 'Accounts' %}
                                         <span>{{ item.last_name }}, {{ item.first_name }}</span>
                                         <span>{{ item.group.name }}</span>
@@ -165,7 +165,7 @@
                                 </form>
                             </li>
                             <button class="list-group-item list-group-item-action d-flex justify-content-center align-items-center plus-button"
-                                    style="background: #FC9C34; color: white; border-color: #FC9C34"
+                                    style="background: var(--main-color); color: white; border-color: var(--main-color)"
                                     onclick="openNewForm()">
                                 <i class="fa fa-plus"></i>
                             </button>

@@ -106,7 +106,7 @@
         .overlay-profile i {
             font-size: 21px;
             cursor: pointer;
-            color: #fc9c34;
+            color: var(--main-color);
         }
 
         .container-profile-picture img {
@@ -125,7 +125,7 @@
             padding: 15px 15px 15px 40px;
             border: none;
             border-radius: 8px;
-            background-color: #FC9C34;
+            background-color: var(--main-color);
             font-size: 20px;
             font-family: Raleway, sans-serif;
             font-weight: bold;
@@ -136,12 +136,12 @@
 
         .search-patients:focus {
             background-color: white;
-            color: slategray;
+            color: var(--accent-color);
             transition-duration: 0.3s;
         }
 
         .search-patients:focus::placeholder {
-            color: slategray;
+            color: var(--accent-color);
         }
 
         .search-patients::placeholder {
@@ -161,7 +161,7 @@
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"
-                        style="color: #fc9c34;padding-top: 20px;padding-bottom: 15px;font-weight: bold;font-family: 'Raleway', sans-serif">
+                        style="color: var(--main-color);padding-top: 20px;padding-bottom: 15px;font-weight: bold;font-family: 'Raleway', sans-serif">
                         Hello, {{ account.first_name }}!</h1>
                 </div>
             </div>
@@ -187,10 +187,10 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="tab-1" style="margin: 20px;">
                                 {% if account.group.can_approve %}
-                                    <h2 style="font-family: 'Raleway', sans-serif; color: slategray; font-weight: bold">
+                                    <h2 style="font-family: 'Raleway', sans-serif; color: var(--accent-color); font-weight: bold">
                                         Awaiting Approval</h2>
                                 {% else %}
-                                    <h2 style="font-family: 'Raleway', sans-serif; color: slategray; font-weight: bold">
+                                    <h2 style="font-family: 'Raleway', sans-serif; color: var(--accent-color); font-weight: bold">
                                         Patients</h2>
                                 {% endif %}
                                 <div class="form-group"
@@ -198,7 +198,7 @@
                                     <i class="fas fa-search search-icon"
                                        style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
                                     <input class="form-control search-patients" id="searchbar-nav"
-                                           onfocusin="$('.search-icon').css('color', 'slategray')"
+                                           onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
                                            onfocusout="$('.search-icon').css('color', 'white')"
                                            placeholder="Search for patients..." name="search">
                                 </div>
@@ -361,7 +361,7 @@
                                                             {% endfor %}
                                                             <a href="{% url 'add_surgery' patients.slug %}"
                                                                class="btn d-flex justify-content-center align-items-center list-group-item"
-                                                               style="background-color: #FC9C34;color: white; border-color: transparent; margin-top: 5px">
+                                                               style="background-color: var(--main-color);color: white; border-color: transparent; margin-top: 5px">
                                                                 <i class="fa fa-plus"></i>
                                                             </a>
                                                         </ul>
@@ -490,7 +490,7 @@
                                             </div>
                                         {% endif %}
                                         <h2 class="form-span"
-                                            style="color: #fc9c34;font-family: Raleway, sans-serif; margin-top: 20px;">{{ account.name }}</h2>
+                                            style="color: var(--main-color);font-family: Raleway, sans-serif; margin-top: 20px;">{{ account.name }}</h2>
                                         <input class="edit-input display-none" required type="text"
                                                placeholder="Username" name="username"
                                                value="{{ account.name }}" style="width: auto; margin-top: 20px"/>
@@ -501,44 +501,47 @@
                                                 <ul class="list-group" style="border-style: none;">
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
                                                         style="border-style: none;width: 100%;padding: .75rem 0;">
-                                                        <strong style="color: #fc9c34;">Email:</strong>
+                                                        <strong style="color: var(--main-color);">Email:</strong>
                                                         <span class="form-span"
-                                                              style="color: #fc9c34;padding-left: 10px;">{{ account.email }}</span>
+                                                              style="color: var(--main-color);padding-left: 10px;">{{ account.email }}</span>
                                                         <input class="edit-input display-none" required type="email"
                                                                placeholder="Email" name="email"
                                                                value="{{ account.email }}"/>
                                                         <button onclick="editForm()"
                                                                 class="btn d-lg-flex justify-content-lg-center align-items-lg-center invisible"
-                                                                type="button" style="background-color: #fc9c34;">
+                                                                type="button"
+                                                                style="background-color: var(--main-color);">
                                                             <i class="fas fa-edit edit-icon"></i>
                                                         </button>
                                                     </li>
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
                                                         style="border-style: none;width: 100%;padding: .75rem 0;">
-                                                        <strong style="color: #fc9c34;">First Name:</strong>
+                                                        <strong style="color: var(--main-color);">First Name:</strong>
                                                         <span class="form-span"
-                                                              style="color: #fc9c34;padding-left: 10px;">{{ account.first_name }}</span>
+                                                              style="color: var(--main-color);padding-left: 10px;">{{ account.first_name }}</span>
                                                         <input class="edit-input display-none" required type="text"
                                                                placeholder="First Name"
                                                                name="first_name"
                                                                value="{{ account.first_name }}"/>
                                                         <button onclick="editForm()"
                                                                 class="btn d-lg-flex justify-content-lg-center align-items-lg-center invisible"
-                                                                type="button" style="background-color: #fc9c34;">
+                                                                type="button"
+                                                                style="background-color: var(--main-color);">
                                                             <i class="fas fa-edit edit-icon"></i>
                                                         </button>
                                                     </li>
                                                     <li class="list-group-item d-flex flex-row justify-content-between align-items-center"
                                                         style="border-style: none;width: 100%;padding: .75rem 0;">
-                                                        <strong style="color: #fc9c34;">Last Name:</strong>
+                                                        <strong style="color: var(--main-color);">Last Name:</strong>
                                                         <span class="form-span"
-                                                              style="color: #fc9c34;padding-left: 10px;">{{ account.last_name }}</span>
+                                                              style="color: var(--main-color);padding-left: 10px;">{{ account.last_name }}</span>
                                                         <input class="edit-input display-none" required type="text"
                                                                placeholder="Last Name" name="last_name"
                                                                value="{{ account.last_name }}"/>
                                                         <button onclick="editForm()"
                                                                 class="btn d-lg-flex justify-content-lg-center align-items-lg-center invisible"
-                                                                type="button" style="background-color: #fc9c34;">
+                                                                type="button"
+                                                                style="background-color: var(--main-color);">
                                                             <i class="fas fa-edit edit-icon"></i>
                                                         </button>
                                                     </li>
@@ -557,7 +560,7 @@
                                                 <div role="group" class="btn-group edit">
                                                     <button onclick="editForm()"
                                                             class="btn d-flex justify-content-center align-items-center"
-                                                            type="button" style="background-color: #fc9c34;">
+                                                            type="button" style="background-color: var(--main-color);">
                                                         <i class="fas fa-edit edit-icon"></i>
                                                     </button>
                                                 </div>

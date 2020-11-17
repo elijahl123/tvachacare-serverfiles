@@ -12,7 +12,7 @@
         }
 
         #add-images:hover {
-            background-color: gray;
+            background-color: var(--accent-color);
             color: white !important;
             transition-duration: 0.2s !important;
         }
@@ -64,7 +64,7 @@
         function cloneMore() {
             const newElement = $('div.image-container')
             newElement.prepend("<div class=\"d-flex flex-column justify-content-between align-items-center\"\n" +
-                "                                     style=\"width: 350px;height: 300px;background: #fc9c34;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid #fc9c34;position: relative;\">\n" +
+                "                                     style=\"width: 350px;height: 300px;background: var(--main-color;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid var(--main-color;position: relative;\">\n" +
                 "                                    <img style=\"max-width: 100%;max-height: 190px;border-radius: 10px;\"\n" +
                 "                                         src=\"{% static 'img/placeholder_patient.png' %}\"/>\n" +
                 "                                    <div class=\"d-flex flex-column\" style=\"width: 100%;\">\n" +
@@ -222,7 +222,8 @@
     <main>
         <div class="container" style="background-color: white;padding: 50px 0;">
             <div>
-                <h1 class="text-center" style="color: #fc9c34;margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
+                <h1 class="text-center"
+                    style="color: var(--main-color);margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
                     A Surgery</h1>
                 <form class="d-flex" method="post" enctype="multipart/form-data">
                     {% csrf_token %}{{ formset.management_form }}
@@ -233,7 +234,7 @@
                              style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
                             {% for form in formset %}
                                 <div class="d-flex flex-column justify-content-between align-items-center"
-                                     style="width: 350px;height: 300px;background: #fc9c34;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid #fc9c34;position: relative;">
+                                     style="width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid var(--main-color);position: relative;">
                                     <img style="max-width: 100%;max-height: 190px;border-radius: 10px;"
                                          src="{% static 'img/placeholder_patient.png' %}"/>
                                     <div class="d-flex flex-column" style="width: 100%;">
@@ -261,7 +262,7 @@
                                 </div>
                             {% endfor %}
                             <button class="btn btn-primary" id="add_more" type="button"
-                                    style="width: 350px;height: 300px;border-width: 7px;border-color: gray;background-color: transparent;border-radius: 10px;color: gray;"
+                                    style="width: 350px;height: 300px;border-width: 7px;border-color: var(--accent-color);background-color: transparent;border-radius: 10px;color: var(--accent-color);"
                                     onclick="cloneMore()">
                                 <i class="fa fa-plus" style="font-size: 50px;"></i></button>
                             <button class="btn" type="button" onclick="closeImages()"
@@ -272,13 +273,14 @@
                         </div>
                     </div>
                     <div class="form-group" style="width: 100%;">
-                        <div id="formdiv" style="color: #fc9c34;font-family: Raleway, sans-serif;padding-bottom: 20px;">
+                        <div id="formdiv"
+                             style="color: var(--main-color);font-family: Raleway, sans-serif;padding-bottom: 20px;">
                             <div class="form-row d-flex justify-content-center align-items-center"
                                  style="padding-top: 30px;">
                                 <div class="col d-flex justify-content-center align-items-center">
                                     <button class="btn d-flex flex-column justify-content-center align-items-center"
                                             role="button" type="button" id="add-images"
-                                            style="color: gray;height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid gray;border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
+                                            style="color: var(--accent-color);height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid var(--accent-color);border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
                                             onclick="openImages()"><i
                                             class="fa fa-plus" style="font-size: 40px;"></i>Add Images
                                     </button>
@@ -619,7 +621,7 @@
                                     {% endfor %}
                                     <div class="col-md-10 offset-md-1" style="padding: 0">
                                         <button class="btn text-white" type="button"
-                                                style="background-color: #FC9C34; width: 100%;"
+                                                style="background-color: var(--main-color); width: 100%;"
                                                 onclick="addProcedure()">
                                             <i class="fa fa-plus"></i>
                                         </button>

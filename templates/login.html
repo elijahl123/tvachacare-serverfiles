@@ -58,7 +58,8 @@
 
     <div class="loader-wrapper" onload="fadeOut()">
         <div class="loader">
-            <h1 style="color: #fc9c34; text-align: center; margin-top: 10px; font-weight: bold; font-family: Raleway, sans-serif">Loading...</h1>
+            <h1 style="color: var(--main-color); text-align: center; margin-top: 10px; font-weight: bold; font-family: Raleway, sans-serif">
+                Loading...</h1>
         </div>
     </div>
 
@@ -74,7 +75,7 @@
                     <div class="btn-group-vertical btn-group-lg d-flex" role="group">
                         {% for group in groups %}
                             <a class="btn btn-primary" type="button"
-                               style="font-family: 'Open Sans', sans-serif;background-color: #FC9C34;border-color: white;border-width: 3px; border-radius: 3px;margin-bottom: 15px;margin-top: 15px;min-width: 250px"
+                               style="font-family: 'Open Sans', sans-serif;background-color: var(--main-color);border-color: white;border-width: 3px; border-radius: 3px;margin-bottom: 15px;margin-top: 15px;min-width: 250px"
                                href="{% url 'loginAdmin' %}">{{ group }}</a>
                         {% endfor %}
                     </div>

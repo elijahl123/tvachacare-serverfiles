@@ -43,8 +43,8 @@
         <div class="justify-content-center align-items-center delete-patient d-none"
              style="display: flex;top: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
             <div class="d-flex flex-column"
-                 style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px gray;">
-                <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
+                 style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px var(--accent-color);">
+                <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
                     Are
                     you sure?</h1>
                 <div role="group" class="btn-group">
@@ -68,7 +68,7 @@
                                          style="max-height: 500px; max-width: 100%" src="{{ image.image.url }}"
                                          alt="Slide Image"/>
                                     <div class="d-flex justify-content-center w-100">
-                                        <p style="background: white;color: #fc9c34;position: absolute;bottom: 30px;padding: 5px;text-align: center;box-shadow: 0px 0px 5px 1px darkgray;border-radius: 5px;">
+                                        <p style="background: white;color: var(--main-color);position: absolute;bottom: 30px;padding: 5px;text-align: center;box-shadow: 0px 0px 5px 1px darkgray;border-radius: 5px;">
                                             Uploaded: {{ image.date_of_upload_image }}</p>
                                     </div>
                                 </div>
@@ -117,7 +117,7 @@
                     <div class="col d-flex flex-column justify-content-center align-items-center"
                          style="overflow: hidden;height: 200px;">
                         <button class="btn btn-primary" onclick="openImages()" type="button"
-                                style="width: 100%;height: 100%;background-color: transparent;border-radius: 15px;border: 7px solid gray;color: gray;font-size: 25px;font-family: Raleway, sans-serif;font-weight: bold;">
+                                style="width: 100%;height: 100%;background-color: transparent;border-radius: 15px;border: 7px solid var(--accent-color);color: var(--accent-color);font-size: 25px;font-family: Raleway, sans-serif;font-weight: bold;">
                             View Images
                         </button>
                     </div>
@@ -127,12 +127,12 @@
                 <div class="col-lg-12 col-xl-12">
                     {% if patient.middle_name %}
                         <h1 class="text-center"
-                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: #fc9c34;">
+                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
                             <a href="{% url 'patient_page' patient.slug %}">{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</a>
                         </h1>
                     {% else %}
                         <h1 class="text-center"
-                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: #fc9c34;">
+                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
                             <a href="{% url 'patient_page' patient.slug %}">{{ patient.first_name }} {{ patient.last_name }}</a>
                         </h1>
                     {% endif %}
@@ -142,7 +142,7 @@
                 <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row"
                      style="min-width:860px;width: 100%;margin: auto auto 20px;color: white">
                     <div class="col d-flex flex-column justify-content-center align-items-center"
-                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px 0px #505e6c;">
                         <i class="fa fa-calendar" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -151,7 +151,7 @@
                             style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">{{ surgery.date_of_admission }}</h1>
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center"
-                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
                         <i class="fa fa-calendar" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -160,7 +160,7 @@
                             style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ surgery.date_of_surgery }}</h1>
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center"
-                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                         style="margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
                         <i class="fa fa-calendar" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -173,7 +173,7 @@
             {% if surgery.date_of_upload %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Date of Upload</h3>
                     </div>
@@ -187,7 +187,7 @@
             {% if surgery.hospital %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Hospital</h3>
                     </div>
@@ -201,7 +201,7 @@
             {% if surgery.referral %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Referral</h3>
                     </div>
@@ -215,7 +215,7 @@
             {% if surgery.patient_district %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Patient District</h3>
                     </div>
@@ -229,7 +229,7 @@
             {% if surgery.type_of_sponsor %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Type of Sponsor</h3>
                     </div>
@@ -243,7 +243,7 @@
             {% if surgery.drug_allergy %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Drug Allergy</h3>
                     </div>
@@ -257,7 +257,7 @@
             {% if surgery.name_of_evaluation %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Name of Evaluation</h3>
                     </div>
@@ -271,7 +271,7 @@
             {% if surgery.date_of_evaluation %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Date of Evaluation</h3>
                     </div>
@@ -285,7 +285,7 @@
             {% if surgery.cause_of_burn %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Cause of Burn</h3>
                     </div>
@@ -299,7 +299,7 @@
             {% if surgery.year_of_burn %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Year of Burn</h3>
                     </div>
@@ -313,7 +313,7 @@
             {% if surgery.type_of_burn %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Type of Burn</h3>
                     </div>
@@ -327,7 +327,7 @@
             {% if surgery.diagnosis_admission %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0; font-size: 25px">Diagnosis
                             Admission</h3>
@@ -342,7 +342,7 @@
             {% if surgery.surgeons %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Surgeons</h3>
                     </div>
@@ -356,7 +356,7 @@
             {% if surgery.surgeons %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Details of Surgery</h3>
                     </div>
@@ -370,7 +370,7 @@
             {% if surgery.anesthesiologist %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Anesthesiologist</h3>
                     </div>
@@ -384,7 +384,7 @@
             {% if surgery.anesthesia %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Anesthesia</h3>
                     </div>
@@ -398,7 +398,7 @@
             {% if surgery.duration %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Duration</h3>
                     </div>
@@ -412,7 +412,7 @@
             <div class="row"
                  style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
                 <div class="col"
-                     style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                     style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                     <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                         style="color: white;font-weight: bold;margin-bottom: 0;font-size: 24px;">Burn Operation
                         Number</h3>
@@ -426,7 +426,7 @@
             {% if surgery.type_of_surgery %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Type of Surgery</h3>
                     </div>
@@ -440,7 +440,7 @@
             {% if surgery.area_operated %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Area Operated</h3>
                     </div>
@@ -454,7 +454,7 @@
             {% if surgery.complications %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Complications</h3>
                     </div>
@@ -468,7 +468,7 @@
             {% if surgery.consent %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Consent for Photos?</h3>
                     </div>
@@ -487,9 +487,9 @@
                 </div>
             {% endif %}
             {% for procedure_code in procedure_codes %}
-            <div class="row"
+                <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                             style="color: white;font-weight: bold;margin-bottom: 0;">Procedure Code {{ forloop.counter }}</h3>
                     </div>
@@ -503,15 +503,15 @@
             {% if account.group.can_approve and surgery.is_approved == False and surgery.is_denied == False %}
                 <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
                     <p class="lead"
-                       style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: #FC9C34; margin-bottom: 5px">
+                       style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: var(--main-color); margin-bottom: 5px">
                         <strong>Notes for Approval or Denial</strong></p>
                     <textarea style="margin-bottom: 15px" name="reason" id="reason" class="form-control"></textarea>
                     <div role="group" class="btn-group"
                          style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
                         <input class="btn btn-danger d-flex justify-content-center align-items-center" type="submit"
-                        value="Deny" name="deny">
+                               value="Deny" name="deny">
                         <input class="btn btn-success d-flex justify-content-center align-items-center"
-                                type="submit" value="Approve" name="approve">
+                               type="submit" value="Approve" name="approve">
                     </div>
                 </form>
 
@@ -528,39 +528,43 @@
 
             {% if surgery.is_denied == True and not account.group.can_approve %}
                     <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
-                    <p class="lead"
-                       style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: #FC9C34; margin-bottom: 5px">
-                        <strong>Reason for Appeal</strong></p>
-                    <textarea style="margin-bottom: 15px" name="appeal_request" id="appeal_request" class="form-control"></textarea>
-                    <div role="group" class="btn-group" style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
-                        <input class="btn btn-danger d-flex justify-content-center align-items-center appeal-button" type="submit"
-                        value="Request Appeal" name="appeal">
-                    </div>
-                </form>
+                        <p class="lead"
+                           style="text-align: center;font-family: Raleway, sans-serif;font-size: 24px; color: var(--main-color); margin-bottom: 5px">
+                            <strong>Reason for Appeal</strong></p>
+                        <textarea style="margin-bottom: 15px" name="appeal_request" id="appeal_request"
+                                  class="form-control"></textarea>
+                        <div role="group" class="btn-group"
+                             style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                            <input class="btn btn-danger d-flex justify-content-center align-items-center appeal-button"
+                                   type="submit"
+                                   value="Request Appeal" name="appeal">
+                        </div>
+                    </form>
             {% endif %}
             {% if not account.group.can_approve %}
-            <div class="row"
-                 style="margin-top: 20px;border-style: solid;border-color: #fc9c34;border-radius: 7px;width: 100%;">
-                <div class="col d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="text-center" style="color: #fc9c34;font-size: 30px;margin-bottom: 5px;">Surgeries</h1>
-                    <nav>
-                    <ul class="pagination">
-                        {% for surgery in surgeries %}
-                            <li class="page-item"><a class="page-link"
-                                                     href="{% url 'surgery_page' patient.slug surgery.id %}"
-                                                     style="color: white;background-color: #fc9c34;">{{ forloop.counter }}</a>
-                            </li>
-                        {% endfor %}
-                        <li class="page-item">
-                            <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
-                               style="color: white;background-color: #fc9c34;"
-                               aria-label="Next"><span aria-hidden="true">+</span></a>
-                        </li>
-                    </ul>
-                    </nav>
+                <div class="row"
+                     style="margin-top: 20px;border-style: solid;border-color: var(--main-color);border-radius: 7px;width: 100%;">
+                    <div class="col d-flex flex-column justify-content-center align-items-center">
+                        <h1 class="text-center" style="color: var(--main-color);font-size: 30px;margin-bottom: 5px;">
+                            Surgeries</h1>
+                        <nav>
+                            <ul class="pagination">
+                                {% for surgery in surgeries %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="{% url 'surgery_page' patient.slug surgery.id %}"
+                                                             style="color: white;background-color: var(--main-color);">{{ forloop.counter }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
+                                       style="color: white;background-color: var(--main-color);"
+                                       aria-label="Next"><span aria-hidden="true">+</span></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
         </div>
     </main>
     <script>

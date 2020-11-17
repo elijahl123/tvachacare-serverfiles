@@ -5,7 +5,7 @@
     <style>
         #view-images:hover {
             color: white !important;
-            background-color: gray;
+            background-color: var(--accent-color);
             transition-duration: 0.3s !important;
         }
 
@@ -84,8 +84,9 @@
     <div class="justify-content-center align-items-center delete-patient display-none"
          style="display: flex;top: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
         <div class="d-flex flex-column"
-             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px gray;">
-            <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">Are
+             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px var(--accent-color);">
+            <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
+                Are
                 you sure?</h1>
             <div role="group" class="btn-group">
                 <button class="btn btn-secondary" type="button" onclick="closeMenu()"
@@ -102,9 +103,9 @@
         <form class="d-flex flex-column justify-content-center" method="post" enctype="multipart/form-data"
               style="overflow: auto;max-height: 100vh;background-color: white;padding: 50px;border-radius: 5px;max-width: 600px;width: 100%;position: relative;">
             {% csrf_token %}
-            <h1 style="color: #fc9c34;font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;text-align: center;">
+            <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;text-align: center;">
                 Email Story</h1>
-            <p style="color: #FC9C34; text-align: center">Separate email recipients by commas</p>
+            <p style="color: var(--main-color); text-align: center">Separate email recipients by commas</p>
             <input type="text" class="form-control" name="to" placeholder="To" required
                    style="font-size: 20px;margin-bottom: 5px;"/>
             <input type="text" class="form-control" name="cc" placeholder="Cc"
@@ -133,21 +134,30 @@
                      style="width: 100%;">
                     <div class="dropdown">
                         <button class="btn d-flex justify-content-center align-items-center" data-toggle="dropdown"
-                                aria-expanded="false" type="button" style="color: white;background: #fc9c34;"><i
-                                class="fas fa-ellipsis-h" style="font-size: 25px;"></i></button>
+                                aria-expanded="false" type="button" style="color: white;background: var(--main-color);">
+                            <i
+                                    class="fas fa-ellipsis-h" style="font-size: 25px;"></i></button>
                         <div class="dropdown-menu">
-                            <a class="dropdown-item" href="#" onclick="openMenu()" style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-trash" style="color: red;margin-right: 10px;font-size: 16px;"></i>Delete Patient
+                            <a class="dropdown-item" href="#" onclick="openMenu()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-trash" style="color: red;margin-right: 10px;font-size: 16px;"></i>Delete
+                                Patient
                             </a>
-                            <a class="dropdown-item" href="#" onclick="window.print()" style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-print" style="color: dodgerblue;margin-right: 10px;font-size: 16px;"></i>Print
+                            <a class="dropdown-item" href="#" onclick="window.print()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-print"
+                                   style="color: dodgerblue;margin-right: 10px;font-size: 16px;"></i>Print
                             </a>
-                            <a class="dropdown-item" href="#" onclick="openStory()" style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-envelope" style="color: #fc9c34;margin-right: 10px;font-size: 16px;"></i>Email Story
+                            <a class="dropdown-item" href="#" onclick="openStory()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-envelope"
+                                   style="color: var(--main-color);margin-right: 10px;font-size: 16px;"></i>Email Story
                             </a>
                             {% if account.group.can_edit_patients %}
-                            <a class="dropdown-item" href="{% url 'edit_patient' patient.slug %}" style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-edit" style="color: #fc9c34;margin-right: 10px;font-size: 16px;"></i>Edit Patient
+                            <a class="dropdown-item" href="{% url 'edit_patient' patient.slug %}"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="fa fa-edit"
+                                   style="color: var(--main-color);margin-right: 10px;font-size: 16px;"></i>Edit Patient
                             </a>
                             {% endif %}
                         </div>
@@ -179,10 +189,10 @@
                 <div class="col-lg-12 col-xl-12">
                     {% if patient.middle_name %}
                         <h1 class="text-center heading-patient"
-                            style="color: #fc9c34;margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</h1>
+                            style="color: var(--main-color);margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</h1>
                     {% else %}
                         <h1 class="text-center heading-patient"
-                            style="color: #fc9c34;margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.last_name }}</h1>
+                            style="color: var(--main-color);margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.last_name }}</h1>
                     {% endif %}
                 </div>
             </div>
@@ -190,7 +200,7 @@
                 <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row"
                      style="min-width:860px;width: 100%;margin: auto auto 20px;color: white">
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px 0px #505e6c;">
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px 0px #505e6c;">
                         <i class="fa fa-barcode d-print-none" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -200,7 +210,7 @@
                             {{ patient.patient_record_number }}</h1>
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
                         <i class="fa fa-calendar d-print-none" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -209,7 +219,7 @@
                             style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.date_of_birth }}</h1>
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
-                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: gray;box-shadow: inset 0px 0px 10px #505e6c;">
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
                         <i class="fa fa-clock d-print-none" style="font-size: 35px;"></i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
@@ -223,7 +233,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Gender</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -238,7 +248,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Address</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -253,7 +263,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Telephone Number</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -268,7 +278,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parents</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -283,7 +293,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Relationship</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -298,7 +308,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parent Occupation</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -313,7 +323,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Diagnosis</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -328,7 +338,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Weight</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -343,7 +353,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Height</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -358,7 +368,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Burn Injury</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -373,7 +383,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Cleft Injury</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -388,7 +398,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Hand Injury</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -403,7 +413,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Prior Surgery</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -418,7 +428,7 @@
                 <div class="row information-container"
                      style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: #fc9c34;border-radius: 5px;padding: 15px 20px;">
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Story</h3>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
@@ -429,29 +439,30 @@
                     </div>
                 </div>
             {% endif %}
-        {% if account.group != 'Approver' %}
-            <div class="row surgeries d-print-none"
-                 style="margin-top: 20px;border-style: solid;border-color: #fc9c34;border-radius: 7px;width: 100%;">
-                <div class="col d-flex flex-column justify-content-center align-items-center">
-                    <h1 class="text-center" style="color: #fc9c34;font-size: 30px;margin-bottom: 5px;">Surgeries</h1>
-                    <nav>
-                        <ul class="pagination">
-                            {% for surgery in surgery %}
-                                <li class="page-item"><a class="page-link"
-                                                         href="{% url 'surgery_page' patient.slug surgery.id %}"
-                                                         style="color: white;background-color: #fc9c34;">{{ forloop.counter }}</a>
+            {% if account.group != 'Approver' %}
+                <div class="row surgeries d-print-none"
+                     style="margin-top: 20px;border-style: solid;border-color: var(--main-color);border-radius: 7px;width: 100%;">
+                    <div class="col d-flex flex-column justify-content-center align-items-center">
+                        <h1 class="text-center" style="color: var(--main-color);font-size: 30px;margin-bottom: 5px;">
+                            Surgeries</h1>
+                        <nav>
+                            <ul class="pagination">
+                                {% for surgery in surgery %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="{% url 'surgery_page' patient.slug surgery.id %}"
+                                                             style="color: white;background-color: var(--main-color);">{{ forloop.counter }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
+                                       style="color: white;background-color: var(--main-color);"
+                                       aria-label="Next"><span aria-hidden="true">+</span></a>
                                 </li>
-                            {% endfor %}
-                            <li class="page-item">
-                                <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
-                                   style="color: white;background-color: #fc9c34;"
-                                   aria-label="Next"><span aria-hidden="true">+</span></a>
-                            </li>
-                        </ul>
-                    </nav>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-        {% endif %}
+            {% endif %}
         </div>
     </main>
     <script>

@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link rel="icon" type="image/png" sizes="500x452" href="{% static 'img/logoNoText.ico' %}">
     <link rel="stylesheet" href="{% static 'bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
@@ -34,7 +35,7 @@
     </script>
     <style>
         .page-footer h5 {
-            color: #FC9C34 !important;
+            color: var(--main-color) !important;
         }
 
         @media screen and (max-width: 990px) {
@@ -70,14 +71,12 @@
         }
 
         ::-webkit-scrollbar-thumb {
-            background-color: slategray;
+            background-color: var(--accent-color);
             border-radius: 8px;
             margin: 3px;
         }
 
     </style>
-
-    <link rel="stylesheet" href="{% static 'base.css' %}">
     <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
     {% block header %}
     {% endblock %}
@@ -98,7 +97,7 @@
                     <div class="col-2 d-flex justify-content-center align-items-center d-md-none"
                          style="padding: 20px">
                         <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
-                                style="background-color: #fc9c34; border: none">
+                                style="background-color: var(--main-color); border: none">
                             <i class="fa fa-ellipsis-h text-white"></i>
                         </button>
                     </div>
@@ -108,7 +107,7 @@
                         <div class="col d-flex justify-content-center align-items-center"
                              style="padding: 5px">
                             <a class="btn log-out" href="{% url 'logout' %}"
-                               style="margin-left: 10px; border-radius: 50px;padding: 7px 12px; border-color: #FC9C34 !important; color: #FC9C34">Log
+                               style="margin-left: 10px; border-radius: 50px;padding: 7px 12px; border-color: var(--main-color) !important; color: var(--main-color">Log
                                 Out</a>
                         </div>
                     </div>
@@ -117,7 +116,7 @@
                         <div class="col d-flex justify-content-center align-items-center" id="nav-list-container"
                              style="padding: 20px 0 20px 20px;">
                             <div class="list-group"
-                                 style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none slategray ;">
+                                 style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
                                 <a class="list-group-item list-group-item-action nav-links"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;border-right-style: none;"
                                    href="{% url 'home' %}">
@@ -127,6 +126,7 @@
                                 <a class="list-group-item list-group-item-action nav-links"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="
+
                                            {% if account.group.name != 'Approver' %}{% url 'filter_by_date' %}{% else %}{% url 'hui_report' %}{% endif %}">
                                     <i class="fas fa-table" style="margin-right: 20px;"></i>
                                     <span>Reports</span></a>
@@ -160,13 +160,13 @@
             </div>
         {% endif %}
         <div class="{% if account %} col-12 col-md-7 col-lg-8 col-xl-9 {% else %} col-12 {% endif %} shadow"
-             style="background-color: #FC9C34; width: 100%">
+             style="background-color: var(--main-color); width: 100%">
             {% block content %}
             {% endblock %}
             <footer class="page-footer light"
                     style="box-shadow: 0 0 15px rgba(0,0,0,.2) !important;background-color: whitesmoke !important;">
                 <div class="container">
-                    <div class="row">
+                    <div class="row no-gutters justify-content-center">
                         <div class="col-sm-3">
                             <h5 style="font-family: Raleway, sans-serif;font-weight: 700;">Get started</h5>
                             <ul>
