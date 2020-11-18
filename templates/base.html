@@ -127,6 +127,7 @@
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="
 
+
                                            {% if account.group.name != 'Approver' %}{% url 'filter_by_date' %}{% else %}{% url 'hui_report' %}{% endif %}">
                                     <i class="fas fa-table" style="margin-right: 20px;"></i>
                                     <span>Reports</span></a>
@@ -201,6 +202,7 @@
         </div>
     </div>
 </div>
+
 <script src="{% static 'js/smoothproducts.min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>
 <script>
