@@ -25,6 +25,10 @@ context = {'today': datetime.date.today()}
 def add_surgery(request, slug):
     if not request.user.is_accepted:
         return redirect('terms_of_service')
+
+    if not request.user.group.can_add_surgeries:
+        return redirect('home')
+
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -105,12 +109,7 @@ def addpatient(request):
 
     context['form'] = form
 
-    if request.user.group.name == 'Data Entry':
-        return render(request, 'addPatient.html', context)
-    elif request.user.is_superuser:
-        return render(request, 'addPatient.html', context)
-    else:
-        return redirect('home')
+    return render(request, 'addPatient.html', context)
 
 
 @login_required

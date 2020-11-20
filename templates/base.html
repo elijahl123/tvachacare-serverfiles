@@ -107,7 +107,7 @@
                         <div class="col d-flex justify-content-center align-items-center"
                              style="padding: 5px">
                             <a class="btn log-out" href="{% url 'logout' %}"
-                               style="margin-left: 10px; border-radius: 50px;padding: 7px 12px; border-color: var(--main-color) !important; color: var(--main-color">Log
+                               style="margin-left: 10px; border-radius: 50px;padding: 7px 12px; border-color: var(--main-color) !important; color: var(--main-color)">Log
                                 Out</a>
                         </div>
                     </div>
@@ -125,10 +125,10 @@
                                 </a>
                                 <a class="list-group-item list-group-item-action nav-links"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
-                                   href="
-
-
-                                           {% if account.group.name != 'Approver' %}{% url 'filter_by_date' %}{% else %}{% url 'hui_report' %}{% endif %}">
+                                   href="{% if account.group.name != 'Approver' %}
+                                            {% url 'filter_by_date' %}
+                                            {% else %}{% url 'hui_report' %}
+                                            {% endif %}">
                                     <i class="fas fa-table" style="margin-right: 20px;"></i>
                                     <span>Reports</span></a>
                                 <a class="list-group-item list-group-item-action nav-links"
