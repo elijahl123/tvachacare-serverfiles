@@ -129,8 +129,8 @@ def admin(request):
 
 @login_required
 def admin_delete(request, model, id):
-    if not request.user.is_superuser:
-        return redirect('home')
+    if request.user.group.name != 'Admin':
+        return redirect('admin-console')
     account = {
         "id": request.user.id,
         "name": request.user.username,
