@@ -161,7 +161,7 @@ class Account(AbstractBaseUser):
     profile_picture_path = models.ImageField(upload_to=upload_profile_picture, null=True, blank=True)
     first_name = models.CharField(max_length=20, null=True)
     last_name = models.CharField(max_length=20, null=True)
-    group = models.ForeignKey('Group', on_delete=models.CASCADE, null=True, blank=True)
+    group = models.ForeignKey('Group', on_delete=models.CASCADE, default=1)
     is_accepted = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
