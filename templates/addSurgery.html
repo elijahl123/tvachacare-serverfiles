@@ -64,7 +64,7 @@
         function cloneMore() {
             const newElement = $('div.image-container')
             newElement.prepend("<div class=\"d-flex flex-column justify-content-between align-items-center\"\n" +
-                "                                     style=\"width: 350px;height: 300px;background: var(--main-color;border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid var(--main-color;position: relative;\">\n" +
+                "                                     style=\"width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid var(--main-color);position: relative;\">\n" +
                 "                                    <img style=\"max-width: 100%;max-height: 190px;border-radius: 10px;\"\n" +
                 "                                         src=\"{% static 'img/placeholder_patient.png' %}\"/>\n" +
                 "                                    <div class=\"d-flex flex-column\" style=\"width: 100%;\">\n" +
@@ -234,7 +234,7 @@
                              style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
                             {% for form in formset %}
                                 <div class="d-flex flex-column justify-content-between align-items-center"
-                                     style="width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px;margin-left: 0px;border: 10px solid var(--main-color);position: relative;">
+                                     style="width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px 5px 5px 0;border: 10px solid var(--main-color);position: relative;">
                                     <img style="max-width: 100%;max-height: 190px;border-radius: 10px;"
                                          src="{% static 'img/placeholder_patient.png' %}"/>
                                     <div class="d-flex flex-column" style="width: 100%;">
