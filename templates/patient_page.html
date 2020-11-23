@@ -82,9 +82,9 @@
 {% endblock %}
 {% block content %}
     <div class="justify-content-center align-items-center delete-patient display-none"
-         style="display: flex;top: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
+         style="display: flex;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
         <div class="d-flex flex-column"
-             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0px 0px 5px 0px var(--accent-color);">
+             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0 0 5px 0 var(--accent-color);">
             <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
                 Are
                 you sure?</h1>
@@ -98,7 +98,7 @@
         </div>
     </div>
     <div class="d-flex justify-content-center align-items-center display-none"
-         style="overflow: auto;z-index: 99999;top: 0;width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);filter: blur(0px);"
+         style="overflow: auto;z-index: 99999;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);filter: blur(0px);"
          id="email-story">
         <form class="d-flex flex-column justify-content-center" method="post" enctype="multipart/form-data"
               style="overflow: auto;max-height: 100vh;background-color: white;padding: 50px;border-radius: 5px;max-width: 600px;width: 100%;position: relative;">
@@ -137,7 +137,7 @@
                                 aria-expanded="false" type="button" style="color: white;background: var(--main-color);">
                             <i
                                     class="fas fa-ellipsis-h" style="font-size: 25px;"></i></button>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu dropdown-menu-right">
                             <a class="dropdown-item" href="#" onclick="openMenu()"
                                style="font-family: 'Open Sans', sans-serif;">
                                 <i class="fa fa-trash" style="color: red;margin-right: 10px;font-size: 16px;"></i>Delete

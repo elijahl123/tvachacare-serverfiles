@@ -774,6 +774,7 @@ def privacyPolicy(request):
 def send_file(request):
     if not request.user.is_accepted:
         return redirect('terms_of_service')
+
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
@@ -847,7 +848,6 @@ def terms_of_service(request):
     return render(request, 'terms_of_service.html', context)
 
 
-@login_required
 def write_response(date_start, date_end, fields, procedure_code_boolean=False):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -858,11 +858,7 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
             header = [s.replace('_', ' ') for s in header]
             header = [s.title() for s in header]
             if procedure_code_boolean:
-                for surgery in surgeries:
-                    procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
-                    if procedure_codes:
-                        for procedure_code in procedure_codes:
-                            header.append('Procedure Code')
+                header.append('Procedure Codes:')
             wr.writerow(header)
             for surgery in surgeries:
                 csv_array = []
