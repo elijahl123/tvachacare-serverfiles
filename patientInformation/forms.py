@@ -107,6 +107,10 @@ class AddPatient(forms.ModelForm):
             'story'
         ]
 
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'})
+        }
+
     def __init__(self, *args, **kwargs):
         super(AddPatient, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
@@ -155,6 +159,12 @@ class SurgeryForm(forms.ModelForm):
             'complications',
             'consent',
         ]
+        widgets = {
+            'date_of_admission': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_discharge': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_evaluation': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_surgery': forms.DateInput(attrs={'type': 'date'})
+        }
 
     def __init__(self, *args, **kwargs):
         super(SurgeryForm, self).__init__(*args, **kwargs)
