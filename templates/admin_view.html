@@ -22,12 +22,12 @@
         <div class="row information-container no-gutters"
              style="width: 100%;margin-bottom: 15px;background-color: white; border-radius: 8px">
             <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                 style="background-color: var(--main-color);border-radius: 8px;padding: 15px 20px;">
-                <h5 style="color: white;font-weight: bold;margin-bottom: 0;">{{ field.label }}</h5>
+                 style="background-color: var(--main-color);border-radius: 8px;padding: 10px 15px;">
+                <h6 style="color: white;font-weight: bold;margin-bottom: 0;">{{ field.label }}</h6>
             </div>
             <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                 style="padding: 15px 20px;">
-                <p style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;">
+                 style="padding: 10px 15px;">
+                <p style="color: var(--accent-color);font-family: 'Raleway', sans-serif;font-weight: bold;margin-bottom: 0;font-style: normal;">
                     {{ field.data|default_if_none:"" }}</p>
             </div>
         </div>
@@ -38,13 +38,13 @@
                 <div class="row information-container no-gutters"
                      style="width: 100%;margin-bottom: 15px;background-color: white; border-radius: 8px">
                     <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="background-color: var(--main-color);border-radius: 8px;padding: 15px 20px;">
-                        <h5 style="color: white;font-weight: bold;margin-bottom: 0;">Procedure
-                            Code {{ forloop.counter }}</h5>
+                         style="background-color: var(--main-color);border-radius: 8px;padding: 10px 15px;">
+                        <h6 style="color: white;font-weight: bold;margin-bottom: 0;">Procedure
+                            Code {{ forloop.counter }}</h6>
                     </div>
                     <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                         style="padding: 15px 20px;">
-                        <p style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;">
+                         style="padding: 10px 15px;">
+                        <p style="color: var(--accent-color);font-family: 'Raleway', sans-serif;font-weight: bold;margin-bottom: 0;font-style: normal;">
                             {{ code.procedure_codes }}</p>
                     </div>
                 </div>
