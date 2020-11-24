@@ -27,8 +27,12 @@
             </div>
             <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
                  style="padding: 10px 15px;">
+                {% if field.label == 'Profile picture path' and user.profile_picture_path %}
+                    <a target="_blank" href="{{ user.profile_picture_path.url }}"><img src="{{ user.profile_picture_path.url }}" style="height: 50px; border-radius: 8px" alt="Profile Image"></a>
+                {% else %}
                 <p style="color: var(--accent-color);font-family: 'Raleway', sans-serif;font-weight: bold;margin-bottom: 0;font-style: normal;">
                     {{ field.data|default_if_none:"" }}</p>
+                {% endif %}
             </div>
         </div>
     {% endfor %}

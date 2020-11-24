@@ -355,6 +355,8 @@ def admin_view(request, model, id):
     if model == 'accounts':
         model_dict['title'] = 'Accounts'
         model_dict['item'] = AccountView(data=model_to_dict(get_object_or_404(Account, id=id)))
+        account_model = Account.objects.get(id=id)
+        context['user'] = account_model
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['item'] = GroupForm(data=model_to_dict(get_object_or_404(Group, id=id)))
@@ -600,7 +602,6 @@ def index(request):
         "email": request.user.email,
         "first_name": request.user.first_name,
         "last_name": request.user.last_name,
-        "profile_picture_path": request.user.profile_picture_path,
         'group': request.user.group,
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None

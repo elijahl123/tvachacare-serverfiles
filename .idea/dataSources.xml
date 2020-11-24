@@ -13,14 +13,6 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="Django default" uuid="f08c9846-a1f3-479f-ba25-a23f93eddd61">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/TvachaCare/settings.py</remarks>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\elijahkane\Documents\tvachacare-serverfiles\mydatabase</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="TvachaCareOther" uuid="59886121-d19d-4bf9-9cbe-5775729355ed">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
@@ -38,7 +30,12 @@
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="db" uuid="c26a87f7-202c-4f8e-8dd9-1799cc9693f5">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\elija\Documents\TvachaCare\db.sqlite3</jdbc-url>
     </data-source>
   </component>
 </project>
