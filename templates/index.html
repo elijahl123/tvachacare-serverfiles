@@ -320,6 +320,9 @@
                                                     style="display: flex; justify-content: space-between; align-items: center">
                                                     <a href="{% url 'patient_page' patients.slug %}"
                                                        class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                                    <span class="badge badge-pill badge-secondary">
+                                                        {{ patients.number_of_surgeries }} Surger{% if patients.number_of_surgeries == 1 %}y{% else %}ies{% endif %}
+                                                    </span>
                                                     <button class="btn d-flex justify-content-center align-items-center"
                                                             style="padding: 5px; border-radius: 50px"
                                                             onclick="openInfo({{ patients.id }})">

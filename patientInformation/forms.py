@@ -64,16 +64,13 @@ class AccountUpdateForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=60,
-                             help_text='Required. Add a valid email address')
-
+class AccountView(forms.ModelForm):
     class Meta:
         model = Account
-        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted', 'password']
+        exclude = ['password']
 
     def __init__(self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
+        super(AccountView, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -81,30 +78,10 @@ class RegistrationForm(UserCreationForm):
 class AddPatient(forms.ModelForm):
     class Meta:
         model = PatientInformation
-        fields = [
-            'patient_record_number',
-            'patient_image',
-            'injury_image',
-            'first_name',
-            'middle_name',
-            'last_name',
-            'date_of_birth',
-            'age',
-            'gender',
-            'address',
-            'telephone_number',
-            'parents',
-            'relationship',
-            'parent_occupation',
-            'diagnosis',
-            'weight',
-            'height',
-            'burn_injury',
-            'cleft_injury',
-            'hand_injury',
-            'prior_surgery',
-            'doctor_notes',
-            'story'
+        exclude = [
+            'uploaded',
+            'number_of_surgeries',
+            'slug'
         ]
 
         widgets = {
@@ -113,61 +90,6 @@ class AddPatient(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AddPatient, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-
-
-class ImageForm(forms.ModelForm):
-    class Meta:
-        model = Image
-        fields = ('image', 'date_of_upload_image')
-
-
-class ProcedureForm(forms.ModelForm):
-    class Meta:
-        model = ProcedureCodes
-        fields = ('procedure_codes',)
-
-
-class SurgeryForm(forms.ModelForm):
-    class Meta:
-        model = SurgeryInformation
-        fields = [
-            'patient',
-            'hospital',
-            'referral',
-            'patient_district',
-            'type_of_sponsor',
-            'drug_allergy',
-            'name_of_evaluation',
-            'date_of_evaluation',
-            'cause_of_burn',
-            'year_of_burn',
-            'type_of_burn',
-            'diagnosis_admission',
-            'date_of_admission',
-            'date_of_surgery',
-            'date_of_discharge',
-            'surgeons',
-            'details_of_surgery',
-            'anesthesiologist',
-            'anesthesia',
-            'duration',
-            'burn_operation_number',
-            'type_of_surgery',
-            'area_operated',
-            'complications',
-            'consent',
-        ]
-        widgets = {
-            'date_of_admission': forms.DateInput(attrs={'type': 'date'}),
-            'date_of_discharge': forms.DateInput(attrs={'type': 'date'}),
-            'date_of_evaluation': forms.DateInput(attrs={'type': 'date'}),
-            'date_of_surgery': forms.DateInput(attrs={'type': 'date'})
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(SurgeryForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
@@ -209,18 +131,55 @@ class GroupForm(forms.ModelForm):
             visible.field.widget.attrs['class'] = 'form-control'
 
 
-class AccountView(forms.ModelForm):
+class ImageForm(forms.ModelForm):
     class Meta:
-        model = Account
-        exclude = ['password']
-
-    def __init__(self, *args, **kwargs):
-        super(AccountView, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+        model = Image
+        fields = ('image', 'date_of_upload_image')
 
 
 class PatientView(forms.ModelForm):
     class Meta:
         model = PatientInformation
         exclude = ['patient_image', 'injury_image', 'slug']
+
+
+class ProcedureForm(forms.ModelForm):
+    class Meta:
+        model = ProcedureCodes
+        fields = ('procedure_codes',)
+
+
+class RegistrationForm(UserCreationForm):
+    email = forms.EmailField(max_length=60,
+                             help_text='Required. Add a valid email address')
+
+    class Meta:
+        model = Account
+        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class SurgeryForm(forms.ModelForm):
+    class Meta:
+        model = SurgeryInformation
+        exclude = [
+            'date_of_upload',
+            'is_approved',
+            'is_denied',
+            'reason'
+        ]
+        widgets = {
+            'date_of_admission': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_discharge': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_evaluation': forms.DateInput(attrs={'type': 'date'}),
+            'date_of_surgery': forms.DateInput(attrs={'type': 'date'})
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(SurgeryForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

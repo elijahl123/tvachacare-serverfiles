@@ -54,6 +54,7 @@ class PatientInformation(models.Model):
     prior_surgery = models.TextField(blank=True, null=True)
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
+    number_of_surgeries = models.IntegerField(default=0)
     slug = models.SlugField(blank=True, unique=True, null=True)
 
     def __str__(self):
@@ -226,14 +227,27 @@ def submission_delete(sender, instance, **kwargs):
     instance.injury_image.delete(True)
 
 
+@receiver(post_delete, sender=SurgeryInformation)
+def submission_delete(sender, instance, **kwargs):
+    patient = PatientInformation.objects.get(id=instance.patient.id)
+    patient.number_of_surgeries -= 1
+    patient.save()
+
+
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify("HUI-" + str(abs(hash(str(datetime.datetime))) % (10 ** 10)))
 
 
+def pre_save_surgery_information(sender, instance, *args, **kwargs):
+    patient = PatientInformation.objects.get(id=instance.patient.id)
+    patient.number_of_surgeries += 1
+    patient.save()
+
+
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
+pre_save.connect(pre_save_surgery_information, sender=SurgeryInformation)
 
 # TODO: make it so that users can add fields
 
 # TODO: make the csv thing
-
