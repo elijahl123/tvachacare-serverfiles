@@ -117,7 +117,7 @@
     {% block header %}
     {% endblock %}
 </head>
-<body style="background: whitesmoke;" onload="startTime()">
+<body style="background: whitesmoke;" {% if account.is_authenticateed %}onload="startTime()"{% endif %}>
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
