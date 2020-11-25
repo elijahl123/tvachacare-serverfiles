@@ -62,6 +62,9 @@ class PatientInformation(models.Model):
 
     class Meta:
         ordering = ['last_name']
+        unique_together = ['first_name', 'last_name']
+        verbose_name = 'Patient'
+        verbose_name_plural = 'Patients'
 
 
 class SurgeryInformation(models.Model):
@@ -100,6 +103,8 @@ class SurgeryInformation(models.Model):
 
     class Meta:
         ordering = ['-date_of_upload']
+        verbose_name = 'Surgery'
+        verbose_name_plural = 'Surgeries'
 
 
 class Image(models.Model):

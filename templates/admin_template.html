@@ -167,8 +167,26 @@
                                     onclick="openNewForm()">
                                 <i class="fa fa-plus"></i>
                             </button>
-
-
+                            {% if model.new_form.errors %}
+                                {% for field in model.new_form %}
+                                    {% for error in field.errors %}
+                                        <div class="d-flex justify-content-center align-items-center"
+                                             style="padding: 20px">
+                                            <div class="alert alert-danger" style="width: 100%; margin: 0">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                                {% for error in model.new_form.non_field_errors %}
+                                    <div class="d-flex justify-content-center align-items-center"
+                                         style="padding: 20px">
+                                        <div class="alert alert-danger" style="width: 100%; margin: 0">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
                         </div>
 
                     {% endblock %}
