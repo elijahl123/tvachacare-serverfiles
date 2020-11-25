@@ -282,6 +282,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = Account.objects.get(id=int(item_id))
                     obj.delete()
+                    return redirect('admin_template', 'accounts')
         else:
             form = RegistrationForm()
         model_dict['new_form'] = form
@@ -303,6 +304,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = Group.objects.get(id=int(item_id))
                     obj.delete()
+                    return redirect('admin_template', 'groups')
         else:
             form = GroupForm()
         model_dict['new_form'] = form
@@ -323,6 +325,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = EventLog.objects.get(id=int(item_id))
                     obj.delete()
+                    return redirect('admin_template', 'event-logs')
         else:
             form = EventLogForm()
         model_dict['new_form'] = form
@@ -343,6 +346,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = PatientInformation.objects.get(id=int(item_id))
                     obj.delete()
+                    return redirect('admin_template', 'patients')
         else:
             form = AddPatient()
         model_dict['new_form'] = form
@@ -370,6 +374,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = SurgeryInformation.objects.get(id=int(item_id))
                     obj.delete()
+                    return redirect('admin_template', 'surgeries')
         else:
             form = SurgeryForm()
         model_dict['new_form'] = form
