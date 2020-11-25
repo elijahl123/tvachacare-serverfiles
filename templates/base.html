@@ -14,8 +14,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static 'js/jquery.fittext.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
@@ -77,16 +75,53 @@
             margin: 3px;
         }
 
+        @media (min-width: 768px) {
+            .datetime-container {
+                position: absolute;
+            }
+        }
+
     </style>
     <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
+    <script>
+        function hours12(date) {
+            return (date.getUTCHours() + 16) % 12 || 12;
+        }
+
+        function formatAMPM(date) {
+            let hours = date.getUTCHours() - 8;
+            console.log(hours)
+            return hours >= 12 ? 'pm' : 'am';
+        }
+
+        function startTime() {
+            let today = new Date();
+            let h = hours12(today);
+            let m = today.getUTCMinutes();
+            let s = today.getUTCSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('current_time').innerHTML =
+                h + ":" + m + ":" + s + formatAMPM(today);
+            let t = setTimeout(startTime, 500);
+        }
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }
+              // add zero in front of numbers < 10
+            return i;
+        }
+    </script>
     {% block header %}
     {% endblock %}
 </head>
-<body style="background: whitesmoke;">
+<body style="background: whitesmoke;" onload="startTime()">
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
-            <div class="col-md" style="height: 100%;background: transparent;position: sticky; top: 0">
+            <div class="col-md" style="max-height: 100vh;background: transparent;position: sticky; top: 0">
                 <div class="row no-gutters">
                     <a href="{% url 'home' %}" class="col d-flex justify-content-center align-items-center"
                        style="padding: 20px; text-decoration: none">
@@ -103,7 +138,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="collapse d-md-block" id="navcol-1">
+                <div class="collapse d-md-block h-50" id="navcol-1">
                     <div class="row no-gutters">
                         <div class="col d-flex justify-content-center align-items-center"
                              style="padding: 5px">
@@ -113,8 +148,8 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row no-gutters">
-                        <div class="col d-flex justify-content-center align-items-center" id="nav-list-container"
+                    <div class="row no-gutters flex-column justify-content-between">
+                        <div class="col d-flex justify-content-center" id="nav-list-container"
                              style="padding: 20px 0 20px 20px;">
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
@@ -154,6 +189,14 @@
                                         <span>Admin Console</span>
                                     </a>
                                 {% endif %}
+                            </div>
+                        </div>
+                        <div class="col d-flex align-items-end justify-content-center datetime-container"
+                             style="bottom: 0; padding: 0 20px 20px;">
+                            <div style="width:100%;padding: 10px; background-color: white; color: var(--accent-color); border-radius: 8px; font-family: 'Raleway', sans-serif;box-shadow: 0 0 .5rem rgba(0,0,0,.075)!important">
+                                <h3 style="font-weight: bold; text-align: center">Pacific Time</h3>
+                                <h1 style="font-weight: bold; text-align: center; font-family: 'Open Sans', sans-serif"
+                                    id="current_time"></h1>
                             </div>
                         </div>
                     </div>
