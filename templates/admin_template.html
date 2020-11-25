@@ -24,6 +24,37 @@
             border-color: lightgray;
         }
 
+        .search-patients {
+            padding: 15px 15px 15px 40px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--main-color);
+            font-size: 20px;
+            font-family: Raleway, sans-serif;
+            font-weight: bold;
+            width: 100%;
+            color: white;
+            margin: 0;
+        }
+
+        .search-patients:focus {
+            background-color: white;
+            color: var(--accent-color);
+            transition-duration: 0.3s;
+        }
+
+        .search-patients:focus::placeholder {
+            color: var(--accent-color);
+        }
+
+        .search-patients::placeholder {
+            color: white;
+            opacity: 0.7;
+            font-family: Raleway, sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
     </style>
     <script>
         $(document).ready(function () {
@@ -32,6 +63,14 @@
             let checkboxes = $('input:checkbox')
             checkboxes.removeClass('form-control')
         })
+        $(document).ready(function () {
+            $('.search-patients').on('keyup', function () {
+                let information = $(this).val().toLowerCase();
+                $('.list-group .item-list').filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(information) > -1)
+                });
+            });
+        });
     </script>
 {% endblock %}
 
@@ -76,8 +115,10 @@
                     <button class="btn btn-secondary" type="button" onclick="hideConfirmation()"
                             style="border-radius: 5px;margin: 3px;">Cancel
                     </button>
-                    <button class="btn btn-danger" role="button" style="border-radius: 5px;margin: 3px;" onclick="submitDeleteForm()"
-                       type="button">Delete</button>
+                    <button class="btn btn-danger" role="button" style="border-radius: 5px;margin: 3px;"
+                            onclick="submitDeleteForm()"
+                            type="button">Delete
+                    </button>
                 </div>
             </div>
         </div>
@@ -140,13 +181,22 @@
                                 <i class="fa fa-trash"></i> Delete Selected
                             </button>
                         </div>
+                        <div class="form-group"
+                             style="position:relative; width: 100%; display: flex; align-items: center; margin-bottom: 20px">
+                            <i class="fas fa-search search-icon"
+                               style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
+                            <input class="form-control search-patients" autocomplete="off" id="searchbar-nav"
+                                   onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
+                                   onfocusout="$('.search-icon').css('color', 'white')"
+                                   placeholder="Search for {{ model.title|lower }}..." name="search">
+                        </div>
                         <div class="list-group list-group-flush"
                              style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
                             <form class="list-group-flush" id="delete-items-form" method="post"
                                   style="border-radius: 8px !important;">
                                 {% for item in model.items %}
                                     <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
-                                        class="list-group-item flex-lg-row flex-column align-items-center {% if item.email == account.email %}list-group-item-success{% endif %}">
+                                        class="list-group-item flex-lg-row flex-column align-items-center item-list {% if item.email == account.email %}list-group-item-success{% endif %}">
                                         <div class="custom-control custom-checkbox">
                                             <input class="custom-control-input" type="checkbox"
                                                    onchange="onChangeCheck()"
