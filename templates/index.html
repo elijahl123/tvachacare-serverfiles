@@ -47,6 +47,18 @@
 
         function openInfo(patientid) {
             let patientID = '.patient-' + patientid
+            if ($(patientID).css('display') !== 'block') {
+                $('.patient-list:nth-last-child(2)').css({
+                    'border-bottom-left-radius': '0',
+                    'border-bottom-right-radius': '0'
+                })
+            } else {
+                $('.patient-list:nth-last-child(2)').css({
+                    'border-bottom-left-radius': '8px',
+                    'border-bottom-right-radius': '8px'
+                })
+            }
+            console.log($(patientID).css('display'))
             $(patientID).slideToggle(200);
         }
 
@@ -150,6 +162,15 @@
             font-family: Raleway, sans-serif;
             font-weight: bold;
             font-size: 20px;
+        }
+
+        .patient-list:nth-last-child(2) {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .list-group {
+            border-radius: 8px;
         }
 
     </style>
@@ -588,17 +609,6 @@
     </main>
 
     <script>
-
-        let patientList = $('.list-group');
-        let listItems = patientList.children($('.list-group-item')).get()
-        listItems.sort(function (a, b) {
-            let compA = $(a).text().toUpperCase();
-            let compB = $(b).text().toUpperCase();
-            return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
-        })
-        $.each(patientList, function (idx, itm) {
-            patientList.append(itm)
-        });
 
         function editForm() {
             $('.form-span').addClass('display-none')
