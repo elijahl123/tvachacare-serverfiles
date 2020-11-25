@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import UserCreationForm
+from django.forms.utils import ErrorList
 
 from .models import Account, PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog, Group
 
@@ -83,7 +84,6 @@ class AddPatient(forms.ModelForm):
             'number_of_surgeries',
             'slug'
         ]
-
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'})
         }
@@ -150,6 +150,7 @@ class ProcedureForm(forms.ModelForm):
 
 
 class RegistrationForm(UserCreationForm):
+    error_css_class = 'alert'
     email = forms.EmailField(max_length=60,
                              help_text='Required. Add a valid email address')
 
@@ -183,3 +184,14 @@ class SurgeryForm(forms.ModelForm):
         super(SurgeryForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+
+class DivErrorList(ErrorList):
+    def __str__(self):
+        return self.as_divs()
+
+    def as_divs(self):
+        if not self:
+            return ''
+        return '<div class="d-flex justify-content-center align-items-center" style="padding-bottom: 5px">%s</div>' % ''.join(
+            ['<div class="alert alert-danger w-100" style="margin: 0"><strong>%s</strong></div>' % e for e in self])

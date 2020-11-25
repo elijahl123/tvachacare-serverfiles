@@ -187,63 +187,65 @@ def admin_edit(request, model, id):
         model_dict['items'] = get_object_or_404(Account, id=id)
         if request.POST:
             form = AccountView(request.POST or None, request.FILES or None,
-                               instance=get_object_or_404(Account, id=id))
+                               instance=get_object_or_404(Account, id=id), error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
                 return redirect('admin_template', 'accounts')
-            else:
-                model_dict['form'] = AccountView(instance=get_object_or_404(Account, id=id))
         else:
-            model_dict['form'] = AccountView(instance=get_object_or_404(Account, id=id))
+            form = AccountView(instance=get_object_or_404(Account, id=id))
+        model_dict['form'] = form
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['items'] = get_object_or_404(Group, id=id)
         if request.POST:
-            form = GroupForm(request.POST or None, instance=get_object_or_404(Group, id=id))
+            form = GroupForm(request.POST or None, instance=get_object_or_404(Group, id=id), error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
                 return redirect('admin_template', 'groups')
-            else:
-                model_dict['form'] = GroupForm(instance=get_object_or_404(Group, id=id))
         else:
-            model_dict['form'] = GroupForm(instance=get_object_or_404(Group, id=id))
+            form = GroupForm(instance=get_object_or_404(Group, id=id))
+        model_dict['form'] = form
     elif model == 'event-logs':
         model_dict['title'] = 'Event Logs'
         model_dict['items'] = get_object_or_404(EventLog, id=id)
         if request.POST:
-            form = EventLogForm(request.POST or None, instance=get_object_or_404(EventLog, id=id))
+            form = EventLogForm(request.POST or None, instance=get_object_or_404(EventLog, id=id),
+                                error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
                 return redirect('admin_template', 'event-logs')
-            else:
-                model_dict['form'] = EventLogForm(instance=get_object_or_404(EventLog, id=id))
         else:
-            model_dict['form'] = EventLogForm(instance=get_object_or_404(EventLog, id=id))
+            form = EventLogForm(instance=get_object_or_404(EventLog, id=id))
+        model_dict['form'] = form
     elif model == 'patients':
         model_dict['title'] = 'Patients'
         model_dict['items'] = get_object_or_404(PatientInformation, id=id)
         if request.POST:
             form = AddPatient(request.POST or None, request.FILES or None,
-                              instance=get_object_or_404(PatientInformation, id=id))
+                              instance=get_object_or_404(PatientInformation, id=id), error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
                 return redirect('admin_template', 'patients')
-            else:
-                model_dict['form'] = AddPatient(instance=get_object_or_404(PatientInformation, id=id))
         else:
-            model_dict['form'] = AddPatient(instance=get_object_or_404(PatientInformation, id=id))
+            form = AddPatient(instance=get_object_or_404(PatientInformation, id=id))
+        model_dict['form'] = form
     elif model == 'surgeries':
         model_dict['title'] = 'Surgeries'
         model_dict['items'] = get_object_or_404(SurgeryInformation, id=id)
         if request.POST:
-            form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id))
+            form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id),
+                               error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
                 return redirect('admin_template', 'surgeries')
-            else:
-                model_dict['form'] = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
         else:
-            model_dict['form'] = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+            form = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+        model_dict['form'] = form
     else:
         return redirect('admin-console')
     context['model'] = model_dict
@@ -267,56 +269,60 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Accounts'
         model_dict['items'] = Account.objects.all()
         if request.POST:
-            form = RegistrationForm(request.POST or None)
+            form = RegistrationForm(request.POST or None, error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
+                form = RegistrationForm()
                 return redirect('admin_template', 'accounts')
-            else:
-                model_dict['new_form'] = RegistrationForm()
         else:
-            model_dict['new_form'] = RegistrationForm()
+            form = RegistrationForm()
+        model_dict['new_form'] = form
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['items'] = Group.objects.all()
         model_dict['accounts'] = Account.objects.all()
         if request.POST:
-            form = GroupForm(request.POST or None)
+            form = GroupForm(request.POST or None, error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
+                form = GroupForm()
                 return redirect('admin_template', 'event-logs')
-            else:
-                model_dict['new_form'] = GroupForm()
         else:
-            model_dict['new_form'] = GroupForm()
+            form = GroupForm()
+        model_dict['new_form'] = form
     elif model == 'event-logs':
         model_dict['title'] = 'Event Logs'
         model_dict['items'] = EventLog.objects.all().order_by('-event_time')
         if request.POST:
-            form = EventLogForm(request.POST or None)
+            form = EventLogForm(request.POST or None, error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
+                form = EventLogForm()
                 return redirect('admin_template', 'event-logs')
-            else:
-                model_dict['new_form'] = EventLogForm()
         else:
-            model_dict['new_form'] = EventLogForm()
+            form = EventLogForm()
+        model_dict['new_form'] = form
     elif model == 'patients':
         model_dict['title'] = 'Patients'
         model_dict['items'] = PatientInformation.objects.all()
         if request.POST:
-            form = AddPatient(request.POST or None, request.FILES or None)
+            form = AddPatient(request.POST or None, request.FILES or None, error_class=DivErrorList)
             if form.is_valid():
-                form.save()
+                obj = form.save(commit=False)
+                obj.save()
+                form = AddPatient()
                 return redirect('admin_template', 'patients')
-            else:
-                model_dict['new_form'] = AddPatient()
         else:
-            model_dict['new_form'] = AddPatient()
+            form = AddPatient()
+        model_dict['new_form'] = form
     elif model == 'surgeries':
         model_dict['title'] = 'Surgeries'
         model_dict['items'] = SurgeryInformation.objects.all()
         if request.POST:
-            form = SurgeryForm(request.POST or None)
+            form = SurgeryForm(request.POST or None, error_class=DivErrorList)
             if form.is_valid():
                 surgery_form = form.save(commit=False)
                 surgery_form.save()
