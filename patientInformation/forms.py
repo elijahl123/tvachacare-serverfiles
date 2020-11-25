@@ -150,7 +150,6 @@ class ProcedureForm(forms.ModelForm):
 
 
 class RegistrationForm(UserCreationForm):
-    error_css_class = 'alert'
     email = forms.EmailField(max_length=60,
                              help_text='Required. Add a valid email address')
 

@@ -1,35 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="mydatabase" uuid="069e4ad2-ca68-4177-b3d6-02f5d1a83851">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\elijahkane\Documents\tvachacare-serverfiles\mydatabase</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="TvachaCare" uuid="f2e09e96-9331-4f26-ba87-9862c35a56b9">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="TvachaCareOther" uuid="59886121-d19d-4bf9-9cbe-5775729355ed">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/defaultdb</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="HUITvachaCare" uuid="f88a5aeb-e80b-4289-9f3a-d91a41c4e1da">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
-    </data-source>
-    <data-source source="LOCAL" name="LocalHost" uuid="435e6ebd-5715-4f98-a6de-0c1d4464ec05">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
     </data-source>
     <data-source source="LOCAL" name="db" uuid="c26a87f7-202c-4f8e-8dd9-1799cc9693f5">
       <driver-ref>sqlite.xerial</driver-ref>
