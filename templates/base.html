@@ -117,7 +117,7 @@
     {% block header %}
     {% endblock %}
 </head>
-<body style="background: whitesmoke;" {% if account.is_authenticateed %}onload="startTime()"{% endif %}>
+<body style="background: whitesmoke;" {% if account %}onload="startTime()"{% endif %}>
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
@@ -148,9 +148,9 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row no-gutters flex-column justify-content-between">
+                    <div class="row no-gutters flex-column justify-content-between d-block">
                         <div class="col d-flex justify-content-center" id="nav-list-container"
-                             style="padding: 20px 0 20px 20px;height: 100%">
+                             style="padding: 20px 0 20px 20px;">
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
                                 <a class="list-group-item list-group-item-action nav-links"
