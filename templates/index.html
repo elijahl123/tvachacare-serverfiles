@@ -64,6 +64,18 @@
 
         function openSurgeryInfo(surgeryid) {
             let surgeryID = '.surgery-' + surgeryid
+            if ($(surgeryID).css('display') !== 'block') {
+                $('.patient-list:nth-last-child(2)').css({
+                    'border-bottom-left-radius': '0',
+                    'border-bottom-right-radius': '0'
+                })
+            } else {
+                $('.patient-list:nth-last-child(2)').css({
+                    'border-bottom-left-radius': '8px',
+                    'border-bottom-right-radius': '8px'
+                })
+            }
+            console.log($(surgeryID).css('display'))
             $(surgeryID).slideToggle(200);
         }
 
