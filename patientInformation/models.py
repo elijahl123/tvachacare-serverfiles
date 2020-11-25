@@ -2,7 +2,7 @@ import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
-from django.db.models.signals import post_delete, pre_save
+from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -239,19 +239,22 @@ def submission_delete(sender, instance, **kwargs):
     patient.save()
 
 
+def post_init_surgery(sender, instance, *args, **kwargs):
+    num = 0
+    for surgery in SurgeryInformation.objects.filter(patient=instance.patient):
+        num += 1
+    patient = PatientInformation.objects.get(id=instance.patient.id)
+    patient.number_of_surgeries = num
+    patient.save()
+
+
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify("HUI-" + str(abs(hash(str(datetime.datetime))) % (10 ** 10)))
 
 
-def pre_save_surgery_information(sender, instance, *args, **kwargs):
-    patient = PatientInformation.objects.get(id=instance.patient.id)
-    patient.number_of_surgeries += 1
-    patient.save()
-
-
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
-pre_save.connect(pre_save_surgery_information, sender=SurgeryInformation)
+post_save.connect(post_init_surgery, sender=SurgeryInformation)
 
 # TODO: make it so that users can add fields
 
