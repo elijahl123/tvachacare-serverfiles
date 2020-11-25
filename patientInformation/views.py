@@ -1,9 +1,9 @@
-import calendar
 import csv
 import datetime
 import os
 from pathlib import Path
 
+import calendar
 import requests
 from django.conf import settings
 from django.contrib.auth import logout as lgout, login
@@ -269,12 +269,19 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Accounts'
         model_dict['items'] = Account.objects.all()
         if request.POST:
-            form = RegistrationForm(request.POST or None, error_class=DivErrorList)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.save()
+            if 'new_form_submit' in request.POST:
+                form = RegistrationForm(request.POST or None, error_class=DivErrorList)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.save()
+                    form = RegistrationForm()
+                    return redirect('admin_template', 'accounts')
+            else:
                 form = RegistrationForm()
-                return redirect('admin_template', 'accounts')
+                delete_selected = request.POST.getlist('delete[]')
+                for item_id in delete_selected:
+                    obj = Account.objects.get(id=int(item_id))
+                    obj.delete()
         else:
             form = RegistrationForm()
         model_dict['new_form'] = form
@@ -283,12 +290,19 @@ def admin_template(request, model: str):
         model_dict['items'] = Group.objects.all()
         model_dict['accounts'] = Account.objects.all()
         if request.POST:
-            form = GroupForm(request.POST or None, error_class=DivErrorList)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.save()
+            if 'new_form_submit' in request.POST:
+                form = GroupForm(request.POST or None, error_class=DivErrorList)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.save()
+                    form = GroupForm()
+                    return redirect('admin_template', 'groups')
+            else:
                 form = GroupForm()
-                return redirect('admin_template', 'event-logs')
+                delete_selected = request.POST.getlist('delete[]')
+                for item_id in delete_selected:
+                    obj = Group.objects.get(id=int(item_id))
+                    obj.delete()
         else:
             form = GroupForm()
         model_dict['new_form'] = form
@@ -296,12 +310,19 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Event Logs'
         model_dict['items'] = EventLog.objects.all().order_by('-event_time')
         if request.POST:
-            form = EventLogForm(request.POST or None, error_class=DivErrorList)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.save()
+            if 'new_form_submit' in request.POST:
+                form = EventLogForm(request.POST or None, error_class=DivErrorList)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.save()
+                    form = EventLogForm()
+                    return redirect('admin_template', 'event-logs')
+            else:
                 form = EventLogForm()
-                return redirect('admin_template', 'event-logs')
+                delete_selected = request.POST.getlist('delete[]')
+                for item_id in delete_selected:
+                    obj = EventLog.objects.get(id=int(item_id))
+                    obj.delete()
         else:
             form = EventLogForm()
         model_dict['new_form'] = form
@@ -309,12 +330,19 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Patients'
         model_dict['items'] = PatientInformation.objects.all()
         if request.POST:
-            form = AddPatient(request.POST or None, request.FILES or None, error_class=DivErrorList)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.save()
+            if 'new_form_submit' in request.POST:
+                form = AddPatient(request.POST or None, request.FILES or None, error_class=DivErrorList)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.save()
+                    form = AddPatient()
+                    return redirect('admin_template', 'patients')
+            else:
                 form = AddPatient()
-                return redirect('admin_template', 'patients')
+                delete_selected = request.POST.getlist('delete[]')
+                for item_id in delete_selected:
+                    obj = PatientInformation.objects.get(id=int(item_id))
+                    obj.delete()
         else:
             form = AddPatient()
         model_dict['new_form'] = form
@@ -322,23 +350,29 @@ def admin_template(request, model: str):
         model_dict['title'] = 'Surgeries'
         model_dict['items'] = SurgeryInformation.objects.all()
         if request.POST:
-            form = SurgeryForm(request.POST or None, error_class=DivErrorList)
-            if form.is_valid():
-                surgery_form = form.save(commit=False)
-                surgery_form.save()
-                images = request.FILES.getlist('surgery_images')
-                procedure_codes = request.POST.getlist('procedure_codes')
-                for image in images:
-                    image_object = Image(surgery=surgery_form, image=image, date_of_upload_image=datetime.date.today())
-                    image_object.save()
-                for code in procedure_codes:
-                    procedure_code = ProcedureCodes(surgery=surgery_form, procedure_codes=code)
-                    procedure_code.save()
-                return redirect('admin_template', 'surgeries')
+            if 'new_form_submit' in request.POST:
+                form = SurgeryForm(request.POST or None, error_class=DivErrorList)
+                if form.is_valid():
+                    surgery_form = form.save(commit=False)
+                    surgery_form.save()
+                    images = request.FILES.getlist('surgery_images')
+                    procedure_codes = request.POST.getlist('procedure_codes')
+                    for image in images:
+                        image_object = Image(surgery=surgery_form, image=image, date_of_upload_image=datetime.date.today())
+                        image_object.save()
+                    for code in procedure_codes:
+                        procedure_code = ProcedureCodes(surgery=surgery_form, procedure_codes=code)
+                        procedure_code.save()
+                    return redirect('admin_template', 'surgeries')
             else:
-                model_dict['new_form'] = SurgeryForm()
+                form = SurgeryForm()
+                delete_selected = request.POST.getlist('delete[]')
+                for item_id in delete_selected:
+                    obj = SurgeryInformation.objects.get(id=int(item_id))
+                    obj.delete()
         else:
-            model_dict['new_form'] = SurgeryForm()
+            form = SurgeryForm()
+        model_dict['new_form'] = form
     else:
         return redirect('admin-console')
     context['model'] = model_dict

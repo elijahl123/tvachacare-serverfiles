@@ -19,6 +19,11 @@
             font-weight: bold;
         }
 
+        .custom-control-label:before {
+            background-color: lightgray;
+            border-color: lightgray;
+        }
+
     </style>
     <script>
         $(document).ready(function () {
@@ -31,7 +36,51 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        function onChangeCheck() {
+            let anyChecks = false;
+            $('#delete-items-form').find('input[type="checkbox"]').each(function () {
+                if ($(this).is(':checked')) {
+                    anyChecks = true
+                }
+            })
+            if (anyChecks) {
+                $('.delete-selected').slideDown(100)
+            } else {
+                $('.delete-selected').slideUp(100)
+            }
+        }
+
+        function showConfirmation() {
+            $('.delete-items-confirmation').removeClass('d-none')
+        }
+
+        function hideConfirmation() {
+            $('.delete-items-confirmation').addClass('d-none')
+        }
+
+        function submitDeleteForm() {
+            $('#delete-items-form').submit()
+        }
+
+    </script>
     <main class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="justify-content-center align-items-center delete-items-confirmation d-none"
+             style="display: flex;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
+            <div class="d-flex flex-column"
+                 style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0 0 5px 0 var(--accent-color);">
+                <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
+                    Are
+                    you sure?</h1>
+                <div role="group" class="btn-group">
+                    <button class="btn btn-secondary" type="button" onclick="hideConfirmation()"
+                            style="border-radius: 5px;margin: 3px;">Cancel
+                    </button>
+                    <button class="btn btn-danger" role="button" style="border-radius: 5px;margin: 3px;" onclick="submitDeleteForm()"
+                       type="button">Delete</button>
+                </div>
+            </div>
+        </div>
         <div class="container-fluid shadow"
              style="padding: 30px;background: whitesmoke;font-family: Raleway, sans-serif;width: 90%;border-radius: max(0px, min(8px, calc((100vw - 4px - 100%) * 9999))) / 8px;">
             <div class="row no-gutters flex-lg-row flex-column align-items-center align-items-lg-start">
@@ -84,52 +133,74 @@
                 <div class="col d-flex flex-column admin-list-col"
                      style="max-height: 80vh;color: var(--accent-color);overflow-y: auto; overflow-x: hidden; padding: 10px; min-height:50vh">
                     {% block admin_block %}
+                        <div role="group" class="btn-group btn-group delete-selected"
+                             style="border-radius: 0 !important;margin-bottom: 10px; display: none">
+                            <button class="btn btn-danger" type="button" onclick="showConfirmation()"
+                                    style="border-style: none;border-radius: 8px">
+                                <i class="fa fa-trash"></i> Delete Selected
+                            </button>
+                        </div>
                         <div class="list-group list-group-flush"
                              style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
-                            {% for item in model.items %}
-                                <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
-                                    class="list-group-item flex-lg-row flex-column align-items-center {% if item.email == account.email %}list-group-item-success{% endif %}">
-                                    <a href="{% url 'admin_view' model.model item.id %}"
-                                       class="text-lg-left text-center"
-                                       style="color: var(--accent-color); width: 250px; white-space: nowrap">{{ item }}</a>
-                                    {% if model.title == 'Accounts' %}
-                                        <span>{{ item.group.name }}</span>
-                                    {% elif model.title == 'Groups' %}
-                                        <span>Id: {{ item.id }}</span>
-                                    {% elif model.title == 'Event Logs' %}
-                                        <span>{{ item.event_time }}</span>
-                                    {% elif model.title == 'Patients' %}
-                                        <span>Uploaded: {{ item.uploaded }}</span>
-                                    {% elif model.title == 'Surgeries' %}
-                                        <span>Patient: {{ item.patient }}</span>
-                                    {% endif %}
-                                    <button class="btn d-flex justify-content-center align-items-center"
-                                            style="padding: 5px; border-radius: 50px" onclick="openItem({{ item.id }})">
-                                        <i class="fa fa-cog" style="margin-right: 1px;"></i>
-                                    </button>
-                                </li>
-                                <li class="list-group-item list-group-item-secondary item-{{ item.id }}"
-                                    style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;padding: 0">
-                                    <div role="group" class="btn-group btn-group-sm d-flex"
-                                         style="border-radius: 0 !important;">
-                                        <a class="btn btn-success" href="{% url 'admin_edit' model.model item.id %}"
-                                           type="button" style="border-style: none;">
-                                            <i class="fa fa-edit"></i> Edit
-                                        </a>
-                                        <a class="btn btn-danger" href="{% url 'admin_delete' model.model item.id %}"
-                                           style="border-style: none;">
-                                            <i class="fa fa-trash"></i> Delete
-                                        </a>
-                                    </div>
-                                </li>
-                            {% endfor %}
+                            <form class="list-group-flush" id="delete-items-form" method="post"
+                                  style="border-radius: 8px !important;">
+                                {% for item in model.items %}
+                                    <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
+                                        class="list-group-item flex-lg-row flex-column align-items-center {% if item.email == account.email %}list-group-item-success{% endif %}">
+                                        <div class="custom-control custom-checkbox">
+                                            <input class="custom-control-input" type="checkbox"
+                                                   onchange="onChangeCheck()"
+                                                   name="delete[]" value="{{ item.id }}" id="check-{{ item.id }}">
+                                            <label class="custom-control-label delete-checks"
+                                                   for="check-{{ item.id }}"></label>
+                                        </div>
+                                        <a href="{% url 'admin_view' model.model item.id %}"
+                                           class="text-lg-left text-center"
+                                           style="color: var(--accent-color); width: 250px; white-space: nowrap">{{ item }}</a>
+                                        {% if model.title == 'Accounts' %}
+                                            <span>{{ item.group.name }}</span>
+                                        {% elif model.title == 'Groups' %}
+                                            <span>Id: {{ item.id }}</span>
+                                        {% elif model.title == 'Event Logs' %}
+                                            <span>{{ item.event_time }}</span>
+                                        {% elif model.title == 'Patients' %}
+                                            <span>Uploaded: {{ item.uploaded }}</span>
+                                        {% elif model.title == 'Surgeries' %}
+                                            <span>Patient: {{ item.patient }}</span>
+                                        {% endif %}
+                                        <button type="button"
+                                                class="btn d-flex justify-content-center align-items-center"
+                                                style="padding: 5px; border-radius: 50px"
+                                                onclick="openItem({{ item.id }})">
+                                            <i class="fa fa-cog" style="margin-right: 1px;"></i>
+                                        </button>
+                                    </li>
+                                    <li class="list-group-item list-group-item-secondary item-{{ item.id }}"
+                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;padding: 0">
+                                        <div role="group" class="btn-group btn-group-sm d-flex"
+                                             style="border-radius: 0 !important;">
+                                            <a class="btn btn-success" href="{% url 'admin_edit' model.model item.id %}"
+                                               type="button" style="border-style: none;">
+                                                <i class="fa fa-edit"></i> Edit
+                                            </a>
+                                            <a class="btn btn-danger"
+                                               href="{% url 'admin_delete' model.model item.id %}"
+                                               style="border-style: none;">
+                                                <i class="fa fa-trash"></i> Delete
+                                            </a>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                {% csrf_token %}
+                            </form>
+
                             <li class="list-group-item list-group-item-secondary add-item"
                                 style="display: none;padding: 20px; font-family: 'Open Sans', sans-serif; font-weight: normal;">
                                 <form method="post" enctype="multipart/form-data">{% csrf_token %}
                                     {% if model.title == 'Surgeries' %}
                                         <div role="group" class="btn-group d-flex image-button"
                                              style="border-radius: 0 !important;margin-bottom: 5px">
-                                            <button class="btn btn-secondary" onclick="cloneMore(this)"
+                                            <button class="btn btn-secondary" type="button" onclick="cloneMore(this)"
                                                     style="border-style: none;font-weight: bold">
                                                 Add Image
                                             </button>
