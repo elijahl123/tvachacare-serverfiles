@@ -81,6 +81,27 @@
             }
         }
 
+        span.ripple {
+            position: absolute; /* The absolute position we mentioned earlier */
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 600ms linear;
+            background-color: rgba(255, 255, 255, 0.3);
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .btn-ripple {
+            position: relative !important;
+            overflow: hidden;
+            transition: background 400ms;
+        }
+
     </style>
     <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
     <script>
@@ -90,7 +111,6 @@
 
         function formatAMPM(date) {
             let hours = date.getUTCHours() <= 12 ? date.getUTCHours() + 16 : date.getUTCHours() - 8;
-            console.log(hours)
             return hours >= 12 ? 'pm' : 'am';
         }
 
@@ -113,11 +133,44 @@
               // add zero in front of numbers < 10
             return i;
         }
+
     </script>
     {% block header %}
     {% endblock %}
 </head>
-<body style="background: whitesmoke;" {% if account %}onload="startTime()"{% endif %}>
+<body style="background: whitesmoke;place-items: center" {% if account %}onload="startTime()"{% endif %}>
+<script>
+    function createRipple(event) {
+        const button = event.currentTarget;
+
+        const circle = document.createElement("span");
+        const diameter = Math.max(button.clientWidth, button.clientHeight);
+        const radius = diameter / 2;
+
+        circle.style.width = circle.style.height = `${diameter}px`;
+        circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
+        circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
+        circle.classList.add("ripple");
+
+        const ripple = button.getElementsByClassName("ripple")[0];
+
+        if (ripple) {
+            ripple.remove();
+        }
+
+        button.appendChild(circle);
+
+        console.log('hello')
+    }
+
+    $(document).ready(function () {
+        const buttons = document.getElementsByClassName('btn-ripple');
+        for (const button of buttons) {
+            button.addEventListener("click", createRipple);
+        }
+    })
+
+</script>
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
@@ -153,13 +206,13 @@
                              style="padding: 20px 0 20px 20px;">
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
-                                <a class="list-group-item list-group-item-action nav-links"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;border-right-style: none;"
                                    href="{% url 'home' %}">
                                     <i class="fas fa-home" style="margin-right: 20px;"></i>
                                     <span>Home</span>
                                 </a>
-                                <a class="list-group-item list-group-item-action nav-links"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% if account.group.name != 'Approver' %}
                                             {% url 'filter_by_date' %}
@@ -167,14 +220,14 @@
                                             {% endif %}">
                                     <i class="fas fa-table" style="margin-right: 20px;"></i>
                                     <span>Reports</span></a>
-                                <a class="list-group-item list-group-item-action nav-links"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'calendar' today.year today.month %}">
                                     <i class="far fa-calendar" style="margin-right: 20px;"></i>
                                     <span>Calendar</span>
                                 </a>
                                 {% if account.group.can_add_patients %}
-                                    <a class="list-group-item list-group-item-action nav-links"
+                                    <a class="list-group-item list-group-item-action nav-links btn-ripple"
                                        style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'addPatient' %}">
                                         <i class="fas fa-plus" style="margin-right: 20px;"></i>
@@ -182,7 +235,7 @@
                                     </a>
                                 {% endif %}
                                 {% if request.user.group.name == 'Admin' %}
-                                    <a class="list-group-item list-group-item-action nav-links"
+                                    <a class="list-group-item list-group-item-action nav-links btn-ripple"
                                        style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'admin-console' %}">
                                         <i class="fas fa-user-cog" style="margin-right: 20px;"></i>
