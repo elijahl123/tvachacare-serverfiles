@@ -89,7 +89,7 @@
         }
 
         function formatAMPM(date) {
-            let hours = date.getUTCHours() - 8;
+            let hours = date.getUTCHours() <= 12 ? date.getUTCHours() + 16 : date.getUTCHours() - 8;
             console.log(hours)
             return hours >= 12 ? 'pm' : 'am';
         }
