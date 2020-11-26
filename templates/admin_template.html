@@ -197,7 +197,7 @@
                                 {% for item in model.items %}
                                     <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
                                         class="list-group-item flex-lg-row flex-column align-items-center item-list {% if item.email == account.email %}list-group-item-success{% endif %}">
-                                        <div class="custom-control custom-checkbox">
+                                        <div class="custom-control custom-checkbox" style="width: 10%">
                                             <input class="custom-control-input" type="checkbox"
                                                    onchange="onChangeCheck()"
                                                    name="delete[]" value="{{ item.id }}" id="check-{{ item.id }}">
@@ -205,18 +205,18 @@
                                                    for="check-{{ item.id }}"></label>
                                         </div>
                                         <a href="{% url 'admin_view' model.model item.id %}"
-                                           class="text-lg-left text-center"
-                                           style="color: var(--accent-color); width: 250px; white-space: nowrap">{{ item }}</a>
+                                           class="text-lg-left text-center w-100"
+                                           style="color: var(--accent-color);white-space: nowrap">{{ item }}</a>
                                         {% if model.title == 'Accounts' %}
-                                            <span>{{ item.group.name }}</span>
+                                            <span class="w-100 text-lg-left text-center">{{ item.group.name }}</span>
                                         {% elif model.title == 'Groups' %}
-                                            <span>Id: {{ item.id }}</span>
+                                            <span class="w-100 text-lg-left text-center">Id: {{ item.id }}</span>
                                         {% elif model.title == 'Event Logs' %}
-                                            <span>{{ item.event_time }}</span>
+                                            <span class="w-100 text-lg-left text-center">{{ item.event_time }}</span>
                                         {% elif model.title == 'Patients' %}
-                                            <span>Uploaded: {{ item.uploaded }}</span>
+                                            <span class="w-100 text-lg-left text-center">Uploaded: {{ item.uploaded }}</span>
                                         {% elif model.title == 'Surgeries' %}
-                                            <span>Patient: {{ item.patient }}</span>
+                                            <span class="w-100 text-lg-left text-center">Patient: {{ item.patient }}</span>
                                         {% endif %}
                                         <button type="button"
                                                 class="btn d-flex justify-content-center align-items-center"
