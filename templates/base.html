@@ -115,9 +115,12 @@
             return (date.getUTCHours() + 16) % 12 || 12;
         }
 
-        function formatAMPM(date) {
-            let hours = date.getUTCHours() <= 12 ? date.getUTCHours() + 16 : date.getUTCHours() - 8;
-            return hours >= 12 ? 'pm' : 'am';
+        function formatAMPM(hours) {
+            if (hours >= 24) {
+                hours -= 24
+            }
+            console.log(hours)
+            return hours >= 12 ? 'pm' : 'am'
         }
 
         function startTime() {
@@ -128,7 +131,7 @@
             m = checkTime(m);
             s = checkTime(s);
             document.getElementById('current_time').innerHTML =
-                h + ":" + m + ":" + s + formatAMPM(today);
+                h + ":" + m + ":" + s + formatAMPM(today.getUTCHours() + 16);
             let t = setTimeout(startTime, 500);
         }
 
