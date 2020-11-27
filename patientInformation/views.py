@@ -725,7 +725,14 @@ def loginadmin(request):
                     return redirect('terms_of_service')
         else:
             email = request.POST['email'] or None
-            event = EventLog(user=email, event_type='Failed Login', notes='Failed Login Attempt')
+
+            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+
+            if x_forwarded_for:
+                ip = x_forwarded_for.split(',')[0]
+            else:
+                ip = request.META.get('REMOTE_ADDR')
+            event = EventLog(user=email, event_type='Failed Login', notes='Failed Login Attempt from ' + ip)
             event.save()
 
     else:
