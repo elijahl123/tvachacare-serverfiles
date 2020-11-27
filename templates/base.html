@@ -138,12 +138,13 @@
             if (i < 10) {
                 i = "0" + i
             }
-              // add zero in front of numbers < 10
+            // add zero in front of numbers < 10
             return i;
         }
 
     </script>
     {% block header %}
+        <title>TvachaCare Helpers United</title>
     {% endblock %}
 </head>
 <body style="background: whitesmoke;place-items: center" {% if account %}onload="startTime()"{% endif %}>
@@ -188,7 +189,8 @@
                        style="padding: 20px; text-decoration: none">
                         <img class="d-flex justify-content-center align-items-center"
                              src="{% static 'img/logoTvacha.png' %}"
-                             height="30px" style="min-height: 30px;max-height: 38px;"><span style="font-family: Raleway, sans-serif;
+                             height="30px" style="min-height: 30px;max-height: 38px;">
+                        <span style="font-family: Raleway, sans-serif;
     font-size: 30px;color: darkgray;font-weight: bold;vertical-align: baseline;margin-left: 5px;display: inline-block;line-height: 30px;margin-top: 4px;">HUI</span>
                     </a>
                     <div class="col-2 d-flex justify-content-center align-items-center d-md-none"
@@ -215,7 +217,7 @@
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
                                 <a class="list-group-item list-group-item-action nav-links btn-ripple"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;border-right-style: none;"
+                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'home' %}">
                                     <i class="fas fa-home" style="margin-right: 20px;"></i>
                                     <span>Home</span>
@@ -307,7 +309,6 @@
         </div>
     </div>
 </div>
-
 <script src="{% static 'js/smoothproducts.min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>
 <script>

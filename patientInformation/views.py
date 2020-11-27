@@ -10,7 +10,7 @@ from django.contrib.auth import logout as lgout, login
 from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory, model_to_dict
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
@@ -362,7 +362,8 @@ def admin_template(request, model: str):
                     images = request.FILES.getlist('surgery_images')
                     procedure_codes = request.POST.getlist('procedure_codes')
                     for image in images:
-                        image_object = Image(surgery=surgery_form, image=image, date_of_upload_image=datetime.date.today())
+                        image_object = Image(surgery=surgery_form, image=image,
+                                             date_of_upload_image=datetime.date.today())
                         image_object.save()
                     for code in procedure_codes:
                         procedure_code = ProcedureCodes(surgery=surgery_form, procedure_codes=code)
@@ -716,7 +717,10 @@ def loginadmin(request):
                 event = EventLog(user=email, event_type='Login', notes='Logged In')
                 event.save()
                 if user.is_accepted:
-                    return redirect('home')
+                    if request.GET.get('next'):
+                        return HttpResponseRedirect(request.GET.get('next'))
+                    else:
+                        return redirect('home')
                 else:
                     return redirect('terms_of_service')
         else:
