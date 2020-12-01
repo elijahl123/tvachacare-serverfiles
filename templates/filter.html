@@ -3,6 +3,20 @@
 
 {% block header %}
     <title>Filter by Date</title>
+    <style>
+        .btn-fields {
+            box-shadow: none;
+            transition-duration: 0.2s;
+            transition-property: box-shadow;
+        }
+
+        .btn-fields:hover {
+            box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.25);
+            transition-duration: 0.2s !important;
+            transition-property: box-shadow;
+        }
+    </style>
+
 {% endblock %}
 
 {% block content %}
@@ -19,6 +33,29 @@
             $('input#fields').val(fields)
             console.log($('input#fields').val())
         }
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            $('.btn-fields').click(function () {
+                const checkbox = $('#' + $(this).attr('data-checkbox'))
+                if (checkbox.is(':checked')) {
+                    checkbox.attr('checked', false)
+                    $(this).css({
+                        'background-color': 'rgba(252,156,52, 0.3)',
+                        'color': 'var(--main-accent)'
+                    })
+                } else {
+                    checkbox.attr('checked', true);
+                    $(this).css({
+                        'background-color': 'rgb(252,156,52)',
+                        'color': 'white'
+                    })
+                }
+                console.log(checkbox.is(':checked'))
+            })
+        })
+
     </script>
     <main class="d-flex justify-content-center align-items-center"
           style="background-color: var(--main-color);font-family: 'Open Sans', sans-serif;font-size: 20px;min-height: 100vh">
@@ -53,38 +90,34 @@
                 <div class="col d-inline-flex justify-content-center flex-wrap">
                     {% for field in patients %}
                         {% if not field.name == 'id' and not field.name == 'surgeryinformation' and not field.name == 'uploaded' and not field.name == 'patient_image' and not field.name == 'injury_image' %}
-                            <div class="form-check d-flex align-items-center"
-                                 style="color: var(--main-color);margin: 10px;">
-                                <input type="checkbox" onchange="addFields(this)" class="form-check-input"
-                                       id="formCheck-2"
-                                       style="margin-top: 0;" name="checks[]" value="patient__{{ field.name }}"/>
-                                <label class="form-check-label" for="formCheck-1"
-                                       style="color: var(--main-color);font-size: 15px;">{{ field.verbose_name|title }}</label>
-                            </div>
+                            <button type="button" class="btn btn-sm btn-fields"
+                                    data-checkbox="id_patient__{{ field.name }}"
+                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                                {{ field.verbose_name|title }}
+                            </button>
+                            <input class="d-none" type="checkbox"
+                                   name="checks[]" value="patient__{{ field.name }}"
+                                   id="id_patient__{{ field.name }}">
                         {% endif %}
                     {% endfor %}
                     {% for field in surgeries %}
                         {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' and not field.name == 'procedurecodes' %}
-                            <div class="form-check d-flex align-items-center"
-                                 style="color: var(--main-color);margin: 10px;">
-                                <input type="checkbox" onchange="addFields(this)" class="form-check-input"
-                                       id="formCheck-43" style="margin-top: 0;"
-                                       name="checks[]" value="{{ field.name }}"/>
-                                <label class="form-check-label" for="formCheck-1"
-                                       style="color: var(--main-color);font-size: 15px;">{{ field.verbose_name|title }}</label>
-                            </div>
+                            <button type="button" class="btn btn-sm btn-fields" data-checkbox="id_{{ field.name }}"
+                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                                {{ field.verbose_name|title }}
+                            </button>
+                            <input class="d-none" type="checkbox"
+                                   name="checks[]" value="{{ field.name }}"
+                                   id="id_{{ field.name }}">
                         {% endif %}
                     {% endfor %}
-                    <div class="form-check d-flex align-items-center"
-                         style="color: var(--main-color);margin: 10px;">
-                        <input type="checkbox"
-                               onchange="addFields(this)"
-                               class="form-check-input"
-                               id="formCheck-22" style="margin-top: 0;"
-                               name="procedure_codes"/>
-                        <label
-                                class="form-check-label" for="formCheck-1"
-                                style="color: var(--main-color);font-size: 15px;">Procedure Codes</label></div>
+                    <button type="button" class="btn btn-sm btn-fields" data-checkbox="id_procedure_codes"
+                            style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                        Procedure Codes
+                    </button>
+                    <input class="d-none" type="checkbox"
+                           name="procedure_codes"
+                           id="id_procedure_codes">
                 </div>
             </div>
             <div class="form-row">

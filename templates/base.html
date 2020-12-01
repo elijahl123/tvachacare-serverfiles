@@ -82,6 +82,12 @@
             }
         }
 
+        @media (max-height: 550px) {
+            .datetime-container {
+                position: relative !important;
+            }
+        }
+
         @media (max-width: 768px) {
             .side-nav {
                 position: relative !important;
@@ -127,11 +133,9 @@
             let today = new Date();
             let h = hours12(today);
             let m = today.getUTCMinutes();
-            let s = today.getUTCSeconds();
             m = checkTime(m);
-            s = checkTime(s);
             document.getElementById('current_time').innerHTML =
-                h + ":" + m + ":" + s + formatAMPM(today.getUTCHours() + 16);
+                h + ":" + m + formatAMPM(today.getUTCHours() + 16);
             let t = setTimeout(startTime, 500);
         }
 
@@ -259,10 +263,11 @@
                         </div>
                         <div class="col d-flex align-items-end justify-content-center datetime-container"
                              style="bottom: 0; padding: 0 20px 20px;">
-                            <div style="width:100%;padding: 10px; background-color: white; color: var(--accent-color); border-radius: 8px; font-family: 'Raleway', sans-serif;box-shadow: 0 0 .5rem rgba(0,0,0,.075)!important">
-                                <h3 style="font-weight: bold; text-align: center">Pacific Time</h3>
-                                <h1 style="font-weight: bold; text-align: center; font-family: 'Open Sans', sans-serif"
-                                    id="current_time"></h1>
+                            <div class="d-inline-flex justify-content-between align-items-center"
+                                 style="width:100%;padding: 20px; background-color: white; color: var(--accent-color); border-radius: 8px; font-family: 'Raleway', sans-serif;border: 1px solid #dadce0!important">
+                                <h4 style="margin: 0;font-weight: bold; text-align: center">Pacific Time</h4>
+                                <h4 style="margin: 0;font-weight: bold; text-align: center; font-family: 'Open Sans', sans-serif"
+                                    id="current_time"></h4>
                             </div>
                         </div>
                     </div>
