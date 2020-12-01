@@ -136,29 +136,32 @@
                         <button class="btn d-flex justify-content-center align-items-center" data-toggle="dropdown"
                                 aria-expanded="false" type="button" style="color: white;background: var(--main-color);">
                             <i
-                                    class="fas fa-ellipsis-h" style="font-size: 25px;"></i></button>
+                                    class="fas material-icons-round" style="font-size: 25px;">menu</i></button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#" onclick="openMenu()"
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="openMenu()"
                                style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-trash" style="color: red;margin-right: 10px;font-size: 16px;"></i>Delete
+                                <i class="material-icons-round" style="color: red;margin-right: 10px;font-size: 20px;">delete</i>Delete
                                 Patient
                             </a>
-                            <a class="dropdown-item" href="#" onclick="window.print()"
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="window.print()"
                                style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-print"
-                                   style="color: dodgerblue;margin-right: 10px;font-size: 16px;"></i>Print
+                                <i class="material-icons-round"
+                                   style="color: dodgerblue;margin-right: 10px;font-size: 20px;">print</i>Print
                             </a>
-                            <a class="dropdown-item" href="#" onclick="openStory()"
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="openStory()"
                                style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-envelope"
-                                   style="color: var(--main-color);margin-right: 10px;font-size: 16px;"></i>Email Story
+                                <i class="material-icons-round"
+                                   style="color: var(--main-color);margin-right: 10px;font-size: 20px;">mail</i>Email
+                                Story
                             </a>
                             {% if account.group.can_edit_patients %}
-                            <a class="dropdown-item" href="{% url 'edit_patient' patient.slug %}"
-                               style="font-family: 'Open Sans', sans-serif;">
-                                <i class="fa fa-edit"
-                                   style="color: var(--main-color);margin-right: 10px;font-size: 16px;"></i>Edit Patient
-                            </a>
+                                <a class="dropdown-item d-flex align-items-center"
+                                   href="{% url 'edit_patient' patient.slug %}"
+                                   style="font-family: 'Open Sans', sans-serif;">
+                                    <i class="material-icons-round"
+                                       style="color: var(--main-color);margin-right: 10px;font-size: 20px;">create</i>Edit
+                                    Patient
+                                </a>
                             {% endif %}
                         </div>
                     </div>
@@ -201,7 +204,7 @@
                      style="min-width:860px;width: 100%;margin: auto auto 20px;color: white">
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
                          style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px 0px #505e6c;">
-                        <i class="fa fa-barcode d-print-none" style="font-size: 35px;"></i>
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">qr_code</i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
                             Patient Record Number</h1>
@@ -211,7 +214,7 @@
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
                          style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
-                        <i class="fa fa-calendar d-print-none" style="font-size: 35px;"></i>
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">today</i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
                             Date of Birth</h1>
@@ -220,7 +223,7 @@
                     </div>
                     <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
                          style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
-                        <i class="fa fa-clock d-print-none" style="font-size: 35px;"></i>
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">schedule</i>
                         <h1 class="text-center"
                             style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
                             Age</h1>

@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons+Round">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{% static 'js/jquery.fittext.js' %}"></script>
@@ -195,9 +196,11 @@
                     </a>
                     <div class="col-2 d-flex justify-content-center align-items-center d-md-none"
                          style="padding: 20px">
-                        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"
+                        <button data-toggle="collapse"
+                                class="navbar-toggler d-flex justify-content-center align-items-center"
+                                data-target="#navcol-1"
                                 style="background-color: var(--main-color); border: none">
-                            <i class="fa fa-ellipsis-h text-white"></i>
+                            <i class="material-icons-round text-white">menu</i>
                         </button>
                     </div>
                 </div>
@@ -216,39 +219,39 @@
                              style="padding: 20px 0 20px 20px;">
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'home' %}">
-                                    <i class="fas fa-home" style="margin-right: 20px;"></i>
+                                    <i class="material-icons-round" style="margin-right: 15px;">home</i>
                                     <span>Home</span>
                                 </a>
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% if account.group.name != 'Approver' %}
                                             {% url 'filter_by_date' %}
                                             {% else %}{% url 'hui_report' %}
                                             {% endif %}">
-                                    <i class="fas fa-table" style="margin-right: 20px;"></i>
+                                    <i class="material-icons-round" style="margin-right: 20px;">table_view</i>
                                     <span>Reports</span></a>
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple"
+                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                    style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'calendar' today.year today.month %}">
-                                    <i class="far fa-calendar" style="margin-right: 20px;"></i>
+                                    <i class="material-icons-round" style="margin-right: 15px;">today</i>
                                     <span>Calendar</span>
                                 </a>
                                 {% if account.group.can_add_patients %}
-                                    <a class="list-group-item list-group-item-action nav-links btn-ripple"
+                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                        style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'addPatient' %}">
-                                        <i class="fas fa-plus" style="margin-right: 20px;"></i>
+                                        <i class="material-icons-round" style="margin-right: 15px;">add_circle</i>
                                         <span>Add Patient</span>
                                     </a>
                                 {% endif %}
                                 {% if request.user.group.name == 'Admin' %}
-                                    <a class="list-group-item list-group-item-action nav-links btn-ripple"
+                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                        style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'admin-console' %}">
-                                        <i class="fas fa-user-cog" style="margin-right: 20px;"></i>
+                                        <i class="material-icons-round" style="margin-right: 15px;">settings</i>
                                         <span>Admin Console</span>
                                     </a>
                                 {% endif %}
