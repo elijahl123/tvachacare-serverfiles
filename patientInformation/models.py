@@ -1,3 +1,39 @@
+#  Copyright (c) 2020 Elijah Lopez
+#
+#  TvachaCare grants to you a personal, non-exclusive, non-assignable and
+#  non-transferable license to use and display the software provided by
+#  or on behalf of TvachaCare (including any updates) only for the purpose
+#  of accessing the Service ("Software") on any computer(s) on which you
+#  are the primary user or which you are authorized to use. Our Privacy
+#  Policies provide important information about the Software applications
+#  we utilize. Please read the terms very carefully, as they contain important
+#  disclosures about the use and security of data transmitted to and from
+#  your computer. Unauthorized copying of the Software, including, without
+#  limitation, software that has been modified, merged or included with
+#  the Software, or the written materials associated therewith, is expressly
+#  forbidden. You may not sublicense, assign, or transfer this license or
+#  the Software except as permitted in writing by TvachaCare. Any attempt
+#  to sublicense, assign or transfer any of the rights, duties or obligations
+#  under this license is void and may result in termination by TvachaCare
+#  of this license. You agree that you shall not copy or duplicate or permit
+#  anyone else to copy or duplicate any part of the Software, or create
+#  or attempt to create, or permit others to create or attempt to create,
+#  by reverse engineering or otherwise, the source programs or any part
+#  thereof from the object programs or from other information made available
+#  under this Agreement.
+#
+#  The above copyright notice and this permission notice shall be included in all
+#  copies or substantial portions of the Software.
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+#  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+#  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+#  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+#  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+#  SOFTWARE.
+#
+
 import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
