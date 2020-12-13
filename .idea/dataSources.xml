@@ -7,18 +7,24 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
     </data-source>
-    <data-source source="LOCAL" name="db" uuid="c26a87f7-202c-4f8e-8dd9-1799cc9693f5">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\elija\Documents\TvachaCare\db.sqlite3</jdbc-url>
-    </data-source>
     <data-source source="LOCAL" name="db.hui" uuid="e7ac6f0f-1f2b-4dc7-9edc-3a82462f7129">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="db" uuid="41788bb2-46a5-4b3d-bce9-a0ccb9cd526e">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:E:\Users\Elijah\PycharmProjects\tvachacare-serverfiles\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/sqlite-jdbc-3.31.1.jar</url>
+        </library>
+      </libraries>
     </data-source>
   </component>
 </project>
