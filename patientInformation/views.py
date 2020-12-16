@@ -42,8 +42,8 @@ from pathlib import Path
 
 import requests
 from django.conf import settings
-from django.contrib.auth import logout as lgout, login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import EmailMessage, send_mail
 from django.forms import formset_factory, model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect
@@ -57,11 +57,24 @@ from .models import PatientInformation, Image, SurgeryInformation, Account, Proc
 context = {'today': datetime.date.today()}
 
 
-@login_required
-def add_surgery(request, slug):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
+def terms_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/terms-of-service/'):
+    """
+    Decorator for views that checks that the user is logged in, redirecting
+    to the log-in page if necessary.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_accepted,
+        login_url=login_url,
+        redirect_field_name=redirect_field_name
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
 
+
+@login_required
+@terms_required
+def add_surgery(request, slug):
     if not request.user.group.can_add_surgeries:
         return redirect('home')
 
@@ -111,6 +124,7 @@ def add_surgery(request, slug):
 
 
 @login_required
+@terms_required
 def addpatient(request):
     account = {
         "id": request.user.id,
@@ -124,8 +138,6 @@ def addpatient(request):
     } if request.user.is_authenticated else None
 
     context['account'] = account
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
 
     if not request.user.group.can_add_patients:
         return redirect('home')
@@ -149,6 +161,7 @@ def addpatient(request):
 
 
 @login_required
+@terms_required
 def admin(request):
     if not request.user.group.name == 'Admin':
         return redirect('home')
@@ -164,6 +177,7 @@ def admin(request):
 
 
 @login_required
+@terms_required
 def admin_delete(request, model, id):
     if request.user.group.name != 'Admin':
         return redirect('admin-console')
@@ -206,6 +220,7 @@ def admin_delete(request, model, id):
 
 
 @login_required
+@terms_required
 def admin_edit(request, model, id):
     if not request.user.group.name == 'Admin':
         return redirect('home')
@@ -289,6 +304,7 @@ def admin_edit(request, model, id):
 
 
 @login_required
+@terms_required
 def admin_template(request, model: str):
     if not request.user.group.name == 'Admin':
         return redirect('home')
@@ -422,6 +438,7 @@ def admin_template(request, model: str):
 
 
 @login_required
+@terms_required
 def admin_view(request, model, id):
     if not request.user.group.name == 'Admin':
         return redirect('home')
@@ -461,9 +478,8 @@ def admin_view(request, model, id):
 
 
 @login_required
+@terms_required
 def approve_surgery(request, slug, id):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_approved = True
     surgery.is_denied = False
@@ -475,9 +491,8 @@ def approve_surgery(request, slug, id):
 
 
 @login_required
+@terms_required
 def calendar_events(request, year, current_month):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -501,9 +516,8 @@ def calendar_events(request, year, current_month):
 
 
 @login_required
+@terms_required
 def delete_images(request, slug):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     patient = PatientInformation.objects.filter(slug=slug)
     if patient:
         patient.delete()
@@ -513,9 +527,8 @@ def delete_images(request, slug):
 
 
 @login_required
+@terms_required
 def delete_patient(request, slug):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     patient = get_object_or_404(PatientInformation, slug=slug)
     event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
@@ -525,9 +538,8 @@ def delete_patient(request, slug):
 
 
 @login_required
+@terms_required
 def delete_surgery(request, slug, id):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
@@ -537,9 +549,8 @@ def delete_surgery(request, slug, id):
 
 
 @login_required
+@terms_required
 def delete_surgery_images(request, slug, id):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     surgery = SurgeryInformation.objects.filter(id=id)
     if surgery:
         surgery.delete()
@@ -549,9 +560,8 @@ def delete_surgery_images(request, slug, id):
 
 
 @login_required
+@terms_required
 def deny_surgery(request, slug, id):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgery.is_denied = True
     surgery.is_approved = False
@@ -563,6 +573,7 @@ def deny_surgery(request, slug, id):
 
 
 @login_required
+@terms_required
 def edit_patient(request, slug):
     account = {
         "id": request.user.id,
@@ -586,17 +597,14 @@ def edit_patient(request, slug):
     else:
         form = AddPatient
 
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     context['form'] = form
     context['patient'] = patient
     return render(request, 'editPatient.html', context)
 
 
 @login_required
+@terms_required
 def filter_by_date(request):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -640,9 +648,8 @@ def filter_by_date(request):
 
 
 @login_required
+@terms_required
 def hui_report(request):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -677,6 +684,8 @@ def hui_report(request):
     return render(request, 'hui_filter.html', context)
 
 
+@login_required
+@terms_required
 def index(request):
     account = {
         "id": request.user.id,
@@ -698,12 +707,6 @@ def index(request):
             surgery = SurgeryInformation.objects.all()
             context['object'] = patient
             context['surgery'] = surgery
-
-    if not request.user.is_authenticated:
-        return redirect('login')
-
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
 
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
@@ -781,7 +784,7 @@ def loginadmin(request):
 def loginPage(request):
     return render(request, 'login.html', {'groups': Group.objects.all()})
 
-
+@login_required
 def logout(request):
     event_notes = 'Logged Out'
     event = EventLog(user=request.user.email, event_type='Logged Out', notes=event_notes)
@@ -791,6 +794,7 @@ def logout(request):
 
 
 @login_required
+@terms_required
 def patient_page(request, slug):
     account = {
         "id": request.user.id,
@@ -842,9 +846,6 @@ def patient_page(request, slug):
             email.attach(patient.injury_image.name, response.content, mimetype='image/*')
         email.send()
 
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
-
     context['form'] = form
     context['patient'] = patient
     context['surgery'] = surgery
@@ -864,10 +865,8 @@ def privacyPolicy(request):
 
 
 @login_required
+@terms_required
 def send_file(request):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
-
     BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
     filepath = os.path.join(BASE_DIR, 'filter.csv')
@@ -875,9 +874,8 @@ def send_file(request):
 
 
 @login_required
+@terms_required
 def surgery_page(request, slug, id):
-    if not request.user.is_accepted:
-        return redirect('terms_of_service')
     account = {
         "id": request.user.id,
         "name": request.user.username,
@@ -934,7 +932,10 @@ def terms_of_service(request):
             account = get_object_or_404(Account, id=request.user.id)
             account.is_accepted = True
             account.save()
-            return redirect('home')
+            if 'next' in request.GET:
+                return HttpResponseRedirect(request.GET.get('next'))
+            else:
+                return redirect('home')
         else:
             return redirect('logout')
 
