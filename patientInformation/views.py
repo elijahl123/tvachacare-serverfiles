@@ -334,7 +334,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = Account.objects.get(id=int(item_id))
                     obj.delete()
-                    return redirect('admin_template', 'accounts')
+                return redirect('admin_template', 'accounts')
         else:
             form = RegistrationForm()
         model_dict['new_form'] = form
@@ -356,7 +356,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = Group.objects.get(id=int(item_id))
                     obj.delete()
-                    return redirect('admin_template', 'groups')
+                return redirect('admin_template', 'groups')
         else:
             form = GroupForm()
         model_dict['new_form'] = form
@@ -377,7 +377,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = EventLog.objects.get(id=int(item_id))
                     obj.delete()
-                    return redirect('admin_template', 'event-logs')
+                return redirect('admin_template', 'event-logs')
         else:
             form = EventLogForm()
         model_dict['new_form'] = form
@@ -398,7 +398,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = PatientInformation.objects.get(id=int(item_id))
                     obj.delete()
-                    return redirect('admin_template', 'patients')
+                return redirect('admin_template', 'patients')
         else:
             form = AddPatient()
         model_dict['new_form'] = form
@@ -427,7 +427,7 @@ def admin_template(request, model: str):
                 for item_id in delete_selected:
                     obj = SurgeryInformation.objects.get(id=int(item_id))
                     obj.delete()
-                    return redirect('admin_template', 'surgeries')
+                return redirect('admin_template', 'surgeries')
         else:
             form = SurgeryForm()
         model_dict['new_form'] = form
@@ -943,6 +943,24 @@ def terms_of_service(request):
     return render(request, 'terms_of_service.html', context)
 
 
+@login_required
+@terms_required
+def add_image(request, slug, surgery_id):
+    context['account'] = request.user
+    context['title'] = 'Add Image'
+    if request.POST:
+        form = AddImage(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('edit_surgery', slug, surgery_id)
+    else:
+        form = AddImage()
+    context['form'] = form
+    context['surgery'] = get_object_or_404(SurgeryInformation, id=surgery_id)
+    return render(request, 'generic_form_template.html', context)
+
+
 def write_response(date_start, date_end, fields, procedure_code_boolean=False):
     with open('filter.csv', 'w', newline="") as myfile:
         wr = csv.writer(myfile, quoting=csv.QUOTE_ALL)
@@ -984,6 +1002,7 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
         response['Content-Disposition'] = 'attachment; filename=filter.csv'
         return response
 
+
 @login_required
 @terms_required
 def edit_surgery(request, slug, id):
@@ -1002,6 +1021,7 @@ def edit_surgery(request, slug, id):
     context['images'] = Image.objects.filter(surgery=surgery)
     return render(request, 'edit_surgery.html', context)
 
+
 @login_required
 @terms_required
 def edit_image(request, slug, surgery_id, image_id):
@@ -1018,22 +1038,6 @@ def edit_image(request, slug, surgery_id, image_id):
     context['form'] = form
     return render(request, 'generic_form_template.html', context)
 
-@login_required
-@terms_required
-def add_image(request, slug, surgery_id):
-    context['account'] = request.user
-    context['title'] = 'Add Image'
-    if request.POST:
-        form = AddImage(request.POST or None, request.FILES or None)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.save()
-            return redirect('edit_surgery', slug, surgery_id)
-    else:
-        form = AddImage()
-    context['form'] = form
-    context['surgery'] = get_object_or_404(SurgeryInformation, id=surgery_id)
-    return render(request, 'generic_form_template.html', context)
 
 @login_required
 @terms_required

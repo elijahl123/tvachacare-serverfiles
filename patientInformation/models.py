@@ -294,7 +294,7 @@ def post_init_surgery(sender, instance, *args, **kwargs):
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
-        instance.slug = slugify("HUI-" + str(abs(hash(str(datetime.datetime))) % (10 ** 10)))
+        instance.slug = slugify("HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10)))
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
