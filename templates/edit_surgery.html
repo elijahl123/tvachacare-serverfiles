@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Edit Surgery</title>
+    <link rel="stylesheet" href="{% static 'Responsive-Form.css' %}">
+    <link rel="stylesheet" href="{% static 'upload.css' %}">
+    <script src="{% static 'js/edit_surgery.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <script>
+        function openImages() {
+            $('.images-container').removeClass('invisible');
+        }
+
+        function closeImages() {
+            $('.images-container').addClass('invisible');
+        }
+
+
+    </script>
+    <main>
+        <div class="container" style="background-color: white;padding: 50px 0;">
+            <div>
+                <h1 class="text-center"
+                    style="color: var(--main-color);margin-bottom: 20px;font-family: Raleway, sans-serif;">Add
+                    A Surgery</h1>
+                <form class="d-flex" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="text" class="d-none" name="patient" value="{{ patient.id }}"/>
+                    <div class="d-flex justify-content-center align-items-center invisible images-container"
+                         style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 10000;top: 0;right: 0;left: 0;bottom: 0;">
+                        <div class="d-flex flex-row justify-content-center align-items-center flex-wrap image-container"
+                             style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
+                            {% for image in images %}
+                                <div class="d-flex flex-column justify-content-between align-items-center"
+                                     style="width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px 5px 5px 0;border: 10px solid var(--main-color);position: relative;">
+                                    <div class="flex-grow-1 align-items-center d-flex">
+                                        {% if image.image %}
+                                            <img style="max-width: 100%;border-radius: 10px;max-height: 190px"
+                                                 src="{{ image.image.url }}"/>
+                                        {% else %}
+                                            <img style="max-width: 100%;border-radius: 10px;max-height: 190px"
+                                                 src="{% static 'img/placeholder_patient.png' %}"/>
+                                        {% endif %}
+                                    </div>
+                                    <div class="d-flex flex-column" style="width: 100%;">
+                                        <a class="btn btn-success"
+                                           href="{% url 'edit_image' surgery.patient.slug surgery.id image.id %}">Edit</a>
+                                    </div>
+                                    <a class="btn d-flex justify-content-center align-items-center"
+                                       href="{% url 'delete_image' image.id %}"
+                                       style="border-style: none;color: white;background: red;position: absolute;right: 0;">x
+                                    </a>
+                                </div>
+                            {% endfor %}
+                            <a class="btn btn-primary d-flex align-items-center justify-content-center"
+                               href="{% url 'add_image' surgery.patient.slug surgery.id %}"
+                               style="width: 350px;height: 300px;border-width: 7px;border-color: var(--accent-color);background-color: transparent;border-radius: 10px;color: var(--accent-color);">
+                                <i class="fa fa-plus" style="font-size: 50px;"></i></a>
+                            <button class="btn" type="button" onclick="closeImages()"
+                                    style="position: absolute;top: 3px;right: 7px;color: black;font-weight: bold;font-family: Raleway, sans-serif;">
+                                x
+                            </button>
+
+                        </div>
+                    </div>
+                    <div class="form-group" style="width: 100%;">
+                        <div id="formdiv"
+                             style="color: var(--main-color);font-family: Raleway, sans-serif;padding-bottom: 20px;">
+                            {% if form.errors %}
+                                {% for error in form.non_field_errors %}
+                                    <div class="d-flex justify-content-center align-items-center" style="padding: 20px">
+                                        <div class="alert alert-danger" style="width: 100%; margin: 0">
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="form-row d-flex justify-content-center align-items-center"
+                                 style="padding-top: 30px;">
+                                <div class="col d-flex justify-content-center align-items-center">
+                                    <button class="btn d-flex flex-column justify-content-center align-items-center"
+                                            role="button" type="button" id="add-images"
+                                            style="color: var(--accent-color);height: 30vh;width: 80%;/*background-color: transparent;*/border: 5px solid var(--accent-color);border-radius: 15px;font-family: Raleway, sans-serif;font-weight: bold;"
+                                            onclick="openImages()"><i
+                                            class="fa fa-plus" style="font-size: 40px;"></i>Edit Images
+                                    </button>
+                                </div>
+                            </div>
+                            {% for field in form %}
+                                <div class="form-row" style="margin-right:0px;margin-left:0px;padding-top:24px;">
+                                    <div class="col-md-8 offset-md-1">
+                                        <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                            <strong>{{ field.label }}</strong></p>
+                                    </div>
+                                    <div class="col-md-10 offset-md-1">
+                                        {{ field }}
+                                    </div>
+                                    {% for error in field.errors %}
+                                        <div class="col-md-10 offset-md-1">
+                                            <div class="alert alert-danger" style="margin-top: 15px">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
+                            <div class="form-row" style="margin: 0;margin-top: 20px;">
+                                <div class="col d-flex justify-content-center align-items-center"
+                                     style="height: 60px;margin: 10px;margin-bottom: 0px;">
+                                    <div role="group" class="btn-group"
+                                         style="height: 100%;width: 100%;border-style: none;">
+                                        <button class="btn btn-danger" type="reset"
+                                                style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                                            Reset
+                                        </button>
+                                        <button class="btn btn-success" type="submit"
+                                                style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

@@ -14,17 +14,23 @@
       <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="db" uuid="41788bb2-46a5-4b3d-bce9-a0ccb9cd526e">
+    <data-source source="LOCAL" name="Django default LandingSite" uuid="e8fac3bf-a79a-4714-9a3d-93fdbc792f5c">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/../LandingSite/LandingSite/settings.py</remarks>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:E:\Users\Elijah\PycharmProjects\LandingSite\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="Django default HUI" uuid="94ecb4d3-d106-4d0d-a0d1-94813d54eea7">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>$PROJECT_DIR$/TvachaCare/settings.py</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:E:\Users\Elijah\PycharmProjects\tvachacare-serverfiles\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
-      <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.31.1/sqlite-jdbc-3.31.1.jar</url>
-        </library>
-      </libraries>
     </data-source>
   </component>
 </project>

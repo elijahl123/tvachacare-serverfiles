@@ -104,12 +104,31 @@
         </div>
         <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
              style="padding: 30px 50px;background-color: white;filter: blur(0px);">
-            <div class="row" style="width: 100%;margin-bottom: 10px;">
-                <div class="col d-flex justify-content-end" style="width: 100%;">
-                    <button type="button" class="btn btn-danger" role="button"
-                            onclick="openMenu()" style="border-radius: 7px;">Delete
-                        Surgery
-                    </button>
+            <div class="row d-print-none" style="width: 100%;margin-bottom: 10px;">
+                <div class="col d-flex justify-content-center justify-content-md-center justify-content-lg-end justify-content-xl-end"
+                     style="width: 100%;">
+                    <div class="dropdown">
+                        <button class="btn d-flex justify-content-center align-items-center" data-toggle="dropdown"
+                                aria-expanded="false" type="button" style="color: white;background: var(--main-color);">
+                            <i
+                                    class="fas material-icons-round" style="font-size: 25px;">menu</i></button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <button class="dropdown-item d-flex align-items-center" onclick="openMenu()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="material-icons-round" style="color: red;margin-right: 10px;font-size: 20px;">delete</i>Delete
+                                Surgery
+                            </button>
+                            {% if account.group.can_edit_patients %}
+                                <a class="dropdown-item d-flex align-items-center"
+                                   href="{% url 'edit_surgery' patient.slug surgery.id %}"
+                                   style="font-family: 'Open Sans', sans-serif;">
+                                    <i class="material-icons-round"
+                                       style="color: var(--main-color);margin-right: 10px;font-size: 20px;">create</i>Edit
+                                    Surgery
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
                 </div>
             </div>
             {% if images %}

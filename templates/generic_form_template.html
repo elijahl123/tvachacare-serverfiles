@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="{% static 'Responsive-Form.css' %}">
+    <link rel="stylesheet" href="{% static 'upload.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="container-fluid d-flex align-items-center p-1 p-lg-5"
+             style="background-color: white;min-height: 100vh">
+            <div style="width: 100%">
+                <h1 class="text-center"
+                    style="color: var(--main-color);margin-bottom: 20px;font-family: Raleway, sans-serif;">{{ title }}</h1>
+                <form class="d-flex" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group" style="width: 100%;">
+                        <div class="shadow"
+                             style="color: var(--main-color);font-family: Raleway, sans-serif;padding: 20px;border-radius: 8px">
+                            {% if title == 'Add Image' %}
+                                <input class='d-none' type="text" name="surgery" value="{{ surgery.id }}">
+                            {% endif %}
+                            {% for field in form %}
+                                {% if field.name != 'surgery' %}
+                                    <div class="form-group d-flex flex-column px-2"
+                                         style="margin-right:0;margin-left:0;padding-top:24px;">
+                                        <div class="col-12">
+                                            <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                                <strong>{{ field.label }}</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            {{ field }}
+                                        </div>
+                                        {% for error in form.errors %}
+                                            <div class="alert alert-danger" style="margin-top: 15px">
+                                                <strong>{{ error|escape }}</strong>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="form-row" style="margin: 0;margin-top: 20px;">
+                                <div class="col d-flex justify-content-center align-items-center"
+                                     style="height: 60px;margin: 10px;margin-bottom: 0px;">
+                                    <div role="group" class="btn-group"
+                                         style="height: 100%;width: 100%;border-style: none;">
+                                        <button class="btn btn-secondary" onclick="back()"
+                                                style="border-top-left-radius: 10px;border-bottom-left-radius: 10px;">
+                                            Cancel
+                                        </button>
+                                        <button class="btn btn-danger" type="reset">
+                                            Reset
+                                        </button>
+                                        <button class="btn btn-success" type="submit"
+                                                style="border-top-right-radius: 10px;border-bottom-right-radius: 10px;">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+{% endblock %}

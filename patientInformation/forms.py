@@ -135,6 +135,10 @@ class ImageForm(forms.ModelForm):
     class Meta:
         model = Image
         fields = ('image', 'date_of_upload_image')
+        widgets = {
+            'date_of_upload_image': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+        }
 
 
 class PatientView(forms.ModelForm):
@@ -164,6 +168,12 @@ class RegistrationForm(UserCreationForm):
 
 
 class SurgeryForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SurgeryForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            if visible.name != 'consent':
+                visible.field.widget.attrs['class'] = 'form-control'
+
     class Meta:
         model = SurgeryInformation
         exclude = [
@@ -176,13 +186,9 @@ class SurgeryForm(forms.ModelForm):
             'date_of_admission': forms.DateInput(attrs={'type': 'date'}),
             'date_of_discharge': forms.DateInput(attrs={'type': 'date'}),
             'date_of_evaluation': forms.DateInput(attrs={'type': 'date'}),
-            'date_of_surgery': forms.DateInput(attrs={'type': 'date'})
+            'date_of_surgery': forms.DateInput(attrs={'type': 'date'}),
+            'consent': forms.CheckboxInput(attrs={'class': 'form-check'})
         }
-
-    def __init__(self, *args, **kwargs):
-        super(SurgeryForm, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
 
 
 class DivErrorList(ErrorList):
@@ -194,3 +200,13 @@ class DivErrorList(ErrorList):
             return ''
         return '<div class="d-flex justify-content-center align-items-center" style="padding-bottom: 5px">%s</div>' % ''.join(
             ['<div class="alert alert-danger w-100" style="margin: 0"><strong>%s</strong></div>' % e for e in self])
+
+
+class AddImage(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = '__all__'
+        widgets = {
+            'date_of_upload_image': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+        }

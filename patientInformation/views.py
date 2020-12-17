@@ -784,6 +784,7 @@ def loginadmin(request):
 def loginPage(request):
     return render(request, 'login.html', {'groups': Group.objects.all()})
 
+
 @login_required
 def logout(request):
     event_notes = 'Logged Out'
@@ -982,3 +983,62 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
         response = HttpResponse(myfile, content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=filter.csv'
         return response
+
+@login_required
+@terms_required
+def edit_surgery(request, slug, id):
+    context['account'] = request.user
+    if request.POST:
+        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id))
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('surgery_page', slug, id)
+    else:
+        form = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+    context['form'] = form
+    surgery = get_object_or_404(SurgeryInformation, id=id)
+    context['surgery'] = surgery
+    context['images'] = Image.objects.filter(surgery=surgery)
+    return render(request, 'edit_surgery.html', context)
+
+@login_required
+@terms_required
+def edit_image(request, slug, surgery_id, image_id):
+    context['account'] = request.user
+    context['title'] = 'Edit Image'
+    if request.POST:
+        form = ImageForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Image, id=image_id))
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('edit_surgery', slug, surgery_id)
+    else:
+        form = ImageForm(instance=get_object_or_404(Image, id=image_id))
+    context['form'] = form
+    return render(request, 'generic_form_template.html', context)
+
+@login_required
+@terms_required
+def add_image(request, slug, surgery_id):
+    context['account'] = request.user
+    context['title'] = 'Add Image'
+    if request.POST:
+        form = AddImage(request.POST or None, request.FILES or None)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('edit_surgery', slug, surgery_id)
+    else:
+        form = AddImage()
+    context['form'] = form
+    context['surgery'] = get_object_or_404(SurgeryInformation, id=surgery_id)
+    return render(request, 'generic_form_template.html', context)
+
+@login_required
+@terms_required
+def delete_image(request, image_id):
+    context['account'] = request.user
+    image = get_object_or_404(Image, id=image_id)
+    image.delete()
+    return redirect('edit_surgery', image.surgery.patient.slug, image.surgery.id)

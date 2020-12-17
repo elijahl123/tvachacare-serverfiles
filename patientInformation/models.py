@@ -37,6 +37,7 @@
 import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
 from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
@@ -104,11 +105,18 @@ class PatientInformation(models.Model):
 
 
 class SurgeryInformation(models.Model):
+    DURATION_CHOICES = [
+        ('Up to 1 Hour', 'Up to 1 Hour'),
+        ('1.5 - 2 Hours', '1.5 - 2 Hours'),
+        ('2-3 Hours', '2-3 Hours'),
+        ('3+ Hours', '3+ Hours')
+    ]
     patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
     date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
     hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
-    patient_district = models.IntegerField(blank=True, null=True)
+    patient_district = models.IntegerField(blank=True, null=True,
+                                           validators=[MinValueValidator(0), MaxValueValidator(13)])
     type_of_sponsor = models.TextField(blank=True, null=True)
     drug_allergy = models.TextField(blank=True, null=True)
     name_of_evaluation = models.CharField(max_length=120, blank=True, null=True)
@@ -124,7 +132,7 @@ class SurgeryInformation(models.Model):
     details_of_surgery = models.TextField(blank=True, null=True)
     anesthesiologist = models.CharField(max_length=120, blank=True, null=True)
     anesthesia = models.CharField(max_length=120, blank=True, null=True)
-    duration = models.CharField(max_length=120, blank=True, null=True)
+    duration = models.CharField(max_length=120, blank=True, null=True, choices=DURATION_CHOICES)
     burn_operation_number = models.SlugField(null=True, blank=True)
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
