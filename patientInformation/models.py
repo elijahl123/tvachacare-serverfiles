@@ -276,7 +276,7 @@ class EventLog(models.Model):
         return self.event_type
 
     class Meta:
-        ordering = ['event_time']
+        ordering = ['-event_time']
         verbose_name = 'Event Log'
         verbose_name_plural = 'Event Logs'
 
