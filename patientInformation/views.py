@@ -40,6 +40,7 @@ import datetime
 import os
 from pathlib import Path
 
+import django.apps
 import requests
 from django.conf import settings
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
@@ -49,12 +50,15 @@ from django.forms import formset_factory, model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.utils.text import slugify
 from django.views.static import serve
 
-from .forms import *
+from patientInformation.forms import *
 from .models import PatientInformation, Image, SurgeryInformation, Account, ProcedureCodes, EventLog, Group
 
-context = {'today': datetime.date.today()}
+context = {'today': datetime.date.today()}  # Theses are all the non view-specific context variables
+
+from patientInformation import forms
 
 
 def terms_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='/terms-of-service/'):
@@ -305,134 +309,36 @@ def admin_edit(request, model, id):
 
 @login_required
 @terms_required
-def admin_template(request, model: str):
-    if not request.user.group.name == 'Admin':
-        return redirect('home')
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
-    context['account'] = account
-    model_dict = {'model': model}
-    if model == 'accounts':
-        model_dict['title'] = 'Accounts'
-        model_dict['items'] = Account.objects.all()
-        if request.POST:
-            if 'new_form_submit' in request.POST:
-                form = RegistrationForm(request.POST or None, error_class=DivErrorList)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.save()
-                    form = RegistrationForm()
-                    return redirect('admin_template', 'accounts')
+def admin_template(request, model):
+    context['account'] = request.user
+    model_dict = {}
+    for model_obj in django.apps.apps.get_models():
+        model_meta = model_obj._meta
+        if slugify(model_meta.verbose_name_plural) == model and model_obj.__module__ == 'patientInformation.models':
+            model_dict = {
+                'model': slugify(model_meta.verbose_name_plural),
+                'title': model_meta.verbose_name_plural,
+                'items': model_obj.objects.all()
+            }
+            if request.POST:
+                if 'new_form_submit' in request.POST:
+                    form = getattr(forms, model_obj.admin_form)(request.POST or None, request.FILES or None,
+                                                                error_class=DivErrorList) or None
+                    if form.is_valid():
+                        obj = form.save(commit=False)
+                        obj.save()
+                        return redirect('admin_template', model)
+                else:
+                    form = getattr(forms, model_obj.admin_form)
+                    delete_selected = request.POST.getlist('delete[]')
+                    for item_id in delete_selected:
+                        obj = model_obj.objects.get(id=int(item_id))
+                        obj.delete()
+                    return redirect('admin_template', model)
             else:
-                form = RegistrationForm()
-                delete_selected = request.POST.getlist('delete[]')
-                for item_id in delete_selected:
-                    obj = Account.objects.get(id=int(item_id))
-                    obj.delete()
-                return redirect('admin_template', 'accounts')
-        else:
-            form = RegistrationForm()
-        model_dict['new_form'] = form
-    elif model == 'groups':
-        model_dict['title'] = 'Groups'
-        model_dict['items'] = Group.objects.all()
-        model_dict['accounts'] = Account.objects.all()
-        if request.POST:
-            if 'new_form_submit' in request.POST:
-                form = GroupForm(request.POST or None, error_class=DivErrorList)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.save()
-                    form = GroupForm()
-                    return redirect('admin_template', 'groups')
-            else:
-                form = GroupForm()
-                delete_selected = request.POST.getlist('delete[]')
-                for item_id in delete_selected:
-                    obj = Group.objects.get(id=int(item_id))
-                    obj.delete()
-                return redirect('admin_template', 'groups')
-        else:
-            form = GroupForm()
-        model_dict['new_form'] = form
-    elif model == 'event-logs':
-        model_dict['title'] = 'Event Logs'
-        model_dict['items'] = EventLog.objects.all().order_by('-event_time')
-        if request.POST:
-            if 'new_form_submit' in request.POST:
-                form = EventLogForm(request.POST or None, error_class=DivErrorList)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.save()
-                    form = EventLogForm()
-                    return redirect('admin_template', 'event-logs')
-            else:
-                form = EventLogForm()
-                delete_selected = request.POST.getlist('delete[]')
-                for item_id in delete_selected:
-                    obj = EventLog.objects.get(id=int(item_id))
-                    obj.delete()
-                return redirect('admin_template', 'event-logs')
-        else:
-            form = EventLogForm()
-        model_dict['new_form'] = form
-    elif model == 'patients':
-        model_dict['title'] = 'Patients'
-        model_dict['items'] = PatientInformation.objects.all()
-        if request.POST:
-            if 'new_form_submit' in request.POST:
-                form = AddPatient(request.POST or None, request.FILES or None, error_class=DivErrorList)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.save()
-                    form = AddPatient()
-                    return redirect('admin_template', 'patients')
-            else:
-                form = AddPatient()
-                delete_selected = request.POST.getlist('delete[]')
-                for item_id in delete_selected:
-                    obj = PatientInformation.objects.get(id=int(item_id))
-                    obj.delete()
-                return redirect('admin_template', 'patients')
-        else:
-            form = AddPatient()
-        model_dict['new_form'] = form
-    elif model == 'surgeries':
-        model_dict['title'] = 'Surgeries'
-        model_dict['items'] = SurgeryInformation.objects.all()
-        if request.POST:
-            if 'new_form_submit' in request.POST:
-                form = SurgeryForm(request.POST or None, error_class=DivErrorList)
-                if form.is_valid():
-                    surgery_form = form.save(commit=False)
-                    surgery_form.save()
-                    images = request.FILES.getlist('surgery_images')
-                    procedure_codes = request.POST.getlist('procedure_codes')
-                    for image in images:
-                        image_object = Image(surgery=surgery_form, image=image,
-                                             date_of_upload_image=datetime.date.today())
-                        image_object.save()
-                    for code in procedure_codes:
-                        procedure_code = ProcedureCodes(surgery=surgery_form, procedure_codes=code)
-                        procedure_code.save()
-                    return redirect('admin_template', 'surgeries')
-            else:
-                form = SurgeryForm()
-                delete_selected = request.POST.getlist('delete[]')
-                for item_id in delete_selected:
-                    obj = SurgeryInformation.objects.get(id=int(item_id))
-                    obj.delete()
-                return redirect('admin_template', 'surgeries')
-        else:
-            form = SurgeryForm()
-        model_dict['new_form'] = form
-    else:
-        return redirect('admin-console')
+                form = getattr(forms, model_obj.admin_form)
+
+            model_dict['new_form'] = form
     context['model'] = model_dict
     return render(request, 'admin_template.html', context)
 

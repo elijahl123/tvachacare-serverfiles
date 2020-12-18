@@ -66,6 +66,8 @@ def upload_profile_picture(instance, filename):
 
 # Create your models here.
 class PatientInformation(models.Model):
+    admin_form = 'AddPatient'
+
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
     uploaded = models.DateField(auto_now_add=True, verbose_name='date of upload')
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
@@ -105,6 +107,8 @@ class PatientInformation(models.Model):
 
 
 class SurgeryInformation(models.Model):
+    admin_form = 'SurgeryForm'
+
     DURATION_CHOICES = [
         ('Up to 1 Hour', 'Up to 1 Hour'),
         ('1.5 - 2 Hours', '1.5 - 2 Hours'),
@@ -200,6 +204,8 @@ class MyAccountManager(BaseUserManager):
 
 
 class Account(AbstractBaseUser):
+    admin_form = 'RegistrationForm'
+
     username = models.CharField(max_length=30, unique=True)
     email = models.EmailField(verbose_name="email", max_length=60, unique=True)
     date_joined = models.DateTimeField(verbose_name='date joined', auto_now_add=True)
@@ -221,6 +227,8 @@ class Account(AbstractBaseUser):
 
     class Meta:
         ordering = ['email']
+        verbose_name = 'Account'
+        verbose_name_plural = 'Accounts'
 
     def __str__(self):
         return self.email
@@ -237,6 +245,8 @@ class Account(AbstractBaseUser):
 
 
 class Group(models.Model):
+    admin_form = 'GroupForm'
+
     name = models.CharField(max_length=120, unique=True)
     can_approve = models.BooleanField(default=False)
     can_add_patients = models.BooleanField(default=False)
@@ -250,9 +260,13 @@ class Group(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = 'Group'
+        verbose_name_plural = 'Groups'
 
 
 class EventLog(models.Model):
+    admin_form = 'EventLogForm'
+
     user = models.EmailField(blank=True, null=True)
     event_type = models.CharField(blank=True, null=True, max_length=60)
     event_time = models.DateTimeField(auto_now_add=True)
@@ -263,6 +277,8 @@ class EventLog(models.Model):
 
     class Meta:
         ordering = ['event_time']
+        verbose_name = 'Event Log'
+        verbose_name_plural = 'Event Logs'
 
 
 @receiver(post_delete, sender=Image)
