@@ -11,7 +11,7 @@
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://localhost:25565/postgres</jdbc-url>
+      <jdbc-url>jdbc:postgresql://tvachacare-database-do-user-8047323-0.b.db.ondigitalocean.com:25060/tvachacare</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="Django default LandingSite" uuid="e8fac3bf-a79a-4714-9a3d-93fdbc792f5c">
@@ -30,6 +30,13 @@
       <remarks>$PROJECT_DIR$/TvachaCare/settings.py</remarks>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
       <jdbc-url>jdbc:sqlite:E:\Users\Elijah\PycharmProjects\tvachacare-serverfiles\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="HUI" uuid="3b14287b-7899-4ab0-a807-20547366c477">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://postgresql://admin:&lt;PASSWORD&gt;@tvachacare-database-read-only-68271-do-user-8047323-0.b.db.ondigitalocean.com:25060/defaultdb?sslmode=require//admin:&lt;PASSWORD&gt;@tvachacare-database-read-only-68271-do-user-8047323-0.b.db.ondigitalocean.com:25060/defaultdb?sslmode=require</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>
