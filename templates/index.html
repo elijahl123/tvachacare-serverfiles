@@ -191,6 +191,14 @@
 {% block content %}
     <main class="d-flex d-flex flex-column align-items-center">
         <div class="container-fluid" style="background-color: #fff; min-height: 100vh;padding: 0 30px">
+        {% if success_message %}
+            <div class="alert alert-success alert-dismissible fade show sticky-top" style="font-family: Raleway, sans-serif; margin-top: 1rem; margin-bottom: 0">
+                {{ success_message|safe }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"
@@ -355,7 +363,9 @@
                                                     <a href="{% url 'patient_page' patients.slug %}"
                                                        class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
                                                     <span class="badge badge-pill badge-secondary">
-                                                        {{ patients.number_of_surgeries }} Surger{% if patients.number_of_surgeries == 1 %}y{% else %}ies{% endif %}
+                                                        {{ patients.number_of_surgeries }} Surger
+                                                        {% if patients.number_of_surgeries == 1 %}y{% else %}
+                                                            ies{% endif %}
                                                     </span>
                                                     <button class="btn d-flex justify-content-center align-items-center"
                                                             style="padding: 5px; border-radius: 50px"

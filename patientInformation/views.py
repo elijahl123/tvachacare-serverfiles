@@ -155,7 +155,7 @@ def addpatient(request):
             event = EventLog(user=request.user.email, event_type='Add Patient', notes=event_notes)
             event.save()
             form = AddPatient()
-            return redirect('home')
+            return HttpResponseRedirect('/?success_message=' + str(request.POST['patient_record_number']))
     else:
         form = AddPatient
 
@@ -602,6 +602,12 @@ def index(request):
         'group': request.user.group,
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
+
+    if 'success_message' in request.GET:
+        context['success_message'] = 'Patient <strong>' + request.GET['success_message'] + '</strong> was ' \
+                                                                                           'successfully created! '
+    else:
+        context['success_message'] = ''
 
     context['account'] = account
     if request.user.is_authenticated:
