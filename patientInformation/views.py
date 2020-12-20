@@ -146,8 +146,11 @@ def addpatient(request):
     if not request.user.group.can_add_patients:
         return redirect('home')
 
+    context['title'] = 'Add Patient'
+    context['different_fields'] = PatientInformation.different_fields
+
     if request.POST:
-        form = AddPatient(request.POST or None, request.FILES or None)
+        form = AddPatient(request.POST or None, request.FILES or None, error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -157,11 +160,11 @@ def addpatient(request):
             form = AddPatient()
             return HttpResponseRedirect('/?success_message=' + str(request.POST['patient_record_number']))
     else:
-        form = AddPatient
+        form = AddPatient()
 
     context['form'] = form
 
-    return render(request, 'addPatient.html', context)
+    return render(request, 'generic_form_template.html', context)
 
 
 @login_required
@@ -860,8 +863,9 @@ def terms_of_service(request):
 def add_image(request, slug, surgery_id):
     context['account'] = request.user
     context['title'] = 'Add Image'
+    context['different_fields'] = Image.different_fields
     if request.POST:
-        form = AddImage(request.POST or None, request.FILES or None)
+        form = AddImage(request.POST or None, request.FILES or None, error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -939,8 +943,9 @@ def edit_surgery(request, slug, id):
 def edit_image(request, slug, surgery_id, image_id):
     context['account'] = request.user
     context['title'] = 'Edit Image'
+    context['different_fields'] = Image.different_fields
     if request.POST:
-        form = ImageForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Image, id=image_id))
+        form = ImageForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Image, id=image_id), error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()

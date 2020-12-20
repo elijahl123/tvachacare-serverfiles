@@ -68,6 +68,8 @@ def upload_profile_picture(instance, filename):
 class PatientInformation(models.Model):
     admin_form = 'AddPatient'
 
+    different_fields = ['patient_image', 'injury_image']
+
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
     uploaded = models.DateField(auto_now_add=True, verbose_name='date of upload')
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
@@ -87,10 +89,10 @@ class PatientInformation(models.Model):
     diagnosis = models.TextField(blank=True, null=True)
     weight = models.IntegerField(blank=True, null=True)
     height = models.IntegerField(blank=True, null=True)
-    burn_injury = models.TextField(blank=True, null=True)
-    cleft_injury = models.TextField(blank=True, null=True)
-    hand_injury = models.TextField(blank=True, null=True)
-    prior_surgery = models.TextField(blank=True, null=True)
+    burn_injury = models.TextField(blank=True, null=True, verbose_name='Burn Injury?')
+    cleft_injury = models.TextField(blank=True, null=True, verbose_name='Cleft Injury?')
+    hand_injury = models.TextField(blank=True, null=True, verbose_name='Hand Injury?')
+    prior_surgery = models.TextField(blank=True, null=True, verbose_name='Prior Surgery?')
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
     number_of_surgeries = models.IntegerField(default=0)
@@ -156,6 +158,9 @@ class SurgeryInformation(models.Model):
 
 
 class Image(models.Model):
+
+    different_fields = ['surgery']
+
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
     date_of_upload_image = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
