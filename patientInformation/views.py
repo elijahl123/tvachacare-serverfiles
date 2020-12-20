@@ -945,7 +945,8 @@ def edit_image(request, slug, surgery_id, image_id):
     context['title'] = 'Edit Image'
     context['different_fields'] = Image.different_fields
     if request.POST:
-        form = ImageForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Image, id=image_id), error_class=DivErrorList)
+        form = ImageForm(request.POST or None, request.FILES or None, instance=get_object_or_404(Image, id=image_id),
+                         error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -963,3 +964,26 @@ def delete_image(request, image_id):
     image = get_object_or_404(Image, id=image_id)
     image.delete()
     return redirect('edit_surgery', image.surgery.patient.slug, image.surgery.id)
+
+
+@login_required
+@terms_required
+def report_bug(request):
+    context['account'] = request.user
+    context['title'] = 'Report Bug'
+    if request.POST:
+        form = ReportForm(request.POST or None, error_class=DivErrorList)
+        if form.is_valid():
+            subject = request.POST['title']
+            message = request.POST['description']
+            from_email = request.user.first_name + ' ' + request.user.last_name + ' ' + 'via TvachaCare ' \
+                                                                                        '<contact@tvachacare.com> '
+            email = EmailMessage(subject=subject, body=message, from_email=from_email,
+                                 to=['elijah.kane.1972@gmail.com'])
+            email.send()
+            return redirect('home')
+    else:
+        form = ReportForm()
+    context['form'] = form
+    context['different_fields'] = []
+    return render(request, 'generic_form_template.html', context)

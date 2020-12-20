@@ -71,7 +71,8 @@ urlpatterns = [
     path('admin/<model>/', views.admin_template, name='admin_template'),
     path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),
     path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete'),
-    path('admin/<model>/view/<id>/', views.admin_view, name='admin_view')
+    path('admin/<model>/view/<id>/', views.admin_view, name='admin_view'),
+    path('report-bug/', views.report_bug, name='report_bug')
 ]
 
 if settings.DEBUG:

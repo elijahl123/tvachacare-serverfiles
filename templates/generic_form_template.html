@@ -38,42 +38,45 @@
             <div class="col-12 col-lg-10 col-xl-9" style="width: 100%">
                 <form class="d-flex" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <div class="justify-content-center align-items-center images-container"
-                         style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 10000;top: 0;right: 0;left: 0;bottom: 0;display: none; backdrop-filter: blur(3px)">
-                        <div class="d-flex flex-row flex-md-column justify-content-center align-items-center flex-wrap"
-                             style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
-                            <div class="row no-gutters align-items-center justify-content-center flex-grow-1">
-                                <div class="d-flex flex-column justify-content-center align-items-center patient-image-container"
-                                     style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
-                                    <h1 class="patient-header"
-                                        style="font-size: 30px;font-weight: normal; color: white">
-                                        Patient
-                                        Image</h1>
-                                    <div class="flex-column custom-file patient-input">
-                                        <label class="custom-file-label">Upload
-                                            File</label>
-                                        <input type="file" accept="image/*" class="custom-file-input"
-                                               style="cursor:pointer;font-family: 'Open Sans', sans-serif;"
-                                               onchange="patientImage(event)"
-                                               name="patient_image"/>
+                    {% if title == 'Add Patient' %}
+                        <div class="justify-content-center align-items-center images-container"
+                             style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 10000;top: 0;right: 0;left: 0;bottom: 0;display: none; backdrop-filter: blur(3px)">
+                            <div class="d-flex flex-row flex-md-column justify-content-center align-items-center flex-wrap"
+                                 style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
+                                <div class="row no-gutters align-items-center justify-content-center flex-grow-1">
+                                    <div class="d-flex flex-column justify-content-center align-items-center patient-image-container"
+                                         style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
+                                        <h1 class="patient-header"
+                                            style="font-size: 30px;font-weight: normal; color: white">
+                                            Patient
+                                            Image</h1>
+                                        <div class="flex-column custom-file patient-input">
+                                            <label class="custom-file-label">Upload
+                                                File</label>
+                                            <input type="file" accept="image/*" class="custom-file-input"
+                                                   style="cursor:pointer;font-family: 'Open Sans', sans-serif;"
+                                                   onchange="patientImage(event)"
+                                                   name="patient_image"/>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-center align-items-center injury-image-container"
+                                         style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
+                                        <h1 class="injury-header" style="font-size: 30px;color: white">Injury Image</h1>
+                                        <div class="custom-file injury-input" style="cursor: pointer">
+                                            <label class="custom-file-label">Upload File</label>
+                                            <input type="file" accept="image/*"
+                                                   class="custom-file-input"
+                                                   onchange="injuryImage(event)" style="cursor: pointer"
+                                                   name="injury_image"/>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="d-flex flex-column justify-content-center align-items-center injury-image-container"
-                                     style="background-position: center;background-size: cover; background-repeat: no-repeat;width: 250px;height: 200px;border-radius: 10px;padding: 10px;margin: 10px;background-color: var(--main-color);border: 7px solid var(--main-color) ;">
-                                    <h1 class="injury-header" style="font-size: 30px;color: white">Injury Image</h1>
-                                    <div class="custom-file injury-input" style="cursor: pointer">
-                                        <label class="custom-file-label">Upload File</label>
-                                        <input type="file" accept="image/*"
-                                               class="custom-file-input"
-                                               onchange="injuryImage(event)" style="cursor: pointer"
-                                               name="injury_image"/>
-                                    </div>
-                                </div>
+                                <button class="btn d-block btn-success w-100" onclick="toggleImages()" type="button">
+                                    Save
+                                </button>
                             </div>
-                            <button class="btn d-block btn-success w-100" onclick="toggleImages()" type="button">Save
-                            </button>
                         </div>
-                    </div>
+                    {% endif %}
                     <div class="form-group" style="width: 100%;">
                         <div class="shadow"
                              style="color: var(--main-color);font-family: Raleway, sans-serif;padding: 20px;border-radius: 8px; background-color: white">
@@ -102,30 +105,51 @@
                                 {{ form.non_field_errors|safe }}
                             {% endif %}
                             {% for field in form %}
-                                {% if field.name not in different_fields %}
-                                    {% if field.name == 'burn_injury' or field.name == 'cleft_injury' or field.name == 'hand_injury' %}
-                                        <div class="form-group d-flex flex-column px-2"
-                                             style="margin-right:0;margin-left:0;">
-                                            <div class="col-12">
-                                                <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
-                                                    <strong>{{ field.label }}</strong></p>
-                                            </div>
-                                            <div class="col-12">
-                                                <a class="btn btn-block" data-toggle="collapse" href="#{{ field.name }}" role="button" style="margin-bottom: 10px;background-color: var(--main-color); color: white; font-family: Raleway, sans-serif; font-weight: bold">Yes</a>
-                                            </div>
-                                            <div class="col-12 collapse" id="{{ field.name }}">
-                                                {{ field }}
-                                            </div>
-                                            <div class="col-12" style="margin-top: 15px">
-                                                {{ field.errors|safe }}
-                                            </div>
+                                {% if title == 'Add Patient' %}
+                                    {% if field.name not in different_fields %}
+                                        {% if field.name == 'burn_injury' or field.name == 'cleft_injury' or field.name == 'hand_injury' %}
+                                            <div class="form-group d-flex flex-column px-2"
+                                                 style="margin-right:0;margin-left:0;">
+                                                <div class="col-12">
+                                                    <p style="margin-left: 1%;font-family: Raleway, sans-serif;font-size: 24px;margin-bottom: 10px">
+                                                        <strong>{{ field.label }}</strong></p>
+                                                </div>
+                                                <div class="col-12">
+                                                    <a class="btn btn-block" data-toggle="collapse"
+                                                       href="#{{ field.name }}" role="button"
+                                                       style="margin-bottom: 10px;background-color: var(--main-color); color: white; font-family: Raleway, sans-serif; font-weight: bold">Yes</a>
+                                                </div>
+                                                <div class="col-12 collapse" id="{{ field.name }}">
+                                                    {{ field }}
+                                                </div>
+                                                <div class="col-12" style="margin-top: 15px">
+                                                    {{ field.errors|safe }}
+                                                </div>
 
-                                        </div>
-                                    {% else %}
+                                            </div>
+                                        {% else %}
+                                            <div class="form-group d-flex flex-column px-2"
+                                                 style="margin-right:0;margin-left:0;">
+                                                <div class="col-12">
+                                                    <p style="margin-left: 1%;font-family: Raleway, sans-serif;font-size: 24px;margin-bottom: 10px">
+                                                        <strong>{{ field.label }}</strong></p>
+                                                </div>
+                                                <div class="col-12">
+                                                    {{ field }}
+                                                </div>
+                                                <div class="col-12" style="margin-top: 15px">
+                                                    {{ field.errors|safe }}
+                                                </div>
+
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    {% if field.name not in different_fields %}
                                         <div class="form-group d-flex flex-column px-2"
                                              style="margin-right:0;margin-left:0;">
                                             <div class="col-12">
-                                                <p style="margin-left: 2%;font-family: Raleway, sans-serif;font-size: 24px;">
+                                                <p style="margin-left: 1%;font-family: Raleway, sans-serif;font-size: 24px;margin-bottom: 10px">
                                                     <strong>{{ field.label }}</strong></p>
                                             </div>
                                             <div class="col-12">

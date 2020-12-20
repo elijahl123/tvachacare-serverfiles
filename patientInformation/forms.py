@@ -210,3 +210,10 @@ class AddImage(forms.ModelForm):
             'date_of_upload_image': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
         }
+
+
+class ReportForm(forms.Form):
+    title = forms.CharField(label='Title', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            required=True)
+    description = forms.CharField(label='Description', widget=forms.Textarea(attrs={'class': 'form-control'}),
+                                  required=True)
