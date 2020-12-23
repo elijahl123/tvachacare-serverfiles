@@ -39,7 +39,7 @@ import datetime
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-from django.db.models.signals import post_delete, pre_save, post_save
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -95,11 +95,13 @@ class PatientInformation(models.Model):
     prior_surgery = models.TextField(blank=True, null=True, verbose_name='Prior Surgery?')
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
-    number_of_surgeries = models.IntegerField(default=0)
     slug = models.SlugField(blank=True, unique=True, null=True)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name
+
+    def surgery_count(self):
+        return SurgeryInformation.objects.filter(patient=self).count()
 
     class Meta:
         ordering = ['last_name']
@@ -143,7 +145,7 @@ class SurgeryInformation(models.Model):
     type_of_surgery = models.TextField(blank=True, null=True)
     area_operated = models.CharField(max_length=120, blank=True, null=True)
     complications = models.TextField(blank=True, null=True)
-    consent = models.BooleanField(default=False, verbose_name='Consent?')
+    consent = models.BooleanField(default=False, verbose_name='Does this patient give consent for photos?')
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     is_denied = models.BooleanField(default=False, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
@@ -158,7 +160,6 @@ class SurgeryInformation(models.Model):
 
 
 class Image(models.Model):
-
     different_fields = ['surgery']
 
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
@@ -168,7 +169,7 @@ class Image(models.Model):
 
 class ProcedureCodes(models.Model):
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
-    procedure_codes = models.TextField(blank=True, null=True)
+    procedure_codes = models.TextField(blank=True, null=True, verbose_name='Procedures')
 
 
 class MyAccountManager(BaseUserManager):
@@ -297,30 +298,9 @@ def submission_delete(sender, instance, **kwargs):
     instance.injury_image.delete(True)
 
 
-@receiver(post_delete, sender=SurgeryInformation)
-def submission_delete(sender, instance, **kwargs):
-    patient = PatientInformation.objects.get(id=instance.patient.id)
-    patient.number_of_surgeries -= 1
-    patient.save()
-
-
-def post_init_surgery(sender, instance, *args, **kwargs):
-    num = 0
-    for surgery in SurgeryInformation.objects.filter(patient=instance.patient):
-        num += 1
-    patient = PatientInformation.objects.get(id=instance.patient.id)
-    patient.number_of_surgeries = num
-    patient.save()
-
-
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = slugify("HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10)))
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
-post_save.connect(post_init_surgery, sender=SurgeryInformation)
-
-# TODO: make it so that users can add fields
-
-# TODO: make the csv thing

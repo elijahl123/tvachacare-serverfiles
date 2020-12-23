@@ -82,49 +82,46 @@ def add_surgery(request, slug):
     if not request.user.group.can_add_surgeries:
         return redirect('home')
 
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "first_name": request.user.first_name,
-        "last_name": request.user.last_name,
-        "is_superuser": request.user.is_superuser,
-        'group': request.user.group,
-    } if request.user.is_authenticated else None
+    context['account'] = request.user
+    context['title'] = 'Add Surgery'
+    context['different_fields'] = ['patient', 'area_operated']
 
     patient = get_object_or_404(PatientInformation, slug=slug)
     ImageFormSet = formset_factory(ImageForm, extra=0)
     ProcedureFormSet = formset_factory(ProcedureForm, extra=0)
 
-    if request.method == 'POST':
-        surgeryForm = SurgeryForm(request.POST)
+    if request.POST:
+        surgeryForm = SurgeryForm(request.POST, error_class=DivErrorList)
         formset = ImageFormSet(request.POST, request.FILES, prefix='images')
-        formset_procedure_codes = ProcedureFormSet(request.POST, request.FILES, prefix='procedures')
-        if surgeryForm.is_valid() or formset.is_valid() or formset_procedure_codes.is_valid():
-            surgery_form = surgeryForm.save(commit=False)
-            surgery_form.save()
+        if surgeryForm.is_valid() and formset.is_valid():
+            obj = surgeryForm.save(commit=False)
+            obj.save()
+            surgeryForm = SurgeryForm
             event_notes = 'Surgery Burn Operation Number #' + str(
                 request.POST['burn_operation_number']) + ' was uploaded'
             event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
             event.save()
 
+            procedures = request.POST.getlist('procedures[]')
+
+            for procedure in procedures:
+                print(procedure)
+                obj = ProcedureCodes(procedure_codes=procedure, surgery=obj)
+                obj.save()
+
             for form in formset.cleaned_data:
                 image = form['image']
                 date_of_upload_image = form['date_of_upload_image']
-                photo = Image(surgery=surgery_form, image=image, date_of_upload_image=date_of_upload_image)
+                photo = Image(surgery=obj, image=image, date_of_upload_image=date_of_upload_image)
                 photo.save()
-            for form in formset_procedure_codes.cleaned_data:
-                procedure_codes = form['procedure_codes']
-                procedure = ProcedureCodes(surgery=surgery_form, procedure_codes=procedure_codes)
-                procedure.save()
             return redirect('patient_page', slug)
     else:
-        surgeryForm = SurgeryForm()
+        surgeryForm = SurgeryForm
         formset = ImageFormSet(prefix='images')
-        formset_procedure_codes = ProcedureFormSet(prefix='procedures')
-    return render(request, 'addSurgery.html',
-                  {'surgeryForm': surgeryForm, 'formset': formset, 'formset_procedure_codes': formset_procedure_codes,
-                   'account': account, 'patient': patient, 'today': datetime.date.today()})
+    context['form'] = surgeryForm
+    context['formset'] = formset
+    context['patient'] = patient
+    return render(request, 'generic_form_template.html', context)
 
 
 @login_required

@@ -85,7 +85,9 @@ class AddPatient(forms.ModelForm):
             'slug'
         ]
         widgets = {
-            'date_of_birth': forms.DateInput(attrs={'type': 'date'})
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+            'first_name': forms.TextInput(attrs={'required': 'true'}),
+            'last_name': forms.TextInput(attrs={'required': 'true'})
         }
 
     def __init__(self, *args, **kwargs):
@@ -173,6 +175,7 @@ class SurgeryForm(forms.ModelForm):
         for visible in self.visible_fields():
             if visible.name != 'consent':
                 visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['rows'] = '4'
 
     class Meta:
         model = SurgeryInformation
@@ -187,7 +190,32 @@ class SurgeryForm(forms.ModelForm):
             'date_of_discharge': forms.DateInput(attrs={'type': 'date'}),
             'date_of_evaluation': forms.DateInput(attrs={'type': 'date'}),
             'date_of_surgery': forms.DateInput(attrs={'type': 'date'}),
-            'consent': forms.CheckboxInput(attrs={'class': 'form-check'})
+            'consent': forms.CheckboxInput(attrs={'class': 'form-check'}),
+            'type_of_sponsor': forms.Select(choices=[
+                ('', ''),
+                ('Resurge', 'Resurge'),
+                ('HUI', 'HUI'),
+                ('Private', 'Private'),
+                ('Government', 'Government'),
+                ('Third Party', 'Third Party'),
+                ('Other', 'Other'),
+            ], attrs={'onchange': 'selected(\'type_of_sponsor\')'}),
+            'cause_of_burn': forms.Select(choices=[
+                ('', ''),
+                ('Accidental', 'Accidental'),
+                ('Suicidal', 'Suicidal'),
+                ('Homicidal', 'Homicidal'),
+            ]),
+            'type_of_burn': forms.Select(choices=[
+                ('', ''),
+                ('Scald Burn', 'Scald Burn'),
+                ('Open Flame', 'Open Flame'),
+                ('Chemical Burn', 'Chemical Burn'),
+                ('Gasoline Burn', 'Gasoline Burn'),
+                ('Electrical Burn', 'Electrical Burn'),
+                ('Contact Burn', 'Contact Burn'),
+                ('Other', 'Other'),
+            ], attrs={'onchange': 'selected(\'type_of_burn\')'})
         }
 
 
