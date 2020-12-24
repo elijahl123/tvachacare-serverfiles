@@ -94,6 +94,7 @@ class AddPatient(forms.ModelForm):
         super(AddPatient, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['rows'] = '4'
 
 
 class CSVForm(forms.Form):

@@ -90,6 +90,7 @@ def add_surgery(request, slug):
     ImageFormSet = formset_factory(ImageForm, extra=0)
     ProcedureFormSet = formset_factory(ProcedureForm, extra=0)
 
+
     if request.POST:
         surgeryForm = SurgeryForm(request.POST, error_class=DivErrorList)
         formset = ImageFormSet(request.POST, request.FILES, prefix='images')
@@ -105,7 +106,6 @@ def add_surgery(request, slug):
             procedures = request.POST.getlist('procedures[]')
 
             for procedure in procedures:
-                print(procedure)
                 obj = ProcedureCodes(procedure_codes=procedure, surgery=obj)
                 obj.save()
 
@@ -495,17 +495,18 @@ def edit_patient(request, slug):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            form = AddPatient()
             event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
             event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
             event.save()
             return redirect('patient_page', slug)
     else:
-        form = AddPatient
+        form = AddPatient(instance=patient)
 
     context['form'] = form
     context['patient'] = patient
-    return render(request, 'editPatient.html', context)
+    context['different_fields'] = PatientInformation.different_fields
+    context['title'] = 'Edit Patient'
+    return render(request, 'generic_form_template.html', context)
 
 
 @login_required

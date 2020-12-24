@@ -161,7 +161,7 @@
                     {% if title == 'Add Surgery' %}
                         <input type="hidden" name="patient" value="{{ patient.id }}">
                     {% endif %}
-                    {% if title == 'Add Patient' %}
+                    {% if title == 'Add Patient' or title == 'Edit Patient' %}
                         <div class="justify-content-center align-items-center images-container"
                              style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 10000;top: 0;right: 0;left: 0;bottom: 0;display: none; backdrop-filter: blur(3px)">
                             <div class="d-flex flex-row flex-md-column justify-content-center align-items-center flex-wrap"
@@ -295,7 +295,7 @@
                                 <input class='d-none' type="text" name="surgery" value="{{ surgery.id }}">
                             {% endif %}
 
-                            {% if title == 'Add Patient' or title == 'Add Surgery' or title == 'Edit Surgery' %}
+                            {% if title == 'Add Patient' or title == 'Add Surgery' or title == 'Edit Surgery' or title == 'Edit Patient' %}
                                 <div class="form-row d-flex justify-content-center align-items-center"
                                      style="padding-bottom: 30px; padding-top: 15px">
                                     <div class="col d-flex justify-content-center align-items-center">
@@ -313,7 +313,7 @@
                                 {{ form.non_field_errors|safe }}
                             {% endif %}
                             {% for field in form %}
-                                {% if title == 'Add Patient' %}
+                                {% if title == 'Add Patient' or title == 'Edit Patient' %}
                                     {% if field.name not in different_fields %}
                                         {% if field.name == 'burn_injury' or field.name == 'cleft_injury' or field.name == 'hand_injury' %}
                                             <div class="form-group d-flex flex-column px-2"
@@ -327,7 +327,7 @@
                                                        href="#{{ field.name }}" role="button"
                                                        style="margin-bottom: 10px;background-color: var(--main-color); color: white; font-family: Raleway, sans-serif; font-weight: bold">Yes</a>
                                                 </div>
-                                                <div class="col-12 collapse" id="{{ field.name }}">
+                                                <div class="col-12 collapse {% if field.value %}show{% endif %}" id="{{ field.name }}">
                                                     {{ field }}
                                                 </div>
                                                 <div class="col-12" style="margin-top: 15px">
