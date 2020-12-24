@@ -923,7 +923,8 @@ def edit_surgery(request, slug, id):
     context['title'] = 'Edit Surgery'
     context['different_fields'] = []
     if request.POST:
-        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id), error_class=DivErrorList)
+        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id),
+                           error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -986,3 +987,21 @@ def report_bug(request):
     context['form'] = form
     context['different_fields'] = []
     return render(request, 'generic_form_template.html', context)
+
+
+def error_404(request, exception):
+    context['account'] = request.user
+    context['exception'] = {
+        'number': '404',
+        'value': 'Page Not Found'
+    }
+    return render(request, '404_page.html', context)
+
+
+def error_500(request):
+    context['account'] = request.user
+    context['exception'] = {
+        'number': '500',
+        'value': 'Internal Server Error'
+    }
+    return render(request, '404_page.html', context)

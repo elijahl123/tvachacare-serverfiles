@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>{{ exception.number }} {{ exception.value }}</title>
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex justify-content-center align-items-center" style="min-height: 100vh;background: #fc9c34;">
+        <div class="container"
+             style="background: white;border-radius: 8px;margin: 0 5px;max-width: 600px;padding: 50px 0">
+            <div class="row no-gutters">
+                <div class="col">
+                    <h1 class="display-1 text-center"
+                        style="font-family: Raleway, sans-serif;font-weight: bold;color: #fc9c34;">{{ exception.number }}</h1>
+                    <hr/>
+                </div>
+
+            </div>
+
+            <div class="row no-gutters">
+                <div class="col">
+                    <h1 class="display-4"
+                        style="text-align: center;color: #fc9c34;margin: 0;font-weight: bold;font-family: Raleway, sans-serif">
+                        {{ exception.value }}</h1>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
