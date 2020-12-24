@@ -27,11 +27,11 @@
 
         function openDeniedSurgeries() {
             if ($('.btn-surgeries').text() === "View Denied Surgeries") {
-                $('.denied-patients').slideDown(300)
+                $('.denied-patients').slideDown(300, 'swing')
                 $('.btn-surgeries').text("Close");
             } else {
                 $('.btn-surgeries').text("View Denied Surgeries");
-                $('.denied-patients').slideUp(300)
+                $('.denied-patients').slideUp(300, 'swing')
             }
         }
 
@@ -59,7 +59,7 @@
                 })
             }
             console.log($(patientID).css('display'))
-            $(patientID).slideToggle(200);
+            $(patientID).slideToggle(200, 'swing');
         }
 
         function openSurgeryInfo(surgeryid) {
@@ -76,7 +76,7 @@
                 })
             }
             console.log($(surgeryID).css('display'))
-            $(surgeryID).slideToggle(200);
+            $(surgeryID).slideToggle(200, 'swing');
         }
 
     </script>
@@ -191,14 +191,15 @@
 {% block content %}
     <main class="d-flex d-flex flex-column align-items-center">
         <div class="container-fluid" style="background-color: #fff; min-height: 100vh;padding: 0 30px">
-        {% if success_message %}
-            <div class="alert alert-success alert-dismissible fade show sticky-top" style="font-family: Raleway, sans-serif; margin-top: 1rem; margin-bottom: 0">
-                {{ success_message|safe }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        {% endif %}
+            {% if success_message %}
+                <div class="alert alert-success alert-dismissible fade show sticky-top"
+                     style="font-family: Raleway, sans-serif; margin-top: 1rem; margin-bottom: 0">
+                    {{ success_message|safe }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endif %}
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"

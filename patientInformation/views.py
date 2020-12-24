@@ -90,7 +90,6 @@ def add_surgery(request, slug):
     ImageFormSet = formset_factory(ImageForm, extra=0)
     ProcedureFormSet = formset_factory(ProcedureForm, extra=0)
 
-
     if request.POST:
         surgeryForm = SurgeryForm(request.POST, error_class=DivErrorList)
         formset = ImageFormSet(request.POST, request.FILES, prefix='images')
@@ -1006,3 +1005,10 @@ def error_500(request):
         'value': 'Internal Server Error'
     }
     return render(request, '404_page.html', context)
+
+# with open('filter.csv', 'r') as myfile:
+#     reader = csv.DictReader(myfile)
+#     for row in reader:
+#         row = {k.replace(' ', '_'): v for k, v in row.items()}
+#         row = {k.lower(): v for k, v in row.items()}
+#         print(row)
