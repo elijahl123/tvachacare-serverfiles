@@ -137,7 +137,6 @@ class SurgeryInformation(models.Model):
     date_of_surgery = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     date_of_discharge = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
     surgeons = models.TextField(blank=True, null=True)
-    details_of_surgery = models.TextField(blank=True, null=True)
     anesthesiologist = models.CharField(max_length=120, blank=True, null=True)
     anesthesia = models.CharField(max_length=120, blank=True, null=True)
     duration = models.CharField(max_length=120, blank=True, null=True, choices=DURATION_CHOICES)
@@ -149,6 +148,7 @@ class SurgeryInformation(models.Model):
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     is_denied = models.BooleanField(default=False, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
+    number_of_procedures = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
 
     def __str__(self):
         return str(self.id)

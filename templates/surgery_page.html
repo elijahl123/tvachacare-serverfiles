@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block header %}
-    <title>{{ patient.first_name }} {{ patient.last_name }}</title>
+    <title>{{ patient.first_name }} {{ patient.last_name }} - Surgery {{ surgery.id }}</title>
     <style>
 
         .carousel-item {
@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
-             style="padding: 30px 50px;background-color: white;filter: blur(0px);">
+             style="padding: 30px 50px;background-color: white;filter: blur(0px);min-height: 100vh">
             <div class="row d-print-none" style="width: 100%;margin-bottom: 10px;">
                 <div class="col d-flex justify-content-center justify-content-md-center justify-content-lg-end justify-content-xl-end"
                      style="width: 100%;">
@@ -381,20 +381,6 @@
                     </div>
                 </div>
             {% endif %}
-            {% if surgery.surgeons %}
-                <div class="row"
-                     style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
-                    <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
-                        <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                            style="color: white;font-weight: bold;margin-bottom: 0;">Details of Surgery</h3>
-                    </div>
-                    <div class="col-xl-8"
-                         style="padding: 15px 20px;background-color: whitesmoke;border-radius: 10px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">
-                        <p class="lead d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                           style="color: #444444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;border-radius: 10px;">{{ surgery.details_of_surgery }}</p>
-                    </div>
-                </div>
-            {% endif %}
             {% if surgery.anesthesiologist %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
@@ -514,20 +500,21 @@
                     </div>
                 </div>
             {% endif %}
-            {% for procedure_code in procedure_codes %}
+            {% if surgery.number_of_procedures %}
                 <div class="row"
                      style="width: 100%;margin-bottom: 10px;border-width: 5px;background-color: whitesmoke;border-radius: 10px;">
                     <div class="col" style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
                         <h3 class="d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                            style="color: white;font-weight: bold;margin-bottom: 0;">Number of Procedures {{ forloop.counter }}</h3>
+                            style="color: white;font-weight: bold;margin-bottom: 0;">Number of Procedures</h3>
                     </div>
                     <div class="col-xl-8"
-                         style="padding: 15px 20px;background-color: whitesmoke;border-radius: 10px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">
+                         style="padding: 15px 20px;background-color: whitesmoke;border-radius: 10px 10px 5px 5px;">
                         <p class="lead d-flex justify-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
-                           style="color: #444444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;border-radius: 10px;">{{ procedure_code.procedure_codes }}</p>
+                               style="color: #444444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;border-radius: 10px;">
+                                {{ surgery.number_of_procedures }}</p>
                     </div>
                 </div>
-            {% endfor %}
+            {% endif %}
             {% if account.group.can_approve and surgery.is_approved == False and surgery.is_denied == False %}
                 <form method="post" style="width: 100%" enctype="multipart/form-data">{% csrf_token %}
                     <p class="lead"

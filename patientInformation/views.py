@@ -920,8 +920,10 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
 @terms_required
 def edit_surgery(request, slug, id):
     context['account'] = request.user
+    context['title'] = 'Edit Surgery'
+    context['different_fields'] = []
     if request.POST:
-        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id))
+        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id), error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
@@ -932,7 +934,7 @@ def edit_surgery(request, slug, id):
     surgery = get_object_or_404(SurgeryInformation, id=id)
     context['surgery'] = surgery
     context['images'] = Image.objects.filter(surgery=surgery)
-    return render(request, 'edit_surgery.html', context)
+    return render(request, 'generic_form_template.html', context)
 
 
 @login_required

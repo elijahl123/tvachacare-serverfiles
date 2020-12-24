@@ -247,6 +247,43 @@
                             </div>
 
                         </div>
+                    {% elif title == 'Edit Surgery' %}
+                        <div class="justify-content-center align-items-center images-container"
+                             style="width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);z-index: 10000;top: 0;right: 0;left: 0;bottom: 0;display: none; backdrop-filter: blur(3px)">
+                            <div class="d-flex flex-row justify-content-center align-items-center flex-wrap image-container"
+                                 style="background-color: white;padding: 50px;border-radius: 10px;width: 930px;height: 540px;overflow: auto;position: relative;">
+                                {% for image in images %}
+                                    <div class="d-flex flex-column justify-content-between align-items-center"
+                                         style="width: 350px;height: 300px;background: var(--main-color);border-radius: 10px;margin: 5px 5px 5px 0;border: 10px solid var(--main-color);position: relative;">
+                                        <div class="flex-grow-1 align-items-center d-flex">
+                                            {% if image.image %}
+                                                <img style="max-width: 100%;border-radius: 10px;max-height: 190px"
+                                                     src="{{ image.image.url }}"/>
+                                            {% else %}
+                                                <img style="max-width: 100%;border-radius: 10px;max-height: 190px"
+                                                     src="{% static 'img/placeholder_patient.png' %}"/>
+                                            {% endif %}
+                                        </div>
+                                        <div class="d-flex flex-column" style="width: 100%;">
+                                            <a class="btn btn-success"
+                                               href="{% url 'edit_image' surgery.patient.slug surgery.id image.id %}">Edit</a>
+                                        </div>
+                                        <a class="btn d-flex justify-content-center align-items-center"
+                                           href="{% url 'delete_image' image.id %}"
+                                           style="border-style: none;color: white;background: red;position: absolute;right: 0;">x
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                                <a class="btn btn-primary d-flex align-items-center justify-content-center"
+                                   href="{% url 'add_image' surgery.patient.slug surgery.id %}"
+                                   style="width: 350px;height: 300px;border-width: 7px;border-color: var(--accent-color);background-color: transparent;border-radius: 10px;color: var(--accent-color);">
+                                    <i class="fa fa-plus" style="font-size: 50px;"></i></a>
+                                <button class="btn d-block btn-success w-100" onclick="toggleImages()"
+                                        style="margin-top: 10px" type="button">Save
+                                </button>
+
+                            </div>
+                        </div>
                     {% endif %}
                     <div class="form-group" style="width: 100%;">
                         <div class="shadow"
@@ -258,7 +295,7 @@
                                 <input class='d-none' type="text" name="surgery" value="{{ surgery.id }}">
                             {% endif %}
 
-                            {% if title == 'Add Patient' or title == 'Add Surgery' %}
+                            {% if title == 'Add Patient' or title == 'Add Surgery' or title == 'Edit Surgery' %}
                                 <div class="form-row d-flex justify-content-center align-items-center"
                                      style="padding-bottom: 30px; padding-top: 15px">
                                     <div class="col d-flex justify-content-center align-items-center">
@@ -315,7 +352,7 @@
                                             </div>
                                         {% endif %}
                                     {% endif %}
-                                {% elif title == 'Add Surgery' %}
+                                {% elif title == 'Add Surgery' or title == 'Edit Surgery' %}
 
                                     {% if field.name not in different_fields %}
                                         <div class="form-group d-flex flex-column px-2"
@@ -428,26 +465,6 @@
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}
-
-                            {% if title == 'Add Surgery' %}
-                                <div class="form-group d-flex flex-column px-2"
-                                     style="margin-right:0;margin-left:0;">
-                                    <div class="col-12">
-                                        <p style="margin-left: 1%;font-family: Raleway, sans-serif;font-size: 24px;margin-bottom: 10px">
-                                            <strong>Number of Procedures</strong></p>
-                                    </div>
-                                    <div class="col-12 num-of-procedures">
-
-                                    </div>
-
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-block btn-tvachacare" type="button" onclick="addProcedure()">
-                                        Add Number of Procedures
-                                    </button>
-                                </div>
-
-                            {% endif %}
 
                             <div class="form-row" style="margin: 0;margin-top: 20px;">
                                 <div class="col d-flex justify-content-center align-items-center"
