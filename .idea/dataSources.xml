@@ -32,5 +32,12 @@
       <jdbc-url>jdbc:sqlite:E:\Users\Elijah\PycharmProjects\tvachacare-serverfiles\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="db" uuid="84a37d64-4ccb-4101-9ae6-a823d99d611a">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\elija\PycharmProjects\tvachacare-serverfiles\db.sqlite3</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

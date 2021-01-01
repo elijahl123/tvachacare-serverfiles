@@ -261,19 +261,6 @@
                                         </div>
                                     {% endif %}
                                     {{ model.new_form.as_p }}
-                                    {% if model.title == 'Surgeries' %}
-                                        <div>
-                                            <div role="group" class="btn-group d-flex image-button"
-                                                 style="border-radius: 0 !important;margin-bottom: 10px">
-                                                <button class="btn btn-secondary" type="button"
-                                                        onclick="cloneMoreProcedures(this)"
-                                                        style="border-style: none;font-weight: bold">
-                                                    Add Procedure Code
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    {% endif %}
                                     <div role="group" class="btn-group btn-group-sm d-flex"
                                          style="border-radius: 0 !important;">
                                         <button class="btn btn-danger" type="reset" onclick="openNewForm()"
