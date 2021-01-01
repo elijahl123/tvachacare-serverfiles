@@ -37,7 +37,7 @@
 import datetime
 
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
@@ -123,8 +123,7 @@ class SurgeryInformation(models.Model):
     date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
     hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
-    patient_district = models.IntegerField(blank=True, null=True,
-                                           validators=[MinValueValidator(0), MaxValueValidator(13)])
+    patient_district = models.CharField(blank=True, null=True, max_length=120)
     type_of_sponsor = models.TextField(blank=True, null=True)
     drug_allergy = models.TextField(blank=True, null=True)
     name_of_evaluation = models.CharField(max_length=120, blank=True, null=True)
@@ -161,6 +160,7 @@ class SurgeryInformation(models.Model):
 
 class Image(models.Model):
     different_fields = ['surgery']
+    admin_form = 'ImageForm'
 
     surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
