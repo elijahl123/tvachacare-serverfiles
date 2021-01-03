@@ -96,6 +96,7 @@ class PatientInformation(models.Model):
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
     slug = models.SlugField(blank=True, unique=True, null=True)
+    in_waiting_room = models.BooleanField(default=False)
 
     def __str__(self):
         return self.first_name + ' ' + self.last_name

@@ -82,7 +82,8 @@ class AddPatient(forms.ModelForm):
         exclude = [
             'uploaded',
             'number_of_surgeries',
-            'slug'
+            'slug',
+            'in_waiting_room'
         ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
@@ -104,12 +105,18 @@ class CSVForm(forms.Form):
 
 
 class EmailForm(forms.Form):
-    to = forms.TextInput()
-    cc = forms.TextInput()
-    bcc = forms.TextInput()
+    to = forms.CharField(widget=forms.TextInput, help_text='Separate with Commas')
+    cc = forms.CharField(widget=forms.TextInput, required=False, help_text='Separate with Commas')
+    bcc = forms.CharField(widget=forms.TextInput, required=False, help_text='Separate with Commas')
     from_email = forms.EmailInput()
-    title = forms.TextInput()
-    message = forms.TextInput()
+    title = forms.CharField(widget=forms.TextInput, required=False, help_text='Optional')
+    message = forms.CharField(widget=forms.Textarea, required=False, help_text='Optional')
+
+    def __init__(self, *args, **kwargs):
+        super(EmailForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['rows'] = '4'
 
 
 class EventLogForm(forms.ModelForm):
@@ -147,7 +154,7 @@ class ImageForm(forms.ModelForm):
 class PatientView(forms.ModelForm):
     class Meta:
         model = PatientInformation
-        exclude = ['patient_image', 'injury_image', 'slug']
+        exclude = ['patient_image', 'injury_image', 'slug', 'in_waiting_room']
 
 
 class ProcedureForm(forms.ModelForm):
@@ -246,3 +253,15 @@ class ReportForm(forms.Form):
                             required=True)
     description = forms.CharField(label='Description', widget=forms.Textarea(attrs={'class': 'form-control'}),
                                   required=True)
+
+
+class WaitingRoomForm(forms.ModelForm):
+    class Meta:
+        model = PatientInformation
+        fields = ['first_name', 'last_name', 'age', 'address', 'story']
+
+    def __init__(self, *args, **kwargs):
+        super(WaitingRoomForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['rows'] = '3'

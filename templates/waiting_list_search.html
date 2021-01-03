@@ -1,0 +1,54 @@
+{% extends 'waiting_list.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Search for Patients</title>
+{% endblock %}
+
+{% block waiting_room_content %}
+    <div class="row">
+        <div class="col" style="color: slategray;">
+            <h2 style="font-family: Raleway, sans-serif;font-weight: bold;margin: 0;">Results</h2>
+            <hr/>
+        </div>
+    </div>
+    <div class="row sticky-top" style="background: white;padding-bottom: 16px;">
+        <form method="post" class="col d-flex d-sm-block flex-column">{% csrf_token %}
+            <input type="submit" class="btn"
+                   style="background: rgba(40,167,69,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: var(--success);margin-right: 10px;"
+                   name="add_all" value="Add All">
+            <a class="btn" role="button" href="{% url 'waiting_list' %}"
+               style="background: rgba(108,117,125,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: var(--secondary);margin-right: 10px;">
+                Back
+            </a>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col">
+            {% if patients %}
+                <ul class="list-group">
+                    {% for patient in patients %}
+                        <li class="list-group-item d-flex align-items-center"
+                            style="font-family: Raleway, sans-serif;">
+                            <a href="{% url 'patient_page' patient.slug %}"
+                               style="color: black;width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</a>
+                            {% if patient.in_waiting_room %}
+                                <a class="btn btn-danger btn-sm" role="button"
+                                   href="{% url 'waiting_list_remove' patient.id %}"
+                                   style="font-weight: bold;">
+                                    Remove
+                                </a>
+                            {% else %}
+                                <a class="btn btn-success btn-sm" role="button"
+                                   href="{% url 'waiting_list_add' patient.id %}"
+                                   style="font-weight: bold;">
+                                    Add
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Patient Waiting Room</title>
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex flex-column justify-content-center align-items-center"
+          style="min-height: 100vh;background: #FC9C34;padding: 10px">
+        <div class="container shadow" style="padding: 30px;background: white;border-radius: 8px;">
+            <div class="row">
+                <div class="col col-12 col-md-6 col-lg-5 col-xl-4 overflow-auto"
+                     style="border-style: none;border-right: 1px solid rgba(112,128,144,0.3) ;max-height: 75vh">
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <h2 class="text-center"
+                                style="font-family: Raleway, sans-serif;font-weight: bold;color: slategray;margin: 0;">
+                                Search for Patients</h2>
+                            <hr/>
+                        </div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col">
+                            <form method="get" enctype="multipart/form-data" action="{% url 'waiting_list_search' %}">
+                                {% for field in form %}
+                                    <div class="form-group"
+                                         style="font-family: Raleway, sans-serif;font-weight: bold;color: slategray;font-size: 20px;">
+                                        <label>{{ field.label }}</label>
+                                        {{ field }}
+                                    </div>
+                                {% endfor %}
+                                <div class="form-group"
+                                     style="font-family: Raleway, sans-serif;font-weight: bold;color: slategray;font-size: 20px; z-index: 1000">
+                                    <button class="btn btn-success btn-block btn-lg" type="submit">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col overflow-auto" style="max-height: 75vh">
+                    {% block waiting_room_content %}
+                        <div class="row">
+                            <div class="col" style="color: slategray;">
+                                <h2 style="font-family: Raleway, sans-serif;font-weight: bold;margin: 0;">Waiting
+                                    List</h2>
+                                <hr/>
+                            </div>
+                        </div>
+                        <div class="row sticky-top" style="background: white;padding-bottom: 16px;">
+                            <form action="{% url 'waiting_list' %}" method="post"
+                                  class="col d-flex d-sm-block flex-column">{% csrf_token %}
+                                <a class="btn" role="button" href="{% url 'export_waiting_list' %}"
+                                   style="background: rgba(252,156,52,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: #fc9c34;margin-right: 10px;">
+                                    Export All
+                                </a>
+                                <a class="btn" role="button" href="{% url 'email_waiting_list' %}"
+                                   style="background: rgba(40,167,69,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: var(--success);margin-right: 10px;">
+                                    Email Waiting List
+                                </a>
+                                <input type="submit" class="btn"
+                                       style="background: rgba(220,53,69,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: var(--danger);margin-right: 10px;"
+                                       name="remove_all" value="Remove All">
+                            </form>
+                        </div>
+                        <div class="row" style="margin-bottom: 50px">
+                            <div class="col">
+                                {% if patients %}
+                                    <ul class="list-group">
+                                        {% for patient in patients %}
+                                            <li class="list-group-item d-flex align-items-center"
+                                                style="font-family: Raleway, sans-serif;">
+                                                <span style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</span>
+                                                <a class="btn btn-danger btn-sm" role="button"
+                                                   href="{% url 'waiting_list_remove' patient.id %}"
+                                                   style="font-weight: bold;">
+                                                    Remove
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <div class="d-flex justify-content-center" style="margin-top: 20px">
+                                        <img class="img-fluid" src="{% static 'img/waiting_room_empty.png' %}"
+                                             alt="Waiting Room Empty">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col" style="color: slategray;">
+                                <h2 style="font-family: Raleway, sans-serif;font-weight: bold;margin: 0;">Other
+                                    Patients</h2>
+                                <hr/>
+                            </div>
+                        </div>
+                        <div class="row" style="background: white;padding-bottom: 16px;">
+                            <form method="post" action="{% url 'waiting_list_search' %}"
+                                  class="col d-flex d-sm-block flex-column">{% csrf_token %}
+                                <input type="submit" class="btn"
+                                       style="background: rgba(40,167,69,0.14);font-family: Raleway, sans-serif;font-weight: bold;color: var(--success);margin-right: 10px;"
+                                       name="add_all" value="Add All">
+                            </form>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                {% if other_patients %}
+                                    <ul class="list-group">
+                                        {% for patient in other_patients %}
+                                            <li class="list-group-item d-flex align-items-center"
+                                                style="font-family: Raleway, sans-serif;">
+                                                <span style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</span>
+                                                <a class="btn btn-success btn-sm" role="button"
+                                                   href="{% url 'waiting_list_add' patient.id %}"
+                                                   style="font-weight: bold;">
+                                                    Add
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

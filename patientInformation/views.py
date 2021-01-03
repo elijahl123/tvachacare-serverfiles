@@ -37,7 +37,9 @@
 import calendar
 import csv
 import datetime
+import operator
 import os
+from functools import reduce
 from pathlib import Path
 
 import django.apps
@@ -46,6 +48,7 @@ from django.conf import settings
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import EmailMessage, send_mail
+from django.db.models import Q
 from django.forms import formset_factory, model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -1006,9 +1009,129 @@ def error_500(request):
     }
     return render(request, '404_page.html', context)
 
+
 # with open('filter.csv', 'r') as myfile:
 #     reader = csv.DictReader(myfile)
 #     for row in reader:
 #         row = {k.replace(' ', '_'): v for k, v in row.items()}
 #         row = {k.lower(): v for k, v in row.items()}
 #         print(row)
+
+@login_required
+@terms_required
+def waiting_list(request):
+    context['account'] = request.user
+    context['form'] = WaitingRoomForm()
+    patients = PatientInformation.objects.filter(in_waiting_room=True)
+    other_patients = PatientInformation.objects.filter(in_waiting_room=False)
+    context['patients'] = patients
+    context['other_patients'] = other_patients
+    if request.POST and 'remove_all' in request.POST:
+        patients.update(in_waiting_room=False)
+    return render(request, 'waiting_list.html', context)
+
+
+@login_required
+@terms_required
+def waiting_list_search(request):
+    context['account'] = request.user
+    context['form'] = WaitingRoomForm()
+    query = []
+    for item in request.GET:
+        value = request.GET.get(item)
+        if value:
+            arguments = {f'{item}__exact': value}
+            q_object = Q(**arguments)
+            query.append(q_object)
+    if query:
+        patients = PatientInformation.objects.filter(reduce(operator.and_, query))
+    else:
+        patients = PatientInformation.objects.all()
+
+    context['patients'] = patients
+
+    if request.POST and 'add_all' in request.POST:
+        patients.update(in_waiting_room=True)
+        return redirect('waiting_list')
+
+    return render(request, 'waiting_list_search.html', context)
+
+
+@login_required
+@terms_required
+def waiting_list_add(request, id):
+    context['account'] = request.user
+    patient = get_object_or_404(PatientInformation, id=id)
+    patient.in_waiting_room = True
+    patient.save()
+    return redirect('waiting_list')
+
+
+@login_required
+@terms_required
+def waiting_list_remove(request, id):
+    context['account'] = request.user
+    patient = get_object_or_404(PatientInformation, id=id)
+    patient.in_waiting_room = False
+    patient.save()
+    return redirect('waiting_list')
+
+
+@login_required
+@terms_required
+def export_waiting_list(request):
+    context['account'] = request.user
+    patients = PatientInformation.objects.filter(in_waiting_room=True)
+    with open('waiting_list.csv', 'w', newline="") as waiting_list_csv:
+        wr = csv.writer(waiting_list_csv, quoting=csv.QUOTE_ALL)
+        if patients:
+            wr.writerow(['First Name', 'Last Name', 'Age', 'Address', 'Uploaded', 'Story'])
+            for patient in patients:
+                wr.writerow([patient.first_name, patient.last_name, patient.age, patient.address, patient.uploaded,
+                             patient.story])
+
+        else:
+            wr.writerows('')
+        wr.writerow('')
+    BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+
+    filepath = os.path.join(BASE_DIR, 'waiting_list.csv')
+    return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
+
+@login_required
+@terms_required
+def email_waiting_list(request):
+    context['account'] = request.user
+    context['title'] = 'Email Waiting List'
+    if request.POST:
+        form = EmailForm(request.POST or None)
+        if form.is_valid():
+            to = request.POST.get('to')
+            cc = request.POST.get('cc')
+            bcc = request.POST.get('bcc')
+            from_email = f"{request.user.first_name} {request.user.last_name} <contact@tvachacare.com>"
+            title = str(request.POST.get('title'))
+            message = request.POST.get('message')
+            plain_text = str(message)
+            to = to.split(',')
+            cc = cc.split(',')
+            bcc = bcc.split(',')
+            html_message = render_to_string('waiting_list_email.html',
+                                            {'patients': PatientInformation.objects.filter(in_waiting_room=True)})
+            email = EmailMessage(
+                subject=title,
+                body=html_message,
+                to=to,
+                cc=cc,
+                bcc=bcc,
+                from_email=from_email,
+            )
+            email.content_subtype = 'html'
+            email.send()
+            return redirect('waiting_list')
+    else:
+        form = EmailForm()
+    context['form'] = form
+    context['different_fields'] = []
+    return render(request, 'generic_form_template.html', context)

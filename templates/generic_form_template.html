@@ -327,7 +327,8 @@
                                                        href="#{{ field.name }}" role="button"
                                                        style="margin-bottom: 10px;background-color: var(--main-color); color: white; font-family: Raleway, sans-serif; font-weight: bold">Yes</a>
                                                 </div>
-                                                <div class="col-12 collapse {% if field.value %}show{% endif %}" id="{{ field.name }}">
+                                                <div class="col-12 collapse {% if field.value %}show{% endif %}"
+                                                     id="{{ field.name }}">
                                                     {{ field }}
                                                 </div>
                                                 <div class="col-12" style="margin-top: 15px">
@@ -456,11 +457,15 @@
                                             </div>
                                             <div class="col-12">
                                                 {{ field }}
+                                                {% if field.help_text %}
+                                                    <small class="form-text text-muted">{{ field.help_text }}</small>
+                                                {% endif %}
                                             </div>
-                                            <div class="col-12" style="margin-top: 15px">
-                                                {{ field.errors|safe }}
-                                            </div>
-
+                                            {% if field.errors %}
+                                                <div class="col-12" style="margin-top: 15px">
+                                                    {{ field.errors|safe }}
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     {% endif %}
                                 {% endif %}

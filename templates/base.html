@@ -186,15 +186,17 @@
 
 </script>
 {% if account %}
-<a class="btn-lg btn-tvachacare-inverted position-fixed align-items-center d-flex" href="{% url 'report_bug' %}" style="bottom: 15px; right: 10px; z-index: 100000; border-radius: 50px; border: 3px solid var(--main-color)">
-    <span style="margin-right: 5px">Report bug</span>
-    <i class="material-icons-round">bug_report</i>
-</a>
+    <a class="btn btn-tvachacare-inverted position-fixed align-items-center d-flex" href="{% url 'report_bug' %}"
+       style="bottom: 15px; right: 10px; z-index: 100000; border-radius: 50px; border: 3px solid var(--main-color)">
+        <span style="margin-right: 5px">Report bug</span>
+        <i class="material-icons-round">bug_report</i>
+    </a>
 {% endif %}
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
-            <div class="col-md side-nav d-print-none" style="max-height: 100vh;background: transparent;position: sticky; top: 0">
+            <div class="col-md side-nav d-print-none"
+                 style="max-height: 100vh;background: transparent;position: sticky; top: 0">
                 <div class="row no-gutters">
                     <a href="{% url 'home' %}" class="col d-flex justify-content-center align-items-center"
                        style="padding: 20px; text-decoration: none">
@@ -258,6 +260,12 @@
                                     </a>
                                 {% endif %}
                                 {% if request.user.group.name == 'Admin' %}
+                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
+                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                       href="{% url 'waiting_list' %}">
+                                        <i class="material-icons-round" style="margin-right: 15px;">list_alt</i>
+                                        <span>Waiting List</span>
+                                    </a>
                                     <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
                                        style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'admin-console' %}">

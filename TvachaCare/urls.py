@@ -72,7 +72,13 @@ urlpatterns = [
     path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),
     path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete'),
     path('admin/<model>/view/<id>/', views.admin_view, name='admin_view'),
-    path('report-bug/', views.report_bug, name='report_bug')
+    path('report-bug/', views.report_bug, name='report_bug'),
+    path('waiting-list/', views.waiting_list, name='waiting_list'),
+    path('waiting-list/search/', views.waiting_list_search, name='waiting_list_search'),
+    path('waiting-list/add/<id>/', views.waiting_list_add, name='waiting_list_add'),
+    path('waiting-list/remove/<id>/', views.waiting_list_remove, name='waiting_list_remove'),
+    path('waiting-list/export/', views.export_waiting_list, name='export_waiting_list'),
+    path('waiting-list/email/', views.email_waiting_list, name='email_waiting_list')
 ]
 
 if settings.DEBUG:
