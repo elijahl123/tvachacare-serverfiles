@@ -1021,6 +1021,8 @@ def error_500(request):
 @terms_required
 def waiting_list(request):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     context['form'] = WaitingRoomForm()
     patients = PatientInformation.objects.filter(in_waiting_room=True)
     other_patients = PatientInformation.objects.filter(in_waiting_room=False)
@@ -1035,6 +1037,8 @@ def waiting_list(request):
 @terms_required
 def waiting_list_search(request):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     context['form'] = WaitingRoomForm()
     query = []
     for item in request.GET:
@@ -1061,6 +1065,8 @@ def waiting_list_search(request):
 @terms_required
 def waiting_list_add(request, id):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     patient = get_object_or_404(PatientInformation, id=id)
     patient.in_waiting_room = True
     patient.save()
@@ -1071,6 +1077,8 @@ def waiting_list_add(request, id):
 @terms_required
 def waiting_list_remove(request, id):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     patient = get_object_or_404(PatientInformation, id=id)
     patient.in_waiting_room = False
     patient.save()
@@ -1081,6 +1089,8 @@ def waiting_list_remove(request, id):
 @terms_required
 def export_waiting_list(request):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     patients = PatientInformation.objects.filter(in_waiting_room=True)
     with open('waiting_list.csv', 'w', newline="") as waiting_list_csv:
         wr = csv.writer(waiting_list_csv, quoting=csv.QUOTE_ALL)
@@ -1103,6 +1113,8 @@ def export_waiting_list(request):
 @terms_required
 def email_waiting_list(request):
     context['account'] = request.user
+    if not request.user.group.name == 'Admin':
+        return redirect('home')
     context['title'] = 'Email Waiting List'
     if request.POST:
         form = EmailForm(request.POST or None)
