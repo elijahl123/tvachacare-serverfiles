@@ -70,7 +70,8 @@
                                         {% for patient in patients %}
                                             <li class="list-group-item d-flex align-items-center"
                                                 style="font-family: Raleway, sans-serif;">
-                                                <a style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</a>
+                                                <a href="{% url 'patient_page' patient.slug %}"
+                                                   style="width: 100%;font-family: 'Raleway', sans-serif;color: #092327; font-weight: bold">{{ patient.last_name }}, {{ patient.first_name }}</a>
                                                 <a class="btn btn-danger btn-sm" role="button"
                                                    href="{% url 'waiting_list_remove' patient.id %}"
                                                    style="font-weight: bold;">
@@ -109,7 +110,8 @@
                                         {% for patient in other_patients %}
                                             <li class="list-group-item d-flex align-items-center"
                                                 style="font-family: Raleway, sans-serif;">
-                                                <span style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</span>
+                                                <a href="{% url 'patient_page' patient.slug %}"
+                                                   style="width: 100%;font-family: 'Raleway', sans-serif;color: #092327; font-weight: bold">{{ patient.last_name }}, {{ patient.first_name }}</a>
                                                 <a class="btn btn-success btn-sm" role="button"
                                                    href="{% url 'waiting_list_add' patient.id %}"
                                                    style="font-weight: bold;">
