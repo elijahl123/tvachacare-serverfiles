@@ -70,7 +70,7 @@
                                         {% for patient in patients %}
                                             <li class="list-group-item d-flex align-items-center"
                                                 style="font-family: Raleway, sans-serif;">
-                                                <span style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</span>
+                                                <a style="width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</a>
                                                 <a class="btn btn-danger btn-sm" role="button"
                                                    href="{% url 'waiting_list_remove' patient.id %}"
                                                    style="font-weight: bold;">

@@ -82,8 +82,7 @@ class AddPatient(forms.ModelForm):
         exclude = [
             'uploaded',
             'number_of_surgeries',
-            'slug',
-            'in_waiting_room'
+            'slug'
         ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
@@ -94,7 +93,8 @@ class AddPatient(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AddPatient, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+            if visible.name != 'in_waiting_room':
+                visible.field.widget.attrs['class'] = 'form-control'
             visible.field.widget.attrs['rows'] = '4'
 
 
@@ -154,7 +154,7 @@ class ImageForm(forms.ModelForm):
 class PatientView(forms.ModelForm):
     class Meta:
         model = PatientInformation
-        exclude = ['patient_image', 'injury_image', 'slug', 'in_waiting_room']
+        exclude = ['patient_image', 'injury_image', 'slug']
 
 
 class ProcedureForm(forms.ModelForm):
