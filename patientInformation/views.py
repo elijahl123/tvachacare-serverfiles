@@ -646,6 +646,9 @@ def index(request):
 def loginadmin(request):
     user = request.user
 
+    if request.user.is_authenticated:
+        return redirect('home')
+
     context['account'] = request.user if user.is_authenticated else None
 
     if request.POST:
@@ -661,10 +664,13 @@ def loginadmin(request):
                 'secret': secret_key
             }
             resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
-            result_json = resp.json()
+            result_json = resp.json().get('score')
 
             print(result_json)
-            user = authenticate(email=email, password=password)
+            if result_json >= 0.7:
+                user = authenticate(email=email, password=password)
+            else:
+                return redirect('logout')
 
             if user:
                 login(request, user)
@@ -700,8 +706,10 @@ def loginPage(request):
     return render(request, 'login.html', {'groups': Group.objects.all()})
 
 
-@login_required
 def logout(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
     event_notes = 'Logged Out'
     event = EventLog(user=request.user.email, event_type='Logged Out', notes=event_notes)
     event.save()
