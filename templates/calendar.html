@@ -32,7 +32,11 @@
             <div class="col d-inline-flex justify-content-around align-items-center"
                  style="width: 100%;max-height: 50px;">
                 <a class="btn d-flex justify-content-center align-items-center" type="button"
+                        {% if month_num == 1 %}
+                   href="{% url 'calendar' year|add:"-1" 12 %}"
+                        {% else %}
                    href="{% url 'calendar' year month_num|add:"-1" %}"
+                        {% endif %}
                    style="width: 50px;height: 50px;background: transparent;padding: 0;"><i
                         class="fa fa-angle-left"
                         style="color: var(--accent-color);font-size: 35px;margin-right: 4px;margin-bottom: 2px;"></i></a>
@@ -44,7 +48,11 @@
                            id="form-date" style="font-size: 2.5rem;color: var(--accent-color)" type="month" onkeyup="">
                 </form>
                 <a class="btn d-flex justify-content-center align-items-center" type="button"
+                        {% if month_num == 12 %}
+                   href="{% url 'calendar' year|add:"1" 1 %}"
+                        {% else %}
                    href="{% url 'calendar' year month_num|add:"1" %}"
+                        {% endif %}
                    style="width: 50px;height: 50px;background: transparent;padding: 0;"><i
                         class="fa fa-angle-right"
                         style="color: var(--accent-color);font-size: 35px;margin-bottom: 2px;margin-right: 0;margin-left: 2px;"></i>
