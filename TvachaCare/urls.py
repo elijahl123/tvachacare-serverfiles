@@ -66,7 +66,6 @@ urlpatterns = [
     path('patient/edit/<slug>', views.edit_patient, name='edit_patient'),
     re_path(r'^filter.csv', views.send_file, name='send_file'),
     path('calendar/<year>/<current_month>', views.calendar_events, name='calendar'),
-    path('privacy-policy/', views.privacyPolicy, name='privacy_policy'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
     path('admin/<model>/', views.admin_template, name='admin_template'),
     path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),

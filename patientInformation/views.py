@@ -768,18 +768,6 @@ def patient_page(request, slug):
     return render(request, 'patient_page.html', context)
 
 
-def privacyPolicy(request):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
-    context['account'] = account
-    return render(request, 'privacyPolicy.html', context)
-
-
 @login_required
 @terms_required
 def send_file(request):
