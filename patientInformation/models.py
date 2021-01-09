@@ -307,7 +307,7 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
         result_str = ''.join(random.choice(letters) for i in range(8))
         print(result_str)
         instance.slug = slugify(
-            "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id) + result_str)) % (10 ** 10)))
+            "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
