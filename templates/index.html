@@ -191,15 +191,6 @@
 {% block content %}
     <main class="d-flex d-flex flex-column align-items-center">
         <div class="container-fluid" style="background-color: #fff; min-height: 100vh;padding: 0 30px">
-            {% if success_message %}
-                <div class="alert alert-success alert-dismissible fade show sticky-top"
-                     style="font-family: Raleway, sans-serif; margin-top: 1rem; margin-bottom: 0">
-                    {{ success_message|safe }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-            {% endif %}
             <div class="row no-gutters">
                 <div class="col-md-12">
                     <h1 class="container-h1"

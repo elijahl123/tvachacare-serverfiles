@@ -45,6 +45,7 @@ from pathlib import Path
 import django.apps
 import requests
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.mail import EmailMessage, send_mail
@@ -105,6 +106,9 @@ def add_surgery(request, slug):
             event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
             event.save()
 
+            messages.add_message(request, messages.SUCCESS,
+                                 'Surgery #%s was created successfully!' % obj.id)
+
             procedures = request.POST.getlist('procedures[]')
 
             for procedure in procedures:
@@ -157,7 +161,9 @@ def addpatient(request):
             event = EventLog(user=request.user.email, event_type='Add Patient', notes=event_notes)
             event.save()
             form = AddPatient()
-            return HttpResponseRedirect('/?success_message=' + str(request.POST['patient_record_number']))
+            messages.add_message(request, messages.SUCCESS,
+                                 'Patient %s was created successfully!' % obj.patient_record_number)
+            return redirect('home')
     else:
         form = AddPatient()
 
@@ -441,6 +447,8 @@ def delete_patient(request, slug):
     event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
     event.save()
+    messages.add_message(request, messages.SUCCESS,
+                         'Patient %s was deleted successfully!' % patient.patient_record_number)
     patient.delete()
     return redirect('delete_images', slug=slug)
 
@@ -452,7 +460,10 @@ def delete_surgery(request, slug, id):
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
     event.save()
+    messages.add_message(request, messages.SUCCESS,
+                         'Surgery #%s was deleted successfully!' % surgery.id)
     surgery.delete()
+
     return redirect('delete_surgery_images', slug=slug, id=id)
 
 
@@ -544,6 +555,8 @@ def filter_by_date(request):
         event_notes = 'Filter.csv was created'
         event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
         event.save()
+        messages.add_message(request, messages.SUCCESS,
+                             'Filter was created successfully!')
         if not request.POST.get('procedure_codes'):
             write_response(date_start, date_end, fields)
         else:
@@ -605,12 +618,6 @@ def index(request):
         'group': request.user.group,
         'is_superuser': request.user.is_superuser
     } if request.user.is_authenticated else None
-
-    if 'success_message' in request.GET:
-        context['success_message'] = 'Patient <strong>' + request.GET['success_message'] + '</strong> was ' \
-                                                                                           'successfully created! '
-    else:
-        context['success_message'] = ''
 
     context['account'] = account
     if request.user.is_authenticated:

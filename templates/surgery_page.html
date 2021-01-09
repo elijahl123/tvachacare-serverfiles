@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
-             style="padding: 30px 50px;background-color: white;filter: blur(0px);min-height: 100vh">
+             style="padding: 30px 50px;background-color: white;filter: blur(0px);min-height: 100vh; font-family: Raleway, sans-serif">
             <div class="row d-print-none" style="width: 100%;margin-bottom: 10px;">
                 <div class="col d-flex justify-content-center justify-content-md-center justify-content-lg-end justify-content-xl-end"
                      style="width: 100%;">
@@ -155,12 +155,12 @@
                 <div class="col-lg-12 col-xl-12">
                     {% if patient.middle_name %}
                         <h1 class="text-center"
-                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
+                            style="font-family: Raleway, sans-serif;margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
                             <a href="{% url 'patient_page' patient.slug %}">{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</a>
                         </h1>
                     {% else %}
                         <h1 class="text-center"
-                            style="margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
+                            style="font-family: Raleway, sans-serif;margin-bottom: 25px;font-weight: bold;font-size: 45px;color: var(--main-color);">
                             <a href="{% url 'patient_page' patient.slug %}">{{ patient.first_name }} {{ patient.last_name }}</a>
                         </h1>
                     {% endif %}
