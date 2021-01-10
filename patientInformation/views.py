@@ -1128,12 +1128,14 @@ def email_waiting_list(request):
             from_email = f"{request.user.first_name} {request.user.last_name} <contact@tvachacare.com>"
             title = str(request.POST.get('title'))
             message = request.POST.get('message')
+            print(request.POST.get('message'))
             plain_text = str(message)
             to = to.split(',')
             cc = cc.split(',')
             bcc = bcc.split(',')
             html_message = render_to_string('waiting_list_email.html',
-                                            {'patients': PatientInformation.objects.filter(in_waiting_room=True)})
+                                            {'patients': PatientInformation.objects.filter(in_waiting_room=True),
+                                             'message': message})
             email = EmailMessage(
                 subject=title,
                 body=html_message,
@@ -1148,5 +1150,5 @@ def email_waiting_list(request):
     else:
         form = EmailForm()
     context['form'] = form
-    context['different_fields'] = []
+    context['different_fields'] = ['message']
     return render(request, 'generic_form_template.html', context)
