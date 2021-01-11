@@ -305,9 +305,14 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         letters = string.ascii_lowercase
         result_str = ''.join(random.choice(letters) for i in range(8))
-        print(result_str)
-        instance.slug = slugify(
+        slug = slugify(
             "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
+        if PatientInformation.objects.filter(slug=slug).exists():
+            result_str = ''.join(random.choice(letters) for i in range(8))
+            slug = slugify(
+                "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
+        else:
+            instance.slug = slug
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
