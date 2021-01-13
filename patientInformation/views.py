@@ -1153,6 +1153,14 @@ def email_waiting_list(request):
                 from_email=from_email,
             )
             email.content_subtype = 'html'
+            patients = PatientInformation.objects.filter(in_waiting_room=True)
+            for patient in patients:
+                if patient.patient_image:
+                    response = requests.get(request.build_absolute_uri(patient.patient_image.url))
+                    email.attach(patient.patient_image.name, response.content, mimetype='image/*')
+                if patient.injury_image:
+                    response = requests.get(request.build_absolute_uri(patient.injury_image.url))
+                    email.attach(patient.injury_image.name, response.content, mimetype='image/*')
             email.send()
             return redirect('waiting_list')
     else:
