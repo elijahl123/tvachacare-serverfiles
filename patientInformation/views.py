@@ -1162,6 +1162,7 @@ def email_waiting_list(request):
                     response = requests.get(request.build_absolute_uri(patient.injury_image.url))
                     email.attach(patient.injury_image.name, response.content, mimetype='image/*')
             email.send()
+            messages.add_message(request, messages.SUCCESS, 'Email sent successfully')
             return redirect('waiting_list')
     else:
         form = EmailForm()
