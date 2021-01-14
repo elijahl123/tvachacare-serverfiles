@@ -36,12 +36,12 @@
 
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 
 from patientInformation import views
 
 urlpatterns = [
-    path('admin/', views.admin, name='admin-console'),
+    path('admin/', include('account.urls')),
     path('', views.index, name='home'),
     path('login/', views.loginPage, name="login"),
     path('login/admin/', views.loginadmin, name="loginAdmin"),
@@ -67,10 +67,6 @@ urlpatterns = [
     re_path(r'^filter.csv', views.send_file, name='send_file'),
     path('calendar/<year>/<current_month>', views.calendar_events, name='calendar'),
     path('terms-of-service/', views.terms_of_service, name='terms_of_service'),
-    path('admin/<model>/', views.admin_template, name='admin_template'),
-    path('admin/<model>/edit/<id>/', views.admin_edit, name='admin_edit'),
-    path('admin/<model>/delete/<id>/', views.admin_delete, name='admin_delete'),
-    path('admin/<model>/view/<id>/', views.admin_view, name='admin_view'),
     path('report-bug/', views.report_bug, name='report_bug'),
     path('waiting-list/', views.waiting_list, name='waiting_list'),
     path('waiting-list/search/', views.waiting_list_search, name='waiting_list_search'),
