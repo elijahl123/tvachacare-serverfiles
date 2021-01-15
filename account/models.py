@@ -105,5 +105,6 @@ class Account(AbstractBaseUser):
 
         # Does this user have permission to view this app? (ALWAYS YES FOR SIMPLICITY)
 
-    def has_module_perms(self, app_label):
+    @staticmethod
+    def has_module_perms(app_label):
         return True
