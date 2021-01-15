@@ -1,0 +1,23 @@
+version = 1
+
+test_patterns = ["patientInformation/tests.py"]
+
+exclude_patterns = [
+    "patientInformation/migrations/**",
+    "account/migrations/**"
+]
+
+[[analyzers]]
+name = "python"
+enabled = true
+
+  [analyzers.meta]
+  runtime_version = "3.x.x"
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  style_guide = "google"
+  environment = ["jquery"]
