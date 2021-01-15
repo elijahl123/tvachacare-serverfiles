@@ -45,28 +45,26 @@ def admin_delete(request, model, id):
         item = get_object_or_404(Account, id=id)
         item.delete()
         return redirect('admin_template', 'accounts')
-    elif model == 'groups':
+    if model == 'groups':
         item = get_object_or_404(Group, id=id)
         item.delete()
         return redirect('admin_template', 'groups')
-    elif model == 'event-logs':
+    if model == 'event-logs':
         item = get_object_or_404(EventLog, id=id)
         item.delete()
         return redirect('admin_template', 'event-logs')
-    elif model == 'patients':
+    if model == 'patients':
         item = get_object_or_404(PatientInformation, id=id)
         item.delete()
         if PatientInformation.objects.filter(id=id).exists():
             return redirect('admin_delete', 'patients', id)
-        else:
-            return redirect('admin_template', 'patients')
+        return redirect('admin_template', 'patients')
     elif model == 'surgeries':
         item = get_object_or_404(SurgeryInformation, id=id)
         item.delete()
         if SurgeryInformation.objects.filter(id=id).exists():
             return redirect('admin_delete', 'surgeries', id)
-        else:
-            return redirect('admin_template', 'surgeries')
+        return redirect('admin_template', 'surgeries')
     else:
         return redirect('admin-console')
 

@@ -215,8 +215,7 @@ def delete_images(request, slug):
     if patient:
         patient.delete()
         return redirect('home')
-    else:
-        return redirect('home')
+    return redirect('home')
 
 
 @login_required
@@ -253,8 +252,7 @@ def delete_surgery_images(request, slug, id):
     if surgery:
         surgery.delete()
         return redirect('patient_page', slug)
-    else:
-        return redirect('patient_page', slug)
+    return redirect('patient_page', slug)
 
 
 @login_required
@@ -414,16 +412,15 @@ def index(request):
         if form.is_valid():
             form.save()
             return redirect('home')
-        else:
-            form = AccountUpdateForm(
-                initial={
-                    'email': request.user.email,
-                    'username': request.user.username,
-                    'first_name': request.user.first_name,
-                    'last_name': request.user.last_name,
-                    'profile_picture_path': request.user.profile_picture_path,
-                }
-            )
+        form = AccountUpdateForm(
+            initial={
+                'email': request.user.email,
+                'username': request.user.username,
+                'first_name': request.user.first_name,
+                'last_name': request.user.last_name,
+                'profile_picture_path': request.user.profile_picture_path,
+            }
+        )
         context['account_form'] = form
 
     return render(request, 'index.html', context)
@@ -465,8 +462,7 @@ def loginadmin(request):
                 if user.is_accepted:
                     if request.GET.get('next'):
                         return HttpResponseRedirect(request.GET.get('next'))
-                    else:
-                        return redirect('home')
+                    return redirect('home')
                 else:
                     return redirect('terms_of_service')
         else:
@@ -603,12 +599,12 @@ def surgery_page(request, slug, id):
             surgery.save()
             approve_surgery(request, surgery.patient.slug, surgery.id)
             return redirect('home')
-        elif 'deny' in request.POST:
+        if 'deny' in request.POST:
             surgery.reason = request.POST['reason']
             surgery.save()
             deny_surgery(request, surgery.patient.slug, surgery.id)
             return redirect('home')
-        elif 'appeal' in request.POST:
+        if 'appeal' in request.POST:
             subject = 'Appeal Request for ' + patient.first_name + ' ' + patient.last_name + ' Surgery ID #' + str(
                 surgery.id)
             to_emails = Account.objects.filter(group__name='Approver').values_list('email', flat=True)
@@ -632,8 +628,7 @@ def terms_of_service(request):
             account.save()
             if 'next' in request.GET:
                 return HttpResponseRedirect(request.GET.get('next'))
-            else:
-                return redirect('home')
+            return redirect('home')
         else:
             return redirect('logout')
 
