@@ -55,6 +55,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
 
+from account.forms import *
+from account.models import Account
 from patientInformation.forms import *
 from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog
 
