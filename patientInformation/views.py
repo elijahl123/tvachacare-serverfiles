@@ -41,6 +41,7 @@ import operator
 import os
 from functools import reduce
 from pathlib import Path
+from zipfile import ZipFile
 
 import requests
 from django.conf import settings
@@ -55,6 +56,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
 
+from TvachaCare.settings import BASE_DIR
 from account.forms import *
 from account.models import Account
 from patientInformation.forms import *
@@ -903,7 +905,6 @@ def email_waiting_list(request):
             from_email = f"{request.user.first_name} {request.user.last_name} <contact@tvachacare.com>"
             title = str(request.POST.get('title'))
             message = request.POST.get('message')
-            print(request.POST.get('message'))
             plain_text = str(message)
             to = to.split(',')
             cc = cc.split(',')
@@ -921,13 +922,8 @@ def email_waiting_list(request):
             )
             email.content_subtype = 'html'
             patients = PatientInformation.objects.filter(in_waiting_room=True)
-            for patient in patients:
-                if patient.patient_image:
-                    response = requests.get(request.build_absolute_uri(patient.patient_image.url))
-                    email.attach(patient.patient_image.name, response.content, mimetype='image/*')
-                if patient.injury_image:
-                    response = requests.get(request.build_absolute_uri(patient.injury_image.url))
-                    email.attach(patient.injury_image.name, response.content, mimetype='image/*')
+            write_zipfile(request, patients)
+            email.attach_file(os.path.join(BASE_DIR, 'media/patient_images.zip'))
             email.send()
             messages.add_message(request, messages.SUCCESS, 'Email sent successfully')
             return redirect('waiting_list')
@@ -936,3 +932,12 @@ def email_waiting_list(request):
     context['form'] = form
     context['different_fields'] = ['message']
     return render(request, 'generic_form_template.html', context)
+
+
+def write_zipfile(request, patients):
+    with ZipFile('media/patient_images.zip', 'w') as z:
+        for patient in patients:
+            if patient.patient_image:
+                z.write(patient.patient_image.path, patient.patient_image.name)
+            if patient.injury_image:
+                z.write(patient.injury_image.path, patient.injury_image.name)
