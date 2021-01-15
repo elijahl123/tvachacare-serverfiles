@@ -787,13 +787,6 @@ def error_500(request):
         'number': '500',
         'value': 'Internal Server Error'
     }
-    email = EmailMessage(
-        subject='500 Internal Error from user %s' % request.user.email,
-        body='There was an error from the user %s %s' % (request.user.first_name, request.user.last_name),
-        to=['elijah.kane.1972@gmail.com'],
-        from_email='TvachaCare <contact@tvachacare.com>',
-    )
-    email.send()
 
     return render(request, '404_page.html', context)
 
