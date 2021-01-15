@@ -56,7 +56,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
 
-from TvachaCare.settings import BASE_DIR
+from TvachaCare.settings import BASE_DIR, MEDIA_ROOT
 from account.forms import *
 from account.models import Account
 from patientInformation.forms import *
@@ -938,6 +938,6 @@ def write_zipfile(request, patients):
     with ZipFile('media/patient_images.zip', 'w') as z:
         for patient in patients:
             if patient.patient_image:
-                z.write(patient.patient_image.path, patient.patient_image.name)
+                z.write(os.path.join(MEDIA_ROOT, patient.patient_image.name), patient.patient_image.name)
             if patient.injury_image:
-                z.write(patient.injury_image.path, patient.injury_image.name)
+                z.write(os.path.join(MEDIA_ROOT, patient.injury_image.name), patient.injury_image.name)
