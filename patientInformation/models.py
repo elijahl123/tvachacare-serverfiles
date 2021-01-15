@@ -37,8 +37,6 @@
 import datetime
 import random
 import string
-
-from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models.signals import post_delete, pre_save
