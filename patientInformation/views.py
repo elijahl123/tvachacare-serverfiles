@@ -45,6 +45,7 @@ from zipfile import ZipFile
 
 import requests
 from django.conf import settings
+from django.conf.global_settings import MEDIA_ROOT
 from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -56,7 +57,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.views.static import serve
 
-from TvachaCare.settings import BASE_DIR, MEDIA_ROOT
+from TvachaCare.settings import BASE_DIR
 from account.forms import *
 from account.models import Account
 from patientInformation.forms import *
