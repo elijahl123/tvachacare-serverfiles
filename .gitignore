@@ -36,3 +36,5 @@ filter.csv
 patientInformation_eventlog.csv
 
 db.sqlite3
+
+account/migrations
