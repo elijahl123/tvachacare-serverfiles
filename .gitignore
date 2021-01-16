@@ -38,3 +38,5 @@ patientInformation_eventlog.csv
 db.sqlite3
 
 account/migrations/0001_initial.py
+
+media/patient_images.zip
