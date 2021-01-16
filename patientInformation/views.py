@@ -41,11 +41,10 @@ import operator
 import os
 from functools import reduce
 from pathlib import Path
-from zipfile import ZipFile
+from zipfile import ZipFile, ZipInfo
 
 import requests
 from django.conf import settings
-from django.conf.global_settings import MEDIA_ROOT
 from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -939,6 +938,8 @@ def write_zipfile(request, patients):
     with ZipFile('media/patient_images.zip', 'w') as z:
         for patient in patients:
             if patient.patient_image:
-                z.write(os.path.join(MEDIA_ROOT, patient.patient_image.name), patient.patient_image.name)
-            if patient.injury_image:
-                z.write(os.path.join(MEDIA_ROOT, patient.injury_image.name), patient.injury_image.name)
+                image_content = requests.get(request.build_absolute_uri(patient.patient_image.url)).content
+                image_name = patient.patient_image.name
+                zip_info = ZipInfo(filename=image_name)
+                z.writestr(zip_info, image_content)
+        z.close()
