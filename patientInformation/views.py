@@ -942,4 +942,9 @@ def write_zipfile(request, patients):
                 image_name = patient.patient_image.name
                 zip_info = ZipInfo(filename=image_name)
                 z.writestr(zip_info, image_content)
+            if patient.injury_image:
+                image_content = requests.get(request.build_absolute_uri(patient.injury_image.url)).content
+                image_name = patient.injury_image.name
+                zip_info = ZipInfo(filename=image_name)
+                z.writestr(zip_info, image_content)
         z.close()
