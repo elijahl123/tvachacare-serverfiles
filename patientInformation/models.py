@@ -41,7 +41,7 @@ import string
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import post_delete, pre_save, post_init
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -218,10 +218,10 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
 
 
 def check_id(sender, instance, *args, **kwargs):
-    while sender.objects.filter(id=instance.id).exists():
+    while sender.objects.filter(id=instance.id).exists() and sender.objects.get(id=instance.id) != instance:
         instance.id += 1
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
 
-post_init.connect(check_id, sender=Image)
+pre_save.connect(check_id, sender=Image)
