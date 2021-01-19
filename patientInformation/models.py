@@ -217,13 +217,7 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
             instance.slug = slug
 
 
-def check_id(sender, instance, *args, **kwargs):
-    new_id = instance.id
-    while Image.objects.get(pk=new_id).exists() and Image.objects.get(pk=new_id) != instance:
-        new_id += 1
-    instance.pk = new_id
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
 
-pre_save.connect(check_id, sender=Image)
