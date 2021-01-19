@@ -218,8 +218,10 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
 
 
 def check_id(sender, instance, *args, **kwargs):
-    while sender.objects.filter(id=instance.id).exists() and sender.objects.get(id=instance.id) != instance:
-        instance.id += 1
+    new_id = instance.id
+    while sender.objects.filter(id=new_id).exists() and sender.objects.get(id=new_id) != instance:
+        new_id += 1
+    instance.id = new_id
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
