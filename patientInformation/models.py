@@ -217,7 +217,4 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
             instance.slug = slug
 
 
-
-
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)
-
