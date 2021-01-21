@@ -79,6 +79,15 @@
             $(surgeryID).slideToggle(200, 'swing');
         }
 
+        function toggleDeletePatient(id) {
+            const container = $('.delete-patient-' + id)
+            if (container.css('display') === 'none') {
+                container.css('display', 'flex').hide().fadeIn(100);
+            } else {
+                container.fadeOut(100);
+            }
+        }
+
     </script>
     <title>TvachaCare</title>
     <style>
@@ -189,6 +198,29 @@
 {% endblock %}
 
 {% block content %}
+    {% if not account.group.can_approve %}
+        {% if object %}
+            {% for patient in object %}
+                <div class="justify-content-center align-items-center delete-patient-{{ patient.id }}"
+                     style="display: none;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
+                    <div class="d-flex flex-column"
+                         style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0 0 5px 0 var(--accent-color);">
+                        <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
+                            Are
+                            you sure?</h1>
+                        <div role="group" class="btn-group">
+                            <button class="btn btn-secondary" type="button"
+                                    onclick="toggleDeletePatient({{ patient.id }})"
+                                    style="border-radius: 5px;margin: 3px;">Cancel
+                            </button>
+                            <a class="btn btn-danger d-print-none" role="button" style="border-radius: 5px;margin: 3px;"
+                               href="{% url 'delete_patient' patient.slug %}">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
     <main class="d-flex d-flex flex-column align-items-center">
         <div class="container-fluid" style="background-color: #fff; min-height: 100vh;padding: 0 30px">
             <div class="row no-gutters">
@@ -367,14 +399,20 @@
                                                 </li>
                                                 <li class="list-group-item list-group-item-secondary patient-{{ patients.id }}"
                                                     style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
-                                                    <div class="d-flex justify-content-between"
-                                                         style="margin-bottom: 20px">
-                                                        <small>Patient Record
-                                                            Number: {{ patients.patient_record_number }}</small>
-                                                        {% if patients.telephone_number %}
-                                                            <small>Telephone
-                                                                Number: {{ patients.telephone_number }}</small>{% endif %}
-                                                        <small>Uploaded: {{ patients.uploaded }}</small></div>
+                                                    <div class="d-flex"
+                                                         style="margin-bottom: 10px;margin-top: 5px">
+                                                        <a class="btn btn-success" role="button"
+                                                           href="{% url 'edit_patient' patients.slug %}"
+                                                           style="font-family: Raleway, sans-serif;font-weight: bold;margin-right: 10px;">
+                                                            Edit
+                                                        </a>
+                                                        <button class="btn btn-danger" type="button"
+                                                                onclick="toggleDeletePatient({{ patients.id }})"
+                                                                style="font-family: Raleway, sans-serif;font-weight: bold;margin-right: 10px;">
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                    <hr>
                                                     <h5>Surgeries:</h5>
 
                                                     <div class="d-flex justify-content-between">
