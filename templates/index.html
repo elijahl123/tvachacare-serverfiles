@@ -269,7 +269,7 @@
                                 </div>
                                 {% if account.group.can_approve %}
                                     {% if object %}
-                                        <ul class="list-group"
+                                        <ul class="list-group overflow-auto"
                                             style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;margin-bottom: 15px;max-height: 500px;border: 3px lightgray solid">
                                             {% for surgery in object %}
                                                 {% if surgery.is_approved == False and surgery.is_denied == False %}
@@ -379,7 +379,7 @@
                                     {% endif %}
                                 {% else %}
                                     {% if object %}
-                                        <ul class="list-group"
+                                        <ul class="list-group overflow-auto"
                                             style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;margin-bottom: 15px;max-height: 500px;border: 3px lightgray solid">
                                             {% for patients in object %}
                                                 <li class="list-group-item patient-list"
