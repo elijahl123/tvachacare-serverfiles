@@ -6,8 +6,15 @@
     <script>
         $(document).ready(function () {
             let formattedNumber = ("0" + {{ month_num }}).slice(-2);
-            $('#form-date').val('{{ year }}-' + formattedNumber)
+            $('#form-date').val('{{ year }}-' + formattedNumber);
+
+            const d = new Date();
+            const day = ("0" + d.getDate()).slice(-2);
+            const dateFormat = `${d.getFullYear()}-${formattedNumber}-${day}`;
+            $('.' + dateFormat + ' > span').css({'background': 'dodgerblue', 'color': 'white', 'border-radius': '50px'})
+
         })
+
     </script>
     <style>
         .btn {
@@ -131,8 +138,10 @@
                             <div class="col"
                                  style="padding: 5px 10px 10px;background: #ffffff;color: var(--accent-color);border: 0.5px solid #c8ced7">
                                 <div class="row flex-column">
-                                    <div class="col d-flex justify-content-center" style="margin-bottom: 10px">
-                                        <span style="{% if day == today %}background:dodgerblue;color: white;border-radius: 50px;{% endif %}{% if month_num != day.month %}opacity: 0.5;{% endif %}padding: 5px 30%;text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 20px">
+                                    <div class="col d-flex justify-content-center {{ day|slugify }}"
+                                         style="margin-bottom: 10px">
+                                        <span
+                                                style="{% if month_num != day.month %}opacity: 0.5;{% endif %}padding: 5px 30%;text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 20px">
                                             {{ day.day }}</span>
                                     </div>
                                 </div>
