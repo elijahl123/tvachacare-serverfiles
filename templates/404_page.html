@@ -19,10 +19,13 @@
             </div>
 
             <div class="row no-gutters">
-                <div class="col">
+                <div class="col d-flex flex-column align-items-center">
                     <h1 class="display-4"
-                        style="text-align: center;color: #fc9c34;margin: 0;font-weight: bold;font-family: Raleway, sans-serif">
+                        style="text-align: center;color: #fc9c34;font-weight: bold;font-family: Raleway, sans-serif; margin: 0 0 15px;">
                         {{ exception.value }}</h1>
+                    {% if exception.number == "500" %}
+                    <p class="lead" style="color: var(--accent-color); font-weight: bold; font-family: Raleway, sans-serif">Error reported to Administrator</p>
+                    {% endif %}
                 </div>
             </div>
         </div>
