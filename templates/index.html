@@ -455,11 +455,11 @@
                                         <div role="group"
                                              class="button-container d-flex justify-content-around btn-group"
                                              style="width: 100%; margin-bottom: 20px">
-                                            <button class="btn btn-sm btn-surgeries btn-danger"
+                                            <button class="btn btn-sm btn-surgeries btn-transparent-danger"
                                                     onclick="openDeniedSurgeries()">View Denied
                                                 Surgeries
                                             </button>
-                                            <button class="btn btn-sm btn-surgeries-approved btn-success"
+                                            <button class="btn btn-sm btn-surgeries-approved btn-transparent-success"
                                                     onclick="openApprovedSurgeries()">View
                                                 Approved Surgeries
                                             </button>
@@ -531,8 +531,7 @@
                                             </ul>
                                         </div>
                                     {% else %}
-                                        <p style="color: gray;text-align: center;margin-top: 10px !important;"
-                                           class="m-auto">None</p>
+                                        <a href="{% url 'addPatient' %}" role="button" style="color: var(--main-color); font-weight: bold; font-family: Raleway, sans-serif; border-width: 3px" class="btn btn-block btn-tvachacare-inverted">Add Patient</a>
                                     {% endif %}
                                 {% endif %}
                             </div>
