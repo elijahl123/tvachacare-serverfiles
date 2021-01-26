@@ -48,6 +48,20 @@
     font-weight: bold;
 }
 
+.btn-transparent-success:hover {
+    color: white;
+    background: rgb(40, 167, 69);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-danger:hover {
+    color: white;
+    background: rgb(220, 53, 69);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
 html, body {
     height: 100%;
     width: 100%;
