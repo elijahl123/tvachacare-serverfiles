@@ -465,8 +465,7 @@ def loginadmin(request):
                     if request.GET.get('next'):
                         return HttpResponseRedirect(request.GET.get('next'))
                     return redirect('home')
-                else:
-                    return redirect('terms_of_service')
+                return redirect('terms_of_service')
         else:
             email = request.POST['email'] or None
 
@@ -631,8 +630,7 @@ def terms_of_service(request):
             if 'next' in request.GET:
                 return HttpResponseRedirect(request.GET.get('next'))
             return redirect('home')
-        else:
-            return redirect('logout')
+        return redirect('logout')
 
     return render(request, 'terms_of_service.html', context)
 
