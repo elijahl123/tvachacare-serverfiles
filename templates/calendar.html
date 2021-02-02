@@ -10,7 +10,8 @@
 
             const d = new Date();
             const day = ("0" + d.getDate()).slice(-2);
-            const dateFormat = `${d.getFullYear()}-${formattedNumber}-${day}`;
+            const month = ("0" + d.getMonth()).slice(-2);
+            const dateFormat = `${d.getFullYear()}-${month}-${day}`;
             $('.' + dateFormat + ' > span').css({'background': 'dodgerblue', 'color': 'white', 'border-radius': '50px'})
 
         })
