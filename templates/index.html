@@ -277,6 +277,14 @@
                                         <div class="bg-secondary patient-badge d-flex justify-content-center align-items-center">
                                             <span>{{ object.count }} {{ object_name }}</span>
                                         </div>
+                                        {% if sort_by %}
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="badge"
+                                                     style="background-color: white; font-size: 16px; padding: 0.5rem">
+                                                    <span>Currently Sorting by: <strong>{{ sort_by.field|title }}</strong></span>
+                                                </div>
+                                            </div>
+                                        {% endif %}
                                         <div>
                                             <button class="btn dropdown-toggle btn-transparent-success"
                                                     style="margin-right: 5px"
