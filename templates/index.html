@@ -317,12 +317,14 @@
                                                     <li class="list-group-item patient-list"
                                                         style="display: flex; justify-content: space-between; align-items: center">
                                                         <a href="{% url 'patient_page' surgery.patient.slug %}"
+                                                           style="width: 100%"
                                                            class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
                                                         <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                           style="width: 100%"
                                                            class='patient-name'>Surgery ID #{{ surgery.id }}</a>
                                                         {% if sort_by %}
                                                             <div class="overflow-hidden"
-                                                                 style="text-overflow: ellipsis; max-width: 250px">
+                                                                 style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}
                                                     </span>
@@ -433,21 +435,23 @@
                                             {% for patients in object %}
                                                 <li class="list-group-item patient-list"
                                                     style="display: flex; justify-content: space-between; align-items: center">
-                                                    <a href="{% url 'patient_page' patients.slug %}"
+                                                    <a href="{% url 'patient_page' patients.slug %}" style="width: 100%"
                                                        class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
                                                     {% if sort_by %}
                                                         <div class="overflow-hidden"
-                                                             style="text-overflow: ellipsis; max-width: 250px">
+                                                             style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
                                                     </span>
                                                         </div>
                                                     {% endif %}
+                                                    <div style="width: 100%">
                                                     <span class="badge badge-pill badge-secondary">
                                                         {{ patients.surgery_count }}
                                                         Surger{% if patients.surgery_count == 1 %}y{% else %}ies
                                                     {% endif %}
                                                     </span>
+                                                    </div>
                                                     <button class="btn d-flex justify-content-center align-items-center"
                                                             style="padding: 5px; border-radius: 50px"
                                                             onclick="openInfo({{ patients.id }})">
