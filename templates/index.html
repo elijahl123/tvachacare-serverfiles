@@ -290,9 +290,9 @@
                                                     style="margin-right: 5px"
                                                     data-toggle="dropdown">Sort By
                                             </button>
-                                            <div class="dropdown-menu patient-dropdown-menu overflow-auto shadow">
+                                            <div class="dropdown-menu dropdown-menu-right patient-dropdown-menu overflow-auto shadow">
                                                 {% for field in field_list %}
-                                                    {% if field.name != 'patient_image' and field.name != 'injury_image' %}
+                                                    {% if field.name not in excluded_fields %}
                                                         <a class="dropdown-item"
                                                            href="/?sort-by={{ field.name }}">{{ field.verbose_name|title }}</a>
                                                     {% endif %}

@@ -413,6 +413,7 @@ def index(request):
                 context['sort_by'] = ''
             context['object'] = surgery
             context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
+            context['excluded_fields'] = ['image', 'procedurecodes']
             if surgery.count() == 1:
                 context['object_name'] = 'Surgery'
             else:
@@ -432,6 +433,7 @@ def index(request):
             context['object'] = patient
             context['surgery'] = surgery
             context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
+            context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
             if patient.count() == 1:
                 context['object_name'] = 'Patient'
             else:
