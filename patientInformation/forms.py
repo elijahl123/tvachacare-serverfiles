@@ -10,7 +10,8 @@ class AddPatient(forms.ModelForm):
         exclude = [
             'uploaded',
             'number_of_surgeries',
-            'slug'
+            'slug',
+            'age'
         ]
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),

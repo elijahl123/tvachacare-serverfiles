@@ -203,6 +203,12 @@ def submission_delete(sender, instance, **kwargs):
     instance.injury_image.delete(True)
 
 
+def calculate_age(birth_date):
+    today = datetime.date.today()
+    age = today.year - birth_date.year - ((today.month, today.day) < (birth_date.month, birth_date.day))
+    return age
+
+
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         letters = string.ascii_lowercase
@@ -215,6 +221,7 @@ def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
                 "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
         else:
             instance.slug = slug
+    instance.age = calculate_age(instance.date_of_birth) if instance.date_of_birth else None
 
 
 pre_save.connect(pre_save_patient_information_receiver, sender=PatientInformation)

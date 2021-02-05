@@ -48,6 +48,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
 from django.forms import formset_factory
@@ -388,17 +389,7 @@ def hui_report(request):
 @login_required
 @terms_required
 def index(request):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "first_name": request.user.first_name,
-        "last_name": request.user.last_name,
-        'group': request.user.group,
-        'is_superuser': request.user.is_superuser
-    } if request.user.is_authenticated else None
-
-    context['account'] = account
+    context['account'] = request.user if request.user.is_authenticated else None
     if request.user.is_authenticated:
         if request.user.group.can_approve:
             try:
@@ -408,16 +399,17 @@ def index(request):
                     'value': request.GET.get('sort-by').replace('-', ''),
                     'first_val': request.GET.get('sort-by')[0]
                 }
-            except:
+                context['field_error'] = ''
+            except FieldError:
                 surgery = SurgeryInformation.objects.all()
                 context['sort_by'] = ''
+                context['field_error'] = \
+                    f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
+                        if request.GET.get('sort-by') else ''
             context['object'] = surgery
             context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
             context['excluded_fields'] = ['image', 'procedurecodes']
-            if surgery.count() == 1:
-                context['object_name'] = 'Surgery'
-            else:
-                context['object_name'] = 'Surgeries'
+            context['object_name'] = 'Surgery' if surgery.count() == 1 else 'Surgeries'
         else:
             surgery = SurgeryInformation.objects.all()
             try:
@@ -427,17 +419,18 @@ def index(request):
                     'value': request.GET.get('sort-by').replace('-', ''),
                     'first_val': request.GET.get('sort-by')[0]
                 }
-            except:
+                context['field_error'] = ''
+            except FieldError:
                 patient = PatientInformation.objects.all()
                 context['sort_by'] = ''
+                context['field_error'] = \
+                    f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
+                        if request.GET.get('sort-by') else ''
             context['object'] = patient
             context['surgery'] = surgery
             context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
             context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
-            if patient.count() == 1:
-                context['object_name'] = 'Patient'
-            else:
-                context['object_name'] = 'Patients'
+            context['object_name'] = 'Patient' if patient.count() == 1 else 'Patients'
 
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
