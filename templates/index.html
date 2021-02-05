@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load getattribute %}
 
 {% block header %}
     <link rel="stylesheet" href="{% static 'homePage.css' %}">
@@ -271,6 +272,42 @@
                                            onfocusout="$('.search-icon').css('color', 'white')"
                                            placeholder="Search for patients..." name="search">
                                 </div>
+                                <div class="row patient-toolbar no-gutters">
+                                    <div class="col d-flex justify-content-between">
+                                        <div class="bg-secondary patient-badge d-flex justify-content-center align-items-center">
+                                            <span>{{ object.count }} {{ object_name }}</span>
+                                        </div>
+                                        <div>
+                                            <button class="btn dropdown-toggle btn-transparent-success"
+                                                    style="margin-right: 5px"
+                                                    data-toggle="dropdown">Sort By
+                                            </button>
+                                            <div class="dropdown-menu patient-dropdown-menu overflow-auto shadow">
+                                                {% for field in field_list %}
+                                                    {% if field.name != 'patient_image' and field.name != 'injury_image' %}
+                                                        <a class="dropdown-item"
+                                                           href="/?sort-by={{ field.name }}">{{ field.verbose_name|title }}</a>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            {% if sort_by %}
+                                                {% if sort_by.first_val == '-' %}
+                                                    <a href="/?sort-by={{ sort_by.value }}" role="button"
+                                                       class="btn btn-transparent-tvachacare" style="margin-right: 5px">Reverse
+                                                    </a>
+                                                {% else %}
+                                                    <a href="/?sort-by=-{{ sort_by.value }}" role="button"
+                                                       class="btn btn-transparent-tvachacare" style="margin-right: 5px">Reverse
+                                                    </a>
+                                                {% endif %}
+                                                <a href="{% url 'home' %}" role="button"
+                                                   class="btn btn-transparent-danger">Clear
+                                                </a>
+                                            {% endif %}
+                                        </div>
+
+                                    </div>
+                                </div>
                                 {% if account.group.can_approve %}
                                     {% if object %}
                                         <ul class="list-group overflow-auto"
@@ -279,10 +316,18 @@
                                                 {% if surgery.is_approved == False and surgery.is_denied == False %}
                                                     <li class="list-group-item patient-list"
                                                         style="display: flex; justify-content: space-between; align-items: center">
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                        <a href="{% url 'patient_page' surgery.patient.slug %}"
                                                            class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
                                                         <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
                                                            class='patient-name'>Surgery ID #{{ surgery.id }}</a>
+                                                        {% if sort_by %}
+                                                            <div class="overflow-hidden"
+                                                                 style="text-overflow: ellipsis; max-width: 250px">
+                                                    <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
+                                                          style="white-space: nowrap">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}
+                                                    </span>
+                                                            </div>
+                                                        {% endif %}
                                                         <button class="btn d-flex justify-content-center align-items-center"
                                                                 style="padding: 5px; border-radius: 50px"
                                                                 onclick="openSurgeryInfo({{ surgery.id }})">
@@ -390,10 +435,18 @@
                                                     style="display: flex; justify-content: space-between; align-items: center">
                                                     <a href="{% url 'patient_page' patients.slug %}"
                                                        class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                                    {% if sort_by %}
+                                                        <div class="overflow-hidden"
+                                                             style="text-overflow: ellipsis; max-width: 250px">
+                                                    <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
+                                                          style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
+                                                    </span>
+                                                        </div>
+                                                    {% endif %}
                                                     <span class="badge badge-pill badge-secondary">
-                                                        {{ patients.surgery_count }} Surger
-                                                        {% if patients.surgery_count == 1 %}y{% else %}
-                                                            ies{% endif %}
+                                                        {{ patients.surgery_count }}
+                                                        Surger{% if patients.surgery_count == 1 %}y{% else %}ies
+                                                    {% endif %}
                                                     </span>
                                                     <button class="btn d-flex justify-content-center align-items-center"
                                                             style="padding: 5px; border-radius: 50px"
@@ -531,7 +584,9 @@
                                             </ul>
                                         </div>
                                     {% else %}
-                                        <a href="{% url 'addPatient' %}" role="button" style="color: var(--main-color); font-weight: bold; font-family: Raleway, sans-serif; border-width: 3px" class="btn btn-block btn-tvachacare-inverted">Add Patient</a>
+                                        <a href="{% url 'addPatient' %}" role="button"
+                                           style="color: var(--main-color); font-weight: bold; font-family: Raleway, sans-serif; border-width: 3px"
+                                           class="btn btn-block btn-tvachacare-inverted">Add Patient</a>
                                     {% endif %}
                                 {% endif %}
                             </div>

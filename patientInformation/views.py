@@ -401,13 +401,41 @@ def index(request):
     context['account'] = account
     if request.user.is_authenticated:
         if request.user.group.can_approve:
-            surgery = SurgeryInformation.objects.all()
+            try:
+                surgery = SurgeryInformation.objects.all().order_by(request.GET.get('sort-by'))
+                context['sort_by'] = {
+                    'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
+                    'value': request.GET.get('sort-by').replace('-', ''),
+                    'first_val': request.GET.get('sort-by')[0]
+                }
+            except:
+                surgery = SurgeryInformation.objects.all()
+                context['sort_by'] = ''
             context['object'] = surgery
+            context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
+            if surgery.count() == 1:
+                context['object_name'] = 'Surgery'
+            else:
+                context['object_name'] = 'Surgeries'
         else:
-            patient = PatientInformation.objects.all()
             surgery = SurgeryInformation.objects.all()
+            try:
+                patient = PatientInformation.objects.all().order_by(request.GET.get('sort-by'))
+                context['sort_by'] = {
+                    'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
+                    'value': request.GET.get('sort-by').replace('-', ''),
+                    'first_val': request.GET.get('sort-by')[0]
+                }
+            except:
+                patient = PatientInformation.objects.all()
+                context['sort_by'] = ''
             context['object'] = patient
             context['surgery'] = surgery
+            context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
+            if patient.count() == 1:
+                context['object_name'] = 'Patient'
+            else:
+                context['object_name'] = 'Patients'
 
     if request.POST:
         form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)

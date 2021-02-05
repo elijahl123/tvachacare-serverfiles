@@ -14,10 +14,31 @@
     border-style: solid;
     border-radius: 3px;
 }
+
 .edit-icon {
     color: white;
     margin-top: 5px;
     margin-right: 0px !important;
     margin-left: 2px;
     margin-bottom: 5px;
+}
+
+.patient-toolbar {
+    margin-bottom: 15px;
+    background-color: whitesmoke;
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: Raleway, sans-serif;
+}
+
+.patient-badge {
+    padding: .375rem .75rem;
+    border-radius: .25rem;
+    color: white;
+    font-weight: bold;
+}
+
+.patient-dropdown-menu {
+    max-height: 150px;
+    border: none;
 }

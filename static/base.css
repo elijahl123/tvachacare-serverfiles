@@ -62,6 +62,20 @@
     font-weight: bold;
 }
 
+.btn-transparent-tvachacare {
+    background: rgba(252, 156, 52, 0.14);
+    color: rgb(252, 156, 52);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-tvachacare:hover {
+    color: white;
+    background: rgb(252, 156, 52);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
 html, body {
     height: 100%;
     width: 100%;
