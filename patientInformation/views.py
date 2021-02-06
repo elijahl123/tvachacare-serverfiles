@@ -578,14 +578,14 @@ def patient_page(request, slug):
                           'patient_image',
                           'injury_image',
                           'uploaded',
-                          'date_of_uploaded',
                           'age',
                           'gender',
                           'patient_record_number',
                           'phone_number',
                           'surgeryinformation',
                           'slug',
-                          'telephone_number'
+                          'telephone_number',
+                          'date_of_birth'
                           ]
     fields = [field for field in PatientInformation._meta.get_fields() if field.name not in highlighted_fields]
     fields_tuple = []
