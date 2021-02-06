@@ -104,7 +104,7 @@
                                     style="margin-bottom: 10px;font-weight: bold;font-family: Raleway, sans-serif;">
                                 Email Story
                             </button>
-                            {% if not account.can_approve %}
+                            {% if not account.group.can_approve %}
                                 <a class="btn btn-block btn-transparent-success"
                                    href="{% url 'edit_patient' patient.slug %}" role="button"
                                    style="margin-bottom: 10px;font-weight: bold;font-family: Raleway, sans-serif;">Edit</a>
@@ -191,7 +191,7 @@
                                 </div>
                             </a>
                         {% endfor %}
-                        {% if not account.can_approve %}
+                        {% if not account.group.can_approve %}
                             <a href="{% url 'add_surgery' patient.slug %}"
                                class="btn btn-transparent-tvachacare btn-lg btn-block" style="margin-top: 15px">
                                 <i class="fa fa-plus"></i>
