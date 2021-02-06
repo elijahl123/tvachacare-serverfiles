@@ -62,11 +62,13 @@
                             <img src="
 
 
+
                                     {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
                                  style="object-fit: cover;width: 100%;border-radius: 8px;"/>
                         </div>
                         <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
                             <img src="
+
 
 
                                     {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
@@ -178,12 +180,13 @@
                                     <img class="img-fluid" src="
 
 
+
                                             {% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                          style="width: 30%;border-radius: 8px;"/>
                                     <div style="margin-left: 1rem;width: 100%;">
                                         <h4 style="font-weight: bold;color: var(--dark)">ID #{{ surgeries.id }}</h4>
                                         <hr style="margin: 8px 0;"/>
-                                        <h6 style="font-family: 'Open Sans', sans-serif;color: var(--secondary);font-weight: bold;">{{ surgeries.date_of_upload }}</h6>
+                                        <h6 style="font-family: 'Open Sans', sans-serif;color: var(--secondary);font-weight: bold;">{{ surgeries.date_of_surgery|default_if_none:'' }}</h6>
                                     </div>
                                 </div>
                             </a>
