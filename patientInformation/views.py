@@ -527,14 +527,7 @@ def logout(request):
 @login_required
 @terms_required
 def patient_page(request, slug):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
-    context['account'] = account
+    context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
     event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
@@ -579,7 +572,36 @@ def patient_page(request, slug):
 
     context['form'] = form
     context['patient'] = patient
-    context['surgery'] = surgery
+    highlighted_fields = ['first_name',
+                          'middle_name',
+                          'last_name',
+                          'patient_image',
+                          'injury_image',
+                          'uploaded',
+                          'date_of_uploaded',
+                          'age',
+                          'gender',
+                          'patient_record_number',
+                          'phone_number',
+                          'surgeryinformation',
+                          'slug'
+                          ]
+    fields = [field for field in PatientInformation._meta.get_fields() if field.name not in highlighted_fields]
+    fields_tuple = []
+
+    for field in fields:
+        fields_tuple.append((field.name.replace('_', ' ').capitalize(), getattr(patient, field.name)))
+
+    context['fields'] = fields_tuple
+
+    surgery_tuple = []
+
+    for surgeries in surgery:
+        try:
+            surgery_tuple.append((surgeries, Image.objects.filter(surgery=surgeries)[0]))
+        except IndexError:
+            surgery_tuple.append((surgeries, None))
+    context['surgery'] = surgery_tuple
     return render(request, 'patient_page.html', context)
 
 

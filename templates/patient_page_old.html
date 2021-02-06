@@ -1,0 +1,488 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <style>
+        #view-images:hover {
+            color: white !important;
+            background-color: var(--accent-color);
+            transition-duration: 0.3s !important;
+        }
+
+        #view-images {
+            transition-duration: 0.2s !important;
+        }
+
+        .display-none {
+            display: none !important;
+        }
+
+        @media print {
+            body button {
+                display: none !important;
+            }
+
+            footer {
+                display: none !important;
+            }
+
+            .images {
+                flex-direction: row !important;
+            }
+
+            nav {
+                display: none !important;
+            }
+
+            .highlighted-row, .information-container {
+                flex-direction: row !important;
+            }
+
+            .information {
+                justify-content: flex-start !important;
+                width: 50% !important;
+                padding: 0 !important;
+            }
+
+            .information-text {
+                justify-content: flex-start !important;
+                width: 50% !important;
+                padding: 0 !important;
+            }
+
+            h3 {
+                font-size: 20px !important;
+            }
+
+            .information-text p {
+                font-size: 20px !important;
+            }
+
+            .highlighted-row {
+                margin: 0 !important;
+            }
+
+            h1 {
+                margin: 0 !important;
+            }
+
+            .header-row {
+                margin: 0 !important;
+            }
+
+            .highlighted-column {
+                padding: 0 !important;
+                height: 5px !important;
+                font-size: 25px !important;
+            }
+        }
+
+    </style>
+    <title>{{ patient }}</title>
+{% endblock %}
+{% block content %}
+    <div class="justify-content-center align-items-center delete-patient display-none"
+         style="display: flex;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
+        <div class="d-flex flex-column"
+             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0 0 5px 0 var(--accent-color);">
+            <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
+                Are
+                you sure?</h1>
+            <div role="group" class="btn-group">
+                <button class="btn btn-secondary" type="button" onclick="closeMenu()"
+                        style="border-radius: 5px;margin: 3px;">Cancel
+                </button>
+                <a class="btn btn-danger d-print-none" role="button" style="border-radius: 5px;margin: 3px;"
+                   href="{% url 'delete_patient' patient.slug %}">Delete</a>
+            </div>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center display-none"
+         style="overflow: auto;z-index: 99999;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);filter: blur(0px);"
+         id="email-story">
+        <form class="d-flex flex-column justify-content-center" method="post" enctype="multipart/form-data"
+              style="overflow: auto;max-height: 100vh;background-color: white;padding: 50px;border-radius: 5px;max-width: 600px;width: 100%;position: relative;">
+            {% csrf_token %}
+            <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;text-align: center;">
+                Email Story</h1>
+            <p style="color: var(--main-color); text-align: center">Separate email recipients by commas</p>
+            <input type="text" class="form-control" name="to" placeholder="To" required
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="cc" placeholder="Cc"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="bcc" placeholder="Bcc"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="name" required placeholder="Your Name"
+                   style="font-size: 20px;margin-bottom: 5px;"/>
+            <input type="text" class="form-control" name="title" placeholder="Title" style="font-size: 20px;" required/>
+            <textarea class="form-control" name="message" placeholder="Other Info..."
+                      style="margin: 10px 0;font-size: 20px;"></textarea>
+            <div role="group" class="btn-group">
+                <button class="btn btn-secondary" onclick="closeStory()" type="button"
+                        style="border-radius:5px;margin: 0 2.5px;">Cancel
+                </button>
+                <button class="btn btn-success" type="submit" style="margin: 0 2.5px;border-radius: 5px;">Send Email
+                </button>
+            </div>
+        </form>
+    </div>
+    <main>
+        <div class="container d-flex d-xl-flex flex-column justify-content-center align-items-center align-items-xl-center"
+             style="font-family: Raleway, sans-serif;padding: 30px 50px;background-color: white;">
+            <div class="row d-print-none" style="width: 100%;margin-bottom: 10px;">
+                <div class="col d-flex justify-content-center justify-content-md-center justify-content-lg-end justify-content-xl-end"
+                     style="width: 100%;">
+                    <div class="dropdown">
+                        <button class="btn d-flex justify-content-center align-items-center" data-toggle="dropdown"
+                                aria-expanded="false" type="button" style="color: white;background: var(--main-color);">
+                            <i
+                                    class="fas material-icons-round" style="font-size: 25px;">menu</i></button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="openMenu()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="material-icons-round" style="color: red;margin-right: 10px;font-size: 20px;">delete</i>Delete
+                                Patient
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="window.print()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="material-icons-round"
+                                   style="color: dodgerblue;margin-right: 10px;font-size: 20px;">print</i>Print
+                            </a>
+                            <a class="dropdown-item d-flex align-items-center" href="#" onclick="openStory()"
+                               style="font-family: 'Open Sans', sans-serif;">
+                                <i class="material-icons-round"
+                                   style="color: var(--main-color);margin-right: 10px;font-size: 20px;">mail</i>Email
+                                Story
+                            </a>
+                            {% if account.group.can_edit_patients %}
+                                <a class="dropdown-item d-flex align-items-center"
+                                   href="{% url 'edit_patient' patient.slug %}"
+                                   style="font-family: 'Open Sans', sans-serif;">
+                                    <i class="material-icons-round"
+                                       style="color: var(--main-color);margin-right: 10px;font-size: 20px;">create</i>Edit
+                                    Patient
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row d-flex flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row images"
+                 style="width: 100%;height: 500px;">
+                <div class="col d-flex flex-column justify-content-center align-items-center"
+                     style="overflow: hidden;height: 500px;">
+                    {% if patient.patient_image %}
+                        <img src="{{ patient.patient_image.url }}" loading="lazy" style="width: 100%;"
+                             alt="Patient Image"/>
+                    {% else %}
+                        <img src="{% static 'img/placeholder_patient.png' %}" style="width: 100%;" alt="Patient Image"/>
+                    {% endif %}
+                </div>
+                <div class="col d-flex flex-column justify-content-center align-items-center"
+                     style="overflow: hidden;height: 500px;">
+                    {% if patient.injury_image %}
+                        <img src="{{ patient.injury_image.url }}" loading="lazy" style="width: 100%;"
+                             alt="Patient Image"/>
+                    {% else %}
+                        <img src="{% static 'img/placeholder_injury.png' %}" style="width: 100%;" alt="Injury Image"/>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row justify-content-center header-row" style="margin-top: 20px;width: 85%;">
+                <div class="col-lg-12 col-xl-12">
+                    {% if patient.middle_name %}
+                        <h1 class="text-center heading-patient"
+                            style="font-family: Raleway, sans-serif;color: var(--main-color);margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.middle_name }} {{ patient.last_name }}</h1>
+                    {% else %}
+                        <h1 class="text-center heading-patient"
+                            style="font-family: Raleway, sans-serif;color: var(--main-color);margin-bottom: 25px;font-weight: bold;font-size: 45px;">{{ patient.first_name }} {{ patient.last_name }}</h1>
+                    {% endif %}
+                </div>
+            </div>
+            <div style="width: 100%; overflow-x: auto;">
+                <div class="row flex-md-row flex-lg-row flex-xl-row highlighted-row"
+                     style="min-width:860px;width: 100%;margin: auto auto 20px;color: white">
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px 0px #505e6c;">
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">qr_code</i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Patient Record Number</h1>
+                        <h1 class="text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;width: 100%;">
+                            {{ patient.patient_record_number }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">today</i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Date of Birth</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.date_of_birth }}</h1>
+                    </div>
+                    <div class="col d-flex flex-column justify-content-center align-items-center highlighted-column"
+                         style="height: 186px !important;margin: 5px;padding: 35px 10px;border-radius: 7px;background-color: var(--accent-color);box-shadow: inset 0px 0px 10px #505e6c;">
+                        <i class="material-icons-round d-print-none" style="font-size: 35px;">schedule</i>
+                        <h1 class="text-center"
+                            style="font-family: Raleway, sans-serif;font-size: 18px;margin-top: 8px;">
+                            Age</h1>
+                        <h1 class="text-break text-center"
+                            style="font-family: 'Open Sans', sans-serif;font-weight: bold;font-size: 30px;">{{ patient.age }}</h1>
+                    </div>
+                </div>
+            </div>
+            {% if patient.gender %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Gender</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.gender }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.address %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Address</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.address }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.telephone_number %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Telephone Number</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.telephone_number }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.parents %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parents</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.parents }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.relationship %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke;">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Relationship</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.relationship }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.parent_occupation %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Parent Occupation</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.parent_occupation }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.diagnosis %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Diagnosis</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.diagnosis }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.weight %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Weight</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.weight }}kg</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.height %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Height</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.height }}cm</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.burn_injury %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Burn Injury</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.burn_injury }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.cleft_injury %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Cleft Injury</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.cleft_injury }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.hand_injury %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Hand Injury</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.hand_injury }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.prior_surgery %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Prior Surgery</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.prior_surgery }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if patient.story %}
+                <div class="row information-container"
+                     style="width: 100%;margin-bottom: 15px;background-color: whitesmoke">
+                    <div class="information col d-flex justify-content-center align-items-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="background-color: var(--main-color);border-radius: 5px;padding: 15px 20px;">
+                        <h3 style="color: white;font-weight: bold;margin-bottom: 0;">Story</h3>
+                    </div>
+                    <div class="information-text col-xl-8 d-flex justify-content-center align-content-center justify-content-sm-center justify-content-md-start justify-content-lg-start justify-content-xl-start"
+                         style="padding: 15px 20px;">
+                        <p class="lead"
+                           style="color: #444;font-family: 'Open Sans', sans-serif;font-weight: normal;margin-bottom: 0;font-style: normal;font-size: 25px;">
+                            {{ patient.story }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% if account.group != 'Approver' %}
+                <div class="row surgeries d-print-none"
+                     style="margin-top: 20px;border-style: solid;border-color: var(--main-color);border-radius: 7px;width: 100%;">
+                    <div class="col d-flex flex-column justify-content-center align-items-center">
+                        <h1 class="text-center" style="color: var(--main-color);font-size: 30px;margin-bottom: 5px;">
+                            Surgeries</h1>
+                        <nav>
+                            <ul class="pagination">
+                                {% for surgery in surgery %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="{% url 'surgery_page' patient.slug surgery.id %}"
+                                                             style="color: white;background-color: var(--main-color);">{{ forloop.counter }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{% url 'add_surgery' patient.slug %}"
+                                       style="color: white;background-color: var(--main-color);"
+                                       aria-label="Next"><span aria-hidden="true">+</span></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+    <script>
+        function openStory() {
+            $('#email-story').removeClass('display-none');
+        }
+
+        function closeStory() {
+            $('#email-story').addClass('display-none');
+        }
+
+        function openMenu() {
+            $('.delete-patient').removeClass('display-none');
+        }
+
+        function closeMenu() {
+            $('.delete-patient').addClass('display-none')
+        }
+    </script>
+{% endblock %}

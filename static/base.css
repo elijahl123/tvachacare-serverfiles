@@ -62,6 +62,20 @@
     font-weight: bold;
 }
 
+.btn-transparent-success:hover {
+    color: white;
+    background: rgb(40, 167, 69);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-danger:hover {
+    color: white;
+    background: rgb(220, 53, 69);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
 .btn-transparent-tvachacare {
     background: rgba(252, 156, 52, 0.14);
     color: rgb(252, 156, 52);
@@ -72,6 +86,34 @@
 .btn-transparent-tvachacare:hover {
     color: white;
     background: rgb(252, 156, 52);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-primary {
+    background: rgba(0, 123, 255, 0.14);
+    color: rgb(0, 123, 255);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-primary:hover {
+    color: white;
+    background: rgb(0, 123, 255);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-secondary {
+    background: rgba(108, 117, 125, 0.14);
+    color: rgb(108, 117, 125);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
+}
+
+.btn-transparent-secondary:hover {
+    color: white;
+    background: rgb(108, 117, 125);
     font-family: Raleway, sans-serif;
     font-weight: bold;
 }

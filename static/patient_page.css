@@ -1,0 +1,8 @@
+.surgery-card:hover {
+    background: #ececec !important;
+    transition-duration: 0.2s;
+}
+
+.surgery-card {
+    transition-duration: 0.2s;
+}
