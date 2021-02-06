@@ -61,11 +61,13 @@
                         <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
                             <img src="
 
+
                                     {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
                                  style="object-fit: cover;width: 100%;border-radius: 8px;"/>
                         </div>
                         <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
                             <img src="
+
 
                                     {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
                                  style="object-fit: cover;width: 100%;border-radius: 8px;"/>
@@ -145,21 +147,24 @@
                                 <h3 style="font-weight: bold;color: var(--dark);text-align: center;">Uploaded:</h3>
                                 <div class="d-flex flex-column justify-content-center align-items-center"
                                      style="font-family: Raleway, sans-serif;padding: 1rem;width: 150px;height: 150px;color: var(--secondary);background: rgba(108,117,125,0.14);border-radius: 1rem;">
-                                    <h4 style="font-weight: bold;margin: 0;">October</h4>
-                                    <h1 style="font-weight: bold;margin: 0;">12</h1>
-                                    <h4 style="font-weight: bold;margin: 0;">2020</h4>
+                                    <h4 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'M' }}</h4>
+                                    <h1 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'d' }}</h1>
+                                    <h4 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'Y' }}</h4>
                                 </div>
                             </div>
-                            <div class="col col-12 d-flex flex-column justify-content-around align-items-center"
-                                 style="font-family: Raleway, sans-serif;padding: 1rem 0;">
-                                <h3 style="font-weight: bold;color: var(--dark);text-align: center;">Date of Birth:</h3>
-                                <div class="d-flex flex-column justify-content-center align-items-center"
-                                     style="font-family: Raleway, sans-serif;padding: 1rem;width: 150px;height: 150px;color: var(--success);background: rgba(40,167,69,0.14);border-radius: 1rem;">
-                                    <h4 style="font-weight: bold;margin: 0;">January</h4>
-                                    <h1 style="font-weight: bold;margin: 0;">02</h1>
-                                    <h4 style="font-weight: bold;margin: 0;">2003</h4>
+                            {% if patient.date_of_birth %}
+                                <div class="col col-12 d-flex flex-column justify-content-around align-items-center"
+                                     style="font-family: Raleway, sans-serif;padding: 1rem 0;">
+                                    <h3 style="font-weight: bold;color: var(--dark);text-align: center;">Date of
+                                        Birth:</h3>
+                                    <div class="d-flex flex-column justify-content-center align-items-center"
+                                         style="font-family: Raleway, sans-serif;padding: 1rem;width: 150px;height: 150px;color: var(--success);background: rgba(40,167,69,0.14);border-radius: 1rem;">
+                                        <h4 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'M' }}</h4>
+                                        <h1 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'d' }}</h1>
+                                        <h4 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'Y' }}</h4>
+                                    </div>
                                 </div>
-                            </div>
+                            {% endif %}
                         </div>
                         <hr/>
                         <h1 style="font-family: Raleway, sans-serif;font-weight: bold;color: var(--dark);margin-left: 1rem;">
@@ -171,6 +176,7 @@
                                 <div class="col d-flex align-items-center"
                                      style="padding: 1rem;font-family: Raleway, sans-serif;">
                                     <img class="img-fluid" src="
+
 
                                             {% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                          style="width: 30%;border-radius: 8px;"/>
