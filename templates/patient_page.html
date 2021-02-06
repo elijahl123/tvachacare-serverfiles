@@ -60,17 +60,11 @@
                     <div class="row" style="height: 100%;">
                         <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
                             <img src="
-
-
-
                                     {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
                                  style="object-fit: cover;width: 100%;border-radius: 8px;"/>
                         </div>
                         <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
                             <img src="
-
-
-
                                     {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
                                  style="object-fit: cover;width: 100%;border-radius: 8px;"/>
                         </div>
@@ -125,11 +119,11 @@
                             {% if value %}
                                 <div class="row no-gutters"
                                      style="font-family: Raleway, sans-serif;border-radius: 8px;background: whitesmoke;margin: 0.5rem 0;">
-                                    <div class="col d-flex align-items-center"
+                                    <div class="col col-12 col-lg-6 d-flex align-items-center"
                                          style="color: white;background: rgb(252,156,52);border-radius: 8px;">
                                         <h2 style="margin: 1rem;font-weight: bold;">{{ field }}</h2>
                                     </div>
-                                    <div class="col d-flex align-items-center">
+                                    <div class="col col-12 col-lg-6 d-flex align-items-center">
                                         <h2 style="margin: 1rem;font-weight: normal;color: var(--dark);font-family: 'Open Sans', sans-serif;">{{ value }}</h2>
                                     </div>
                                 </div>
@@ -178,9 +172,6 @@
                                 <div class="col d-flex align-items-center"
                                      style="padding: 1rem;font-family: Raleway, sans-serif;">
                                     <img class="img-fluid" src="
-
-
-
                                             {% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                          style="width: 30%;border-radius: 8px;"/>
                                     <div style="margin-left: 1rem;width: 100%;">
