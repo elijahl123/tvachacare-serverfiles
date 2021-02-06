@@ -9,7 +9,7 @@
         $(document).ready(function () {
             $('.search-patients').on('keyup', function () {
                 let information = $(this).val().toLowerCase();
-                $('.list-group .patient-list').filter(function () {
+                $('.patient-list:nth-child(2n + 1)').filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(information) > -1)
                 });
             });
@@ -267,7 +267,7 @@
                                      style="position:relative; width: 100%; display: flex; align-items: center; margin: 20px 0">
                                     <i class="fas fa-search search-icon"
                                        style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
-                                    <input class="form-control search-patients" id="searchbar-nav"
+                                    <input class="form-control search-patients" autocomplete="off" id="searchbar-nav"
                                            onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
                                            onfocusout="$('.search-icon').css('color', 'white')"
                                            placeholder="Search for patients..." name="search">
@@ -496,7 +496,7 @@
                                                         <ul class="list-group w-100">
                                                             {% for surgeries in surgery %}
                                                                 {% if surgeries.patient == patients %}
-                                                                    <li class="list-group-item  patient-list"
+                                                                    <li class="list-group-item"
                                                                         style="display: flex; justify-content: space-between; align-items: center">
                                                                         <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
                                                                            class='patient-name'>ID
