@@ -26,7 +26,7 @@
 .patient-toolbar {
     margin-bottom: 15px;
     background-color: whitesmoke;
-    padding: 1rem;
+    padding: 0;
     border-radius: 8px;
     font-family: Raleway, sans-serif;
 }
@@ -41,4 +41,10 @@
 .patient-dropdown-menu {
     max-height: 150px;
     border: none;
+}
+
+@media (max-width: 992px) {
+    .current-badge {
+        margin: 15px
+    }
 }
