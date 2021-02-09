@@ -533,43 +533,45 @@ def patient_page(request, slug):
     event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
     event = EventLog(user=request.user.email, event_type='Patient Viewed', notes=event_notes)
     event.save()
-    form = EmailForm(request.POST or None)
-    if form.is_valid():
-        to = request.POST.get('to')
-        cc = request.POST.get('cc')
-        bcc = request.POST.get('bcc')
-        from_email = request.POST.get('name') + ' <contact@tvachacare.com>'
-        title = str(request.POST.get('title'))
-        if patient.story:
-            story = patient.story
-        else:
-            story = ''
-        message = request.POST.get('message')
-        plain_text = str(story + message)
-        to = to.split(',')
-        cc = cc.split(',')
-        bcc = bcc.split(',')
-        html_message = str('<main style="width: 90%;background-color: white;padding: 50px;"><h1 style="color: ' +
-                           '#fc9c34;font-family: Raleway, sans-serif;font-weight: bold;">' + patient.first_name + ' ' +
-                           patient.last_name + '</h1><p style="color: #fc9c34;">' + story +
-                           '</p><p style="color: #fc9c34;">' + message + '</p></main>')
-        email = EmailMessage(
-            subject=title,
-            body=html_message,
-            to=to,
-            cc=cc,
-            bcc=bcc,
-            from_email=from_email,
-        )
-        email.content_subtype = 'html'
-        if patient.patient_image:
-            response = requests.get(request.build_absolute_uri(patient.patient_image.url))
-            email.attach(patient.patient_image.name, response.content, mimetype='image/*')
-        if patient.injury_image:
-            response = requests.get(request.build_absolute_uri(patient.injury_image.url))
-            email.attach(patient.injury_image.name, response.content, mimetype='image/*')
-        email.send()
-
+    if request.POST:
+        form = EmailForm(request.POST or None)
+        if form.is_valid():
+            to = request.POST.get('to')
+            cc = request.POST.get('cc')
+            bcc = request.POST.get('bcc')
+            from_email = request.POST.get('name') + ' <contact@tvachacare.com>'
+            title = str(request.POST.get('title'))
+            if patient.story:
+                story = patient.story
+            else:
+                story = ''
+            message = request.POST.get('message')
+            plain_text = str(story + message)
+            to = to.split(',')
+            cc = cc.split(',')
+            bcc = bcc.split(',')
+            html_message = str('<main style="width: 90%;background-color: white;padding: 50px;"><h1 style="color: ' +
+                               '#fc9c34;font-family: Raleway, sans-serif;font-weight: bold;">' + patient.first_name + ' ' +
+                               patient.last_name + '</h1><p style="color: #fc9c34;">' + story +
+                               '</p><p style="color: #fc9c34;">' + message + '</p></main>')
+            email = EmailMessage(
+                subject=title,
+                body=html_message,
+                to=to,
+                cc=cc,
+                bcc=bcc,
+                from_email=from_email,
+            )
+            email.content_subtype = 'html'
+            if patient.patient_image:
+                response = requests.get(request.build_absolute_uri(patient.patient_image.url))
+                email.attach(patient.patient_image.name, response.content, mimetype='image/*')
+            if patient.injury_image:
+                response = requests.get(request.build_absolute_uri(patient.injury_image.url))
+                email.attach(patient.injury_image.name, response.content, mimetype='image/*')
+            email.send()
+    else:
+        form = EmailForm()
     context['form'] = form
     context['patient'] = patient
     highlighted_fields = ['first_name',
@@ -581,11 +583,8 @@ def patient_page(request, slug):
                           'age',
                           'gender',
                           'patient_record_number',
-                          'phone_number',
                           'surgeryinformation',
-                          'slug',
-                          'telephone_number',
-                          'date_of_birth'
+                          'slug'
                           ]
     fields = [field for field in PatientInformation._meta.get_fields() if field.name not in highlighted_fields]
     fields_tuple = []

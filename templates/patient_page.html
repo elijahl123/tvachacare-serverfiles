@@ -53,142 +53,126 @@
             </div>
         </form>
     </div>
-    <main style="min-height: 100vh;background: white;">
-        <div class="container-fluid" style="background: white; padding: 0 2rem">
-            <div class="row">
-                <div class="col col-12 col-lg-4 col-xl-3">
-                    <div class="row" style="height: 100%;">
-                        <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
-                            <img src="
-                                    {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
-                                 style="object-fit: cover;width: 100%;border-radius: 8px;"/>
-                        </div>
-                        <div class="col d-flex justify-content-center align-items-center" style="padding: 15px;">
-                            <img src="
-                                    {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
-                                 style="object-fit: cover;width: 100%;border-radius: 8px;"/>
-                        </div>
+    <main style="min-height: 100vh;font-family: Raleway, sans-serif;background: #fc9c34;padding: 15px;">
+        <div class="container" style="background: white;border-radius: 8px;padding: 15px;">
+            <div class="row no-gutters" style="margin-bottom: 1rem;">
+                <div class="col" style="padding: 1rem;">
+                    <div style="padding-top: 100%;
+                            background: url('
+                            {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                </div>
+                <div class="col" style="padding: 1rem;">
+                    <div style="padding-top: 100%;
+                            background: url('
+                            {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                </div>
+            </div>
+            <div class="row no-gutters" style="margin-bottom: 1rem;">
+                <div class="col d-flex justify-content-center" style="font-size: 45px;font-weight: bold;">
+                    <a class="name-card" href="{% url 'patient_page' patient.slug %}"
+                       style="text-decoration: none;color: #fc9c34;padding: 10px;border-radius: 8px;">
+                        <h1 style="margin: 0;font-size: 45px;font-weight: bold;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</h1>
+                    </a>
+                </div>
+            </div>
+            <div class="row no-gutters justify-content-center" style="margin: 8px;">
+                <div class="col col-12 col-lg-3" style="padding: 10px;">
+                    <button class="btn btn-block btn-transparent-primary" onclick="window.print()" type="button">Print
+                    </button>
+                </div>
+                <div class="col col-12 col-lg-3" style="padding: 10px;">
+                    <button class="btn btn-block btn-transparent-secondary" onclick="openStory()" type="button">Email
+                        Story
+                    </button>
+                </div>
+                {% if account.group.can_add_patients %}
+                    <div class="col col-12 col-lg-3" style="padding: 10px;">
+                        <a href="{% url 'edit_patient' patient.slug %}" class="btn btn-block btn-transparent-success"
+                           rolw="button">Edit</a>
+                    </div>
+                    <div class="col col-12 col-lg-3" style="padding: 10px;">
+                        <button onclick="openMenu()" class="btn btn-block btn-transparent-danger" type="button">Delete
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="row no-gutters" style="margin-bottom: 1rem;">
+                <div class="col col-12 col-lg-4" style="padding: 0.5rem;">
+                    <div class="d-flex flex-column justify-content-around"
+                         style="padding: 1.5rem;color: rgb(255,255,255);background: slategray;border-radius: 8px;height: 100%;">
+                        <i class="fas fa-qrcode" style="font-size: 25px;text-align: center;margin-bottom: 8px;"></i>
+                        <h4 style="text-align: center;font-family: Raleway, sans-serif;">Patient Record Number</h4>
+                        <h2 style="text-align: center;font-weight: bold;">{{ patient.patient_record_number }}</h2>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="row" style="height: 100%;">
-                        <div class="col d-flex flex-column justify-content-center align-items-center align-items-lg-start"
-                             style="padding: 25px;font-family: Raleway, sans-serif;color: slategray;">
-                            <h1 class="text-center text-lg-left" style="font-weight: bold;color: var(--dark);">
-                                <span style="margin-right: 15px;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</span>
-                                {% if patient.age %}
-                                    <span style="color: gray;font-weight: normal;margin-right: 15px;">|</span>
-                                    <span style="margin-right: 15px;">{{ patient.age }}</span>
-                                {% endif %}
-                                {% if patient.gender %}
-                                    <span style="color: gray;font-weight: normal;margin-right: 15px;">|</span>
-                                    <span style="margin-right: 15px;">{{ patient.gender }}</span>
-                                {% endif %}
-                            </h1>
-                            <h3 style="font-weight: bold;">{{ patient.patient_record_number|default_if_none:'' }}</h3>
-                            <h3 style="font-weight: bold;">{{ patient.telephone_number|default_if_none:'' }}</h3>
-                        </div>
-                        <div class="col d-flex flex-column justify-content-center align-items-center col-12 col-lg-3"
-                             style="padding: 15px;">
-                            <button class="btn btn-block btn-transparent-primary" type="button" onclick="window.print()"
-                                    style="margin-bottom: 10px;font-weight: bold;font-family: Raleway, sans-serif;">
-                                Print
-                            </button>
-                            <button class="btn btn-block btn-transparent-secondary" type="button" onclick="openStory()"
-                                    style="margin-bottom: 10px;font-weight: bold;font-family: Raleway, sans-serif;">
-                                Email Story
-                            </button>
-                            {% if not account.group.can_approve %}
-                                <a class="btn btn-block btn-transparent-success"
-                                   href="{% url 'edit_patient' patient.slug %}" role="button"
-                                   style="margin-bottom: 10px;font-weight: bold;font-family: Raleway, sans-serif;">Edit</a>
-                                <button class="btn btn-block btn-transparent-danger" type="button" onclick="openMenu()"
-                                        style="font-weight: bold;font-family: Raleway, sans-serif;">Delete
-                                </button>
-                            {% endif %}
-                        </div>
+                <div class="col col-12 col-lg-4" style="padding: 0.5rem;">
+                    <div class="d-flex flex-column justify-content-around"
+                         style="padding: 1.5rem;color: rgb(255,255,255);background: slategray;border-radius: 8px;height: 100%;">
+                        <i class="fas fa-venus-mars" style="font-size: 25px;text-align: center;margin-bottom: 8px;"></i>
+                        <h4 style="text-align: center;font-family: Raleway, sans-serif;">Gender</h4>
+                        <h2 style="text-align: center;font-weight: bold;">{{ patient.gender|default:'None' }}</h2>
+                    </div>
+                </div>
+                <div class="col col-12 col-lg-4" style="padding: 0.5rem;">
+                    <div class="d-flex flex-column justify-content-around"
+                         style="padding: 1.5rem;color: rgb(255,255,255);background: slategray;border-radius: 8px;height: 100%;">
+                        <i class="far fa-clock" style="font-size: 25px;text-align: center;margin-bottom: 8px;"></i>
+                        <h4 style="text-align: center;font-family: Raleway, sans-serif;">Age</h4>
+                        <h2 style="text-align: center;font-weight: bold;">{{ patient.age }}</h2>
                     </div>
                 </div>
             </div>
-            <hr/>
-            <div class="row">
-                <div class="col" style="padding: 15px;">
-                    <div class="overflow-auto"
-                         style="height: 100%;border-radius: 8px;max-height: calc(100vh - 320px);padding: 1rem;border: 1px solid #dfe1e5;">
-                        {% for field, value in fields %}
-                            {% if value %}
-                                <div class="row no-gutters"
-                                     style="font-family: Raleway, sans-serif;border-radius: 8px;background: whitesmoke;margin: 0.5rem 0;">
-                                    <div class="col col-12 col-lg-6 d-flex align-items-center"
-                                         style="color: white;background: rgb(252,156,52);border-radius: 8px;">
-                                        <h2 style="margin: 1rem;font-weight: bold;">{{ field }}</h2>
-                                    </div>
-                                    <div class="col col-12 col-lg-6 d-flex align-items-center">
-                                        <h2 style="margin: 1rem;font-weight: normal;color: var(--dark);font-family: 'Open Sans', sans-serif;">{{ value }}</h2>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                </div>
-
-                <!-- DIVIDER -->
-
-                <div class="col col-12 col-xl-5 col-lg-6" style="padding: 15px;">
-                    <div class="overflow-auto"
-                         style="height: 100%;border-radius: 8px;padding: 1rem;max-height: calc(100vh - 320px);border:1px solid #dfe1e5">
-                        <div class="row no-gutters">
-                            <div class="col col-12 d-flex flex-column justify-content-around align-items-center"
-                                 style="font-family: Raleway, sans-serif;padding: 1rem 0;">
-                                <h3 style="font-weight: bold;color: var(--dark);text-align: center;">Uploaded:</h3>
-                                <div class="d-flex flex-column justify-content-center align-items-center"
-                                     style="font-family: Raleway, sans-serif;padding: 1rem;width: 150px;height: 150px;color: var(--secondary);background: rgba(108,117,125,0.14);border-radius: 1rem;">
-                                    <h4 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'M' }}</h4>
-                                    <h1 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'d' }}</h1>
-                                    <h4 style="font-weight: bold;margin: 0;">{{ patient.uploaded|date:'Y' }}</h4>
-                                </div>
-                            </div>
-                            {% if patient.date_of_birth %}
-                                <div class="col col-12 d-flex flex-column justify-content-around align-items-center"
-                                     style="font-family: Raleway, sans-serif;padding: 1rem 0;">
-                                    <h3 style="font-weight: bold;color: var(--dark);text-align: center;">Date of
-                                        Birth:</h3>
-                                    <div class="d-flex flex-column justify-content-center align-items-center"
-                                         style="font-family: Raleway, sans-serif;padding: 1rem;width: 150px;height: 150px;color: var(--success);background: rgba(40,167,69,0.14);border-radius: 1rem;">
-                                        <h4 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'M' }}</h4>
-                                        <h1 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'d' }}</h1>
-                                        <h4 style="font-weight: bold;margin: 0;">{{ patient.date_of_birth|date:'Y' }}</h4>
-                                    </div>
-                                </div>
-                            {% endif %}
+            {% for field, value in fields %}
+                {% if value %}
+                    <div class="row no-gutters flex-column flex-lg-row"
+                         style="border-radius: 8px;background: whitesmoke;margin: 8px 8px 1rem 8px">
+                        <div class="col d-flex align-items-center"
+                             style="border-radius: 8px;background: #fc9c34;padding: 1rem;">
+                            <h3 style="margin: 0;font-weight: bold;color: white;">{{ field }}</h3>
                         </div>
-                        <hr/>
-                        <h1 style="font-family: Raleway, sans-serif;font-weight: bold;color: var(--dark);margin-left: 1rem;">
-                            Surgeries</h1>
-                        {% for surgeries, image in surgery %}
-                            <a href="{% url 'surgery_page' patient.slug surgeries.id %}"
-                               class="row no-gutters surgery-card"
-                               style="background: whitesmoke;border-radius: 8px;margin-top: 1rem;">
-                                <div class="col d-flex align-items-center"
-                                     style="padding: 1rem;font-family: Raleway, sans-serif;">
-                                    <img class="img-fluid" src="
-                                            {% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
-                                         style="width: 30%;border-radius: 8px;"/>
-                                    <div style="margin-left: 1rem;width: 100%;">
-                                        <h4 style="font-weight: bold;color: var(--dark)">ID #{{ surgeries.id }}</h4>
-                                        <hr style="margin: 8px 0;"/>
-                                        <h6 style="font-family: 'Open Sans', sans-serif;color: var(--secondary);font-weight: bold;">{{ surgeries.date_of_surgery|default_if_none:'' }}</h6>
+                        <div class="col d-flex align-items-center" style="padding: 1rem;">
+                            <h3 style="margin: 0;color: var(--dark);font-family: 'Open Sans', sans-serif;">{{ value }}<br/>
+                            </h3>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            <div class="row no-gutters" style="padding: 15px;">
+                <div class="col">
+                    <h1 style="margin-bottom: 0;font-weight: bold;color: #fc9c34;">Surgeries</h1>
+                    <hr/>
+                    <div class="row no-gutters" style="margin-bottom: 1rem">
+                        {% for surgery, image in surgery %}
+                            <a href="{% url 'surgery_page' patient.slug surgery.id %}" class="col col-12 col-lg-4"
+                               style="border-radius: 8px;padding: 5px;">
+                                <div class="d-flex flex-column justify-content-between surgery-card"
+                                     style="padding: 1rem;height: 100%;border-radius: 8px;background: whitesmoke;">
+                                    <div class="d-flex justify-content-center align-items-center"
+                                         style="height: 100%;padding-top: 51%;margin: 1rem;
+                                                 background: url('
+                                                 {% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}') center / contain no-repeat, rgb(225,225,225);border-radius: 8px;"></div>
+                                    <div class="justify-content-around">
+                                        <h3 style="font-weight: bold;margin: 0;color: #fc9c34;text-align: center;">
+                                            Surgery #{{ surgery.id }}</h3>
+                                        {% if surgery.date_of_surgery %}
+                                            <hr style="width: 100%;"/>
+                                            <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.date_of_surgery }}</h5>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </a>
                         {% endfor %}
-                        {% if not account.group.can_approve %}
-                            <a href="{% url 'add_surgery' patient.slug %}"
-                               class="btn btn-transparent-tvachacare btn-lg btn-block" style="margin-top: 15px">
-                                <i class="fa fa-plus"></i>
-                            </a>
-                        {% endif %}
                     </div>
+                    {% if account.group.can_add_surgeries %}
+                        <div class="row no-gutters">
+                            <div class="col">
+                                <a href="{% url 'add_surgery' patient.slug %}"
+                                   class="btn btn-block btn-lg btn-tvachacare" style="font-weight: bold" role="button">Add
+                                    Surgery
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

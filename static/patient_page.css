@@ -6,3 +6,12 @@
 .surgery-card {
     transition-duration: 0.2s;
 }
+
+.name-card:hover {
+    background: whitesmoke !important;
+    transition-duration: 0.2s;
+}
+
+.name-card {
+    transition-duration: 0.2s;
+}
