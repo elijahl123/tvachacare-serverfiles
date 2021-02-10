@@ -1,0 +1,8 @@
+.view-images:hover {
+    background: #637080 !important;
+    transition-duration: 0.2s;
+}
+
+.carousel {
+    background: lightgray;
+}

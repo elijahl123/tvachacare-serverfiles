@@ -69,7 +69,7 @@
                 <div class="col d-flex justify-content-center" style="font-size: 45px;font-weight: bold;">
                     <a class="name-card" href="{% url 'patient_page' patient.slug %}"
                        style="text-decoration: none;color: #fc9c34;padding: 10px;border-radius: 8px;">
-                        <h1 style="margin: 0;font-size: 45px;font-weight: bold;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</h1>
+                        <h1 class="text-center" style="margin: 0;font-size: 45px;font-weight: bold;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</h1>
                     </a>
                 </div>
             </div>
@@ -86,7 +86,7 @@
                 {% if account.group.can_add_patients %}
                     <div class="col col-12 col-lg-3" style="padding: 10px;">
                         <a href="{% url 'edit_patient' patient.slug %}" class="btn btn-block btn-transparent-success"
-                           rolw="button">Edit</a>
+                           role="button">Edit</a>
                     </div>
                     <div class="col col-12 col-lg-3" style="padding: 10px;">
                         <button onclick="openMenu()" class="btn btn-block btn-transparent-danger" type="button">Delete

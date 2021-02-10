@@ -617,14 +617,7 @@ def send_file(request):
 @login_required
 @terms_required
 def surgery_page(request, slug, id):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
-    context['account'] = account
+    context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = get_object_or_404(SurgeryInformation, id=id)
     surgeries = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
@@ -635,10 +628,35 @@ def surgery_page(request, slug, id):
     event = EventLog(user=request.user.email, event_type='Surgery Viewed', notes=event_notes)
     event.save()
 
-    context['patient'] = patient
-    context['surgery'] = surgery
+    highlighted_fields = [
+        'image',
+        'procedurecodes',
+        'patientinformation',
+        'patient',
+        'date_of_surgery',
+        'date_of_admission',
+        'date_of_discharge'
+    ]
+    fields = [field for field in SurgeryInformation._meta.get_fields() if field.name not in highlighted_fields]
+    fields_tuple = []
+
+    for field in fields:
+        fields_tuple.append((field.name.replace('_', ' ').capitalize(), getattr(surgery, field.name)))
+
+    context['fields'] = fields_tuple
+
+    surgery_tuple = []
+
+    for surgeries in surgeries:
+        try:
+            surgery_tuple.append((surgeries, Image.objects.filter(surgery=surgeries)[0]))
+        except IndexError:
+            surgery_tuple.append((surgeries, None))
+    context['surgeries'] = surgery_tuple
+
     context['images'] = images
-    context['surgeries'] = surgeries
+    context['surgery'] = surgery
+    context['patient'] = patient
     context['procedure_codes'] = procedure_codes
     if request.POST:
         if 'approve' in request.POST:
@@ -657,7 +675,7 @@ def surgery_page(request, slug, id):
             to_emails = Account.objects.filter(group__name='Approver').values_list('email', flat=True)
             message = request.POST.get('appeal_request')
             html_message = render_to_string('appeal_email.html',
-                                            {'patient': patient, 'account': account, 'message': message,
+                                            {'patient': patient, 'account': request.user, 'message': message,
                                              'surgery': surgery})
             for email in to_emails:
                 send_mail(subject, message, from_email='Appeal Request <contact@tvachacare.com>',
