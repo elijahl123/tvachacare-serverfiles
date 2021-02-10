@@ -324,3 +324,7 @@ a:hover {
     background-color: var(--main-color) !important;
 }
 
+.overflow-auto {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+}

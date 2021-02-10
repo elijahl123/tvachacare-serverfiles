@@ -657,17 +657,20 @@ def surgery_page(request, slug, id):
     context['images'] = images
     context['surgery'] = surgery
     context['patient'] = patient
-    context['procedure_codes'] = procedure_codes
     if request.POST:
         if 'approve' in request.POST:
             surgery.reason = request.POST['reason']
             surgery.save()
             approve_surgery(request, surgery.patient.slug, surgery.id)
+            messages.add_message(request, messages.SUCCESS,
+                                 'Surgery #%s was approved' % surgery.id)
             return redirect('home')
         if 'deny' in request.POST:
             surgery.reason = request.POST['reason']
             surgery.save()
             deny_surgery(request, surgery.patient.slug, surgery.id)
+            messages.add_message(request, messages.SUCCESS,
+                                 'Surgery #%s was denied' % surgery.id)
             return redirect('home')
         if 'appeal' in request.POST:
             subject = 'Appeal Request for ' + patient.first_name + ' ' + patient.last_name + ' Surgery ID #' + str(
