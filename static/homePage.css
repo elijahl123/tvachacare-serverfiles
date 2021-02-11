@@ -45,6 +45,10 @@
 
 @media (max-width: 992px) {
     .current-badge {
-        margin: 15px
+        margin-bottom: 15px
+    }
+
+    .patient-count {
+        margin-bottom: 15px
     }
 }
