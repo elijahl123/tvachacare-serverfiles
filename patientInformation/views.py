@@ -391,9 +391,10 @@ def hui_report(request):
 def index(request):
     context['account'] = request.user if request.user.is_authenticated else None
     if request.user.is_authenticated:
-        if request.user.group.can_approve:
+
+        def try_sort_by(obj):
             try:
-                surgery = SurgeryInformation.objects.all().order_by(request.GET.get('sort-by'))
+                queryset = obj.objects.all().order_by(request.GET.get('sort-by'))
                 context['sort_by'] = {
                     'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
                     'value': request.GET.get('sort-by').replace('-', ''),
@@ -401,31 +402,22 @@ def index(request):
                 }
                 context['field_error'] = ''
             except FieldError:
-                surgery = SurgeryInformation.objects.all()
+                queryset = obj.objects.all()
                 context['sort_by'] = ''
                 context['field_error'] = \
                     f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                        if request.GET.get('sort-by') else ''
+                    if request.GET.get('sort-by') else ''
+            return queryset
+
+        if request.user.group.can_approve:
+            surgery = try_sort_by(SurgeryInformation)
             context['object'] = surgery
             context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
             context['excluded_fields'] = ['image', 'procedurecodes']
             context['object_name'] = 'Surgery' if surgery.count() == 1 else 'Surgeries'
         else:
             surgery = SurgeryInformation.objects.all()
-            try:
-                patient = PatientInformation.objects.all().order_by(request.GET.get('sort-by'))
-                context['sort_by'] = {
-                    'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
-                    'value': request.GET.get('sort-by').replace('-', ''),
-                    'first_val': request.GET.get('sort-by')[0]
-                }
-                context['field_error'] = ''
-            except FieldError:
-                patient = PatientInformation.objects.all()
-                context['sort_by'] = ''
-                context['field_error'] = \
-                    f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                        if request.GET.get('sort-by') else ''
+            patient = try_sort_by(PatientInformation)
             context['object'] = patient
             context['surgery'] = surgery
             context['field_list'] = [field for field in PatientInformation._meta.get_fields()]

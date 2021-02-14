@@ -232,12 +232,14 @@
                                             {% if surgery.is_approved == False and surgery.is_denied == False %}
                                                 <li class="list-group-item patient-list"
                                                     style="display: flex; justify-content: space-between; align-items: center">
-                                                    <a href="{% url 'patient_page' surgery.patient.slug %}"
-                                                       style="width: 100%"
-                                                       class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
+                                                    <span style="width: 100%">
+                                                        <a class="patient-name"
+                                                           href="{% url 'patient_page' surgery.patient.slug %}">{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
+                                                    </span>
+                                                    <span style="width: 100%">
                                                     <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                       style="width: 100%"
                                                        class='patient-name'>Surgery ID #{{ surgery.id }}</a>
+                                                </span>
                                                     {% if sort_by %}
                                                         <div class="overflow-hidden"
                                                              style="text-overflow: ellipsis; width:100%">
@@ -266,82 +268,7 @@
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
-                                    <div role="group"
-                                         class="button-container d-flex justify-content-around btn-group"
-                                         style="width: 100%; margin-bottom: 20px; font-family: Raleway, sans-serif">
-                                        <button class="btn btn-sm btn-surgeries btn-danger"
-                                                onclick="openDeniedSurgeries()">View Denied Surgeries
-                                        </button>
-                                        <button class="btn btn-sm btn-surgeries-approved btn-success"
-                                                onclick="openApprovedSurgeries()">View Approved Surgeries
-                                        </button>
-                                    </div>
-                                    <div class="denied-patients" style="display: none">
-                                        <h5 style="color: #092327;">Denied Surgeries</h5>
-                                        <ul class="list-group" id="denied-list"
-                                            style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
-                                            {% for surgery in object %}
-                                                {% if surgery.is_approved == False and surgery.is_denied == True %}
-                                                    <li class="list-group-item patient-list"
-                                                        style="display: flex; justify-content: space-between; align-items: center">
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
-                                                        <button class="btn d-flex justify-content-center align-items-center"
-                                                                style="padding: 5px; border-radius: 50px"
-                                                                onclick="openSurgeryInfo({{ surgery.id }})">
-                                                            <i class="material-icons-round"
-                                                               style="margin-right: 1px;font-size: 20px">info</i>
-                                                        </button>
-                                                    </li>
-                                                    <li class="list-group-item list-group-item-secondary surgery-{{ surgery.id }}"
-                                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
-                                                        <div class="d-flex justify-content-between">
-                                                            {% if surgery.reason %}
-                                                                <small>Notes for
-                                                                    Denial: {{ surgery.reason }}</small>{% endif %}
-                                                            <small>Uploaded: {{ surgery.date_of_upload }}</small>
-                                                        </div>
-                                                    </li>
-                                                {% else %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="approved-patients" style="display: none">
-                                        <h5 style="color: #092327;">Approved Surgeries</h5>
-                                        <ul class="list-group" id="denied-list"
-                                            style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
-                                            {% for surgery in object %}
-                                                {% if surgery.is_approved == True and surgery.is_denied == False %}
-                                                    <li class="list-group-item patient-list"
-                                                        style="display: flex; justify-content: space-between; align-items: center">
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
-                                                        <button class="btn d-flex justify-content-center align-items-center"
-                                                                style="padding: 5px; border-radius: 50px"
-                                                                onclick="openSurgeryInfo({{ surgery.id }})">
-                                                            <i class="material-icons-round"
-                                                               style="margin-right: 1px;font-size: 20px">info</i>
-                                                        </button>
-                                                    </li>
-                                                    <li class="list-group-item list-group-item-secondary surgery-{{ surgery.id }}"
-                                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
-                                                        <div class="d-flex justify-content-between">
-                                                            {% if surgery.reason %}
-                                                                <small>Notes for
-                                                                    Approval: {{ surgery.reason }}</small>{% endif %}
-                                                            <small>Uploaded: {{ surgery.date_of_upload }}</small>
-                                                        </div>
-                                                    </li>
-                                                {% else %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+                                    {% include 'snippets/approval-denial.html' with surgery=object %}
                                 {% else %}
                                 {% endif %}
                             {% else %}
@@ -351,15 +278,18 @@
                                         {% for patients in object %}
                                             <li class="list-group-item patient-list"
                                                 style="display: flex; justify-content: space-between; align-items: center">
+                                            <span style="width: 100%;">
                                                 <a href="{% url 'patient_page' patients.slug %}" style="width: 100%"
                                                    class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                            </span>
+
                                                 {% if sort_by %}
-                                                    <div class="overflow-hidden"
+                                                    <a href="{% url 'patient_page' patients.slug %}" class="overflow-hidden patient-name"
                                                          style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
                                                     </span>
-                                                    </div>
+                                                    </a>
                                                 {% endif %}
                                                 <div style="width: 100%; padding-left: 15px">
                                                     <span class="badge badge-pill badge-secondary">
@@ -396,11 +326,9 @@
                                                     <ul class="list-group w-100">
                                                         {% for surgeries in surgery %}
                                                             {% if surgeries.patient == patients %}
-                                                                <li class="list-group-item"
+                                                                <a class="list-group-item list-group-item-action" href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
                                                                     style="display: flex; justify-content: space-between; align-items: center">
-                                                                    <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
-                                                                       class='patient-name'>ID
-                                                                        #{{ surgeries.id }}</a>
+                                                                    <span>ID #{{ surgeries.id }}</span>
                                                                     {% if surgeries.is_approved == True %}
                                                                         <span class="badge badge-pill badge-success">Approved</span>
                                                                     {% elif surgeries.is_denied == True %}
@@ -408,14 +336,13 @@
                                                                     {% else %}
                                                                         <span class="badge badge-pill badge-secondary">Awaiting Approval</span>
                                                                     {% endif %}
-                                                                    <a href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
-                                                                       class='patient-name'>Uploaded {{ surgeries.date_of_upload }}</a>
-                                                                </li>
+                                                                    <span>Uploaded {{ surgeries.date_of_upload }}</span>
+                                                                </a>
                                                             {% endif %}
                                                         {% endfor %}
                                                         <a href="{% url 'add_surgery' patients.slug %}"
-                                                           class="btn d-flex justify-content-center align-items-center list-group-item"
-                                                           style="background-color: var(--main-color);color: white; border-color: transparent; margin-top: 5px">
+                                                           class="d-flex justify-content-center align-items-center list-group-item"
+                                                           style="background-color: var(--main-color);color: white; border-color: transparent;">
                                                             <i class="fa fa-plus"></i>
                                                         </a>
                                                     </ul>
@@ -425,84 +352,7 @@
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                    <div role="group"
-                                         class="button-container d-flex justify-content-around btn-group"
-                                         style="width: 100%; margin-bottom: 20px; font-family: Raleway, sans-serif">
-                                        <button class="btn btn-sm btn-surgeries btn-danger"
-                                                onclick="openDeniedSurgeries()">View Denied
-                                            Surgeries
-                                        </button>
-                                        <button class="btn btn-sm btn-surgeries-approved btn-success"
-                                                onclick="openApprovedSurgeries()">View
-                                            Approved Surgeries
-                                        </button>
-                                    </div>
-                                    <div class="denied-patients" style="display: none">
-                                        <h5 style="color: #092327;">Denied Surgeries</h5>
-                                        <ul class="list-group" id="denied-list"
-                                            style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
-                                            {% for surgery in surgery %}
-                                                {% if surgery.is_approved == False and surgery.is_denied == True %}
-                                                    <li class="list-group-item patient-list"
-                                                        style="display: flex; justify-content: space-between; align-items: center">
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
-                                                        <button class="btn d-flex justify-content-center align-items-center"
-                                                                style="padding: 5px; border-radius: 50px"
-                                                                onclick="openSurgeryInfo({{ surgery.id }})">
-                                                            <i class="material-icons-round"
-                                                               style="margin-right: 1px;font-size: 20px">info</i>
-                                                        </button>
-                                                    </li>
-                                                    <li class="list-group-item list-group-item-secondary surgery-{{ surgery.id }}"
-                                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
-                                                        <div class="d-flex justify-content-between">
-                                                            {% if surgery.reason %}
-                                                                <small>Notes for
-                                                                    Denial: {{ surgery.reason }}</small>{% endif %}
-                                                            <small>Uploaded: {{ surgery.date_of_upload }}</small>
-                                                        </div>
-                                                    </li>
-                                                {% else %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="approved-patients" style="display: none">
-                                        <h5 style="color: #092327;">Approved Surgeries</h5>
-                                        <ul class="list-group" id="denied-list"
-                                            style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;padding-bottom: 15px;">
-                                            {% for surgery in surgery %}
-                                                {% if surgery.is_approved == True and surgery.is_denied == False %}
-                                                    <li class="list-group-item patient-list"
-                                                        style="display: flex; justify-content: space-between; align-items: center">
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>{{ surgery.patient.last_name }}, {{ surgery.patient.first_name }}</a>
-                                                        <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                           class='patient-name'>Surgery ID #{{ surgery.id }}</a>
-                                                        <button class="btn d-flex justify-content-center align-items-center"
-                                                                style="padding: 5px; border-radius: 50px"
-                                                                onclick="openSurgeryInfo({{ surgery.id }})">
-                                                            <i class="material-icons-round"
-                                                               style="margin-right: 1px;font-size: 20px">info</i>
-                                                        </button>
-                                                    </li>
-                                                    <li class="list-group-item list-group-item-secondary surgery-{{ surgery.id }}"
-                                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
-                                                        <div class="d-flex justify-content-between">
-                                                            {% if surgery.reason %}
-                                                                <small>Notes for
-                                                                    Approval: {{ surgery.reason }}</small>{% endif %}
-                                                            <small>Uploaded: {{ surgery.date_of_upload }}</small>
-                                                        </div>
-                                                    </li>
-                                                {% else %}
-                                                {% endif %}
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+                                    {% include 'snippets/approval-denial.html' %}
                                 {% else %}
                                     <a href="{% url 'addPatient' %}" role="button"
                                        style="color: var(--main-color); font-weight: bold; font-family: Raleway, sans-serif; border-width: 3px"
@@ -515,25 +365,5 @@
             </div>
         </div>
     </main>
-
-    <script>
-
-        function editForm() {
-            $('.form-span').addClass('display-none')
-            $('.edit button').addClass('display-none')
-            $('.save button').removeClass('display-none')
-            $('.edit-input').removeClass('display-none')
-            $('.overlay-profile').removeClass('d-none')
-        }
-
-        function resetForm() {
-            $('.form-span').removeClass('display-none')
-            $('.edit button').removeClass('display-none')
-            $('.save button').addClass('display-none')
-            $('.edit-input').addClass('display-none')
-            $('.overlay-profile').addClass('d-none')
-        }
-
-    </script>
 
 {% endblock %}

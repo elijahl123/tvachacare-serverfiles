@@ -1,8 +1,18 @@
 .patient-name {
     color: #092327;
+    transition-duration: 0.2s;
+    border-radius: 8px;
+    padding: 5px;
 }
 .patient-name:hover {
     color: #092327;
+    background: #ececec !important;
+    transition-duration: 0.2s;
+}
+
+.highlight {
+    background-color: var(--primary);
+    color: white
 }
 
 .search-patients {

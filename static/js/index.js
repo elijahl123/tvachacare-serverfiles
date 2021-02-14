@@ -1,10 +1,19 @@
 $(document).ready(function () {
     $('.search-patients').on('keyup', function () {
         let information = $(this).val().toLowerCase();
-        $('.patient-list:nth-child(2n + 1)').filter(function () {
+        const query = $('.patient-list:nth-child(2n + 1)')
+        query.filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(information) > -1)
-        });
+        })
+        query.find('a').each(function () {
+            let page = $(this);
+            let pageText = page.text().replace("<span>", "").replace("</span>");
+            let theRegEx = new RegExp("(" + information + ")", "i");
+            let newHtml = pageText.replace(theRegEx, "<span class='highlight'>$1</span>");
+            page.html(newHtml);
+        })
     });
+
 });
 
 function profileImage(event) {
@@ -52,6 +61,7 @@ function openInfo(patientid) {
         })
     }
     console.log($(patientID).css('display'))
+
     $(patientID).slideToggle(200, 'swing');
 }
 
