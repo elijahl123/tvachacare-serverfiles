@@ -62,7 +62,7 @@ function openInfo(patientid) {
     }
     console.log($(patientID).css('display'))
 
-    $(patientID).slideToggle(200);
+    $(patientID).slideToggle(300);
 }
 
 function openSurgeryInfo(surgeryid) {
@@ -79,7 +79,7 @@ function openSurgeryInfo(surgeryid) {
         })
     }
     console.log($(surgeryID).css('display'))
-    $(surgeryID).slideToggle(200);
+    $(surgeryID).slideToggle(300);
 }
 
 function toggleDeletePatient(id) {
