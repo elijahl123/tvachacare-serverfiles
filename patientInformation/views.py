@@ -392,9 +392,9 @@ def index(request):
     context['account'] = request.user if request.user.is_authenticated else None
     if request.user.is_authenticated:
 
-        def try_sort_by(obj):
+        def try_sort_by(obj, **filters):
             try:
-                queryset = obj.objects.all().order_by(request.GET.get('sort-by'))
+                queryset = obj.objects.filter(**filters).order_by(request.GET.get('sort-by')) if filters else obj.objects.all().order_by(request.GET.get('sort-by'))
                 context['sort_by'] = {
                     'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
                     'value': request.GET.get('sort-by').replace('-', ''),
@@ -402,7 +402,7 @@ def index(request):
                 }
                 context['field_error'] = ''
             except FieldError:
-                queryset = obj.objects.all()
+                queryset = obj.objects.filter(**filters) if filters else obj.objects.all()
                 context['sort_by'] = ''
                 context['field_error'] = \
                     f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
@@ -410,8 +410,9 @@ def index(request):
             return queryset
 
         if request.user.group.can_approve:
-            surgery = try_sort_by(SurgeryInformation)
+            surgery = try_sort_by(SurgeryInformation, is_approved=False, is_denied=False)
             context['object'] = surgery
+            context['surgery'] = try_sort_by(SurgeryInformation)
             context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
             context['excluded_fields'] = ['image', 'procedurecodes']
             context['object_name'] = 'Surgery' if surgery.count() == 1 else 'Surgeries'

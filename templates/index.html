@@ -268,9 +268,19 @@
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
-                                    {% include 'snippets/approval-denial.html' with surgery=object %}
                                 {% else %}
+                                    <div class="row no-gutters" style="margin-bottom: 1rem">
+                                        <div class="col-12 d-flex flex-column justify-content-center align-items-center"
+                                             style="padding: 1rem; background: whitesmoke; border-radius: 8px">
+                                            <img class="img-fluid" style="max-height:300px; margin-top: 1rem;"
+                                                 src="{% static 'img/NoPatientsAwaiting.png' %}"
+                                                 alt="No Patients Awaiting Approval">
+                                            <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 1rem; text-align: center">
+                                                No Patients Awaiting Approval</h1>
+                                        </div>
+                                    </div>
                                 {% endif %}
+                                {% include 'snippets/approval-denial.html' %}
                             {% else %}
                                 {% if object %}
                                     <ul class="list-group overflow-auto"
@@ -284,8 +294,9 @@
                                             </span>
 
                                                 {% if sort_by %}
-                                                    <a href="{% url 'patient_page' patients.slug %}" class="overflow-hidden patient-name"
-                                                         style="text-overflow: ellipsis; width:100%">
+                                                    <a href="{% url 'patient_page' patients.slug %}"
+                                                       class="overflow-hidden patient-name"
+                                                       style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
                                                     </span>
@@ -326,8 +337,9 @@
                                                     <ul class="list-group w-100">
                                                         {% for surgeries in surgery %}
                                                             {% if surgeries.patient == patients %}
-                                                                <a class="list-group-item list-group-item-action" href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
-                                                                    style="display: flex; justify-content: space-between; align-items: center">
+                                                                <a class="list-group-item list-group-item-action"
+                                                                   href="{% url 'surgery_page' surgeries.patient.slug surgeries.id %}"
+                                                                   style="display: flex; justify-content: space-between; align-items: center">
                                                                     <span>ID #{{ surgeries.id }}</span>
                                                                     {% if surgeries.is_approved == True %}
                                                                         <span class="badge badge-pill badge-success">Approved</span>
@@ -352,12 +364,21 @@
                                             </li>
                                         {% endfor %}
                                     </ul>
-                                    {% include 'snippets/approval-denial.html' %}
                                 {% else %}
-                                    <a href="{% url 'addPatient' %}" role="button"
-                                       style="color: var(--main-color); font-weight: bold; font-family: Raleway, sans-serif; border-width: 3px"
-                                       class="btn btn-block btn-tvachacare-inverted">Add Patient</a>
+                                    <div class="row no-gutters" style="margin-bottom: 1rem">
+                                        <div class="col-12 d-flex flex-column justify-content-center align-items-center"
+                                             style="padding: 1rem; background: whitesmoke; border-radius: 8px">
+                                            <img class="img-fluid" style="max-height:300px; margin-top: 1rem;"
+                                                 src="{% static 'img/Patient Management Graphic.png' %}"
+                                                 alt="No Patients Awaiting Approval">
+                                            <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 1rem; text-align: center">
+                                                No Patients</h1>
+                                            <a href="{% url 'addPatient' %}" role="button"
+                                               class="btn btn-lg btn-block btn-transparent-tvachacare">Add Patient</a>
+                                        </div>
+                                    </div>
                                 {% endif %}
+                                {% include 'snippets/approval-denial.html' %}
                             {% endif %}
                         </div>
                     </div>

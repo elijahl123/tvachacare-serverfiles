@@ -140,6 +140,7 @@
                     <h1 style="margin-bottom: 0;font-weight: bold;color: #fc9c34;">Surgeries</h1>
                     <hr/>
                     <div class="row no-gutters" style="margin-bottom: 1rem">
+                    {% if surgery %}
                         {% for surgery, image in surgery %}
                             <a href="{% url 'surgery_page' patient.slug surgery.id %}" class="col col-12 col-lg-4"
                                style="border-radius: 8px;padding: 5px;">
@@ -159,6 +160,12 @@
                                 </div>
                             </a>
                         {% endfor %}
+                        {% else %}
+                        <div class="col d-flex flex-column justify-content-center align-items-center" style="padding: 1rem; margin: 0.5rem 0; background: whitesmoke; border-radius: 8px">
+                            <img class="img-fluid" style="max-height: 250px; margin: 1rem" src="{% static 'img/No Surgeries.png' %}" alt="No Surgeries">
+                        <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 0.5rem; text-align: center">No Surgeries</h1>
+                        </div>
+                    {% endif %}
                     </div>
                     {% if account.group.can_add_surgeries %}
                         <div class="row no-gutters">
