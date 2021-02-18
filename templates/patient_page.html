@@ -55,15 +55,13 @@
     </div>
     <main style="min-height: 100vh;font-family: Raleway, sans-serif;background: #fc9c34;padding: 15px;">
         <div class="container" style="background: white;border-radius: 8px;padding: 15px;">
-            <div class="row no-gutters" style="margin-bottom: 1rem;">
-                <div class="col" style="padding: 1rem;">
-                    <div
-                            style="padding-top: 100%;background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
-                </div>
-                <div class="col" style="padding: 1rem;">
-                    <div style="padding-top: 100%;
-                            background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
-                </div>
+            <div class="row no-gutters patient-images" style="margin-bottom: 1rem;">
+                <a href="{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}" class="col" style="padding: 1rem;">
+                    <div style="padding-top: 100%;background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                </a>
+                <a href="{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}" class="col" style="padding: 1rem;">
+                    <div style="padding-top: 100%; background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                </a>
             </div>
             <div class="row no-gutters" style="margin-bottom: 1rem;">
                 <div class="col d-flex justify-content-center" style="font-size: 45px;font-weight: bold;">

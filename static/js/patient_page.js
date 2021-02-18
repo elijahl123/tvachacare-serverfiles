@@ -17,3 +17,7 @@ function openMenu() {
 function closeMenu() {
     $('.delete-patient').addClass('d-none')
 }
+
+$('document').ready(function() {
+    baguetteBox.run('.patient-images')
+})
