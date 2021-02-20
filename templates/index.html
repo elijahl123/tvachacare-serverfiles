@@ -286,23 +286,23 @@
                                     <ul class="list-group overflow-auto"
                                         style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;margin-bottom: 15px;max-height: 520px;border: 3px lightgray solid">
                                         {% for patients in object %}
-                                            <li class="list-group-item patient-list"
+                                            <li class="list-group-item patient-list d-flex flex-column flex-lg-row"
                                                 style="display: flex; justify-content: space-between; align-items: center">
                                             <span style="width: 100%;">
                                                 <a href="{% url 'patient_page' patients.slug %}" style="width: 100%"
-                                                   class='patient-name'>{{ patients.last_name }}, {{ patients.first_name }}</a>
+                                                   class='patient-name d-flex d-lg-inline justify-content-center justify-content-lg-start'>{{ patients.last_name }}, {{ patients.first_name }}</a>
                                             </span>
 
                                                 {% if sort_by %}
                                                     <a href="{% url 'patient_page' patients.slug %}"
-                                                       class="overflow-hidden patient-name"
+                                                       class="overflow-hidden patient-name justify-content-center justify-content-lg-start"
                                                        style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
                                                     </span>
                                                     </a>
                                                 {% endif %}
-                                                <div style="width: 100%; padding-left: 15px">
+                                                <div class="d-flex justify-content-center justify-content-lg-start" style="width: 100%; padding-left: 15px; padding-right: 15px">
                                                     <span class="badge badge-pill badge-secondary">
                                                         {{ patients.surgery_count }}
                                                         Surger{% if patients.surgery_count == 1 %}y{% else %}ies

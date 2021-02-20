@@ -19,172 +19,13 @@
     <script src="{% static 'js/jquery.fittext.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.10.0/baguetteBox.min.js"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script src="{% static 'js/base.js' %}"></script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-172938628-2"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
-        gtag('js', new Date());
-
-        gtag('config', 'UA-172938628-2');
-    </script>
-    <style>
-        .page-footer h5 {
-            color: var(--main-color) !important;
-        }
-
-        @media screen and (max-width: 990px) {
-            .navbar-collapse ul {
-                margin-top: 20px;
-                overflow-x: auto;
-                overflow-y: visible !important;
-            }
-        }
-
-        .nav-links:hover {
-            box-shadow: 0 0 .5rem rgba(0, 0, 0, .075) !important;
-        }
-
-        @media screen and (max-width: 768px) {
-            .nav-links {
-                border-top-right-radius: 50px !important;
-                border-bottom-right-radius: 50px !important;
-            }
-
-            #nav-list-container {
-                padding: 20px !important;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 10px;
-            height: 10px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: white;
-            border-radius: 8px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background-color: var(--accent-color);
-            border-radius: 8px;
-            margin: 3px;
-        }
-
-        @media (min-width: 768px) {
-            .datetime-container {
-                position: absolute;
-            }
-        }
-
-        @media (max-height: 550px) {
-            .datetime-container {
-                position: relative !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .side-nav {
-                position: relative !important;
-            }
-        }
-
-        span.ripple {
-            position: absolute; /* The absolute position we mentioned earlier */
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple 600ms linear;
-            background-color: rgba(255, 255, 255, 0.3);
-        }
-
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-
-        .btn-ripple {
-            position: relative !important;
-            overflow: hidden;
-            transition: background 400ms;
-        }
-
-    </style>
-    <link rel="icon" type="image/png" href="{% static 'img/logoNoText.png' %}">
-    <script>
-        function hours12(date) {
-            return (date.getUTCHours() + 16) % 12 || 12;
-        }
-
-        function formatAMPM(hours) {
-            if (hours >= 24) {
-                hours -= 24
-            }
-            return hours >= 12 ? 'pm' : 'am'
-        }
-
-        function startTime() {
-            let today = new Date();
-            let h = hours12(today);
-            let m = today.getUTCMinutes();
-            m = checkTime(m);
-            document.getElementById('current_time').innerHTML =
-                h + ":" + m + formatAMPM(today.getUTCHours() + 16);
-            let t = setTimeout(startTime, 500);
-        }
-
-        function checkTime(i) {
-            if (i < 10) {
-                i = "0" + i
-            }
-            // add zero in front of numbers < 10
-            return i;
-        }
-
-    </script>
     {% block header %}
         <title>TvachaCare Helpers United</title>
     {% endblock %}
 </head>
 <body style="background: whitesmoke;place-items: center" {% if account %}onload="startTime()"{% endif %}>
-<script>
-    function createRipple(event) {
-        const button = event.currentTarget;
-
-        const circle = document.createElement("span");
-        const diameter = Math.max(button.clientWidth, button.clientHeight);
-        const radius = diameter / 2;
-
-        circle.style.width = circle.style.height = `${diameter}px`;
-        circle.style.left = `${event.clientX - button.offsetLeft - radius}px`;
-        circle.style.top = `${event.clientY - button.offsetTop - radius}px`;
-        circle.classList.add("ripple");
-
-        const ripple = button.getElementsByClassName("ripple")[0];
-
-        if (ripple) {
-            ripple.remove();
-        }
-
-        button.appendChild(circle);
-
-        console.log('hello')
-    }
-
-    $(document).ready(function () {
-        const buttons = document.getElementsByClassName('btn-ripple');
-        for (const button of buttons) {
-            button.addEventListener("click", createRipple);
-        }
-    })
-
-</script>
 {% if account %}
     <a class="btn btn-tvachacare-inverted position-fixed align-items-center d-flex" href="{% url 'report_bug' %}"
        style="bottom: 15px; right: 10px; z-index: 100000; border-radius: 50px; border: 3px solid var(--main-color)">
@@ -201,7 +42,7 @@
                     <a href="{% url 'home' %}" class="col d-flex justify-content-center align-items-center"
                        style="padding: 20px; text-decoration: none">
                         <img class="d-flex justify-content-center align-items-center"
-                             src="{% static 'img/logoTvacha.png' %}"
+                             src="{% static 'img/logoTvacha.png' %}" alt="TvachaCare"
                              height="30px" style="min-height: 30px;max-height: 38px;">
                         <span style="font-family: Raleway, sans-serif;
     font-size: 30px;color: darkgray;font-weight: bold;vertical-align: baseline;margin-left: 5px;display: inline-block;line-height: 30px;margin-top: 4px;">HUI</span>
