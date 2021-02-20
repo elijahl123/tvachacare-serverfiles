@@ -295,7 +295,7 @@
 
                                                 {% if sort_by %}
                                                     <a href="{% url 'patient_page' patients.slug %}"
-                                                       class="overflow-hidden patient-name justify-content-center justify-content-lg-start"
+                                                       class="overflow-hidden patient-name justify-content-center justify-content-lg-start text-center text-lg-left"
                                                        style="text-overflow: ellipsis; width:100%">
                                                     <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
                                                           style="white-space: nowrap">{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}
