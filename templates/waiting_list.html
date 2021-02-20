@@ -81,9 +81,15 @@
                                         {% endfor %}
                                     </ul>
                                 {% else %}
-                                    <div class="d-flex justify-content-center" style="margin-top: 20px">
-                                        <img class="img-fluid" src="{% static 'img/waiting_room_empty.png' %}"
-                                             alt="Waiting Room Empty">
+                                    <div class="row no-gutters" style="margin-bottom: 1rem">
+                                        <div class="col-12 d-flex flex-column justify-content-center align-items-center"
+                                             style="padding: 1rem; background: whitesmoke; border-radius: 8px">
+                                            <img class="img-fluid" style="max-height:250px; margin-top: 1rem;"
+                                                 src="{% static 'img/waiting_room_empty.svg' %}"
+                                                 alt="No Patients in Waiting Room">
+                                            <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 1rem; text-align: center">
+                                                No Patients in Waiting Room</h1>
+                                        </div>
                                     </div>
                                 {% endif %}
                             </div>

@@ -5,6 +5,16 @@
     <title>{{ patient.last_name }}, {{ patient.first_name }}</title>
     <link rel="stylesheet" href="{% static 'patient_page.css' %}">
     <script src="{% static 'js/patient_page.js' %}"></script>
+    <style>
+        .patient-picture {
+            background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke
+        }
+
+        .injury-picture {
+            background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke
+        }
+
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -56,18 +66,23 @@
     <main style="min-height: 100vh;font-family: Raleway, sans-serif;background: #fc9c34;padding: 15px;">
         <div class="container" style="background: white;border-radius: 8px;padding: 15px;">
             <div class="row no-gutters patient-images" style="margin-bottom: 1rem;">
-                <a href="{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}" class="col" style="padding: 1rem;">
-                    <div style="padding-top: 100%;background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                <a href="
+                        {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
+                   class="col" style="padding: 1rem;">
+                    <div class="patient-picture" style="padding-top: 100%;border-radius: 8px;"></div>
                 </a>
-                <a href="{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}" class="col" style="padding: 1rem;">
-                    <div style="padding-top: 100%; background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke;border-radius: 8px;"></div>
+                <a href="
+                        {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
+                   class="col" style="padding: 1rem;">
+                    <div class="injury-picture" style="padding-top: 100%; border-radius: 8px;"></div>
                 </a>
             </div>
             <div class="row no-gutters" style="margin-bottom: 1rem;">
                 <div class="col d-flex justify-content-center" style="font-size: 45px;font-weight: bold;">
                     <a class="name-card" href="{% url 'patient_page' patient.slug %}"
                        style="text-decoration: none;color: #fc9c34;padding: 10px;border-radius: 8px;">
-                        <h1 class="text-center" style="margin: 0;font-size: 45px;font-weight: bold;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</h1>
+                        <h1 class="text-center"
+                            style="margin: 0;font-size: 45px;font-weight: bold;">{{ patient.first_name }} {{ patient.middle_name|default_if_none:'' }} {{ patient.last_name }}</h1>
                     </a>
                 </div>
             </div>
@@ -138,32 +153,35 @@
                     <h1 style="margin-bottom: 0;font-weight: bold;color: #fc9c34;">Surgeries</h1>
                     <hr/>
                     <div class="row no-gutters" style="margin-bottom: 1rem">
-                    {% if surgery %}
-                        {% for surgery, image in surgery %}
-                            <a href="{% url 'surgery_page' patient.slug surgery.id %}" class="col col-12 col-lg-4"
-                               style="border-radius: 8px;padding: 5px;">
-                                <div class="d-flex flex-column justify-content-between surgery-card"
-                                     style="padding: 1rem;height: 100%;border-radius: 8px;background: whitesmoke;">
-                                    <div class="d-flex justify-content-center align-items-center"
-                                         style="height: 100%;padding-top: 51%;margin: 1rem;
-                                                 background: url('{% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}') center / contain no-repeat, rgb(225,225,225);border-radius: 8px;"></div>
-                                    <div class="justify-content-around">
-                                        <h3 style="font-weight: bold;margin: 0;color: #fc9c34;text-align: center;">
-                                            Surgery #{{ surgery.id }}</h3>
-                                        {% if surgery.date_of_surgery %}
-                                            <hr style="width: 100%;"/>
-                                            <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.date_of_surgery }}</h5>
-                                        {% endif %}
+                        {% if surgery %}
+                            {% for surgery, image in surgery %}
+                                <a href="{% url 'surgery_page' patient.slug surgery.id %}" class="col col-12 col-lg-4"
+                                   style="border-radius: 8px;padding: 5px;">
+                                    <div class="d-flex flex-column justify-content-between surgery-card"
+                                         style="padding: 1rem;height: 100%;border-radius: 8px;background: whitesmoke;">
+                                        <div class="d-flex justify-content-center align-items-center"
+                                             style="height: 100%;padding-top: 51%;margin: 1rem;
+                                                     background: url('{% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}') center / contain no-repeat, rgb(225,225,225);border-radius: 8px;"></div>
+                                        <div class="justify-content-around">
+                                            <h3 style="font-weight: bold;margin: 0;color: #fc9c34;text-align: center;">
+                                                Surgery #{{ surgery.id }}</h3>
+                                            {% if surgery.date_of_surgery %}
+                                                <hr style="width: 100%;"/>
+                                                <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.date_of_surgery }}</h5>
+                                            {% endif %}
+                                        </div>
                                     </div>
-                                </div>
-                            </a>
-                        {% endfor %}
+                                </a>
+                            {% endfor %}
                         {% else %}
-                        <div class="col d-flex flex-column justify-content-center align-items-center" style="padding: 1rem; margin: 0.5rem 0; background: whitesmoke; border-radius: 8px">
-                            <img class="img-fluid" style="max-height: 250px; margin: 1rem" src="{% static 'img/No Surgeries.png' %}" alt="No Surgeries">
-                        <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 0.5rem; text-align: center">No Surgeries</h1>
-                        </div>
-                    {% endif %}
+                            <div class="col d-flex flex-column justify-content-center align-items-center"
+                                 style="padding: 1rem; margin: 0.5rem 0; background: whitesmoke; border-radius: 8px">
+                                <img class="img-fluid" style="max-height: 250px; margin: 1rem"
+                                     src="{% static 'img/No Surgeries.png' %}" alt="No Surgeries">
+                                <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 0.5rem; text-align: center">
+                                    No Surgeries</h1>
+                            </div>
+                        {% endif %}
                     </div>
                     {% if account.group.can_add_surgeries %}
                         <div class="row no-gutters">
