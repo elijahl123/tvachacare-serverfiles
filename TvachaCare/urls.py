@@ -73,7 +73,9 @@ urlpatterns = [
     path('waiting-list/add/<id>/', views.waiting_list_add, name='waiting_list_add'),
     path('waiting-list/remove/<id>/', views.waiting_list_remove, name='waiting_list_remove'),
     path('waiting-list/export/', views.export_waiting_list, name='export_waiting_list'),
-    path('waiting-list/email/', views.email_waiting_list, name='email_waiting_list')
+    path('waiting-list/email/', views.email_waiting_list, name='email_waiting_list'),
+    path('import-patients/', views.import_patients, name='import_patients'),
+    path('import-patients/template/', views.serve_import_template, name='serve_import_template')
 ]
 
 if settings.DEBUG:

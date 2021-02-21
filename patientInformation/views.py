@@ -39,6 +39,7 @@ import csv
 import datetime
 import operator
 import os
+import urllib.parse
 from functools import reduce
 from pathlib import Path
 from zipfile import ZipFile, ZipInfo
@@ -51,10 +52,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
-from django.forms import formset_factory
+from django.forms import formset_factory, model_to_dict
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.utils.html import urlize
 from django.views.static import serve
 
 from TvachaCare.settings import BASE_DIR
@@ -394,7 +396,8 @@ def index(request):
 
         def try_sort_by(obj, **filters):
             try:
-                queryset = obj.objects.filter(**filters).order_by(request.GET.get('sort-by')) if filters else obj.objects.all().order_by(request.GET.get('sort-by'))
+                queryset = obj.objects.filter(**filters).order_by(
+                    request.GET.get('sort-by')) if filters else obj.objects.all().order_by(request.GET.get('sort-by'))
                 context['sort_by'] = {
                     'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
                     'value': request.GET.get('sort-by').replace('-', ''),
@@ -406,7 +409,7 @@ def index(request):
                 context['sort_by'] = ''
                 context['field_error'] = \
                     f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                    if request.GET.get('sort-by') else ''
+                        if request.GET.get('sort-by') else ''
             return queryset
 
         if request.user.group.can_approve:
@@ -849,13 +852,6 @@ def error_500(request):
     return render(request, '404_page.html', context)
 
 
-# with open('filter.csv', 'r') as myfile:
-#     reader = csv.DictReader(myfile)
-#     for row in reader:
-#         row = {k.replace(' ', '_'): v for k, v in row.items()}
-#         row = {k.lower(): v for k, v in row.items()}
-#         print(row)
-
 @login_required
 @terms_required
 def waiting_list(request):
@@ -1007,3 +1003,60 @@ def write_zipfile(request, patients):
                 zip_info = ZipInfo(filename=image_name)
                 z.writestr(zip_info, image_content)
         z.close()
+
+
+@login_required
+@terms_required
+def import_patients(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+
+    if request.POST:
+        file = request.FILES['csv_file'].read()
+        error_dict = []
+        with open('media/uploaded_template.csv', 'wb') as out:
+            out.write(file)
+        with open('media/uploaded_template.csv', 'r', newline='') as uploaded:
+            reader = csv.DictReader(uploaded)
+            for row in reader:
+                row = {k.replace(' ', '_'): v for k, v in row.items()}
+                row = {k.lower(): v for k, v in row.items()}
+                form = AddPatient(row)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.save()
+                else:
+                    error_list = [error.as_text() for field, error in form.errors.items()]
+                    error_dict.append(
+                        {
+                            'patient': f'{form.cleaned_data["first_name"]} {form.cleaned_data["last_name"]}',
+                            'errors': error_list
+                        }
+                    )
+        if error_dict:
+            context['patients'] = error_dict
+            return render(request, 'csv_errors.html', context)
+        else:
+            messages.add_message(request, messages.SUCCESS, 'Patients Uploaded Successfully')
+
+    return render(request, 'csv_upload.html', context)
+
+
+
+@login_required
+@terms_required
+def serve_import_template(request):
+    def get_all_fields_from_form(instance):
+
+        fields = list(instance().base_fields)
+
+        for field in list(instance().declared_fields):
+            if field not in fields:
+                fields.append(field.replace('_', ' ').capitalize())
+        fields = [field.replace('_', ' ').capitalize() for field in fields]
+        return fields
+
+    with open('media/patient_template.csv', 'w', newline='') as template:
+        wr = csv.writer(template, quoting=csv.QUOTE_ALL)
+        wr.writerow(get_all_fields_from_form(AddPatient))
+    filepath = os.path.join(BASE_DIR, 'media/patient_template.csv')
+    return serve(request, os.path.basename(filepath), os.path.dirname(filepath))

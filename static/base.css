@@ -83,7 +83,7 @@
     font-weight: bold;
 }
 
-.btn-transparent-tvachacare:hover {
+.btn-transparent-tvachacare:hover, .btn-transparent-tvachacare:focus {
     color: white;
     background: rgb(252, 156, 52);
     font-family: Raleway, sans-serif;
@@ -341,8 +341,14 @@ a:hover {
     }
 }
 
-.nav-links:hover {
-    box-shadow: 0 0 .5rem rgba(0, 0, 0, .075) !important;
+.nav-links {
+    background: rgba(252, 156, 52, 0.22);
+    color: rgb(227, 142, 48)
+}
+
+.nav-links:hover, .nav-links:focus {
+    background: #fc9c34;
+    color: white
 }
 
 @media screen and (max-width: 768px) {

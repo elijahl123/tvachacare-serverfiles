@@ -73,13 +73,13 @@
                             <div class="list-group"
                                  style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
                                 <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'home' %}">
                                     <i class="material-icons-round" style="margin-right: 15px;">home</i>
                                     <span>Home</span>
                                 </a>
                                 <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% if account.group.name != 'Approver' %}
                                             {% url 'filter_by_date' %}
                                             {% else %}{% url 'hui_report' %}
@@ -87,28 +87,41 @@
                                     <i class="material-icons-round" style="margin-right: 20px;">table_view</i>
                                     <span>Reports</span></a>
                                 <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
                                    href="{% url 'calendar' today.year today.month %}">
                                     <i class="material-icons-round" style="margin-right: 15px;">today</i>
                                     <span>Calendar</span>
                                 </a>
                                 {% if account.group.can_add_patients %}
-                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
-                                       href="{% url 'addPatient' %}">
+                                    <button class="list-group-item btn list-group-item-action nav-links btn-ripple d-flex align-items-center dropdown-toggle"
+                                            style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none; font-weight: bold"
+                                            data-toggle="dropdown">
                                         <i class="material-icons-round" style="margin-right: 15px;">add_circle</i>
                                         <span>Add Patient</span>
-                                    </a>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-left overflow-auto shadow"
+                                         style="width: 90%;border: none; background: whitesmoke;">
+                                        <a class="dropdown-item" href="{% url 'addPatient' %}"
+                                           style="font-weight: bold; color: slategray">
+                                            <i class="fa fa-plus" style="margin-right: 10px"></i>
+                                            Add Patient
+                                        </a>
+                                        <a class="dropdown-item" href="{% url 'import_patients' %}"
+                                           style="font-weight: bold; color: slategray">
+                                            <i class="fas fa-upload" style="margin-right: 10px"></i>
+                                            Import Patients [Beta]
+                                        </a>
+                                    </div>
                                 {% endif %}
                                 {% if request.user.group.name == 'Admin' %}
                                     <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'waiting_list' %}">
                                         <i class="material-icons-round" style="margin-right: 15px;">list_alt</i>
                                         <span>Waiting List</span>
                                     </a>
                                     <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;background: navajowhite;color: #e28c2e;width: 100%;margin-bottom: 10px;border-style: none;"
+                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
                                        href="{% url 'admin-console' %}">
                                         <i class="material-icons-round" style="margin-right: 15px;">settings</i>
                                         <span>Admin Console</span>

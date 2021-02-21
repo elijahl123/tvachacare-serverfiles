@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block header %}
+    <title>Import Patients</title>
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex flex-column justify-content-center align-items-center"
+          style="min-height: 100vh;max-height: 0;background: #fc9c34;">
+        <div class="container-sm shadow overflow-auto"
+             style="padding: 15px;background: white;border-radius: 8px;font-family: Raleway, sans-serif;">
+            <div class="row" style="margin-bottom: 25px;">
+                <div class="col" style="color: slategray;">
+                    <h1 style="font-weight: bold;text-align: center;margin: 0;">Import Patients as CSV File</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ol style="color: slategray;font-size: 20px;font-weight: normal;font-family: 'Open Sans', sans-serif;">
+                        <li style="margin-bottom: 10px;">
+                            <a class="btn btn-transparent-success" role="button" href="{% url 'serve_import_template' %}">Download CSV Template</a>
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            After downloading the template, do not alter the first row, as it is the header and provides
+                            a reference of which field belongs to each column
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            <strong>Please Note </strong>that there is a maximum of 15 patients that can be inputted at
+                            a time to prevent server error.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            Once you have inputted the desired patient data into the CSV template, Please upload it to
+                            the area below and click the &quot;Submit&quot; button.
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <form method="post" enctype="multipart/form-data">{% csrf_token %}
+                <div class="form-row">
+                    <div class="col d-flex justify-content-center align-items-center"
+                         style="background: whitesmoke;border-radius: 8px;padding: 15px;margin: 15px 5px;">
+                        <input type="file" class="form-control-file" name="csv_file" required accept=".csv"/></div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <button class="btn btn-success btn-block btn-lg" type="submit" style="font-weight: bold;">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{% endblock %}
