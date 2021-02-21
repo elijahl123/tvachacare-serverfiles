@@ -37,6 +37,7 @@
 import datetime
 import random
 import string
+import uuid
 
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
@@ -97,7 +98,7 @@ class PatientInformation(models.Model):
     prior_surgery = models.TextField(blank=True, null=True, verbose_name='Prior Surgery?')
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
-    slug = models.SlugField(blank=True, unique=True, null=True)
+    slug = models.SlugField(default=uuid.uuid4, editable=False)
     in_waiting_room = models.BooleanField(default=False)
 
     def __str__(self):
@@ -210,17 +211,7 @@ def calculate_age(birth_date):
 
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
-    if not instance.slug:
-        letters = string.ascii_lowercase
-        result_str = ''.join(random.choice(letters) for i in range(8))
-        slug = slugify(
-            "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
-        if PatientInformation.objects.filter(slug=slug).exists():
-            result_str = ''.join(random.choice(letters) for i in range(8))
-            slug = slugify(
-                "HUI-" + str(abs(hash(str(datetime.datetime) + str(instance.id))) % (10 ** 10))) + '-' + result_str
-        else:
-            instance.slug = slug
+
     instance.age = calculate_age(instance.date_of_birth) if instance.date_of_birth else None
 
 
