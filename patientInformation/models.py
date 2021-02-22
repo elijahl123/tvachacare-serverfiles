@@ -98,7 +98,7 @@ class PatientInformation(models.Model):
     prior_surgery = models.TextField(blank=True, null=True, verbose_name='Prior Surgery?')
     doctor_notes = models.TextField(blank=True, null=True)
     story = models.TextField(blank=True, null=True)
-    slug = models.SlugField(default=uuid.uuid4, editable=False)
+    slug = models.SlugField(default=uuid.uuid4, editable=False, primary_key=True, unique=True)
     in_waiting_room = models.BooleanField(default=False)
 
     def __str__(self):
@@ -106,6 +106,9 @@ class PatientInformation(models.Model):
 
     def surgery_count(self):
         return SurgeryInformation.objects.filter(patient=self).count()
+
+    def id(self):
+        return self.slug
 
     class Meta:
         ordering = ['last_name']
