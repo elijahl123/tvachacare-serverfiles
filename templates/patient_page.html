@@ -5,16 +5,6 @@
     <title>{{ patient.last_name }}, {{ patient.first_name }}</title>
     <link rel="stylesheet" href="{% static 'patient_page.css' %}">
     <script src="{% static 'js/patient_page.js' %}"></script>
-    <style>
-        .patient-picture {
-            background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke
-        }
-
-        .injury-picture {
-            background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke
-        }
-
-    </style>
 {% endblock %}
 
 {% block content %}
@@ -69,12 +59,12 @@
                 <a href="
                         {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
                    class="col" style="padding: 1rem;">
-                    <div class="patient-picture" style="padding-top: 100%;border-radius: 8px;"></div>
+                    <div class="patient-picture" style="padding-top: 100%;border-radius: 8px;background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke"></div>
                 </a>
                 <a href="
                         {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
                    class="col" style="padding: 1rem;">
-                    <div class="injury-picture" style="padding-top: 100%; border-radius: 8px;"></div>
+                    <div class="injury-picture" style="padding-top: 100%; border-radius: 8px;background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke"></div>
                 </a>
             </div>
             <div class="row no-gutters" style="margin-bottom: 1rem;">
