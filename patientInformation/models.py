@@ -39,6 +39,7 @@ import random
 import string
 import uuid
 
+from django.conf.global_settings import STATIC_URL
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -165,11 +166,19 @@ class SurgeryInformation(models.Model):
 
 class Image(models.Model):
     different_fields = ['surgery']
-    admin_form = 'ImageForm'
+    admin_form = 'AddImage'
 
-    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=True)
+    surgery = models.ForeignKey('SurgeryInformation', on_delete=models.CASCADE, null=True, blank=False)
     image = models.ImageField(null=True, blank=True, upload_to=upload_location)
     date_of_upload_image = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
+
+    def __str__(self):
+        return self.image.url
+
+    class Meta:
+        ordering = ['-date_of_upload_image']
+        verbose_name = 'Image'
+        verbose_name_plural = 'Images'
 
 
 class ProcedureCodes(models.Model):

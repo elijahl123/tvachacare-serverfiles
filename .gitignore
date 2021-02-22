@@ -42,3 +42,4 @@ account/migrations/0001_initial.py
 media/patient_images.zip
 
 waiting_list.csv
+media/uploaded_template.csv

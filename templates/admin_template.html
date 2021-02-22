@@ -1,61 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block header %}
     <title>Admin - {{ model.title }}</title>
-    <style>
-        .active-list {
-            background: rgba(255, 222, 173, 0.5) !important;
-        }
-
-        .admin-list:hover {
-            background: rgba(255, 222, 173, 0.3) !important;
-        }
-
-        .plus-button:hover {
-            background: #eb9132 !important;
-        }
-
-        small {
-            font-weight: bold;
-        }
-
-        .custom-control-label:before {
-            background-color: lightgray;
-            border-color: lightgray;
-        }
-
-        .search-patients {
-            padding: 15px 15px 15px 40px;
-            border: none;
-            border-radius: 8px;
-            background-color: var(--main-color);
-            font-size: 20px;
-            font-family: Raleway, sans-serif;
-            font-weight: bold;
-            width: 100%;
-            color: white;
-            margin: 0;
-        }
-
-        .search-patients:focus {
-            background-color: white;
-            color: var(--accent-color);
-            transition-duration: 0.3s;
-        }
-
-        .search-patients:focus::placeholder {
-            color: var(--accent-color);
-        }
-
-        .search-patients::placeholder {
-            color: white;
-            opacity: 0.7;
-            font-family: Raleway, sans-serif;
-            font-weight: bold;
-            font-size: 20px;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{% static 'admin_template.css' %}">
     <script>
         $(document).ready(function () {
             let inputs = $('input:file')
@@ -101,6 +49,10 @@
         function submitDeleteForm() {
             $('#delete-items-form').submit()
         }
+
+        $('document').ready(function () {
+            baguetteBox.run('#image-object-container')
+        })
 
     </script>
     <main class="d-flex justify-content-center align-items-center" style="min-height: 100vh;">
@@ -173,6 +125,12 @@
                             <i class="material-icons-round d-flex flex-column"
                                style="position: absolute;font-size: 25px;">note_add
                             </i><span class="flex-grow-1">Surgeries</span></a>
+                        <a href="{% url 'admin_template' 'images' %}"
+                           class="list-group-item d-flex flex-row justify-content-between align-items-center {% if model.title == 'Images' %}active-list {% else %}admin-list{% endif %}"
+                           style="text-align: center;font-family: 'Open Sans', sans-serif;font-weight: bold;color: #e28c2e;position: relative;border-top-style: none;border-right-style: none;border-bottom-style: none;border-left-style: none;border-radius: 50px 0 0 50px;background: transparent;margin-bottom: 10px;">
+                            <i class="material-icons-round d-flex flex-column"
+                               style="position: absolute;font-size: 25px;">insert_photo
+                            </i><span class="flex-grow-1">Images</span></a>
                     </ul>
                 </div>
                 <div class="col d-flex flex-column admin-list-col"
@@ -198,53 +156,89 @@
                              style="font-family: Raleway, sans-serif;font-weight: bold; border-radius: 8px">
                             <form class="list-group-flush" id="delete-items-form" method="post"
                                   style="border-radius: 8px !important;">
-                                {% for item in model.items %}
-                                    <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
-                                        class="list-group-item flex-lg-row flex-column align-items-center item-list {% if item.email == account.email %}list-group-item-success{% endif %}">
-                                        <div class="custom-control custom-checkbox" style="width: 10%">
-                                            <input class="custom-control-input" type="checkbox"
-                                                   onchange="onChangeCheck()"
-                                                   name="delete[]" value="{{ item.id }}" id="check-{{ item.id }}">
-                                            <label class="custom-control-label delete-checks"
-                                                   for="check-{{ item.id }}"></label>
-                                        </div>
+                                {% if model.title != 'Images' %}
+                                    {% for item in model.items %}
+                                        <li style="display:flex; justify-content: space-between; font-weight: bold; position: relative"
+                                            class="list-group-item flex-lg-row flex-column align-items-center item-list {% if item.email == account.email %}list-group-item-success{% endif %}">
+                                            <div class="custom-control custom-checkbox" style="width: 10%">
+                                                <input class="custom-control-input" type="checkbox"
+                                                       onchange="onChangeCheck()"
+                                                       name="delete[]" value="{{ item.id }}" id="check-{{ item.id }}">
+                                                <label class="custom-control-label delete-checks"
+                                                       for="check-{{ item.id }}"></label>
+                                            </div>
+                                            <span class="w-100">
                                         <a href="{% url 'admin_view' model.model item.id %}"
-                                           class="text-lg-left text-center w-100"
+                                           class="text-lg-left text-center patient-name"
                                            style="color: var(--accent-color);white-space: nowrap">{{ item }}</a>
-                                        {% if model.title == 'Accounts' %}
-                                            <span class="w-100 text-lg-left text-center">{{ item.group.name }}</span>
-                                        {% elif model.title == 'Groups' %}
-                                            <span class="w-100 text-lg-left text-center">Id: {{ item.id }}</span>
-                                        {% elif model.title == 'Event Logs' %}
-                                            <span class="w-100 text-lg-left text-center">{{ item.event_time }}</span>
-                                        {% elif model.title == 'Patients' %}
-                                            <span class="w-100 text-lg-left text-center">Uploaded: {{ item.uploaded }}</span>
-                                        {% elif model.title == 'Surgeries' %}
-                                            <span class="w-100 text-lg-left text-center">Patient: {{ item.patient }}</span>
-                                        {% endif %}
-                                        <button type="button"
-                                                class="btn d-flex justify-content-center align-items-center"
-                                                style="padding: 5px; border-radius: 50px"
-                                                onclick="openItem({{ item.id }})">
-                                            <i class="material-icons-round" style="margin-right: 1px;font-size: 18px">settings</i>
-                                        </button>
-                                    </li>
-                                    <li class="list-group-item list-group-item-secondary item-{{ item.id }}"
-                                        style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;padding: 0">
-                                        <div role="group" class="btn-group btn-group-sm d-flex"
-                                             style="border-radius: 0 !important;">
-                                            <a class="btn btn-success" href="{% url 'admin_edit' model.model item.id %}"
-                                               type="button" style="border-style: none;">
-                                                <i class="fa fa-edit"></i> Edit
-                                            </a>
-                                            <a class="btn btn-danger"
-                                               href="{% url 'admin_delete' model.model item.id %}"
-                                               style="border-style: none;">
-                                                <i class="fa fa-trash"></i> Delete
-                                            </a>
-                                        </div>
-                                    </li>
-                                {% endfor %}
+                                    </span>
+                                            {% if model.title == 'Accounts' %}
+                                                <span class="w-100 text-lg-left text-center">{{ item.group.name }}</span>
+                                            {% elif model.title == 'Groups' %}
+                                                <span class="w-100 text-lg-left text-center">Id: {{ item.id }}</span>
+                                            {% elif model.title == 'Event Logs' %}
+                                                <span class="w-100 text-lg-left text-center">{{ item.event_time }}</span>
+                                            {% elif model.title == 'Patients' %}
+                                                <span class="w-100 text-lg-left text-center">Uploaded: {{ item.uploaded }}</span>
+                                            {% elif model.title == 'Surgeries' %}
+                                                <span class="w-100 text-lg-left text-center">Patient: {{ item.patient }}</span>
+                                            {% endif %}
+                                            <button type="button"
+                                                    class="btn d-flex justify-content-center align-items-center"
+                                                    style="padding: 5px; border-radius: 50px"
+                                                    onclick="openItem({{ item.id }})">
+                                                <i class="material-icons-round"
+                                                   style="margin-right: 1px;font-size: 18px">settings</i>
+                                            </button>
+                                        </li>
+                                        <li class="list-group-item list-group-item-secondary item-{{ item.id }}"
+                                            style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;padding: 0">
+                                            <div role="group" class="btn-group btn-group-sm d-flex"
+                                                 style="border-radius: 0 !important;">
+                                                <a class="btn btn-success"
+                                                   href="{% url 'admin_edit' model.model item.id %}"
+                                                   type="button" style="border-style: none;">
+                                                    <i class="fa fa-edit"></i> Edit
+                                                </a>
+                                                <a class="btn btn-danger"
+                                                   href="{% url 'admin_delete' model.model item.id %}"
+                                                   style="border-style: none;">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </a>
+                                            </div>
+                                        </li>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="row no-gutters" style="margin-bottom: 1rem" id="image-object-container">
+                                        {% for item in model.items %}
+
+                                            <div class="col col-12 col-lg-4"
+                                               style="border-radius: 8px;padding: 5px;">
+                                                <div class="d-flex flex-column justify-content-between"
+                                                     style="padding: 1rem;height: 100%;border-radius: 8px;background: whitesmoke;{% if surgeries == surgery %}border: 3px solid #dfe1e5!important;{% else %}{% endif %}">
+                                                    <a href="{{ item.image.url }}" class="d-flex justify-content-center align-items-center"
+                                                         style="height: 100%;padding-top: 51%;margin: 1rem;
+                                                                 background: url('{{ item.image.url }}') center / contain no-repeat, rgb(225,225,225);border-radius: 8px;"></a>
+                                                    <div class="justify-content-around">
+                                                    <h3 class="text-center">
+                                                        <a href="{% url 'admin_view' 'surgeries' item.surgery.id %}" style="font-weight: bold;margin: 0;color: #fc9c34;text-align: center; width: 100%" class="patient-name">
+                                                            Surgery #{{ item.surgery }}</a></h3>
+                                                        {% if item.surgery.patient %}
+                                                            <hr style="width: 100%;"/>
+                                                            <h5 style="font-weight: bold;color: slategray;text-align: center;">
+                                                                <a href="{% url 'admin_view' 'patients' item.surgery.patient.id %}" class="patient-name" style="color: slategray;">
+                                                                {{ item.surgery.patient }}
+                                                                </a>
+                                                            </h5>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        {% endfor %}
+                                    </div>
+
+                                {% endif %}
                                 {% csrf_token %}
                             </form>
 

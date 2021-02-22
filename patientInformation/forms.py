@@ -148,7 +148,8 @@ class AddImage(forms.ModelForm):
         fields = '__all__'
         widgets = {
             'date_of_upload_image': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'})
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control-file'}),
+            'surgery': forms.Select(attrs={'class': 'form-control'})
         }
 
 
