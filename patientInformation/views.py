@@ -416,7 +416,7 @@ def index(request):
             surgery = try_sort_by(SurgeryInformation, is_approved=False, is_denied=False)
             context['object'] = surgery
             context['surgery'] = try_sort_by(SurgeryInformation)
-            context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
+            context['field_list'] = list(SurgeryInformation._meta.get_fields())
             context['excluded_fields'] = ['image', 'procedurecodes']
             context['object_name'] = 'Surgery' if surgery.count() == 1 else 'Surgeries'
         else:
@@ -424,7 +424,7 @@ def index(request):
             patient = try_sort_by(PatientInformation)
             context['object'] = patient
             context['surgery'] = surgery
-            context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
+            context['field_list'] = list(PatientInformation._meta.get_fields())
             context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
             context['object_name'] = 'Patient' if patient.count() == 1 else 'Patients'
 
