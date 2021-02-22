@@ -22,7 +22,7 @@
                             you sure?</h1>
                         <div role="group" class="btn-group">
                             <button class="btn btn-secondary" type="button"
-                                    onclick="toggleDeletePatient({{ patient.id }})"
+                                    onclick="toggleDeletePatient('{{ patient.id }}')"
                                     style="border-radius: 5px;margin: 3px;">Cancel
                             </button>
                             <a class="btn btn-danger d-print-none" role="button" style="border-radius: 5px;margin: 3px;"
@@ -174,7 +174,7 @@
                                 {% include 'snippets/approval-denial.html' %}
                             {% else %}
                                 {% if object %}
-                                    <ul class="list-group overflow-auto"
+                                    <ul class="list-group overflow-auto accordion" id="patient-accordion"
                                         style="color: #092327;font-family: Raleway, sans-serif;font-weight: bold;font-style: normal;text-align: left;margin-bottom: 15px;max-height: 520px;border: 3px lightgray solid">
                                         {% for patients in object %}
                                             <li class="list-group-item patient-list flex-column flex-lg-row"
@@ -201,13 +201,13 @@
                                                     </span>
                                                 </div>
                                                 <button class="btn d-flex justify-content-center align-items-center"
-                                                        style="padding: 5px; border-radius: 50px"
-                                                        onclick="openInfo({{ patients.id }})">
+                                                        style="padding: 5px; border-radius: 50px" data-toggle="collapse" data-target="#patient-{{ patients.slug }}">
                                                     <i class="material-icons-round" style="font-size: 20px">info</i>
                                                 </button>
                                             </li>
-                                            <li class="list-group-item list-group-item-secondary patient-{{ patients.id }}"
-                                                style="display: none;font-family: 'Open Sans', sans-serif; font-weight: normal;">
+                                            <li class="list-group-item list-group-item-secondary collapse" data-parent="#patient-accordion"
+                                                style="font-family: 'Open Sans', sans-serif; font-weight: normal; padding: 0" id="patient-{{ patients.slug }}">
+                                            <div style="padding: .75rem 1.25rem">
                                                 <div class="d-flex"
                                                      style="margin-bottom: 10px;margin-top: 5px">
                                                     <a class="btn btn-success" role="button"
@@ -216,7 +216,7 @@
                                                         Edit
                                                     </a>
                                                     <button class="btn btn-danger" type="button"
-                                                            onclick="toggleDeletePatient({{ patients.id }})"
+                                                            onclick="toggleDeletePatient('{{ patients.id }}')"
                                                             style="font-family: Raleway, sans-serif;font-weight: bold;margin-right: 10px;">
                                                         Delete
                                                     </button>
@@ -251,7 +251,7 @@
                                                     </ul>
                                                 </div>
 
-
+                                            </div>
                                             </li>
                                         {% endfor %}
                                     </ul>
