@@ -74,6 +74,7 @@ class PatientInformation(models.Model):
     different_fields = ['patient_image', 'injury_image']
 
     SEXCHOICES = [('Female', 'Female'), ('Male', 'Male')]
+    id = models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     uploaded = models.DateField(auto_now_add=True, verbose_name='date of upload')
     patient_record_number = models.SlugField(blank=True, null=True, unique=True)
     patient_image = models.ImageField(null=True, blank=True, upload_to=upload_patient_images)
