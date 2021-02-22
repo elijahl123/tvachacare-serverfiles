@@ -227,7 +227,7 @@ def delete_images(request, slug):
 @terms_required
 def delete_patient(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
-    event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
+    event_notes = 'Patient ID #' + str(patient.slug) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
     event.save()
     messages.add_message(request, messages.SUCCESS,
@@ -290,7 +290,7 @@ def edit_patient(request, slug):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
+            event_notes = 'Patient ID #' + str(patient.slug) + ' was Edited'
             event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
             event.save()
             return redirect('patient_page', slug)
@@ -525,8 +525,8 @@ def logout(request):
 def patient_page(request, slug):
     context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
-    surgery = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
-    event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
+    surgery = SurgeryInformation.objects.filter(patient=patient.slug).order_by('date_of_upload')
+    event_notes = 'Patient ID #' + str(patient.slug) + ' was Viewed'
     event = EventLog(user=request.user.email, event_type='Patient Viewed', notes=event_notes)
     event.save()
     if request.POST:
@@ -616,7 +616,7 @@ def surgery_page(request, slug, id):
     context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = get_object_or_404(SurgeryInformation, id=id)
-    surgeries = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
+    surgeries = SurgeryInformation.objects.filter(patient=patient.slug).order_by('date_of_upload')
     images = Image.objects.filter(surgery=surgery.id)
     procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
 
