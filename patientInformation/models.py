@@ -47,6 +47,8 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
+from account.models import Account
+
 
 def upload_location(instance, filename):
     file_path = 'patientInformation/{surgery}/{filename}'.format(
@@ -153,6 +155,7 @@ class SurgeryInformation(models.Model):
     is_approved = models.BooleanField(default=False, blank=True, null=True)
     is_denied = models.BooleanField(default=False, blank=True, null=True)
     reason = models.TextField(blank=True, null=True)
+    approver = models.ForeignKey(Account, on_delete=models.PROTECT, null=True, blank=True)
     number_of_procedures = models.IntegerField(blank=True, null=True, validators=[MinValueValidator(0)])
 
     def __str__(self):

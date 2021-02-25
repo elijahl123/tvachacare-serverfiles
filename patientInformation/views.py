@@ -169,6 +169,7 @@ def approve_surgery(request, slug, surgery_id):
     surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     surgery.is_approved = True
     surgery.is_denied = False
+    surgery.approver = request.user
     surgery.save()
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Approved'
     event = EventLog(user=request.user.email, event_type='Surgery Approved', notes=event_notes)
@@ -248,6 +249,7 @@ def deny_surgery(request, slug, surgery_id):
     surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     surgery.is_denied = True
     surgery.is_approved = False
+    surgery.approver = request.user
     surgery.save()
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Denied'
     event = EventLog(user=request.user.email, event_type='Surgery Denied', notes=event_notes)
@@ -596,7 +598,9 @@ def surgery_page(request, slug, surgery_id):
         'patient',
         'date_of_surgery',
         'date_of_admission',
-        'date_of_discharge'
+        'date_of_discharge',
+        'approver',
+        'reason'
     ]
     fields = [field for field in SurgeryInformation._meta.get_fields() if field.name not in highlighted_fields]
     fields_tuple = []

@@ -262,6 +262,30 @@
 
 
             {% endif %}
+
+            {% if surgery.approver %}
+                <div class="row no-gutters" style="padding:1rem">
+                    <div class="col" style="padding: 1rem; background: whitesmoke; border-radius: 8px">
+                        <div class="media">
+                    <img src="{% static 'img/logoTvachaSolidBackground.png' %}" class="align-self-start mr-3" alt="Logo" style="width: 64px; border-radius: 8px">
+                    <div class="media-body">
+                        <h4 class="mt-0" style="font-weight: bold; color: slategray">
+                            Surgery
+                            {% if surgery.is_approved == True and surgery.is_denied == False %}
+                                Approved
+                                {% else %}
+                                Denied
+                        {% endif %} by {{ surgery.approver.first_name }} {{ surgery.approver.last_name }}
+                        </h4>
+                        <p>{{ surgery.reason }}</p>
+                    </div>
+                </div>
+                    </div>
+                </div>
+
+
+            {% endif %}
+
             {% if surgery.is_denied == True and account.group.can_approve %}
                 <div role="group" class="btn-group"
                      style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
@@ -274,7 +298,7 @@
             {% endif %}
 
             {% if surgery.is_denied == True and not account.group.can_approve %}
-                <div class="row no-gutters">
+                <div class="row no-gutters" style="padding: 1rem">
                     <div class="col" style="padding: 1rem; background: whitesmoke; border-radius: 8px">
                         <form method="post" style="width: 100%"
                               enctype="multipart/form-data">{% csrf_token %}

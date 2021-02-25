@@ -95,7 +95,8 @@ class SurgeryForm(forms.ModelForm):
             'date_of_upload',
             'is_approved',
             'is_denied',
-            'reason'
+            'reason',
+            'approver'
         ]
         widgets = {
             'date_of_admission': forms.DateInput(attrs={'type': 'date'}),
