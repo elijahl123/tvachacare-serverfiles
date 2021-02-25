@@ -13,6 +13,8 @@
     color: #fff;
     background-color: var(--main-color);
     border-color: var(--main-color);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
 }
 
 .btn-tvachacare:hover {
@@ -26,6 +28,8 @@
     color: var(--main-color);
     background-color: #fff;
     border-color: var(--main-color);
+    font-family: Raleway, sans-serif;
+    font-weight: bold;
 }
 
 .btn-tvachacare-inverted:hover {
@@ -314,10 +318,7 @@ a:hover {
 }
 
 .log-out {
-    font-size: 16px;
-    font-family: 'Open Sans', sans-serif;
     font-weight: bold;
-    border: 2px solid white;
 }
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
