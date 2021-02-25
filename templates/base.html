@@ -26,7 +26,7 @@
         <title>TvachaCare Helpers United</title>
     {% endblock %}
 </head>
-<body style="background: whitesmoke;place-items: center" {% if account.is_authenticated %}onload="startTime()"{% endif %}>
+<body style="background: whitesmoke;place-items: center; font-family: Raleway, sans-serif" {% if account.is_authenticated %}onload="startTime()"{% endif %}>
 {% if account.is_authenticated %}
     <a class="btn btn-tvachacare-inverted position-fixed align-items-center d-flex" href="{% url 'report_bug' %}"
        style="bottom: 15px; right: 10px; z-index: 100000; border-radius: 50px; border: 3px solid var(--main-color)">
@@ -165,14 +165,14 @@
                     <div class="row no-gutters">
                         <div class="col col-12 col-lg-4"
                              style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 style="margin-bottom: 1rem;font-weight: bold;">Navigation</h4>
+                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">Navigation</h4>
                             <a class="btn btn-block btn-transparent-tvachacare" role="button" href="{% url 'home' %}"
                                style="text-align: left;">
                                 <i class="fas fa-home" style="margin-right: 15px;width: 20px;text-align: center;"></i>Home</a>
                         </div>
                         <div class="col col-12 col-lg-4"
                              style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 style="margin-bottom: 1rem;font-weight: bold;">About us</h4>
+                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">About us</h4>
                             <a class="btn btn-block btn-transparent-tvachacare" role="button" href="#"
                                style="text-align: left;">
                                 <i class="fas fa-info" style="margin-right: 15px;width: 20px;text-align: center;"></i>Company
@@ -184,7 +184,7 @@
                         </div>
                         <div class="col col-12 col-lg-4"
                              style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 style="margin-bottom: 1rem;font-weight: bold;">Legal</h4>
+                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">Legal</h4>
                             <a class="btn btn-block btn-transparent-tvachacare" role="button"
                                href="{% url 'terms_of_service' %}" style="text-align: left;">
                                 <i class="far fa-file-alt"
