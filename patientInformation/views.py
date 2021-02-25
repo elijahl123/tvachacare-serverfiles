@@ -39,7 +39,6 @@ import csv
 import datetime
 import operator
 import os
-import urllib.parse
 from functools import reduce
 from pathlib import Path
 from zipfile import ZipFile, ZipInfo
@@ -52,11 +51,10 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
-from django.forms import formset_factory, model_to_dict
+from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
-from django.utils.html import urlize
 from django.views.static import serve
 
 from TvachaCare.settings import BASE_DIR
@@ -94,16 +92,15 @@ def add_surgery(request, slug):
     context['different_fields'] = ['patient', 'area_operated']
 
     patient = get_object_or_404(PatientInformation, slug=slug)
-    ImageFormSet = formset_factory(ImageForm, extra=0)
-    ProcedureFormSet = formset_factory(ProcedureForm, extra=0)
+    image_form_set = formset_factory(ImageForm, extra=0)
 
     if request.POST:
-        surgeryForm = SurgeryForm(request.POST, error_class=DivErrorList)
-        formset = ImageFormSet(request.POST, request.FILES, prefix='images')
-        if surgeryForm.is_valid() and formset.is_valid():
-            obj = surgeryForm.save(commit=False)
+        surgery_form = SurgeryForm(request.POST, error_class=DivErrorList)
+        formset = image_form_set(request.POST, request.FILES, prefix='images')
+        if surgery_form.is_valid() and formset.is_valid():
+            obj = surgery_form.save(commit=False)
             obj.save()
-            surgeryForm = SurgeryForm
+            surgery_form = SurgeryForm
             event_notes = 'Surgery Burn Operation Number #' + str(
                 request.POST['burn_operation_number']) + ' was uploaded'
             event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
@@ -125,9 +122,9 @@ def add_surgery(request, slug):
                 photo.save()
             return redirect('patient_page', slug)
     else:
-        surgeryForm = SurgeryForm
-        formset = ImageFormSet(prefix='images')
-    context['form'] = surgeryForm
+        surgery_form = SurgeryForm
+        formset = image_form_set(prefix='images')
+    context['form'] = surgery_form
     context['formset'] = formset
     context['patient'] = patient
     return render(request, 'generic_form_template.html', context)
@@ -136,16 +133,7 @@ def add_surgery(request, slug):
 @login_required
 @terms_required
 def addpatient(request):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "first_name": request.user.first_name,
-        "last_name": request.user.last_name,
-        "profile_picture_path": request.user.profile_picture_path,
-        "is_superuser": request.user.is_superuser,
-        'group': request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
 
     context['account'] = account
 
@@ -177,8 +165,8 @@ def addpatient(request):
 
 @login_required
 @terms_required
-def approve_surgery(request, slug, id):
-    surgery = get_object_or_404(SurgeryInformation, id=id)
+def approve_surgery(request, slug, surgery_id):
+    surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     surgery.is_approved = True
     surgery.is_denied = False
     surgery.save()
@@ -191,13 +179,7 @@ def approve_surgery(request, slug, id):
 @login_required
 @terms_required
 def calendar_events(request, year, current_month):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     this_month = calendar.month_name[int(current_month)]
     c = calendar.Calendar(6)
     this_calendar = c.monthdatescalendar(int(year), int(current_month))
@@ -238,8 +220,8 @@ def delete_patient(request, slug):
 
 @login_required
 @terms_required
-def delete_surgery(request, slug, id):
-    surgery = get_object_or_404(SurgeryInformation, id=id)
+def delete_surgery(request, slug, surgery_id):
+    surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
     event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
     event.save()
@@ -247,13 +229,13 @@ def delete_surgery(request, slug, id):
                          'Surgery #%s was deleted successfully!' % surgery.id)
     surgery.delete()
 
-    return redirect('delete_surgery_images', slug=slug, id=id)
+    return redirect('delete_surgery_images', slug=slug, surgery_id=surgery_id)
 
 
 @login_required
 @terms_required
-def delete_surgery_images(request, slug, id):
-    surgery = SurgeryInformation.objects.filter(id=id)
+def delete_surgery_images(request, slug, surgery_id):
+    surgery = SurgeryInformation.objects.filter(id=surgery_id)
     if surgery:
         surgery.delete()
         return redirect('patient_page', slug)
@@ -262,8 +244,8 @@ def delete_surgery_images(request, slug, id):
 
 @login_required
 @terms_required
-def deny_surgery(request, slug, id):
-    surgery = get_object_or_404(SurgeryInformation, id=id)
+def deny_surgery(request, slug, surgery_id):
+    surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     surgery.is_denied = True
     surgery.is_approved = False
     surgery.save()
@@ -276,13 +258,7 @@ def deny_surgery(request, slug, id):
 @login_required
 @terms_required
 def edit_patient(request, slug):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     context['account'] = account
     patient = get_object_or_404(PatientInformation, slug=slug)
     if request.POST:
@@ -307,13 +283,7 @@ def edit_patient(request, slug):
 @login_required
 @terms_required
 def filter_by_date(request):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     context['account'] = account
 
     if request.user.group.name == 'Approver':
@@ -333,7 +303,6 @@ def filter_by_date(request):
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
         fields = request.POST.getlist('checks[]')
-        print(fields)
         event_notes = 'Filter.csv was created'
         event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
         event.save()
@@ -354,13 +323,7 @@ def filter_by_date(request):
 @login_required
 @terms_required
 def hui_report(request):
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     context['account'] = account
 
     submitbutton = request.POST.get('submit')
@@ -505,7 +468,9 @@ def loginadmin(request):
     return render(request, 'loginAdmin.html', context)
 
 
-def loginPage(request):
+def login_page(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     return render(request, 'login.html', {'groups': Group.objects.all()})
 
 
@@ -612,10 +577,10 @@ def send_file(request):
 
 @login_required
 @terms_required
-def surgery_page(request, slug, id):
+def surgery_page(request, slug, surgery_id):
     context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
-    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     surgeries = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
     images = Image.objects.filter(surgery=surgery.id)
     procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
@@ -762,21 +727,21 @@ def write_response(date_start, date_end, fields, procedure_code_boolean=False):
 
 @login_required
 @terms_required
-def edit_surgery(request, slug, id):
+def edit_surgery(request, slug, surgery_id):
     context['account'] = request.user
     context['title'] = 'Edit Surgery'
     context['different_fields'] = []
     if request.POST:
-        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=id),
+        form = SurgeryForm(request.POST or None, instance=get_object_or_404(SurgeryInformation, id=surgery_id),
                            error_class=DivErrorList)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            return redirect('surgery_page', slug, id)
+            return redirect('surgery_page', slug, surgery_id)
     else:
-        form = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=id))
+        form = SurgeryForm(instance=get_object_or_404(SurgeryInformation, id=surgery_id))
     context['form'] = form
-    surgery = get_object_or_404(SurgeryInformation, id=id)
+    surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
     context['surgery'] = surgery
     context['images'] = Image.objects.filter(surgery=surgery)
     return render(request, 'generic_form_template.html', context)
@@ -898,11 +863,11 @@ def waiting_list_search(request):
 
 @login_required
 @terms_required
-def waiting_list_add(request, id):
+def waiting_list_add(request, patient_id):
     context['account'] = request.user
     if not request.user.group.name == 'Admin':
         return redirect('home')
-    patient = get_object_or_404(PatientInformation, id=id)
+    patient = get_object_or_404(PatientInformation, id=patient_id)
     patient.in_waiting_room = True
     patient.save()
     return redirect('waiting_list')
@@ -910,11 +875,11 @@ def waiting_list_add(request, id):
 
 @login_required
 @terms_required
-def waiting_list_remove(request, id):
+def waiting_list_remove(request, patient_id):
     context['account'] = request.user
     if not request.user.group.name == 'Admin':
         return redirect('home')
-    patient = get_object_or_404(PatientInformation, id=id)
+    patient = get_object_or_404(PatientInformation, id=patient_id)
     patient.in_waiting_room = False
     patient.save()
     return redirect('waiting_list')
