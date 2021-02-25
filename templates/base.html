@@ -27,7 +27,7 @@
     {% endblock %}
 </head>
 <body style="background: whitesmoke;place-items: center; font-family: Raleway, sans-serif" {% if account.is_authenticated %}onload="startTime()"{% endif %}>
-{% if account.is_authenticated %}
+{% if account %}
     <a class="btn btn-tvachacare-inverted position-fixed align-items-center d-flex" href="{% url 'report_bug' %}"
        style="bottom: 15px; right: 10px; z-index: 100000; border-radius: 50px; border: 3px solid var(--main-color)">
         <span style="margin-right: 5px; font-family: Raleway, sans-serif; font-weight: normal">Report bug</span>
@@ -36,7 +36,7 @@
 {% endif %}
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
-        {% if account.is_authenticated %}
+        {% if account %}
             <div class="col-md side-nav d-print-none"
                  style="max-height: 100vh;background: transparent;position: sticky; top: 0">
                 <div class="row no-gutters">

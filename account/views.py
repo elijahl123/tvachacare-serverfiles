@@ -17,13 +17,7 @@ context = {'today': datetime.date.today()}
 def admin(request):
     if not request.user.group.name == 'Admin':
         return redirect('home')
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     context['account'] = account
     return render(request, 'admin.html', context)
 
@@ -33,13 +27,7 @@ def admin(request):
 def admin_delete(request, model, id):
     if request.user.group.name != 'Admin':
         return redirect('admin-console')
-    account = {
-        "id": request.user.id,
-        "name": request.user.username,
-        "email": request.user.email,
-        "is_superuser": request.user.is_superuser,
-        "group": request.user.group,
-    } if request.user.is_authenticated else None
+    account = request.user if request.user.is_authenticated else None
     context['account'] = account
     if model == 'accounts':
         item = get_object_or_404(Account, id=id)
@@ -150,7 +138,7 @@ def admin_edit(request, model, id):
 @login_required
 @terms_required
 def admin_template(request, model):
-    context['account'] = request.user
+    context['account'] = request.user if request.user.is_authenticated else None
     model_dict = {}
     for model_obj in django.apps.apps.get_models():
         model_meta = model_obj._meta
