@@ -650,6 +650,7 @@ def surgery_page(request, slug, surgery_id):
 
 
 def terms_of_service(request):
+    context['account'] = request.user if request.user.is_authenticated else None
     if request.POST:
         if 'accept' in request.POST:
             account = get_object_or_404(Account, id=request.user.id)
