@@ -48,8 +48,8 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="toast-body h5" style="font-weight: bold; color: slategray">
-            {{ message }}
+        <div class="toast-body h5 m-0" style="font-weight: bold; color: slategray">
+            {{ message|safe }}
         </div>
     </div>
     {% endfor %}

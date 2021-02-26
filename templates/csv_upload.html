@@ -18,7 +18,8 @@
                 <div class="col">
                     <ol style="color: slategray;font-size: 20px;font-weight: normal;font-family: 'Open Sans', sans-serif;">
                         <li style="margin-bottom: 10px;">
-                            <a class="btn btn-transparent-success" role="button" href="{% url 'serve_import_template' %}">Download CSV Template</a>
+                            <a class="btn btn-transparent-success" role="button"
+                               href="{% url 'serve_import_template' %}">Download CSV Template</a>
                         </li>
                         <li style="margin-bottom: 10px;">
                             After downloading the template, do not alter the first row, as it is the header and provides
@@ -31,6 +32,10 @@
                         <li style="margin-bottom: 10px;">
                             Once you have inputted the desired patient data into the CSV template, Please upload it to
                             the area below and click the &quot;Submit&quot; button.
+                        </li>
+                        <li style="margin-bottom: 10px;">
+                            Once the patients have been uploaded, if there are any errors, they will be shown on the
+                            next page. All patients that do not raise any errors will be uploaded.
                         </li>
                     </ol>
                 </div>
