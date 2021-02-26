@@ -67,4 +67,7 @@ $(document).ready(function () {
     for (const button of buttons) {
         button.addEventListener("click", createRipple);
     }
+
+    $('.toast').toast('show')
+
 })
