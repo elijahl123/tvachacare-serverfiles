@@ -113,7 +113,7 @@ class PatientInformation(models.Model):
 
     class Meta:
         ordering = ['last_name']
-        unique_together = ['first_name', 'last_name']
+        unique_together = ['first_name', 'last_name', 'date_of_birth']
         verbose_name = 'Patient'
         verbose_name_plural = 'Patients'
 
