@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <title>Account</title>
+    <style>
+
+        .form-control {
+            border-style: none;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid d-flex flex-column" style="padding: 0;min-height: 100vh;background-color: white">
+        <div class="row no-gutters p-lg-3 p-2">
+            <div class="col position-relative"
+                 style="text-align: center;padding: 1rem;border-radius: 8px;background: whitesmoke;">
+                <i class="fas fa-user-circle display-1" style="color: var(--main-color);margin-bottom: 1rem;"></i>
+                <h1 style="font-weight: bold;color: var(--main-color);">
+                    Hello, {{ account.first_name }} {{ account.last_name }}!</h1>
+                <a class="btn border rounded-pill d-flex align-items-center position-absolute btn-transparent-secondary"
+                   role="button" style="left: 1rem;top: 1rem;" href="{% url 'home' %}">
+                    <i class="fas fa-arrow-left" style="margin: 5px;"></i>
+                    <span class="d-none d-md-block">Home</span>
+                </a>
+            </div>
+        </div>
+        <div class="row no-gutters flex-grow-1">
+            <div class="col-12 col-lg-5 col-xl-4 p-lg-3 p-2">
+                <div class="list-group list-group-flush" style="border-radius: 8px;">
+                    {% for url, icon, title in account_page_list %}
+                    <a class="list-group-item list-group-item-action btn-transparent-tvachacare {% if title == account_page_title %}active{% endif %}"
+                        href="{{ url }}"
+                        style="border-style: none;transition-duration: 0.2s;padding: 1rem;">
+                    <i class="{{ icon }}"
+                       style="font-size: 20px;width: 20px;text-align: center;margin-right: 15px;"></i>
+                    <span class="h5" style="font-weight: bold;">{{ title }}</span>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col p-2 p-lg-3">
+            {% block account_content %}
+                <form class="overflow-auto" method="post" enctype="multipart/form-data" style="background: whitesmoke;border-radius: 8px;padding: 1rem;">
+                {% csrf_token %}
+                    <h1 class="text-center text-lg-left" style="font-weight: bold;color: var(--main-color);">Edit
+                        Profile</h1>
+                    <hr/>
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label style="font-weight: bold;color: var(--accent-color);font-size: 20px;">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                        {% if field.errors %}
+                            <div class="form-group">
+                                {{ field.errors|safe }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                    <div role="group" class="btn-group btn-group-lg" style="width: 100%;">
+                        <a href="{% url 'change_password' %}" class="btn btn-secondary" role="button" style="font-weight: bold">Change Password</a>
+                        <button class="btn btn-success" type="submit" style="font-weight: bold">Save Changes</button>
+                    </div>
+                </form>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

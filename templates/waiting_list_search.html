@@ -30,8 +30,10 @@
                     {% for patient in patients %}
                         <li class="list-group-item d-flex align-items-center"
                             style="font-family: Raleway, sans-serif;">
-                            <a href="{% url 'patient_page' patient.slug %}"
-                               style="color: black;width: 100%;font-family: 'Raleway', sans-serif;">{{ patient.last_name }}, {{ patient.first_name }}</a>
+                        <span class="w-100">
+                            <a href="{% url 'patient_page' patient.slug %}" class="patient-name"
+                               style="color: #092327;font-family: 'Raleway', sans-serif;font-weight: bold">{{ patient.last_name }}, {{ patient.first_name }}</a>
+                        </span>
                             {% if patient.in_waiting_room %}
                                 <a class="btn btn-danger btn-sm" role="button"
                                    href="{% url 'waiting_list_remove' patient.id %}"

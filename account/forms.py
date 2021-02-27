@@ -19,44 +19,22 @@ class AccountAuthenticationForm(forms.ModelForm):
             if not authenticate(email=email, password=password):
                 raise forms.ValidationError('Invalid Login')
 
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
+
 
 class AccountUpdateForm(forms.ModelForm):
+    email = forms.EmailField(max_length=60,
+                             help_text='Required. Add a valid email address')
+
     class Meta:
         model = Account
-        fields = ('email', 'username', 'first_name', 'last_name', 'profile_picture_path')
+        fields = ('email', 'username', 'first_name', 'last_name')
 
     def clean_email(self):
-        if self.is_valid():
-            email = self.cleaned_data['email']
-            try:
-                account = Account.objects.exclude(pk=self.instance.pk).get(email=email)
-            except Account.DoesNotExist:
-                return email
-            raise forms.ValidationError('Email "%s" is already in use.' % email)
-
-    def clean_username(self):
-        if self.is_valid():
-            username = self.cleaned_data['username']
-            try:
-                account = Account.objects.exclude(pk=self.instance.pk).get(username=username)
-            except Account.DoesNotExist:
-                return username
-            raise forms.ValidationError('Username "%s" is already in use.' % username)
-
-    def clean_first_name(self):
-        if self.is_valid():
-            first_name = self.cleaned_data['first_name']
-            return first_name
-
-    def clean_last_name(self):
-        if self.is_valid():
-            last_name = self.cleaned_data['last_name']
-            return last_name
-
-    def clean_profile_picture_path(self):
-        if self.is_valid():
-            profile_picture_path = self.cleaned_data['profile_picture_path']
-            return profile_picture_path
+        data = self.cleaned_data['email']
+        return data.lower()
 
     def __init__(self, *args, **kwargs):
         super(AccountUpdateForm, self).__init__(*args, **kwargs)
@@ -83,6 +61,10 @@ class RegistrationForm(UserCreationForm):
         model = Account
         exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted', 'password']
 
+    def clean_email(self):
+        data = self.cleaned_data['email']
+        return data.lower()
+
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
@@ -96,5 +78,16 @@ class GroupForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(GroupForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+
+
+class ChangePasswordForm(UserCreationForm):
+    class Meta:
+        model = Account
+        fields = ['password1', 'password2']
+
+    def __init__(self, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

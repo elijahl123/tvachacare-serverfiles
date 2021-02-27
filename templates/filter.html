@@ -42,7 +42,7 @@
                 if (checkbox.is(':checked')) {
                     checkbox.attr('checked', false)
                     $(this).css({
-                        'background-color': 'rgba(252,156,52, 0.3)',
+                        'background-color': 'rgba(252,156,52, 0.14)',
                         'color': 'var(--main-accent)'
                     })
                 } else {
@@ -92,7 +92,7 @@
                         {% if not field.name == 'id' and not field.name == 'surgeryinformation' and not field.name == 'uploaded' and not field.name == 'patient_image' and not field.name == 'injury_image' %}
                             <button type="button" class="btn btn-sm btn-fields"
                                     data-checkbox="id_patient__{{ field.name }}"
-                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.14); font-weight: bold; border-radius: 50px">
                                 {{ field.verbose_name|title }}
                             </button>
                             <input class="d-none" type="checkbox"
@@ -103,7 +103,7 @@
                     {% for field in surgeries %}
                         {% if not field.name == 'id' and not field.name == 'image' and not field.name == 'patient' and not field.name == 'procedurecodes' %}
                             <button type="button" class="btn btn-sm btn-fields" data-checkbox="id_{{ field.name }}"
-                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                                    style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.14); font-weight: bold; border-radius: 50px">
                                 {{ field.verbose_name|title }}
                             </button>
                             <input class="d-none" type="checkbox"
@@ -112,7 +112,7 @@
                         {% endif %}
                     {% endfor %}
                     <button type="button" class="btn btn-sm btn-fields" data-checkbox="id_procedure_codes"
-                            style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.3); font-weight: bold; border-radius: 50px">
+                            style="margin: 5px;color: var(--main-accent); background-color: rgba(252,156,52, 0.14); font-weight: bold; border-radius: 50px">
                         Procedure Codes
                     </button>
                     <input class="d-none" type="checkbox"

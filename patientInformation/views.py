@@ -849,7 +849,7 @@ def waiting_list_search(request):
     for item in request.GET:
         value = request.GET.get(item)
         if value:
-            arguments = {f'{item}__exact': value}
+            arguments = {f'{item}__iexact': value}
             q_object = Q(**arguments)
             query.append(q_object)
     if query:

@@ -42,6 +42,7 @@ from patientInformation import views
 
 urlpatterns = [
     path('admin/', include('account.urls')),
+    path('account/', include('account.account_page_urls')),
     path('', views.index, name='home'),
     path('login/', views.login_page, name="login"),
     path('login/admin/', views.loginadmin, name="loginAdmin"),

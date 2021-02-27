@@ -1,7 +1,9 @@
 import django.apps
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 
 from account.forms import *
 from account.models import Account
@@ -10,6 +12,7 @@ from patientInformation.models import *
 from patientInformation.views import terms_required
 
 context = {'today': datetime.date.today()}
+
 
 
 @login_required
@@ -209,3 +212,53 @@ def admin_view(request, model, id):
         return redirect('admin-console')
     context['model'] = model_dict
     return render(request, 'admin_view.html', context)
+
+
+account_page_list = [
+        ('/account', 'fas fa-user-edit', 'Edit Profile'),
+    ]
+
+@login_required
+@terms_required
+def account(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+
+    context['account_page_list'] = account_page_list
+    context['account_page_title'] = 'Edit Profile'
+
+    if request.POST:
+        form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user,
+                                 error_class=DivErrorList)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            messages.success(request, 'Account changed successfully')
+            return redirect('account')
+    else:
+        form = AccountUpdateForm(instance=request.user)
+
+    context['form'] = form
+
+    return render(request, 'account.html', context)
+
+
+@login_required
+@terms_required
+def change_password(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+    context['different_fields'] = []
+
+    if request.POST:
+        form = ChangePasswordForm(request.POST or None, request.FILES or None, instance=request.user,
+                                  error_class=DivErrorList)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            messages.success(request, 'Account changed successfully')
+            return redirect('account')
+    else:
+        form = ChangePasswordForm(instance=request.user)
+
+    context['form'] = form
+
+    return render(request, 'generic_form_template.html', context)

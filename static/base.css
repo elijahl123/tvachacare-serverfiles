@@ -87,7 +87,7 @@
     font-weight: bold;
 }
 
-.btn-transparent-tvachacare:hover, .btn-transparent-tvachacare:focus {
+.btn-transparent-tvachacare:hover, .btn-transparent-tvachacare:focus, .btn-transparent-tvachacare.active {
     color: white;
     background: rgb(252, 156, 52);
     font-family: Raleway, sans-serif;

@@ -48,7 +48,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="toast-body h5 m-0" style="font-weight: bold; color: slategray">
+        <div class="toast-body h5 m-0 {{ message.tags }}" style="font-weight: bold; color: slategray">
             {{ message|safe }}
         </div>
     </div>
@@ -83,6 +83,8 @@
                     <div class="row no-gutters">
                         <div class="col d-flex justify-content-center align-items-center"
                              style="padding: 5px">
+                            <a class="btn log-out btn-secondary" href="{% url 'account' %}"
+                               style="border-radius: 8px; margin-right: 10px; border-style: none">Account</a>
                             <a class="btn log-out btn-transparent-secondary" href="{% url 'logout' %}"
                                style="border-radius: 8px;">Log
                                 Out</a>
