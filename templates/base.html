@@ -37,196 +37,85 @@
 {% endif %}
 
 {% if messages %}
-<div class="position-fixed" style="z-index: 10000000; bottom: 15px; right: 10px">
-    {% for message in messages %}
-    <div class="toast bg-white shadow" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
-        <div class="toast-header">
-            <img src="{% static 'img/logoTvachaSolidBackground.png' %}" class="rounded mr-2" alt="Logo"
-                 style="width: 25px">
-            <strong class="mr-auto">TvachaCare</strong>
-            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="toast-body h5 m-0 {{ message.tags }}" style="font-weight: bold; color: slategray">
-            {{ message|safe }}
-        </div>
+    <div class="position-fixed" style="z-index: 10000000; bottom: 15px; right: 10px">
+        {% for message in messages %}
+            <div class="toast bg-white shadow" role="alert" aria-live="assertive" aria-atomic="true"
+                 data-autohide="false">
+                <div class="toast-header">
+                    <img src="{% static 'img/logoTvachaSolidBackground.png' %}" class="rounded mr-2" alt="Logo"
+                         style="width: 25px">
+                    <strong class="mr-auto">TvachaCare</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body h5 m-0 {{ message.tags }}" style="font-weight: bold; color: slategray">
+                    {{ message|safe }}
+                </div>
+            </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 {% endif %}
 <div class="container-fluid" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters" style="height: 100%;min-height: 100vh; flex-wrap: wrap">
         {% if account %}
-            <div class="col-md side-nav d-print-none"
-                 style="max-height: 100vh;background: transparent;position: sticky; top: 0">
-                <div class="row no-gutters">
-                    <a href="{% url 'home' %}" class="col d-flex justify-content-center align-items-center"
-                       style="padding: 20px; text-decoration: none">
-                        <img class="d-flex justify-content-center align-items-center"
-                             src="{% static 'img/logoTvacha.png' %}" alt="TvachaCare"
-                             height="30px" style="min-height: 30px;max-height: 38px;">
-                        <span style="font-family: Raleway, sans-serif;
-    font-size: 30px;color: darkgray;font-weight: bold;vertical-align: baseline;margin-left: 5px;display: inline-block;line-height: 30px;margin-top: 4px;">HUI</span>
-                    </a>
-                    <div class="col-2 d-flex justify-content-center align-items-center d-md-none"
-                         style="padding: 20px">
-                        <button data-toggle="collapse"
-                                class="navbar-toggler d-flex justify-content-center align-items-center"
-                                data-target="#navcol-1"
-                                style="background-color: var(--main-color); border: none">
-                            <i class="material-icons-round text-white">menu</i>
-                        </button>
-                    </div>
-                </div>
-                <div class="collapse d-md-block h-50" id="navcol-1">
-                    <div class="row no-gutters">
-                        <div class="col d-flex justify-content-center align-items-center"
-                             style="padding: 5px">
-                            <a class="btn log-out btn-secondary" href="{% url 'account' %}"
-                               style="border-radius: 8px; margin-right: 10px; border-style: none">Account</a>
-                            <a class="btn log-out btn-transparent-secondary" href="{% url 'logout' %}"
-                               style="border-radius: 8px;">Log
-                                Out</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row no-gutters flex-column justify-content-between d-block">
-                        <div class="col d-flex justify-content-center" id="nav-list-container"
-                             style="padding: 20px 0 20px 20px;">
-                            <div class="list-group"
-                                 style="color: #e28c2e;font-family: Raleway, sans-serif;font-weight: bold;width: 100%;border-right: 1px none var(--accent-color) ;">
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                   href="{% url 'home' %}">
-                                    <i class="material-icons-round" style="margin-right: 15px;">home</i>
-                                    <span>Home</span>
-                                </a>
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                   href="{% if account.group.name != 'Approver' %}
-                                            {% url 'filter_by_date' %}
-                                            {% else %}{% url 'hui_report' %}
-                                            {% endif %}">
-                                    <i class="material-icons-round" style="margin-right: 20px;">table_view</i>
-                                    <span>Reports</span></a>
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                   href="{% url 'groups' %}">
-                                    <i class="material-icons-round" style="margin-right: 15px;">category</i>
-                                    <span>Groups</span>
-                                </a>
-                                <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                   style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                   href="{% url 'calendar' today.year today.month %}">
-                                    <i class="material-icons-round" style="margin-right: 15px;">today</i>
-                                    <span>Calendar</span>
-                                </a>
-                                {% if account.group.can_add_patients %}
-                                    <button class="list-group-item btn list-group-item-action nav-links btn-ripple d-flex align-items-center dropdown-toggle"
-                                            style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none; font-weight: bold"
-                                            data-toggle="dropdown">
-                                        <i class="material-icons-round" style="margin-right: 15px;">add_circle</i>
-                                        <span>Add Patient</span>
-                                    </button>
-                                    <div class="dropdown-menu dropdown-menu-left overflow-auto shadow"
-                                         style="width: 90%;border: none; background: whitesmoke;">
-                                        <a class="dropdown-item" href="{% url 'addPatient' %}"
-                                           style="font-weight: bold; color: slategray">
-                                            <i class="fa fa-plus" style="margin-right: 10px"></i>
-                                            Add Patient
-                                        </a>
-                                        <a class="dropdown-item" href="{% url 'import_patients' %}"
-                                           style="font-weight: bold; color: slategray">
-                                            <i class="fas fa-upload" style="margin-right: 10px"></i>
-                                            Import Patients <span class="badge badge-primary" style="margin-left: 5px">Beta</span>
-                                        </a>
-                                    </div>
-                                {% endif %}
-                                {% if request.user.group.name == 'Admin' %}
-                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                       href="{% url 'waiting_list' %}">
-                                        <i class="material-icons-round" style="margin-right: 15px;">list_alt</i>
-                                        <span>Waiting List</span>
-                                    </a>
-                                    <a class="list-group-item list-group-item-action nav-links btn-ripple d-flex align-items-center"
-                                       style="border-top-left-radius: 50px;border-bottom-left-radius: 50px;width: 100%;margin-bottom: 10px;border-style: none;"
-                                       href="{% url 'admin-console' %}">
-                                        <i class="material-icons-round" style="margin-right: 15px;">settings</i>
-                                        <span>Admin Console</span>
-                                    </a>
-                                {% endif %}
-                            </div>
-                        </div>
-                        <div class="col d-flex align-items-end justify-content-center datetime-container"
-                             style="bottom: 0; padding: 0 20px 20px;">
-                            <div class="d-inline-flex justify-content-between align-items-center"
-                                 style="width:100%;padding: 20px; background-color: white; color: var(--accent-color); border-radius: 8px; font-family: 'Raleway', sans-serif;border: 1px solid #dadce0!important">
-                                <h4 style="margin: 0;font-weight: bold; text-align: center">Pacific Time</h4>
-                                <h4 style="margin: 0;font-weight: bold; text-align: center; font-family: 'Open Sans', sans-serif"
-                                    id="current_time"></h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
+            {% include 'snippets/navbar.html' %}
         {% endif %}
-        <div class="{% if account %} col-12 col-md-7 col-lg-8 col-xl-9 {% else %} col-12 {% endif %} shadow"
-             style="background-color: var(--main-color); width: 100%">
-            {% block content %}
-            {% endblock %}
-            <footer class="shadow" style="background: whitesmoke;padding-top: 2rem">
-                <div class="container">
-                    <div class="row no-gutters">
-                        <div class="col col-12 col-lg-4"
-                             style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">
-                                Navigation</h4>
-                            <a class="btn btn-block btn-transparent-tvachacare" role="button" href="{% url 'home' %}"
-                               style="text-align: left;">
-                                <i class="fas fa-home" style="margin-right: 15px;width: 20px;text-align: center;"></i>Home</a>
-                        </div>
-                        <div class="col col-12 col-lg-4"
-                             style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">About
-                                us</h4>
-                            <a class="btn btn-block btn-transparent-tvachacare" role="button" href="#"
-                               style="text-align: left;">
-                                <i class="fas fa-info" style="margin-right: 15px;width: 20px;text-align: center;"></i>Company
-                                Info</a>
-                            <a class="btn btn-block btn-transparent-tvachacare" role="button"
-                               href="https://tvachacare.com#Contact" style="text-align: left;">
-                                <i class="far fa-envelope"
-                                   style="margin-right: 15px;width: 20px;text-align: center;"></i>Contact Us</a>
-                        </div>
-                        <div class="col col-12 col-lg-4"
-                             style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
-                            <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">
-                                Legal</h4>
-                            <a class="btn btn-block btn-transparent-tvachacare" role="button"
-                               href="{% url 'terms_of_service' %}" style="text-align: left;">
-                                <i class="far fa-file-alt"
-                                   style="margin-right: 15px;width: 20px;text-align: center;"></i>Terms of Service</a>
-                            <a class="btn btn-block btn-transparent-tvachacare" role="button"
-                               href="https://www.tvachacare.com/privacy-policy" style="text-align: left;">
-                                <i class="fas fa-shield-alt"
-                                   style="margin-right: 15px;width: 20px;text-align: center;"></i>Privacy Policy</a>
-                        </div>
+    <div class="{% if account %} col-12 col-md-7 col-lg-8 col-xl-9 {% else %} col-12 {% endif %} shadow"
+         style="background-color: var(--main-color); width: 100%">
+        {% block content %}
+        {% endblock %}
+        <footer class="shadow" style="background: whitesmoke;padding-top: 2rem">
+            <div class="container">
+                <div class="row no-gutters">
+                    <div class="col col-12 col-lg-4"
+                         style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
+                        <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">
+                            Navigation</h4>
+                        <a class="btn btn-block btn-transparent-tvachacare" role="button" href="{% url 'home' %}"
+                           style="text-align: left;">
+                            <i class="fas fa-home"
+                               style="margin-right: 15px;width: 20px;text-align: center;"></i>Home</a>
                     </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col" style="padding: 1rem;">
-                            <h5 class="text-center"
-                                style="margin: 0;color: slategray;font-family: Raleway, sans-serif;font-weight: bold;">
-                                TvachaCare © 2020</h5>
-                        </div>
+                    <div class="col col-12 col-lg-4"
+                         style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
+                        <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">About
+                            us</h4>
+                        <a class="btn btn-block btn-transparent-tvachacare" role="button" href="#"
+                           style="text-align: left;">
+                            <i class="fas fa-info" style="margin-right: 15px;width: 20px;text-align: center;"></i>Company
+                            Info</a>
+                        <a class="btn btn-block btn-transparent-tvachacare" role="button"
+                           href="https://tvachacare.com#Contact" style="text-align: left;">
+                            <i class="far fa-envelope"
+                               style="margin-right: 15px;width: 20px;text-align: center;"></i>Contact Us</a>
+                    </div>
+                    <div class="col col-12 col-lg-4"
+                         style="padding: 1rem;font-family: Raleway, sans-serif;color: #fc9c34;">
+                        <h4 class="text-center text-lg-left" style="margin-bottom: 1rem;font-weight: bold;">
+                            Legal</h4>
+                        <a class="btn btn-block btn-transparent-tvachacare" role="button"
+                           href="{% url 'terms_of_service' %}" style="text-align: left;">
+                            <i class="far fa-file-alt"
+                               style="margin-right: 15px;width: 20px;text-align: center;"></i>Terms of Service</a>
+                        <a class="btn btn-block btn-transparent-tvachacare" role="button"
+                           href="https://www.tvachacare.com/privacy-policy" style="text-align: left;">
+                            <i class="fas fa-shield-alt"
+                               style="margin-right: 15px;width: 20px;text-align: center;"></i>Privacy Policy</a>
                     </div>
                 </div>
-            </footer>
-        </div>
+                <hr/>
+                <div class="row">
+                    <div class="col" style="padding: 1rem;">
+                        <h5 class="text-center"
+                            style="margin: 0;color: slategray;font-family: Raleway, sans-serif;font-weight: bold;">
+                            TvachaCare © 2020</h5>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
+</div>
 </div>
 <script src="{% static 'js/smoothproducts.min.js' %}"></script>
 <script src="{% static 'js/theme.js' %}"></script>

@@ -1052,6 +1052,7 @@ def add_group(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
+            messages.success(request, f'{obj.name} was created successfully')
             return redirect('groups')
     else:
         form = SurgeryGroupForm
@@ -1076,6 +1077,7 @@ def edit_group(request, id):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
+            messages.success(request, f'{obj.name} was edited successfully')
             return redirect('groups')
     else:
         form = SurgeryGroupForm(instance=group)

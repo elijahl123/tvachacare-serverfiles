@@ -3,6 +3,16 @@
 
 {% block header %}
     <title>Group - {{ group.name }}</title>
+    <style>
+        .surgery-card:hover {
+            background: #ececec !important;
+            transition-duration: 0.2s;
+        }
+
+        .surgery-card {
+            transition-duration: 0.2s;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -10,11 +20,11 @@
         <div class="container-fluid d-flex flex-column flex-grow-1 position-relative"
              style="padding: 1rem;background: whitesmoke;border-radius: 8px;">
 
-        <a class="btn border rounded-pill d-flex align-items-center position-absolute btn-transparent-secondary"
-                   role="button" style="right: 1rem;top: 1rem;z-index: 10000" href="{% url 'groups' %}">
-                    <i class="fas fa-arrow-left" style="margin: 5px;"></i>
-                    <span class="d-none d-lg-block">Group Home</span>
-                </a>
+            <a class="btn border rounded-pill d-flex align-items-center position-absolute btn-transparent-secondary"
+               role="button" style="right: 1rem;top: 1rem;z-index: 10000" href="{% url 'groups' %}">
+                <i class="fas fa-arrow-left" style="margin: 5px;"></i>
+                <span class="d-none d-lg-block">Group Home</span>
+            </a>
 
             <div class="row no-gutters" style="margin-bottom: 1rem;">
                 <div class="col d-flex flex-column align-items-start">
@@ -31,7 +41,8 @@
                     <div class="row no-gutters">
                         {% if surgeries %}
                             {% for surgery, image in surgeries %}
-                                <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}" class="col col-12 col-md-6 col-xl-3"
+                                <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                   class="col col-12 col-md-6 col-xl-3"
                                    style="border-radius: 8px;padding: 5px;">
                                     <div class="d-flex flex-column justify-content-between surgery-card"
                                          style="padding: 1rem;height: 100%;border-radius: 8px;background: white;">
@@ -45,8 +56,8 @@
                                                 <hr style="width: 100%;"/>
                                                 <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.date_of_surgery }}</h5>
                                             {% endif %}
-                                                <hr style="width: 100%;"/>
-                                                <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.patient }}</h5>
+                                            <hr style="width: 100%;"/>
+                                            <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.patient }}</h5>
                                         </div>
                                     </div>
                                 </a>
