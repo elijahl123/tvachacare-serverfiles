@@ -1,7 +1,7 @@
 from django import forms
 from django.forms.utils import ErrorList
 
-from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog
+from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog, SurgeryGroup
 
 
 class AddPatient(forms.ModelForm):
@@ -130,6 +130,18 @@ class SurgeryForm(forms.ModelForm):
                 ('Other', 'Other'),
             ], attrs={'onchange': 'selected(\'type_of_burn\')'})
         }
+
+
+class SurgeryGroupForm(forms.ModelForm):
+    class Meta:
+        model = SurgeryGroup
+        exclude = []
+
+    def __init__(self, *args, **kwargs):
+        super(SurgeryGroupForm, self).__init__(*args, **kwargs)
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'
+            visible.field.widget.attrs['rows'] = '4'
 
 
 class DivErrorList(ErrorList):

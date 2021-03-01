@@ -118,6 +118,17 @@ class PatientInformation(models.Model):
         verbose_name_plural = 'Patients'
 
 
+class SurgeryGroup(models.Model):
+    name = models.CharField(max_length=120, null=True, blank=False, unique=True)
+    description = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+    def surgery_count(self):
+        return SurgeryInformation.objects.filter(group=self).count()
+
+
 class SurgeryInformation(models.Model):
     admin_form = 'SurgeryForm'
 
@@ -129,6 +140,7 @@ class SurgeryInformation(models.Model):
     ]
     patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
     date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
+    group = models.ForeignKey(SurgeryGroup, on_delete=models.SET_NULL, null=True, blank=True)
     hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
     patient_district = models.CharField(blank=True, null=True, max_length=120)

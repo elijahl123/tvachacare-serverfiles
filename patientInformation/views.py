@@ -1011,7 +1011,6 @@ def import_patients(request):
     return render(request, 'csv_upload.html', context)
 
 
-
 @login_required
 @terms_required
 def serve_import_template(request):
@@ -1030,3 +1029,89 @@ def serve_import_template(request):
         wr.writerow(get_all_fields_from_form(AddPatient))
     filepath = os.path.join(BASE_DIR, 'media/patient_template.csv')
     return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+
+
+@login_required
+@terms_required
+def groups(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+    context['groups'] = SurgeryGroup.objects.all()
+    return render(request, 'groups.html', context)
+
+
+@login_required
+@terms_required
+def add_group(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+
+    context['different_fields'] = []
+    context['title'] = 'Add Group'
+
+    if request.POST:
+        form = SurgeryGroupForm(request.POST or None, error_class=DivErrorList)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('groups')
+    else:
+        form = SurgeryGroupForm
+
+    context['form'] = form
+
+    return render(request, 'generic_form_template.html', context)
+
+
+@login_required
+@terms_required
+def edit_group(request, id):
+    context['account'] = request.user if request.user.is_authenticated else None
+
+    context['different_fields'] = []
+    context['title'] = 'Edit Group'
+
+    group = get_object_or_404(SurgeryGroup, id=id)
+
+    if request.POST:
+        form = SurgeryGroupForm(request.POST or None, error_class=DivErrorList, instance=group)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('groups')
+    else:
+        form = SurgeryGroupForm(instance=group)
+
+    context['form'] = form
+
+    return render(request, 'generic_form_template.html', context)
+
+
+@login_required
+@terms_required
+def delete_group(request, id):
+    context['account'] = request.user if request.user.is_authenticated else None
+    group = get_object_or_404(SurgeryGroup, id=id)
+
+    messages.success(request, f'{group.name} was deleted successfully')
+
+    group.delete()
+    return redirect('groups')
+
+
+@login_required
+@terms_required
+def group_page(request, id):
+    context['account'] = request.user if request.user.is_authenticated else None
+    group = get_object_or_404(SurgeryGroup, id=id)
+    context['group'] = group
+    surgeries = SurgeryInformation.objects.filter(group=group)
+
+    surgery_tuple = []
+
+    for surgeries in surgeries:
+        try:
+            surgery_tuple.append((surgeries, Image.objects.filter(surgery=surgeries)[0]))
+        except IndexError:
+            surgery_tuple.append((surgeries, None))
+    context['surgeries'] = surgery_tuple
+
+    return render(request, 'group_page.html', context)

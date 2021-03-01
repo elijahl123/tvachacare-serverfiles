@@ -247,6 +247,7 @@ def account(request):
 def change_password(request):
     context['account'] = request.user if request.user.is_authenticated else None
     context['different_fields'] = []
+    context['title'] = 'Change Password'
 
     if request.POST:
         form = ChangePasswordForm(request.POST or None, request.FILES or None, instance=request.user,

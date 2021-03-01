@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Group - {{ group.name }}</title>
+{% endblock %}
+
+{% block content %}
+    <main class="d-flex" style="min-height: 100vh;background: white;font-family: Raleway, sans-serif;padding: 1rem;">
+        <div class="container-fluid d-flex flex-column flex-grow-1 position-relative"
+             style="padding: 1rem;background: whitesmoke;border-radius: 8px;">
+
+        <a class="btn border rounded-pill d-flex align-items-center position-absolute btn-transparent-secondary"
+                   role="button" style="right: 1rem;top: 1rem;z-index: 10000" href="{% url 'groups' %}">
+                    <i class="fas fa-arrow-left" style="margin: 5px;"></i>
+                    <span class="d-none d-lg-block">Group Home</span>
+                </a>
+
+            <div class="row no-gutters" style="margin-bottom: 1rem;">
+                <div class="col d-flex flex-column align-items-start">
+                    <h2 style="margin: 0;color: var(--main-color);font-weight: bold;">{{ group.name }}</h2>
+                    <hr style="width: 100%"/>
+                    <p class="lead" style="margin: 0;color: var(--accent-color);font-weight: bold;">
+                        {{ group.description }}
+                    </p>
+                </div>
+            </div>
+            <div class="row no-gutters flex-grow-1" style="padding: 1rem;">
+                <div class="col">
+                    <h3 style="color: var(--main-color);font-weight: bold;">Surgeries</h3>
+                    <div class="row no-gutters">
+                        {% if surgeries %}
+                            {% for surgery, image in surgeries %}
+                                <a href="{% url 'surgery_page' surgery.patient.slug surgery.id %}" class="col col-12 col-md-6 col-xl-3"
+                                   style="border-radius: 8px;padding: 5px;">
+                                    <div class="d-flex flex-column justify-content-between surgery-card"
+                                         style="padding: 1rem;height: 100%;border-radius: 8px;background: white;">
+                                        <div class="d-flex justify-content-center align-items-center"
+                                             style="height: 100%;padding-top: 51%;margin: 1rem;
+                                                     background: url('{% if image %}{{ image.image.url }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}') center / contain no-repeat, rgb(225,225,225);border-radius: 8px;"></div>
+                                        <div class="justify-content-around">
+                                            <h3 style="font-weight: bold;margin: 0;color: #fc9c34;text-align: center;">
+                                                Surgery #{{ surgery.id }}</h3>
+                                            {% if surgery.date_of_surgery %}
+                                                <hr style="width: 100%;"/>
+                                                <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.date_of_surgery }}</h5>
+                                            {% endif %}
+                                                <hr style="width: 100%;"/>
+                                                <h5 style="font-weight: bold;color: slategray;text-align: center;">{{ surgery.patient }}</h5>
+                                        </div>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            <div class="col d-flex flex-column justify-content-center align-items-center"
+                                 style="padding: 1rem; margin: 0.5rem 0; background: white; border-radius: 8px">
+                                <img class="img-fluid" style="max-height: 250px; margin: 1rem"
+                                     src="{% static 'img/No Surgeries.png' %}" alt="No Surgeries">
+                                <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 0.5rem; text-align: center">
+                                    No Surgeries</h1>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
