@@ -43,3 +43,5 @@ media/patient_images.zip
 
 waiting_list.csv
 media/uploaded_template.csv
+
+account/migrations/

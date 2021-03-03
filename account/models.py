@@ -79,7 +79,7 @@ class Account(AbstractBaseUser):
     is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
-    profile_picture_path = models.ImageField(upload_to=upload_profile_picture, null=True, blank=True)
+    profile_picture_path = models.ImageField(upload_to=upload_profile_picture, default='profilePictures/default.png')
     first_name = models.CharField(max_length=20, null=True)
     last_name = models.CharField(max_length=20, null=True)
     group = models.ForeignKey('Group', on_delete=models.CASCADE, default=1)

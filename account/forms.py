@@ -59,7 +59,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = Account
-        exclude = ['is_superuser', 'is_active', 'profile_picture_path', 'is_accepted', 'password']
+        exclude = ['is_superuser', 'is_active', 'is_accepted', 'password']
 
     def clean_email(self):
         data = self.cleaned_data['email']
