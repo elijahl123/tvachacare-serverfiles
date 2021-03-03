@@ -27,8 +27,8 @@
             </div>
         </div>
         <div class="row no-gutters flex-grow-1">
-            <div class="col-12 col-lg-5 col-xl-4 p-lg-3 p-2">
-                <div class="list-group list-group-flush" style="border-radius: 8px;">
+            <div class="col-12 col-lg-5 col-xl-4 bg-white">
+                <div class="list-group list-group-flush sticky-top p-lg-3 p-2" style="border-radius: 8px;">
                     {% for url, icon, title in account_page_list %}
                     <a class="list-group-item list-group-item-action btn-transparent-tvachacare {% if title == account_page_title %}active{% endif %}"
                         href="{{ url }}"
