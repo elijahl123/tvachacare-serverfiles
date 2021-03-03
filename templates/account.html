@@ -8,11 +8,17 @@
             border-style: none;
         }
 
+        @media (min-width: 992px) {
+            .account-container {
+                height: 100vh;
+            }
+        }
+
     </style>
 {% endblock %}
 
 {% block content %}
-    <div class="container-fluid d-flex flex-column" style="padding: 0;min-height: 100vh;background-color: white">
+    <div class="container-fluid d-flex flex-column account-container" style="padding: 0;min-height: 100vh;background-color: white">
         <div class="row no-gutters p-lg-3 p-2">
             <div class="col position-relative"
                  style="text-align: center;padding: 1rem;border-radius: 8px;background: whitesmoke;">
@@ -26,7 +32,7 @@
                 </a>
             </div>
         </div>
-        <div class="row no-gutters flex-grow-1">
+        <div class="row no-gutters flex-grow-1 overflow-auto">
             <div class="col-12 col-lg-5 col-xl-4 bg-white">
                 <div class="list-group list-group-flush sticky-top p-lg-3 p-2" style="border-radius: 8px;">
                     {% for url, icon, title in account_page_list %}
