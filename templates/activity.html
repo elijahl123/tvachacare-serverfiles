@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <title>Activity</title>
+    <style>
+    .alert-tvachacare {
+        background-color: rgba(252,156,52,0.14);
+    }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid d-flex flex-column"
+         style="background: white;font-family: Raleway, sans-serif;padding: 0;height: 100vh;">
+        <div class="row no-gutters" style="padding: 1rem;">
+            <div class="col" style="padding: 1rem;background: whitesmoke;border-radius: 8px;">
+                <h1 style="font-weight: bold;color: var(--main-color);">Activity Log</h1>
+                <h4 style="color: var(--accent-color);font-weight: bold;">The Activity Log shows a history of all events
+                    performed on the system. Whenever a patient is added, a surgery is approved, or any other event, it
+                    gets logged here!</h4>
+            </div>
+        </div>
+        <div class="row no-gutters d-flex flex-column flex-grow-1" style="height: 100%;padding: 1rem;">
+            <div class="col flex-grow-1 overflow-auto"
+                 style="background: whitesmoke;border-radius: 8px;padding: 1rem;height: 100%;">
+                <div class="container-md" style="padding: 1rem;background: white;border-radius: 8px;">
+                    {% for user, event, color, icon in events %}
+                    <div class="row no-gutters" style="padding: 0.5rem;">
+                        <div class="col">
+                            <div class="d-flex flex-column justify-content-center align-items-center flex-md-row media alert-{{ color }} text-{{ color }}"
+                                 style="padding: 1rem;border-radius: 8px;">
+                                <i class="{{ icon }} align-self-center align-self-md-start mr-md-3 mb-3 mb-md-0"
+                                   style="font-size: 64px;width: 64px;text-align: center;"></i>
+                                <div class="d-flex flex-column align-items-center align-items-md-start media-body">
+                                    <h3 class="mt-0" style="font-weight: bold;">{{ event.event_type }}</h3>
+                                    <div class="d-flex align-items-center"
+                                         style="border-radius: 800px;margin-bottom: 8px;border: 0 solid rgb(40, 167, 69) ;">
+                                        <div class="border rounded-circle"
+                                             style="height: 25px;width: 25px;margin-right: 5px;background: url('{{ user.profile_picture_path.url }}') center / cover no-repeat;"></div>
+                                        <span style="font-weight: bold;padding-right: 10px;">{{ user.first_name }} {{ user.last_name }}</span>
+                                    </div>
+                                    <h6 class="mt-0" style="font-weight: bold;margin-left: 5px;">{{ event.event_time }} </h6>
+                                    <hr style="width: 100%;margin: 8px 0;"/>
+                                    <p class="text-center text-md-left" style="font-weight: bold;">{{ event.notes }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -48,7 +48,7 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.core.exceptions import FieldError
+from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
 from django.forms import formset_factory
@@ -171,7 +171,7 @@ def approve_surgery(request, slug, surgery_id):
     surgery.is_denied = False
     surgery.approver = request.user
     surgery.save()
-    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Approved'
+    event_notes = f'Surgery ID #{str(surgery_id)} was Approved. Reason: {surgery.reason}'
     event = EventLog(user=request.user.email, event_type='Surgery Approved', notes=event_notes)
     event.save()
     return redirect('home')
@@ -251,7 +251,7 @@ def deny_surgery(request, slug, surgery_id):
     surgery.is_approved = False
     surgery.approver = request.user
     surgery.save()
-    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Denied'
+    event_notes = f'Surgery ID #{str(surgery_id)} was Denied. Reason: {surgery.reason}'
     event = EventLog(user=request.user.email, event_type='Surgery Denied', notes=event_notes)
     event.save()
     return redirect('home')
@@ -305,9 +305,6 @@ def filter_by_date(request):
         date_start = form.cleaned_data.get('date_start')
         date_end = form.cleaned_data.get('date_end')
         fields = request.POST.getlist('checks[]')
-        event_notes = 'Filter.csv was created'
-        event = EventLog(user=request.user.email, event_type='Filter Created', notes=event_notes)
-        event.save()
         messages.add_message(request, messages.SUCCESS,
                              'Filter was created successfully!')
         if not request.POST.get('procedure_codes'):
@@ -443,8 +440,6 @@ def loginadmin(request):
 
             if user:
                 login(request, user)
-                event = EventLog(user=email, event_type='Login', notes='Logged In')
-                event.save()
                 if user.is_accepted:
                     if request.GET.get('next'):
                         return HttpResponseRedirect(request.GET.get('next'))
@@ -453,15 +448,6 @@ def loginadmin(request):
                     return redirect('terms_of_service')
         else:
             email = request.POST['email'] or None
-
-            x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-
-            if x_forwarded_for:
-                ip = x_forwarded_for.split(',')[0]
-            else:
-                ip = request.META.get('REMOTE_ADDR')
-            event = EventLog(user=email, event_type='Failed Login', notes='Failed Login Attempt from ' + ip)
-            event.save()
 
     else:
         form = AccountAuthenticationForm()
@@ -479,10 +465,6 @@ def login_page(request):
 def logout(request):
     if not request.user.is_authenticated:
         return redirect('login')
-
-    event_notes = 'Logged Out'
-    event = EventLog(user=request.user.email, event_type='Logged Out', notes=event_notes)
-    event.save()
     lgout(request)
     return redirect("login")
 
@@ -493,9 +475,6 @@ def patient_page(request, slug):
     context['account'] = request.user if request.user.is_authenticated else None
     patient = get_object_or_404(PatientInformation, slug=slug)
     surgery = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
-    event_notes = 'Patient ID #' + str(patient.id) + ' was Viewed'
-    event = EventLog(user=request.user.email, event_type='Patient Viewed', notes=event_notes)
-    event.save()
     if request.POST:
         form = EmailForm(request.POST or None)
         if form.is_valid():
@@ -586,10 +565,6 @@ def surgery_page(request, slug, surgery_id):
     surgeries = SurgeryInformation.objects.filter(patient=patient.id).order_by('date_of_upload')
     images = Image.objects.filter(surgery=surgery.id)
     procedure_codes = ProcedureCodes.objects.filter(surgery=surgery.id)
-
-    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Viewed'
-    event = EventLog(user=request.user.email, event_type='Surgery Viewed', notes=event_notes)
-    event.save()
 
     highlighted_fields = [
         'image',
@@ -1117,3 +1092,66 @@ def group_page(request, id):
     context['surgeries'] = surgery_tuple
 
     return render(request, 'group_page.html', context)
+
+
+def activity(request):
+    context['account'] = request.user if request.user.is_authenticated else None
+
+    events = EventLog.objects.all()
+
+    events_tuple = []
+
+    for event in events:
+        try:
+            user = Account.objects.get(email=event.user)
+        except ObjectDoesNotExist:
+            user = None
+
+        success_events = [
+            'Add Patient',
+            'Add Surgery',
+            'Surgery Approved'
+        ]
+        danger_events = [
+            'Patient Deleted',
+            'Surgery Deleted',
+            'Surgery Denied'
+        ]
+        plus_events = [
+            'Add Patient',
+            'Add Surgery'
+        ]
+        minus_events = [
+            'Patient Deleted',
+            'Surgery Deleted'
+        ]
+        check_events = [
+            'Surgery Approved'
+        ]
+        x_events = [
+            'Surgery Denied'
+        ]
+
+        if event.event_type in success_events:
+            color = 'success'
+        elif event.event_type in danger_events:
+            color = 'danger'
+        else:
+            color = 'tvachacare'
+
+        if event.event_type in plus_events:
+            icon = 'fas fa-plus'
+        elif event.event_type in minus_events:
+            icon = 'fas fa-minus'
+        elif event.event_type in check_events:
+            icon = 'fas fa-check'
+        elif event.event_type in x_events:
+            icon = 'fas fa-times'
+        else:
+            icon = 'fas fa-edit'
+
+        events_tuple.append((user, event, color, icon))
+
+    context['events'] = events_tuple
+
+    return render(request, 'activity.html', context)

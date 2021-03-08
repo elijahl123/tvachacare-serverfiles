@@ -40,10 +40,6 @@ def admin_delete(request, model, id):
         item = get_object_or_404(Group, id=id)
         item.delete()
         return redirect('admin_template', 'groups')
-    if model == 'event-logs':
-        item = get_object_or_404(EventLog, id=id)
-        item.delete()
-        return redirect('admin_template', 'event-logs')
     if model == 'patients':
         item = get_object_or_404(PatientInformation, id=id)
         item.delete()
@@ -92,19 +88,6 @@ def admin_edit(request, model, id):
                 return redirect('admin_template', 'groups')
         else:
             form = GroupForm(instance=get_object_or_404(Group, id=id))
-        model_dict['form'] = form
-    elif model == 'event-logs':
-        model_dict['title'] = 'Event Logs'
-        model_dict['items'] = get_object_or_404(EventLog, id=id)
-        if request.POST:
-            form = EventLogForm(request.POST or None, instance=get_object_or_404(EventLog, id=id),
-                                error_class=DivErrorList)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.save()
-                return redirect('admin_template', 'event-logs')
-        else:
-            form = EventLogForm(instance=get_object_or_404(EventLog, id=id))
         model_dict['form'] = form
     elif model == 'patients':
         model_dict['title'] = 'Patients'
@@ -196,9 +179,6 @@ def admin_view(request, model, id):
     elif model == 'groups':
         model_dict['title'] = 'Groups'
         model_dict['item'] = GroupForm(data=model_to_dict(get_object_or_404(Group, id=id)))
-    elif model == 'event-logs':
-        model_dict['title'] = 'Event Logs'
-        model_dict['item'] = EventLogForm(data=model_to_dict(get_object_or_404(EventLog, id=id)))
     elif model == 'patients':
         model_dict['title'] = 'Patients'
         model_dict['item'] = PatientView(data=model_to_dict(get_object_or_404(PatientInformation, id=id)))

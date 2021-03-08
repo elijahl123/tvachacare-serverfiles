@@ -82,7 +82,7 @@
 
 .btn-transparent-tvachacare {
     background: rgba(252, 156, 52, 0.14);
-    color: rgb(252, 156, 52);
+    color:var(--main-accent);
     font-family: Raleway, sans-serif;
     font-weight: bold;
 }
