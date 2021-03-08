@@ -28,7 +28,7 @@
                     <div class="row no-gutters" style="padding: 0.5rem;">
                         <div class="col">
                             <div class="d-flex flex-column justify-content-center align-items-center flex-md-row media alert-{{ color }} text-{{ color }}"
-                                 style="padding: 1rem;border-radius: 8px;">
+                                 style="padding: 1rem;border-radius: 8px;{% if forloop.counter <= account.unread_activity %}box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.25);{% endif %}">
                                 <i class="{{ icon }} align-self-center align-self-md-start mr-md-3 mb-3 mb-md-0"
                                    style="font-size: 64px;width: 64px;text-align: center;"></i>
                                 <div class="d-flex flex-column align-items-center align-items-md-start media-body">

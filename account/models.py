@@ -84,6 +84,7 @@ class Account(AbstractBaseUser):
     last_name = models.CharField(max_length=20, null=True)
     group = models.ForeignKey('Group', on_delete=models.CASCADE, default=1)
     is_accepted = models.BooleanField(default=False)
+    unread_activity = models.PositiveIntegerField(default=0)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']

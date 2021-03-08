@@ -43,7 +43,8 @@ from django.conf.global_settings import STATIC_URL
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models.signals import post_delete, pre_save
+from django.db.models import F
+from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
@@ -223,6 +224,12 @@ def submission_delete(sender, instance, **kwargs):
     instance.image.delete(True)
 
 
+@receiver(post_save, sender=EventLog)
+def submission_save(sender, instance, **kwargs):
+    accounts = Account.objects.all()
+    accounts.update(unread_activity=F('unread_activity') + 1)
+
+
 @receiver(post_delete, sender=PatientInformation)
 def submission_delete(sender, instance, **kwargs):
     instance.patient_image.delete(True)
@@ -236,7 +243,6 @@ def calculate_age(birth_date):
 
 
 def pre_save_patient_information_receiver(sender, instance, *args, **kwargs):
-
     instance.age = calculate_age(instance.date_of_birth) if instance.date_of_birth else None
 
 

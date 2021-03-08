@@ -1095,6 +1095,9 @@ def group_page(request, id):
 
 
 def activity(request):
+
+    Account.objects.filter(id=request.user.id).update(unread_activity=0)
+
     context['account'] = request.user if request.user.is_authenticated else None
 
     events = EventLog.objects.all()
