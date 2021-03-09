@@ -1094,8 +1094,9 @@ def group_page(request, id):
     return render(request, 'group_page.html', context)
 
 
+@login_required
+@terms_required
 def activity(request):
-
     Account.objects.filter(id=request.user.id).update(unread_activity=0)
 
     context['account'] = request.user if request.user.is_authenticated else None
