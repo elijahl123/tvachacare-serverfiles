@@ -1170,7 +1170,6 @@ def activity(request):
                 url = None
         elif event.event_type == 'Add Surgery' or event.event_type == 'Surgery Approved' or event.event_type == 'Surgery Denied':
             surgery_id = event.notes.split(' ')[2].replace('#', '')
-            print(surgery_id)
             try:
                 surgery = SurgeryInformation.objects.get(id=surgery_id)
                 url = reverse('surgery_page', args=[surgery.patient.slug, surgery.id])
