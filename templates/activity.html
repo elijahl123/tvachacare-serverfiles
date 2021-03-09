@@ -24,19 +24,23 @@
             <div class="col flex-grow-1 overflow-auto"
                  style="background: whitesmoke;border-radius: 8px;padding: 1rem;height: 100%;">
                 <div class="container-md" style="padding: 1rem;background: white;border-radius: 8px;">
-                    {% for user, event, color, icon in events %}
+                    {% for user, event, color, icon, url in events %}
                         {% ifchanged event.event_time|date:'F j, Y' %}
-                        <div class="row no-gutters">
-                            <div class="col d-flex justify-content-center align-items-center position-relative">
-                                <hr style="width: 100%;"/>
-                                <span class="position-absolute"
-                                      style="color: var(--accent-color);padding: 0 20px;font-weight: bold;background: white;font-size: 20px;">{{ event.event_time|date:'F j, Y' }}</span>
+                            <div class="row no-gutters">
+                                <div class="col d-flex justify-content-center align-items-center position-relative">
+                                    <hr style="width: 100%;"/>
+                                    <span class="position-absolute"
+                                          style="color: var(--accent-color);padding: 0 20px;font-weight: bold;background: white;font-size: 20px;">{{ event.event_time|date:'F j, Y' }}</span>
+                                </div>
                             </div>
-                        </div>
                         {% endifchanged %}
                         <div class="row no-gutters" style="padding: 0.5rem;">
                             <div class="col">
-                                <div class="d-flex flex-column justify-content-center align-items-center flex-md-row media alert-{{ color }} text-{{ color }}"
+                                <div {% if url %}onclick="window.location.href = '{{ url }}'"
+                                     class="d-flex flex-column justify-content-center align-items-center flex-md-row media btn btn-transparent-{{ color }}"
+                                     {% else %}
+                                     class="d-flex flex-column justify-content-center align-items-center flex-md-row media alert-{{ color }} text-{{ color }}"
+                                     {% endif %}
                                      style="padding: 1rem;border-radius: 8px;{% if forloop.counter <= account.unread_activity %}box-shadow: 0 0 0 0.3rem rgba(0, 123, 255, 0.25);{% endif %}">
                                     <i class="{{ icon }} align-self-center align-self-md-start mr-md-3 mb-3 mb-md-0"
                                        style="font-size: 64px;width: 64px;text-align: center;"></i>

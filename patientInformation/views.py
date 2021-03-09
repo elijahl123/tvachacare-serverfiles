@@ -55,6 +55,7 @@ from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.views.static import serve
 
 from TvachaCare.settings import BASE_DIR
@@ -101,8 +102,7 @@ def add_surgery(request, slug):
             obj = surgery_form.save(commit=False)
             obj.save()
             surgery_form = SurgeryForm
-            event_notes = 'Surgery Burn Operation Number #' + str(
-                request.POST['burn_operation_number']) + ' was uploaded'
+            event_notes = f'Surgery ID #{obj.id} was uploaded'
             event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
             event.save()
 
@@ -1154,7 +1154,32 @@ def activity(request):
         else:
             icon = 'fas fa-edit'
 
-        events_tuple.append((user, event, color, icon))
+        if event.event_type == 'Add Patient':
+            record_number = event.notes.split(' ')[1]
+            try:
+                patient = PatientInformation.objects.get(patient_record_number=record_number)
+                url = reverse('patient_page', args=[patient.slug])
+            except ObjectDoesNotExist:
+                url = None
+        elif event.event_type == 'Patient Edited':
+            patient_id = event.notes.split(' ')[2].replace('#', '')
+            try:
+                patient = PatientInformation.objects.get(id=patient_id)
+                url = reverse('patient_page', args=[patient.slug])
+            except ObjectDoesNotExist:
+                url = None
+        elif event.event_type == 'Add Surgery' or event.event_type == 'Surgery Approved' or event.event_type == 'Surgery Denied':
+            surgery_id = event.notes.split(' ')[2].replace('#', '')
+            print(surgery_id)
+            try:
+                surgery = SurgeryInformation.objects.get(id=surgery_id)
+                url = reverse('surgery_page', args=[surgery.patient.slug, surgery.id])
+            except (ObjectDoesNotExist, ValueError):
+                url = None
+        else:
+            url = None
+
+        events_tuple.append((user, event, color, icon, url))
 
     context['events'] = events_tuple
 
