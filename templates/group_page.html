@@ -13,15 +13,18 @@
             transition-duration: 0.2s;
         }
     </style>
+    {% block group_header %}
+
+    {% endblock %}
 {% endblock %}
 
 {% block content %}
-    <main class="d-flex" style="min-height: 100vh;background: white;font-family: Raleway, sans-serif;padding: 1rem;">
+    <main class="d-flex" style="height: 100vh;background: white;font-family: Raleway, sans-serif;padding: 1rem;">
         <div class="container-fluid d-flex flex-column flex-grow-1 position-relative"
              style="padding: 1rem;background: whitesmoke;border-radius: 8px;">
 
             <a class="btn border rounded-pill d-flex align-items-center position-absolute btn-transparent-secondary"
-               role="button" style="right: 1rem;top: 1rem;z-index: 10000" href="{% url 'groups' %}">
+               role="button" style="right: 1rem;top: 1rem;z-index: 100" href="{% url 'groups' %}">
                 <i class="fas fa-arrow-left" style="margin: 5px;"></i>
                 <span class="d-none d-lg-block">Group Home</span>
             </a>
@@ -35,7 +38,8 @@
                     </p>
                 </div>
             </div>
-            <div class="row no-gutters flex-grow-1" style="padding: 1rem;">
+        {% block group_content %}
+            <div class="row no-gutters flex-grow-1 overflow-auto h-100" style="padding: 1rem;">
                 <div class="col">
                     <h3 style="color: var(--main-color);font-weight: bold;">Surgeries</h3>
                     <div class="row no-gutters">
@@ -62,6 +66,14 @@
                                     </div>
                                 </a>
                             {% endfor %}
+                            <div
+                               class="col col-12 col-md-6 col-xl-3"
+                               style="border-radius: 8px;padding: 5px;">
+                                <a href="{% url 'group_add_surgeries' group.id %}" class="btn btn-tvachacare btn-block h-100 d-flex justify-content-center align-items-center flex-column" style="border-radius: 8px">
+                                    <i class="fa fa-plus h1 mb-3"></i>
+                                    <span class="m-0 h2" style="font-weight: bold">Add Surgeries</span>
+                                </a>
+                            </div>
                         {% else %}
                             <div class="col d-flex flex-column justify-content-center align-items-center"
                                  style="padding: 1rem; margin: 0.5rem 0; background: white; border-radius: 8px">
@@ -69,11 +81,13 @@
                                      src="{% static 'img/No Surgeries.png' %}" alt="No Surgeries">
                                 <h1 style="font-weight: bold; font-family: Raleway, sans-serif; color: var(--main-color); margin: 0.5rem; text-align: center">
                                     No Surgeries</h1>
+                                <a href="{% url 'group_add_surgeries' group.id %}" role="button" class="btn btn-tvachacare mt-2 btn-block">Add Surgeries</a>
                             </div>
                         {% endif %}
                     </div>
                 </div>
             </div>
+            {% endblock %}
         </div>
     </main>
 {% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'group_page.html' %}
+
+{% block group_header %}
+
+{% endblock %}
+
+{% block group_content %}
+    <div class="row no-gutters flex-grow-1 overflow-auto" style="padding: 1rem;height: 100%;">
+        <div class="col d-flex flex-column overflow-auto" style="height: 100%;">
+            <h3 style="color: var(--main-color);font-weight: bold;margin-bottom: 1rem;">Add Surgeries</h3>
+            <div class="row no-gutters flex-grow-1" style="height: 100%;">
+                <div class="col">
+                    <form class="d-flex flex-column flex-grow-1" method="post" enctype="multipart/form-data"
+                          style="height: 100%;">
+                        {% csrf_token %}
+                        <div class="flex-grow-1 overflow-auto" style="height: 100%;">
+                            <ul class="list-group mb-3" style="border-radius: 8px;">
+                                {% for surgery in surgeries %}
+                                    <li class="list-group-item d-flex flex-row">
+                                        <div class="custom-control custom-checkbox"
+                                             style="width: 100%;cursor: pointer !important">
+                                            <input type="checkbox" id="surgery_{{ surgery.id }}"
+                                                   class="custom-control-input" name="surgeries[]"
+                                                   value="{{ surgery.id }}" {% if surgery.group == group %}checked{% endif %} />
+                                            <label class="custom-control-label" for="surgery_{{ surgery.id }}"
+                                                   style="font-weight: bold;width: 100%;cursor: pointer !important">
+                                                {{ surgery.patient.first_name }} {{ surgery.patient.last_name }}
+                                            </label>
+                                        </div>
+                                        <span style="width: 100%;">
+                                            <a class="patient-name" href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                style="font-weight: bold;">Surgery #{{ surgery.id }}</a>
+                                        </span>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <button class="btn btn-success btn-block btn-lg" type="submit"
+                                style="border-radius: 8px;font-weight: bold;">Add Surgeries
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

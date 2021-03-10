@@ -1096,6 +1096,31 @@ def group_page(request, id):
 
 @login_required
 @terms_required
+def group_add_surgeries(request, id):
+    context['account'] = request.user if request.user.is_authenticated else None
+    group = get_object_or_404(SurgeryGroup, id=id)
+    context['group'] = group
+    context['surgeries'] = SurgeryInformation.objects.filter(reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
+
+    if request.POST:
+        surgeries = request.POST.getlist('surgeries[]')
+        if surgeries:
+            surgery_inverse_query = [(~Q(id__exact=item) & Q(group__exact=group)) for item in surgeries]
+            inverse_surgery_objects = SurgeryInformation.objects.filter(reduce(operator.and_, surgery_inverse_query))
+            inverse_surgery_objects.update(group=None)
+            surgery_query = [Q(id__exact=item) for item in surgeries]
+            surgery_objects = SurgeryInformation.objects.filter(reduce(operator.or_, surgery_query))
+            surgery_objects.update(group=group)
+        else:
+            surgery_objects = SurgeryInformation.objects.filter(group=group)
+            surgery_objects.update(group=None)
+        return redirect('group_page', group.id)
+
+    return render(request, 'group_add_surgeries.html', context)
+
+
+@login_required
+@terms_required
 def activity(request):
     Account.objects.filter(id=request.user.id).update(unread_activity=0)
 
