@@ -1111,6 +1111,15 @@ def group_add_surgeries(request, id):
             surgery_query = [Q(id__exact=item) for item in surgeries]
             surgery_objects = SurgeryInformation.objects.filter(reduce(operator.or_, surgery_query))
             surgery_objects.update(group=group)
+
+            surgery_string = ''
+            for surgery in surgery_objects:
+                surgery_string += f'Surgery #{str(surgery.id)}, '
+
+            event_notes = f'{surgery_string[:len(surgery_string) - 2]} added to {group.name}'
+            print(event_notes)
+            event = EventLog(user=request.user.email, event_type='Surgeries Added to Group', notes=event_notes)
+            event.save()
         else:
             surgery_objects = SurgeryInformation.objects.filter(group=group)
             surgery_objects.update(group=None)
@@ -1139,7 +1148,8 @@ def activity(request):
         success_events = [
             'Add Patient',
             'Add Surgery',
-            'Surgery Approved'
+            'Surgery Approved',
+            'Surgeries Added to Group'
         ]
         danger_events = [
             'Patient Deleted',
@@ -1148,7 +1158,8 @@ def activity(request):
         ]
         plus_events = [
             'Add Patient',
-            'Add Surgery'
+            'Add Surgery',
+            'Surgeries Added to Group'
         ]
         minus_events = [
             'Patient Deleted',
