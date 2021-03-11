@@ -14,6 +14,15 @@
         .current-badge > .badge {
             background-color: whitesmoke !important;
         }
+
+        .list-group-item-success > .patient-name:hover, .hover-success > .patient-name:hover {
+            background-color: rgba(40, 167, 69, 0.20) !important;
+        }
+
+        .list-group-item-danger > .patient-name:hover, .hover-danger > .patient-name:hover {
+            background-color: rgba(220, 53, 69, 0.20) !important;
+        }
+
     </style>
 {% endblock %}
 
@@ -51,13 +60,13 @@
                                                 {{ surgery.patient.first_name }} {{ surgery.patient.last_name }}
                                             </label>
                                         </div>
-                                        <span style="width: 100%;">
+                                        <span class="{% if surgery.is_approved %}hover-success{% elif surgery.is_denied %}hover-danger{% endif %}" style="width: 100%;">
                                             <a class="patient-name"
                                                href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
                                                style="font-weight: bold;">Surgery #{{ surgery.id }}</a>
                                         </span>
                                     {% if sort_by %}
-                                        <span style="width: 100%;">
+                                        <span class="{% if surgery.is_approved %}hover-success{% elif surgery.is_denied %}hover-danger{% endif %}" style="width: 100%;">
                                             <a class="patient-name"
                                                href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
                                                style="font-weight: bold;">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}</a>
