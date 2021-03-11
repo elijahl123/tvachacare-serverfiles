@@ -1100,7 +1100,29 @@ def group_add_surgeries(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
     context['group'] = group
-    context['surgeries'] = SurgeryInformation.objects.filter(reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
+    surgeries_query = SurgeryInformation.objects.filter(
+        reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
+
+    context['object_name'] = 'Surgery' if surgeries_query.count() == 1 else 'Surgeries'
+    context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
+    context['excluded_fields'] = ['image', 'procedurecodes']
+
+    try:
+        queryset = surgeries_query.order_by(request.GET.get('sort-by'))
+        context['sort_by'] = {
+            'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
+            'value': request.GET.get('sort-by').replace('-', ''),
+            'first_val': request.GET.get('sort-by')[0]
+        }
+        context['field_error'] = ''
+    except FieldError:
+        queryset = surgeries_query
+        context['sort_by'] = ''
+        context['field_error'] = \
+            f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
+                if request.GET.get('sort-by') else ''
+
+    context['object'] = queryset
 
     if request.POST:
         surgeries = request.POST.getlist('surgeries[]')

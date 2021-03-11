@@ -1,13 +1,36 @@
 {% extends 'group_page.html' %}
+{% load static %}
+{% load getattribute %}
 
 {% block group_header %}
+    <link rel="stylesheet" href="{% static 'homePage.css' %}">
+    <script src="{% static 'js/group_add_surgeries.js' %}"></script>
+    <style>
+        .toolbar-inner {
+            background-color: white;
+            border-radius: 8px;
+        }
 
+        .current-badge > .badge {
+            background-color: whitesmoke !important;
+        }
+    </style>
 {% endblock %}
 
 {% block group_content %}
     <div class="row no-gutters flex-grow-1 overflow-auto" style="padding: 1rem;height: 100%;">
         <div class="col d-flex flex-column overflow-auto" style="height: 100%;">
             <h3 style="color: var(--main-color);font-weight: bold;margin-bottom: 1rem;">Add Surgeries</h3>
+            <div class="form-group"
+                 style="position:relative; width: 100%; display: flex; align-items: center;">
+                <i class="fas fa-search search-icon"
+                   style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
+                <input class="form-control search-patients" autocomplete="off" id="searchbar-nav"
+                       onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
+                       onfocusout="$('.search-icon').css('color', 'white')"
+                       placeholder="Search for surgeries..." name="search">
+            </div>
+            {% include 'snippets/patient-toolbar.html' with url=request.path %}
             <div class="row no-gutters flex-grow-1" style="height: 100%;">
                 <div class="col">
                     <form class="d-flex flex-column flex-grow-1" method="post" enctype="multipart/form-data"
@@ -15,22 +38,31 @@
                         {% csrf_token %}
                         <div class="flex-grow-1 overflow-auto" style="height: 100%;">
                             <ul class="list-group mb-3" style="border-radius: 8px;">
-                                {% for surgery in surgeries %}
-                                    <li class="list-group-item d-flex flex-row">
-                                        <div class="custom-control custom-checkbox"
-                                             style="width: 100%;cursor: pointer !important">
+                                {% for surgery in object %}
+                                    <li class="list-group-item flex-row align-items-center surgery-list {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% endif %}" style="display: flex">
+                                        <div class="custom-control custom-checkbox patient-name"
+                                             style="width: 100%;cursor: pointer !important; padding: 5px 0 5px 1.75rem;">
                                             <input type="checkbox" id="surgery_{{ surgery.id }}"
                                                    class="custom-control-input" name="surgeries[]"
-                                                   value="{{ surgery.id }}" {% if surgery.group == group %}checked{% endif %} />
+                                                   value="{{ surgery.id }}"
+                                                   {% if surgery.group == group %}checked{% endif %}/>
                                             <label class="custom-control-label" for="surgery_{{ surgery.id }}"
                                                    style="font-weight: bold;width: 100%;cursor: pointer !important">
                                                 {{ surgery.patient.first_name }} {{ surgery.patient.last_name }}
                                             </label>
                                         </div>
                                         <span style="width: 100%;">
-                                            <a class="patient-name" href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                                style="font-weight: bold;">Surgery #{{ surgery.id }}</a>
+                                            <a class="patient-name"
+                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                               style="font-weight: bold;">Surgery #{{ surgery.id }}</a>
                                         </span>
+                                    {% if sort_by %}
+                                        <span style="width: 100%;">
+                                            <a class="patient-name"
+                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                               style="font-weight: bold;">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}</a>
+                                        </span>
+                                    {% endif %}
                                     </li>
                                 {% endfor %}
                             </ul>

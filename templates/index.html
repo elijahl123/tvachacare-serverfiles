@@ -61,59 +61,7 @@
                                        onfocusout="$('.search-icon').css('color', 'white')"
                                        placeholder="Search for patients..." name="search">
                             </div>
-                            <div class="row patient-toolbar no-gutters">
-                                <div class="col d-flex justify-content-between flex-column flex-lg-row"
-                                     style="padding: 1rem;">
-                                    <div class="bg-secondary patient-badge d-flex justify-content-center align-items-center patient-count">
-                                        <span>{{ object.count }} {{ object_name }}</span>
-                                    </div>
-                                    {% if field_error %}
-                                        <div class="d-flex justify-content-center align-items-center">
-                                            <div class="badge badge-danger"
-                                                 style="font-size: 16px; padding: 0.5rem">
-                                                <span>{{ field_error }}</span>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    {% if sort_by %}
-                                        <div class="d-flex justify-content-center align-items-center current-badge">
-                                            <div class="badge"
-                                                 style="background-color: white; font-size: 16px; padding: 0.5rem">
-                                                <span>Currently Sorting by: <strong>{{ sort_by.field|title }}</strong></span>
-                                            </div>
-                                        </div>
-                                    {% endif %}
-                                    <div class="d-flex justify-content-center justify-content-lg-start">
-                                        <button class="btn dropdown-toggle btn-transparent-success"
-                                                style="margin-right: 5px"
-                                                data-toggle="dropdown">Sort By
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right patient-dropdown-menu overflow-auto shadow">
-                                            {% for field in field_list %}
-                                                {% if field.name not in excluded_fields %}
-                                                    <a class="dropdown-item"
-                                                       href="/?sort-by={{ field.name }}">{{ field.verbose_name|title }}</a>
-                                                {% endif %}
-                                            {% endfor %}
-                                        </div>
-                                        {% if sort_by %}
-                                            {% if sort_by.first_val == '-' %}
-                                                <a href="/?sort-by={{ sort_by.value }}" role="button"
-                                                   class="btn btn-transparent-tvachacare" style="margin-right: 5px">Reverse
-                                                </a>
-                                            {% else %}
-                                                <a href="/?sort-by=-{{ sort_by.value }}" role="button"
-                                                   class="btn btn-transparent-tvachacare" style="margin-right: 5px">Reverse
-                                                </a>
-                                            {% endif %}
-                                            <a href="{% url 'home' %}" role="button"
-                                               class="btn btn-transparent-danger">Clear
-                                            </a>
-                                        {% endif %}
-                                    </div>
-
-                                </div>
-                            </div>
+                            {% include 'snippets/patient-toolbar.html' %}
                             {% if account.group.can_approve %}
                                 {% if object %}
                                     <ul class="list-group overflow-auto"
