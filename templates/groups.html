@@ -32,10 +32,12 @@
                                     {% if group.surgery_count == 1 %}Surgery{% else %}Surgeries{% endif %}</h5>
                                 <p class="card-text"
                                    style="font-weight: bold;color: var(--accent-color);">{{ group.description|truncatewords:25 }}</p>
-                                    <div class="flex-grow-1 d-flex align-items-end">
-                                <a href="{% url 'edit_group' group.id %}" class="btn btn-transparent-success" role="button"
+                                    <div class="flex-grow-1 d-flex align-items-end flex-wrap">
+                                <a href="{% url 'group_add_surgeries' group.id %}" class="btn btn-transparent-tvachacare mt-2" role="button"
+                                   style="margin-right: 10px;">Add Surgeries</a>
+                                <a href="{% url 'edit_group' group.id %}" class="btn btn-transparent-success mt-2" role="button"
                                    style="margin-right: 10px;">Edit</a>
-                                <a href="{% url 'delete_group' group.id %}" class="btn btn-transparent-danger" role="button">Delete</a>
+                                <a href="{% url 'delete_group' group.id %}" class="btn btn-transparent-danger mt-2" role="button">Delete</a>
                                     </div>
                                 </div>
                             </div>
