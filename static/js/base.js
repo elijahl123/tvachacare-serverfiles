@@ -10,7 +10,7 @@ gtag('config', 'UA-172938628-2');
 
 
 function hours12(date) {
-    return (date.getUTCHours() + 16) % 12 || 12;
+    return (date.getUTCHours() + 17) % 12 || 12;
 }
 
 function formatAMPM(hours) {
@@ -26,7 +26,7 @@ function startTime() {
     let m = today.getUTCMinutes();
     m = checkTime(m);
     document.getElementById('current_time').innerHTML =
-        h + ":" + m + formatAMPM(today.getUTCHours() + 16);
+        h + ":" + m + formatAMPM(today.getUTCHours() + 17);
     let t = setTimeout(startTime, 500);
 }
 
