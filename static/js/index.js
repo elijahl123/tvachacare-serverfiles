@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $('.search-patients').on('keyup', function () {
         let information = $(this).val().toLowerCase();
-        const query = $('.patient-list:nth-child(2n + 1)')
+        const query = $('.patient-list:nth-child(2n+2)')
         query.filter(function () {
             $(this).toggle($(this).text().toLowerCase().indexOf(information) > -1)
         })

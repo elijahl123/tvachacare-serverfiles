@@ -22,7 +22,7 @@ def admin(request):
         return redirect('home')
     account = request.user if request.user.is_authenticated else None
     context['account'] = account
-    return render(request, 'admin.html', context)
+    return render(request, 'admin/admin.html', context)
 
 
 @login_required
@@ -118,7 +118,7 @@ def admin_edit(request, model, id):
     else:
         return redirect('admin-console')
     context['model'] = model_dict
-    return render(request, 'admin_edit.html', context)
+    return render(request, 'admin/admin_edit.html', context)
 
 
 @login_required
@@ -160,7 +160,7 @@ def admin_template(request, model):
 
             model_dict['new_form'] = form
     context['model'] = model_dict
-    return render(request, 'admin_template.html', context)
+    return render(request, 'admin/admin_template.html', context)
 
 
 @login_required
@@ -191,7 +191,7 @@ def admin_view(request, model, id):
     else:
         return redirect('admin-console')
     context['model'] = model_dict
-    return render(request, 'admin_view.html', context)
+    return render(request, 'admin/admin_view.html', context)
 
 
 account_page_list = [
@@ -219,7 +219,7 @@ def account(request):
 
     context['form'] = form
 
-    return render(request, 'account.html', context)
+    return render(request, 'account/account.html', context)
 
 
 @login_required

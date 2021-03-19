@@ -316,7 +316,7 @@ def filter_by_date(request):
 
     context['form'] = form
 
-    return render(request, 'filter.html', context)
+    return render(request, 'filter/filter.html', context)
 
 
 @login_required
@@ -347,7 +347,7 @@ def hui_report(request):
 
     context['form'] = form
 
-    return render(request, 'hui_filter.html', context)
+    return render(request, 'filter/hui_filter.html', context)
 
 
 @login_required
@@ -453,13 +453,13 @@ def loginadmin(request):
         form = AccountAuthenticationForm()
 
     context['login_form'] = form
-    return render(request, 'loginAdmin.html', context)
+    return render(request, 'account/loginAdmin.html', context)
 
 
 def login_page(request):
     if request.user.is_authenticated:
         return redirect('home')
-    return render(request, 'login.html', {'groups': Group.objects.all()})
+    return render(request, 'account/login.html', {'groups': Group.objects.all()})
 
 
 def logout(request):
@@ -544,7 +544,7 @@ def patient_page(request, slug):
         except IndexError:
             surgery_tuple.append((surgeries, None))
     context['surgery'] = surgery_tuple
-    return render(request, 'patient_page.html', context)
+    return render(request, 'patients/patient_page.html', context)
 
 
 @login_required
@@ -617,7 +617,7 @@ def surgery_page(request, slug, surgery_id):
                 surgery.id)
             to_emails = Account.objects.filter(group__name='Approver').values_list('email', flat=True)
             message = request.POST.get('appeal_request')
-            html_message = render_to_string('appeal_email.html',
+            html_message = render_to_string('surgeries/appeal_email.html',
                                             {'patient': patient, 'account': request.user, 'message': message,
                                              'surgery': surgery})
             for email in to_emails:
@@ -625,7 +625,7 @@ def surgery_page(request, slug, surgery_id):
                           recipient_list=[email],
                           html_message=html_message)
 
-    return render(request, 'surgery_page.html', context)
+    return render(request, 'surgeries/surgery_page.html', context)
 
 
 def terms_of_service(request):
@@ -784,7 +784,7 @@ def error_404(request, exception):
         'number': '404',
         'value': 'Page Not Found'
     }
-    return render(request, '404_page.html', context)
+    return render(request, 'errors/404_page.html', context)
 
 
 def error_500(request):
@@ -794,7 +794,7 @@ def error_500(request):
         'value': 'Internal Server Error'
     }
 
-    return render(request, '404_page.html', context)
+    return render(request, 'errors/404_page.html', context)
 
 
 @login_required
@@ -810,7 +810,7 @@ def waiting_list(request):
     context['other_patients'] = other_patients
     if request.POST and 'remove_all' in request.POST:
         patients.update(in_waiting_room=False)
-    return render(request, 'waiting_list.html', context)
+    return render(request, 'waiting list/waiting_list.html', context)
 
 
 @login_required
@@ -838,7 +838,7 @@ def waiting_list_search(request):
         patients.update(in_waiting_room=True)
         return redirect('waiting_list')
 
-    return render(request, 'waiting_list_search.html', context)
+    return render(request, 'waiting list/waiting_list_search.html', context)
 
 
 @login_required
@@ -909,7 +909,7 @@ def email_waiting_list(request):
             to = to.split(',')
             cc = cc.split(',')
             bcc = bcc.split(',')
-            html_message = render_to_string('waiting_list_email.html',
+            html_message = render_to_string('waiting list/waiting_list_email.html',
                                             {'patients': PatientInformation.objects.filter(in_waiting_room=True),
                                              'message': message})
             email = EmailMessage(
@@ -979,11 +979,11 @@ def import_patients(request):
                     )
         if error_dict:
             context['patients'] = error_dict
-            return render(request, 'csv_errors.html', context)
+            return render(request, 'patients/csv_errors.html', context)
         else:
             messages.add_message(request, messages.SUCCESS, 'Patients Uploaded Successfully')
 
-    return render(request, 'csv_upload.html', context)
+    return render(request, 'patients/csv_upload.html', context)
 
 
 @login_required
@@ -1011,7 +1011,7 @@ def serve_import_template(request):
 def groups(request):
     context['account'] = request.user if request.user.is_authenticated else None
     context['groups'] = SurgeryGroup.objects.all()
-    return render(request, 'groups.html', context)
+    return render(request, 'groups/groups.html', context)
 
 
 @login_required
@@ -1091,7 +1091,7 @@ def group_page(request, id):
             surgery_tuple.append((surgeries, None))
     context['surgeries'] = surgery_tuple
 
-    return render(request, 'group_page.html', context)
+    return render(request, 'groups/group_page.html', context)
 
 
 @login_required
@@ -1147,7 +1147,7 @@ def group_add_surgeries(request, id):
             surgery_objects.update(group=None)
         return redirect('group_page', group.id)
 
-    return render(request, 'group_add_surgeries.html', context)
+    return render(request, 'groups/group_add_surgeries.html', context)
 
 
 @login_required
