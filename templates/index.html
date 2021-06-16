@@ -80,9 +80,9 @@
                                                 </span>
                                                     {% if sort_by %}
                                                         <div class="overflow-hidden"
-                                                             style="text-overflow: ellipsis; width:100%">
-                                                    <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
-                                                          style="white-space: nowrap">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}
+                                                             style="text-overflow: ellipsis; width:100%;">
+                                                    <span title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}">
+                                                        {{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}
                                                     </span>
                                                         </div>
                                                     {% endif %}
@@ -145,8 +145,8 @@
                                                     <a href="{% url 'patient_page' patients.slug %}"
                                                        class="overflow-hidden patient-name justify-content-center justify-content-lg-start text-center text-lg-left"
                                                        style="text-overflow: ellipsis; width:100%">
-                                                    <span class="justify-content-center" title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}"
-                                                          style="white-space: nowrap">{{ patients|getattribute:sort_by.value }}
+                                                    <span class="justify-content-center" title="{{ sort_by.field|title }}: {{ patients|getattribute:sort_by.value }}" style="white-space:nowrap">
+                                                        {{ patients|getattribute:sort_by.value }}
                                                     </span>
                                                     </a>
                                                 {% endif %}
