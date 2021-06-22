@@ -61,7 +61,7 @@
         {% if account %}
             {% include 'snippets/navbar.html' %}
         {% endif %}
-    <div class="col flex-grow-1 col-md-12 col-lg-7 col-xl-9"
+    <div class="col flex-grow-1 {% if account %}col-md-12 col-lg-7 col-xl-9{% endif %}"
          style="background-color: var(--main-color); width: 100%">
         {% block content %}
         {% endblock %}
