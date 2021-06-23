@@ -432,7 +432,6 @@ def loginadmin(request):
             resp = requests.post('https://www.google.com/recaptcha/api/siteverify', data=data)
             result_json = resp.json().get('score')
 
-            print(result_json)
             if result_json >= 0.7:
                 user = authenticate(email=email, password=password)
             else:
