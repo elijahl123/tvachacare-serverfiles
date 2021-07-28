@@ -64,6 +64,20 @@ from account.models import Account
 from patientInformation.forms import *
 from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog
 
+"""
+This is a guide to the different context objects I use for each view: 
+
+context['account'] is the request's user. If the user is authenticated, it will show the Account model *required 
+
+context['title'] is only for when there is a form that uses the General Form Template *required 
+
+context['different_fields'] is for when there is a form template. It is a list of the field names that will not show 
+up on general for loop. Use only when you have different types of inputs or you just don't want the user to see it. 
+
+context['
+
+"""
+
 context = {'today': datetime.date.today()}  # Theses are all the non view-specific context variables
 
 
