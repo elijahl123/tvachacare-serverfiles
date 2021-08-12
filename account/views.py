@@ -3,10 +3,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
 
 from account.forms import *
-from account.models import Account
 from patientInformation.forms import *
 from patientInformation.models import *
 from patientInformation.views import terms_required
@@ -14,10 +12,12 @@ from patientInformation.views import terms_required
 context = {'today': datetime.date.today()}
 
 
-
 @login_required
 @terms_required
 def admin(request):
+    """
+    Admin view for the console home that displays the list of object types in the database
+    """
     if not request.user.group.name == 'Admin':
         return redirect('home')
     account = request.user if request.user.is_authenticated else None
@@ -28,6 +28,9 @@ def admin(request):
 @login_required
 @terms_required
 def admin_delete(request, model, id):
+    """
+    Admin Delete Function that retrieves the object and deletes it or returns a 404 error if the object is not found
+    """
     if request.user.group.name != 'Admin':
         return redirect('admin-console')
     account = request.user if request.user.is_authenticated else None
@@ -59,6 +62,10 @@ def admin_delete(request, model, id):
 @login_required
 @terms_required
 def admin_edit(request, model, id):
+    """
+    Admin Edit Function that retrieves the object from the database and presents the proper form in which to edit that
+    instance of the object
+    """
     if not request.user.group.name == 'Admin':
         return redirect('home')
     account = request.user if request.user.is_authenticated else None
@@ -124,6 +131,9 @@ def admin_edit(request, model, id):
 @login_required
 @terms_required
 def admin_template(request, model):
+    """
+    Admin Template displays a list of the objects corresponding to a specific item group (ex. Surgeries, Patients, etc.)
+    """
     context['account'] = request.user if request.user.is_authenticated else None
     model_dict = {}
     for model_obj in django.apps.apps.get_models():
@@ -166,6 +176,10 @@ def admin_template(request, model):
 @login_required
 @terms_required
 def admin_view(request, model, id):
+    """
+    Admin View function retrieves information on a specific object from an item group and displays all the form
+    information attached to it
+    """
     if not request.user.group.name == 'Admin':
         return redirect('home')
     account = request.user if request.user.is_authenticated else None
@@ -195,12 +209,16 @@ def admin_view(request, model, id):
 
 
 account_page_list = [
-        ('/account', 'fas fa-user-edit', 'Edit Profile'),
-    ]
+    ('/account', 'fas fa-user-edit', 'Edit Profile'),
+]
+
 
 @login_required
 @terms_required
 def account(request):
+    """
+    Displays the Account Homepage, which by default displays a form for the user to change their account information
+    """
     context['account'] = request.user if request.user.is_authenticated else None
 
     context['account_page_list'] = account_page_list
@@ -225,6 +243,9 @@ def account(request):
 @login_required
 @terms_required
 def change_password(request):
+    """
+    Displays a form with the form template where the user can change their password.
+    """
     context['account'] = request.user if request.user.is_authenticated else None
     context['different_fields'] = []
     context['title'] = 'Change Password'
