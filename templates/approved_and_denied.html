@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block header %}
+    <title>Approved and Denied</title>
+    <link rel="stylesheet" href="{% static 'approved_and_denied.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main class="bg-white">
+        <div class="container-fluid d-flex flex-column p-3" style="min-height: 100vh;">
+            <div class="row no-gutters p-3">
+                <div class="col p-3" style="border-radius: 8px;background: whitesmoke;">
+                    <h1 class="text-center text-md-left mb-0 mb-lg-2"
+                        style="font-weight: bold;color: var(--main-color);">Approved and Denied Surgeries</h1>
+                    <p class="lead mb-0 d-none d-lg-block" style="font-weight: bold;color: var(--accent-color);">Here,
+                        you can view the approved and denied surgeries in the system.</p>
+                </div>
+            </div>
+            <div class="row no-gutters flex-grow-1 p-3">
+                <div class="col d-flex flex-column">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <ul class="nav nav-pills nav-fill" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link active d-flex align-items-center justify-content-center" role="tab"
+                                   data-toggle="pill" href="#approved"
+                                   style="font-weight: bold;background: whitesmoke;">Approved
+                                    <span class="badge badge-pill badge-success ml-2">{{ approved.count }}</span>
+                                </a>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link d-flex align-items-center justify-content-center" role="tab"
+                                   data-toggle="pill" href="#denied"
+                                   style="font-weight: bold;background: whitesmoke;">Denied
+                                    <span class="badge badge-pill badge-danger ml-2">{{ denied.count }}</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content d-flex flex-column flex-grow-1">
+                            <div id="approved" class="tab-pane active flex-grow-1 pt-3" role="tabpanel">
+                                <div class="row no-gutters d-flex flex-column flex-grow-1 h-100">
+                                    <div class="col d-flex flex-column flex-grow-1 h-100 overflow-auto">
+                                        <ul class="list-group flex-grow-1 list-group-flush h-100 overflow-auto"
+                                            style="border-style: solid;border-color: rgba(0,0,0,0.14);border-radius: 8px;">
+                                            <li class="list-group-item list-group-item-secondary d-none d-md-block sticky-top"
+                                                style="border-radius: 0;">
+                                                <div class="row">
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Patient Name</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Surgery ID</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Notes</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Approved By</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% for surgery in approved %}
+                                                <li class="list-group-item list-group-item-success patient-list-item"
+                                                    style="border-radius: 0;">
+                                                    <div class="row d-flex flex-column flex-md-row">
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2">
+                                                            <a class="patient-name p-1"
+                                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                               style="font-weight: bold;">{{ surgery.patient.first_name }} {{ surgery.patient.last_name }}</a>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2">
+                                                            <a class="patient-name p-1"
+                                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                               style="font-weight: bold;">#{{ surgery.id }}</a>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search text-truncate">
+                                                            <span class="text-truncate"
+                                                                  style="font-weight: bold;">{{ surgery.reason|default:'None' }}</span>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search text-truncate">
+                                                            <span class="text-truncate"
+                                                                  style="font-weight: bold;">{{ surgery.approver|default:'None' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="denied" class="tab-pane flex-grow-1 pt-3" role="tabpanel">
+                                <div class="row no-gutters d-flex flex-column flex-grow-1 h-100">
+                                    <div class="col d-flex flex-column flex-grow-1 h-100 overflow-auto">
+                                        <ul class="list-group flex-grow-1 list-group-flush h-100 overflow-auto"
+                                            style="border-style: solid;border-color: rgba(0,0,0,0.14);border-radius: 8px;">
+                                            <li class="list-group-item list-group-item-secondary d-none d-md-block sticky-top"
+                                                style="border-radius: 0;">
+                                                <div class="row">
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Patient Name</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Surgery ID</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Notes</span>
+                                                    </div>
+                                                    <div class="col d-flex align-items-center">
+                                                        <span style="font-weight: bold;">Denied By</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            {% for surgery in denied %}
+                                                <li class="list-group-item list-group-item-danger patient-list-item"
+                                                    style="border-radius: 0;">
+                                                    <div class="row d-flex flex-column flex-md-row">
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2">
+                                                            <a class="patient-name p-1"
+                                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                               style="font-weight: bold;">{{ surgery.patient.first_name }} {{ surgery.patient.last_name }}</a>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2">
+                                                            <a class="patient-name p-1"
+                                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                                               style="font-weight: bold;">#{{ surgery.id }}</a>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search text-truncate">
+                                                            <span class="text-truncate"
+                                                                  style="font-weight: bold;">{{ surgery.reason|default:'None' }}</span>
+                                                        </div>
+                                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search text-truncate">
+                                                            <span class="text-truncate"
+                                                                  style="font-weight: bold;">{{ surgery.approver|default:'None' }}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row no-gutters p-3">
+                <div class="col">
+                    <a class="btn btn-secondary w-100 font-weight-bold" role="button" href="{% url 'home' %}">Go
+                        Home</a>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

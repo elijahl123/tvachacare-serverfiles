@@ -43,7 +43,7 @@ from django.conf.global_settings import STATIC_URL
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
-from django.db.models import F
+from django.db.models import F, QuerySet
 from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -112,6 +112,9 @@ class PatientInformation(models.Model):
     def surgery_count(self):
         return SurgeryInformation.objects.filter(patient=self).count()
 
+    def surgeries(self) -> QuerySet:
+        return SurgeryInformation.objects.filter(patient=self)
+
     class Meta:
         ordering = ['last_name']
         unique_together = ['first_name', 'last_name', 'date_of_birth']
@@ -173,6 +176,14 @@ class SurgeryInformation(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+    def status(self):
+        if self.is_approved:
+            return 'Approved'
+        elif self.is_denied:
+            return 'Denied'
+        else:
+            return 'Awaiting Approval'
 
     class Meta:
         ordering = ['-date_of_upload']

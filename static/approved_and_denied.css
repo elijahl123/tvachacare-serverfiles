@@ -1,0 +1,6 @@
+.patient-list-item.list-group-item-success:nth-child(2n + 1) {
+    background: #b9d9c0;
+}
+.patient-list-item.list-group-item-danger:nth-child(2n + 1) {
+    background: #e4b8bd;
+}

@@ -46,6 +46,7 @@ urlpatterns = [
     path('groups/', include('patientInformation.urls.groups_urls')),
     path('activity/', include('patientInformation.urls.activity_urls')),
     path('', views.index, name='home'),
+    path('approved-and-denied/', views.approved_and_denied, name='approved_and_denied'),
     path('login/', views.login_page, name="login"),
     path('login/admin/', views.loginadmin, name="loginAdmin"),
     path('addpatient/', views.addpatient, name='addPatient'),

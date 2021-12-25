@@ -1,127 +1,37 @@
-.highlight {
-    background-color: var(--primary);
-    color: white
-}
-
 .search-patients {
-    font-family: 'Open Sans', sans-serif;
-    width: 100%;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 3px;
-}
-
-.edit-icon {
-    color: white;
-    margin-top: 5px;
-    margin-right: 0px !important;
-    margin-left: 2px;
-    margin-bottom: 5px;
-}
-
-.patient-toolbar {
-    margin-bottom: 15px;
-    background-color: whitesmoke;
-    padding: 0;
-    border-radius: 8px;
-    font-family: Raleway, sans-serif;
-}
-
-.patient-badge {
-    padding: .375rem .75rem;
-    border-radius: .25rem;
+    background: var(--main-color);
     color: white;
     font-weight: bold;
-}
-
-.patient-dropdown-menu {
-    max-height: 150px;
-    border: none;
-}
-
-@media (max-width: 992px) {
-    .current-badge {
-        margin-bottom: 15px
-    }
-
-    .patient-count {
-        margin-bottom: 15px
-    }
-}
-
-.overlay-profile input {
-    background: none;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-
-.overlay-profile label {
-    cursor: pointer;
-}
-
-.overlay-profile i {
-    font-size: 21px;
-    cursor: pointer;
-    color: var(--main-color);
-}
-
-.container-profile-picture img {
-    width: 30vw;
-    object-fit: cover;
-    height: 30vw;
-}
-
-@media (max-width: 500px) {
-    .container-h1 {
-        font-size: x-large;
-    }
-}
-
-.search-patients {
-    padding: 15px 15px 15px 40px;
     border: none;
     border-radius: 8px;
-    background-color: var(--main-color);
-    font-size: 20px;
-    font-family: Raleway, sans-serif;
-    font-weight: bold;
-    width: 100%;
-    color: white;
-    margin: 0;
-}
-
-.search-patients:focus {
-    background-color: white;
-    color: var(--accent-color);
-    transition-duration: 0.3s;
-}
-
-.search-patients:focus::placeholder {
-    color: var(--accent-color);
+    transition: 0.2s all ease;
 }
 
 .search-patients::placeholder {
     color: white;
     opacity: 0.7;
-    font-family: Raleway, sans-serif;
-    font-weight: bold;
-    font-size: 20px;
+    transition: 0.2s all ease;
 }
 
-.patient-list:nth-last-child(2) {
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
+.search-patients:focus::placeholder {
+    color: slategray;
 }
 
-.list-group {
-    border-radius: 8px;
+.search-patients ~ i {
+    color: white;
+    transition: 0.2s all ease;
 }
 
-.patient-list:nth-child(4n + 4) {
-    background-color: whitesmoke !important;
+.search-patients:focus ~ i {
+    color: slategray;
+    opacity: 1;
+}
+
+.patient-list-item:nth-child(2n + 1) {
+    background: whitesmoke;
+}
+
+.highlight {
+    background: blue !important;
+    color: white !important;
 }

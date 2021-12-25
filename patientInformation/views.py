@@ -368,59 +368,54 @@ def hui_report(request):
 @terms_required
 def index(request):
     context['account'] = request.user if request.user.is_authenticated else None
-    if request.user.is_authenticated:
+    if 'sort-by' in request.GET:
+        request.session['sort_by'] = request.GET.get('sort-by')
+    sort_by = request.session.get('sort_by', '')
 
-        def try_sort_by(obj, **filters):
-            try:
-                queryset = obj.objects.filter(**filters).order_by(
-                    request.GET.get('sort-by')) if filters else obj.objects.all().order_by(request.GET.get('sort-by'))
-                context['sort_by'] = {
-                    'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
-                    'value': request.GET.get('sort-by').replace('-', ''),
-                    'first_val': request.GET.get('sort-by')[0]
-                }
-                context['field_error'] = ''
-            except FieldError:
-                queryset = obj.objects.filter(**filters) if filters else obj.objects.all()
-                context['sort_by'] = ''
-                context['field_error'] = \
-                    f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                        if request.GET.get('sort-by') else ''
-            return queryset
-
-        if request.user.group.can_approve:
-            surgery = try_sort_by(SurgeryInformation, is_approved=False, is_denied=False)
-            context['object'] = surgery
-            context['surgery'] = try_sort_by(SurgeryInformation)
-            context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
-            context['excluded_fields'] = ['image', 'procedurecodes']
-            context['object_name'] = 'Surgery' if surgery.count() == 1 else 'Surgeries'
-        else:
-            surgery = SurgeryInformation.objects.all()
-            patient = try_sort_by(PatientInformation)
-            context['object'] = patient
-            context['surgery'] = surgery
-            context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
-            context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
-            context['object_name'] = 'Patient' if patient.count() == 1 else 'Patients'
-
-    if request.POST:
-        form = AccountUpdateForm(request.POST or None, request.FILES or None, instance=request.user)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
-        form = AccountUpdateForm(
-            initial={
-                'email': request.user.email,
-                'username': request.user.username,
-                'first_name': request.user.first_name,
-                'last_name': request.user.last_name,
-                'profile_picture_path': request.user.profile_picture_path,
+    def try_sort_by(obj, **filters):
+        try:
+            queryset = obj.objects.filter(**filters).order_by(
+                sort_by) if filters else obj.objects.all().order_by(sort_by)
+            context['sort_by'] = {
+                'field': sort_by.replace('_', ' ').replace('-', ''),
+                'value': sort_by.replace('-', ''),
+                'first_val': '' if sort_by[0] == '-' else '-'
             }
-        )
-        context['account_form'] = form
+            context['field_error'] = ''
+        except FieldError:
+            queryset = obj.objects.filter(**filters) if filters else obj.objects.all()
+            context['sort_by'] = ''
+            context['field_error'] = \
+                f"'{sort_by.replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
+                    if sort_by else ''
+        return queryset
 
-    return render(request, 'index.html', context)
+    if request.user.group.can_approve:
+        surgery = try_sort_by(SurgeryInformation, is_approved=False, is_denied=False)
+        context['object'] = surgery
+        context['surgery'] = try_sort_by(SurgeryInformation)
+        context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
+        context['excluded_fields'] = ['image', 'procedurecodes']
+        context['object_name'] = 'Surgery Awaiting Approval' if surgery.count() == 1 else 'Surgeries Awaiting Approval'
+        template = 'approver_index.html'
+    else:
+        surgery = SurgeryInformation.objects.all()
+        patient = try_sort_by(PatientInformation)
+        context['object'] = patient
+        context['surgery'] = surgery
+        context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
+        context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
+        context['object_name'] = 'Patient' if patient.count() == 1 else 'Patients'
+        template = 'index.html'
+
+    return render(request, template, context)
+
+
+def approved_and_denied(request):
+    context['account'] = request.user
+    context['approved'] = SurgeryInformation.objects.filter(is_approved=True)
+    context['denied'] = SurgeryInformation.objects.filter(is_denied=True)
+    return render(request, 'approved_and_denied.html', context)
 
 
 def loginadmin(request):

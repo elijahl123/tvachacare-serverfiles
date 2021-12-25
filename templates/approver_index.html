@@ -1,0 +1,43 @@
+{% extends 'index.html' %}
+{% load getattribute %}
+
+{% block patient_list %}
+    <li class="list-group-item list-group-item-secondary d-none d-md-block sticky-top" style="border-radius: 0;">
+        <div class="row">
+            <div class="col d-flex align-items-center">
+                <span style="font-weight: bold;">Patient Name</span>
+            </div>
+            <div class="col d-flex align-items-center">
+                <span style="font-weight: bold;">Surgery ID</span>
+            </div>
+            {% if sort_by %}
+                <div class="col d-flex align-items-center">
+                    <span style="font-weight: bold;">{{ sort_by.field|title }}</span>
+                </div>
+            {% endif %}
+        </div>
+    </li>
+    {% for surgery in object %}
+        <li class="list-group-item patient-list-item" style="border-radius: 0;">
+            <div class="row d-flex flex-column flex-md-row patient-row">
+                <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search">
+                    <a class="patient-name p-1" href="{% url 'patient_page' surgery.patient.slug %}" style="font-weight: bold;">
+                        {{ surgery.patient.first_name }} {{ surgery.patient.last_name }}
+                    </a>
+                </div>
+                <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search">
+                    <a class="patient-name p-1" href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                       style="font-weight: bold;">
+                        #{{ surgery.id }}
+                    </a>
+                </div>
+                {% if sort_by %}
+                    <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search text-truncate">
+                        <span class="text-truncate"
+                              style="font-weight: bold;">{{ surgery|getattribute:sort_by.value|default:'None' }}</span>
+                    </div>
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+{% endblock %}
