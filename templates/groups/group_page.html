@@ -21,7 +21,8 @@
                         </div>
                         <div class="col-auto py-3 py-md-0">
                             <a class="btn btn-transparent-tvachacare px-3 py-2" role="button"
-                               style="font-weight: bold;border-style: none;" href="{% url 'group_add_surgeries' group.id %}">
+                               style="font-weight: bold;border-style: none;"
+                               href="{% url 'group_add_surgeries' group.id %}">
                                 <i class="fas fa-plus mr-2"></i>Add Surgeries</a>
                         </div>
                         <div class="col-auto py-3 py-md-0">
@@ -47,36 +48,50 @@
             <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 overflow-auto">
                 <div class="col d-flex flex-column flex-grow-1 p-3 overflow-auto"
                      style="border-radius: 8px;background: whitesmoke;">
-                    <div class="row no-gutters">
-                        {% for surgery, image in surgeries %}
-                            <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3">
-                                <div class="d-flex flex-column h-100 p-3 {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}list-group-item-secondary{% endif %}"
-                                     style="border-radius: 8px;">
-                                    <img class="w-100 mb-3" src="
+                    {% if surgeries %}
+                        <div class="row no-gutters">
+                            {% for surgery, image in surgeries %}
+                                <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3">
+                                    <div class="d-flex flex-column h-100 p-3 {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}list-group-item-secondary{% endif %}"
+                                         style="border-radius: 8px;">
+                                        <img class="w-100 mb-3" src="
 
 
 
-                                            {% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
-                                         style="object-fit: contain;border-radius: 8px;background: rgba(0,0,0,0.14);height: 150px;"
-                                         alt="Surgery Image"/>
-                                    <a class="patient-name flex-grow-1"
-                                       href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                       style="text-align: center;">
-                                        <h3 style="font-weight: bold;">Surgery #{{ surgery.id }}</h3>
-                                        <h5 style="font-weight: bold;">{{ surgery.patient.first_name }} {{ surgery.patient.last_name }}</h5>
-                                        <p class="m-0 text-break" style="font-weight: bold;">
-                                            {% if sort_by %}
-                                                {{ sort_by.field|title }}:
-                                                {{ surgery|getattribute:sort_by.value|default:'None' }}
-                                            {% else %}
-                                                {{ surgery.date_of_surgery }}
-                                            {% endif %}
-                                        </p>
-                                    </a>
+
+
+                                                {% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
+                                             style="object-fit: contain;border-radius: 8px;background: rgba(0,0,0,0.14);height: 150px;"
+                                             alt="Surgery Image"/>
+                                        <a class="patient-name flex-grow-1"
+                                           href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
+                                           style="text-align: center;">
+                                            <h3 style="font-weight: bold;">Surgery #{{ surgery.id }}</h3>
+                                            <h5 style="font-weight: bold;">{{ surgery.patient.first_name }} {{ surgery.patient.last_name }}</h5>
+                                            <p class="m-0 text-break" style="font-weight: bold;">
+                                                {% if sort_by %}
+                                                    {{ sort_by.field|title }}:
+                                                    {{ surgery|getattribute:sort_by.value|default:'None' }}
+                                                {% else %}
+                                                    {{ surgery.date_of_surgery }}
+                                                {% endif %}
+                                            </p>
+                                        </a>
+                                    </div>
                                 </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="row no-gutters flex-grow-1">
+                            <div class="col d-flex flex-column justify-content-center align-items-center">
+                                <img class="d-block mb-3" src="{% static 'img/No Surgeries.png' %}"
+                                     style="width: 40vw;"/>
+                                <h1 style="color: var(--main-color);font-weight: bold;">No Surgeries</h1>
+                                <a href="{% url 'group_add_surgeries' group.id %}"
+                                   class="btn btn-tvachacare font-weight-bold" role="button">Add Surgeries</a>
                             </div>
-                        {% endfor %}
-                    </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
