@@ -135,7 +135,7 @@ class SurgeryForm(forms.ModelForm):
 class SurgeryGroupForm(forms.ModelForm):
     class Meta:
         model = SurgeryGroup
-        exclude = []
+        exclude = ['locked']
 
     def __init__(self, *args, **kwargs):
         super(SurgeryGroupForm, self).__init__(*args, **kwargs)

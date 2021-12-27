@@ -17,38 +17,85 @@
                     to group the surgeries.</p>
             </div>
         </div>
-        <div class="row no-gutters flex-grow-1" style="padding: 1rem;">
-            <div class="col" style="border-radius: 8px;background: whitesmoke;padding: 1rem;">
+        <div class="row no-gutters d-flex flex-column flex-grow-1 overflow-auto" style="padding: 1rem;">
+            <div class="col flex-grow-1 overflow-auto" style="border-radius: 8px;background: whitesmoke;padding: 1rem;">
                 <div class="row no-gutters">
                     {% for group in groups %}
-                    <div class="col-12 col-md-6 col-lg-6 col-xl-4" style="padding: 0.5rem;">
-                        <div class="card h-100 d-flex justify-content-center" style="border-style: none;border-radius: 8px;">
-                            <div class="card-body d-flex flex-column">
-                                <a href="{% url 'group_page' group.id %}" class="patient-name"
-                                    style="font-weight: bold;color: var(--main-color);font-size: 1.5rem;">{{ group.name }}</a>
-                                <div class="flex-grow-1 d-flex flex-column" style="padding: 5px">
-                                <h5 class="text-muted card-subtitle mb-2"
-                                    style="color: var(--accent-color);font-weight: bold;margin-top: 0.5rem">{{ group.surgery_count }}
-                                    {% if group.surgery_count == 1 %}Surgery{% else %}Surgeries{% endif %}</h5>
-                                <p class="card-text"
-                                   style="font-weight: bold;color: var(--accent-color);">{{ group.description|truncatewords:25 }}</p>
-                                    <div class="flex-grow-1 d-flex align-items-end flex-wrap">
-                                <a href="{% url 'group_add_surgeries' group.id %}" class="btn btn-transparent-tvachacare mt-2" role="button"
-                                   style="margin-right: 10px;">Add Surgeries</a>
-                                <a href="{% url 'edit_group' group.id %}" class="btn btn-transparent-success mt-2" role="button"
-                                   style="margin-right: 10px;">Edit</a>
-                                <a href="{% url 'delete_group' group.id %}" class="btn btn-transparent-danger mt-2" role="button">Delete</a>
+                        <div class="col-12 col-md-6 col-xl-4 d-flex" style="padding: 0.5rem;">
+                            <div class="card w-100" style="border-style: none;border-radius: 8px;">
+                                <div class="card-body d-flex flex-column px-2 pb-2 position-relative {% if group.locked %}list-group-item-secondary{% else %}list-group-item-success{% endif %}"
+                                     style="border-radius: 8px;padding-top: 2.25rem;">
+                                    <span class="position-absolute font-weight-bold" style="top: 0.5rem;left: 0.75rem;">
+                                        {% if group.locked %}
+                                            <i class="fas fa-lock mr-2"></i>Locked
+                                        {% else %}
+                                            <i class="fas fa-lock-open mr-2"></i>Open
+                                        {% endif %}
+                                    </span>
+                                    <div class="d-flex flex-column flex-grow-1 p-3"
+                                         style="background: white;border-radius: 8px;">
+                                        <a class="d-flex flex-column flex-grow-1 patient-name mb-2"
+                                           href="{% url 'group_page' group.id %}"
+                                           style="font-weight: bold;color: var(--main-color);margin-left: -5px;">
+                                            <h4 style="font-weight: bold;">{{ group.name }}</h4>
+                                            <h5 style="color: var(--accent-color);font-weight: bold;">{{ group.surgery_count_formatted }}</h5>
+                                            <p class="m-0" style="font-weight: bold;color: var(--accent-color);">
+                                                <strong>{{ group.description|truncatewords:25 }}</strong>
+                                                <br/>
+                                            </p>
+                                        </a>
+                                        <div class="row no-gutters d-flex flex-column align-items-center flex-sm-row"
+                                             style="margin-left: -10px;margin-right: -10px;">
+                                            {% if not group.locked %}
+                                                <div class="col-sm-auto d-flex flex-column justify-content-center"
+                                                     style="padding: 10px;">
+                                                    <a class="btn btn-sm btn-tvachacare" role="button"
+                                                       href="{% url 'group_add_surgeries' group.id %}"
+                                                       style="font-weight: bold;">Add Surgeries</a>
+                                                </div>
+                                            {% endif %}
+                                            {% if request.user.group.name == 'Admin' %}
+                                                <div class="col d-flex flex-column justify-content-center"
+                                                     style="padding: 10px;">
+                                                    {% if group.locked %}
+                                                        <a class="btn btn-sm btn-success" role="button"
+                                                           href="{% url 'lock_unlock_group' group.id %}"
+                                                           style="font-weight: bold;">Unlock</a>
+                                                    {% else %}
+                                                        <a class="btn btn-sm btn-secondary" role="button"
+                                                           href="{% url 'lock_unlock_group' group.id %}"
+                                                           style="font-weight: bold;">Lock</a>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                            <div class="col d-flex flex-column justify-content-center"
+                                                 style="padding: 10px;">
+                                                <a class="btn btn-sm btn-transparent-secondary dropdown" role="button"
+                                                   href="#" style="font-weight: bold;" data-toggle="dropdown">
+                                                    <i class="fas fa-bars"></i>
+                                                </a>
+                                                <div class="dropdown-menu shadow-sm" style="border-style: none;">
+                                                    <a class="dropdown-item" href="{% url 'edit_group' group.id %}"
+                                                       style="font-weight: bold;color: var(--accent-color);">
+                                                        <i class="fas fa-pen mr-2"></i>Edit</a>
+                                                    <a class="dropdown-item" href="{% url 'delete_group' group.id %}"
+                                                       style="font-weight: bold;color: var(--accent-color);">
+                                                        <i class="fas fa-trash mr-2"></i>Delete</a>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
                     {% endfor %}
-                    <div class="col-12 col-md-6 col-lg-6 col-xl-4" style="padding: 0.5rem;">
-                        <a href="{% url 'add_group' %}" class="btn btn-block btn-tvachacare d-flex justify-content-center align-items-center" role="button"
-                                style="height: 100%;font-weight: bold;border-radius: 8px;">
-                        <span class="h3 d-flex flex-column justify-content-center align-items-center" style="font-weight: bold;">
-                            <i class="fas fa-plus m-3" style="width: 30px;margin-right: 10px;text-align: center;"></i><span style="padding-bottom: 1rem">Add Group</span></span>
+                    <div class="col-12 col-md-6 col-xl-4" style="padding: 0.5rem;">
+                        <a class="btn btn-block d-flex justify-content-center align-items-center btn-tvachacare p-3"
+                           role="button" style="height: 100%;font-weight: bold;border-radius: 8px;"
+                           href="{% url 'add_group' %}">
+                            <span class="h3 m-0" style="font-weight: bold;">
+                                <i class="fas fa-plus" style="width: 30px;margin-right: 10px;text-align: center;">
+                                </i>Add Group</span>
                         </a>
                     </div>
                 </div>

@@ -32,14 +32,14 @@
             <h3 style="color: var(--main-color);font-weight: bold;margin-bottom: 1rem;">Add Surgeries</h3>
             <div class="form-group"
                  style="position:relative; width: 100%; display: flex; align-items: center;">
-                <i class="fas fa-search search-icon"
-                   style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
-                <input class="form-control search-patients" autocomplete="off" id="searchbar-nav"
+                <input class="form-control search-patients pl-5" autocomplete="off" id="searchbar-nav"
                        onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
                        onfocusout="$('.search-icon').css('color', 'white')"
                        placeholder="Search for surgeries..." name="search">
+                <i class="fas fa-search search-icon"
+                   style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
             </div>
-            {% include 'snippets/patient-toolbar.html' with url=request.path %}
+            {% include 'snippets/patient-toolbar.html' with url=request.path color='white' %}
             <div class="row no-gutters flex-grow-1" style="height: 100%;">
                 <div class="col">
                     <form class="d-flex flex-column flex-grow-1" method="post" enctype="multipart/form-data"

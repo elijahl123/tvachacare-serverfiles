@@ -50,7 +50,9 @@ from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.core.mail import EmailMessage, send_mail
-from django.db.models import Q
+from django.db import models
+from django.db.models import Q, QuerySet
+from django.db.models.base import ModelBase
 from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -94,6 +96,30 @@ def terms_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
     if function:
         return actual_decorator(function)
     return actual_decorator
+
+
+def try_sort_by(sort_by: str, context: dict, obj, *args, **kwargs):
+    try:
+        queryset = obj.objects.filter(*args, **kwargs).order_by(
+            sort_by) if args or kwargs else obj.objects.all().order_by(sort_by)
+        context['sort_by'] = {
+            'field': sort_by.replace('_', ' ').replace('-', ''),
+            'value': sort_by.replace('-', ''),
+            'first_val': '' if sort_by[0] == '-' else '-'
+        }
+        context['field_error'] = ''
+    except FieldError:
+        if isinstance(obj, ModelBase):
+            obj: models.Model
+            queryset = obj.objects.filter(*args, **kwargs) if args or kwargs else obj.objects.all()
+        else:
+            obj: QuerySet
+            queryset = obj
+        context['sort_by'] = ''
+        context['field_error'] = \
+            f"'{sort_by.replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
+                if sort_by else ''
+    return queryset
 
 
 @login_required
@@ -372,35 +398,17 @@ def index(request):
         request.session['sort_by'] = request.GET.get('sort-by')
     sort_by = request.session.get('sort_by', '')
 
-    def try_sort_by(obj, **filters):
-        try:
-            queryset = obj.objects.filter(**filters).order_by(
-                sort_by) if filters else obj.objects.all().order_by(sort_by)
-            context['sort_by'] = {
-                'field': sort_by.replace('_', ' ').replace('-', ''),
-                'value': sort_by.replace('-', ''),
-                'first_val': '' if sort_by[0] == '-' else '-'
-            }
-            context['field_error'] = ''
-        except FieldError:
-            queryset = obj.objects.filter(**filters) if filters else obj.objects.all()
-            context['sort_by'] = ''
-            context['field_error'] = \
-                f"'{sort_by.replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                    if sort_by else ''
-        return queryset
-
     if request.user.group.can_approve:
-        surgery = try_sort_by(SurgeryInformation, is_approved=False, is_denied=False)
+        surgery = try_sort_by(sort_by, context, SurgeryInformation, is_approved=False, is_denied=False)
         context['object'] = surgery
-        context['surgery'] = try_sort_by(SurgeryInformation)
+        context['surgery'] = try_sort_by(sort_by, context, SurgeryInformation)
         context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
         context['excluded_fields'] = ['image', 'procedurecodes']
         context['object_name'] = 'Surgery Awaiting Approval' if surgery.count() == 1 else 'Surgeries Awaiting Approval'
         template = 'approver_index.html'
     else:
         surgery = SurgeryInformation.objects.all()
-        patient = try_sort_by(PatientInformation)
+        patient = try_sort_by(sort_by, context, PatientInformation)
         context['object'] = patient
         context['surgery'] = surgery
         context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
@@ -1024,6 +1032,20 @@ def groups(request):
 
 @login_required
 @terms_required
+def lock_unlock_group(request, group_id):
+    if request.user.group.name != 'Admin':
+        return redirect('groups')
+    group = get_object_or_404(SurgeryGroup, id=group_id)
+    group.locked = not group.locked
+    group.save()
+    next_page = request.GET.get('next')
+    if next_page:
+        return HttpResponseRedirect(next_page)
+    return redirect('groups')
+
+
+@login_required
+@terms_required
 def add_group(request):
     context['account'] = request.user if request.user.is_authenticated else None
 
@@ -1108,29 +1130,13 @@ def group_add_surgeries(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
     context['group'] = group
-    surgeries_query = SurgeryInformation.objects.filter(
-        reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
+    surgeries_query = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
 
     context['object_name'] = 'Surgery' if surgeries_query.count() == 1 else 'Surgeries'
     context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
     context['excluded_fields'] = ['image', 'procedurecodes']
 
-    try:
-        queryset = surgeries_query.order_by(request.GET.get('sort-by'))
-        context['sort_by'] = {
-            'field': request.GET.get('sort-by').replace('_', ' ').replace('-', ''),
-            'value': request.GET.get('sort-by').replace('-', ''),
-            'first_val': request.GET.get('sort-by')[0]
-        }
-        context['field_error'] = ''
-    except FieldError:
-        queryset = surgeries_query
-        context['sort_by'] = ''
-        context['field_error'] = \
-            f"'{request.GET.get('sort-by').replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
-                if request.GET.get('sort-by') else ''
-
-    context['object'] = queryset
+    context['object'] = surgeries_query
 
     if request.POST:
         surgeries = request.POST.getlist('surgeries[]')

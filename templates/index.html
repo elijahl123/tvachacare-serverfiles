@@ -139,7 +139,7 @@
                                                                 <li class="list-group-item">
                                                                     <div class="row no-gutters flex-column align-items-center flex-sm-row">
                                                                         <div class="col d-flex flex-column align-items-center flex-sm-row">
-                                                                            <a class="patient-name p-1" href="#"
+                                                                            <a class="patient-name p-1" href="{% url 'surgery_page' patient.slug surgery.id %}"
                                                                                style="font-weight: bold;">#{{ surgery.id }}</a>
                                                                         </div>
                                                                         <div class="col d-flex flex-column align-items-center flex-sm-row py-3">
