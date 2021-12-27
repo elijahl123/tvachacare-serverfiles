@@ -50,9 +50,7 @@ from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import FieldError, ObjectDoesNotExist
 from django.core.mail import EmailMessage, send_mail
-from django.db import models
-from django.db.models import Q, QuerySet
-from django.db.models.base import ModelBase
+from django.db.models import Q
 from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
@@ -98,7 +96,9 @@ def terms_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
     return actual_decorator
 
 
-def try_sort_by(sort_by: str, context: dict, obj, *args, **kwargs):
+def try_sort_by(sort_by: str, context: dict, obj, excluded_fields=None, *args, **kwargs):
+    if excluded_fields is None:
+        excluded_fields = []
     try:
         queryset = obj.objects.filter(*args, **kwargs).order_by(
             sort_by) if args or kwargs else obj.objects.all().order_by(sort_by)
@@ -109,16 +109,15 @@ def try_sort_by(sort_by: str, context: dict, obj, *args, **kwargs):
         }
         context['field_error'] = ''
     except FieldError:
-        if isinstance(obj, ModelBase):
-            obj: models.Model
-            queryset = obj.objects.filter(*args, **kwargs) if args or kwargs else obj.objects.all()
-        else:
-            obj: QuerySet
-            queryset = obj
+        queryset = obj.objects.filter(*args, **kwargs) if args or kwargs else obj.objects.all()
         context['sort_by'] = ''
         context['field_error'] = \
             f"'{sort_by.replace('_', ' ').replace('-', '').capitalize()}' does not exist" \
                 if sort_by else ''
+    finally:
+        context['object_name'] = obj._meta.verbose_name if queryset.count() == 1 else obj._meta.verbose_name_plural
+        context['field_list'] = [field for field in obj._meta.get_fields()]
+        context['excluded_fields'] = excluded_fields
     return queryset
 
 
@@ -399,21 +398,13 @@ def index(request):
     sort_by = request.session.get('sort_by', '')
 
     if request.user.group.can_approve:
-        surgery = try_sort_by(sort_by, context, SurgeryInformation, is_approved=False, is_denied=False)
+        surgery = try_sort_by(sort_by, context, SurgeryInformation, excluded_fields=['image', 'procedurecodes'], is_approved=False, is_denied=False)
         context['object'] = surgery
-        context['surgery'] = try_sort_by(sort_by, context, SurgeryInformation)
-        context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
-        context['excluded_fields'] = ['image', 'procedurecodes']
         context['object_name'] = 'Surgery Awaiting Approval' if surgery.count() == 1 else 'Surgeries Awaiting Approval'
         template = 'approver_index.html'
     else:
-        surgery = SurgeryInformation.objects.all()
-        patient = try_sort_by(sort_by, context, PatientInformation)
+        patient = try_sort_by(sort_by, context, PatientInformation, ['patient_image', 'injury_image', 'surgeryinformation'])
         context['object'] = patient
-        context['surgery'] = surgery
-        context['field_list'] = [field for field in PatientInformation._meta.get_fields()]
-        context['excluded_fields'] = ['patient_image', 'injury_image', 'surgeryinformation']
-        context['object_name'] = 'Patient' if patient.count() == 1 else 'Patients'
         template = 'index.html'
 
     return render(request, template, context)
@@ -1110,7 +1101,8 @@ def group_page(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
     context['group'] = group
-    surgeries = SurgeryInformation.objects.filter(group=group)
+    surgeries = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, ['image', 'procedurecodes'], group=group)
+    context['object'] = surgeries
 
     surgery_tuple = []
 
@@ -1130,12 +1122,8 @@ def group_add_surgeries(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
     context['group'] = group
-    surgeries_query = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
-
-    context['object_name'] = 'Surgery' if surgeries_query.count() == 1 else 'Surgeries'
-    context['field_list'] = [field for field in SurgeryInformation._meta.get_fields()]
-    context['excluded_fields'] = ['image', 'procedurecodes']
-
+    surgeries_query = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, ['image', 'procedurecodes'],
+                                  reduce(operator.or_, [Q(group__exact=group), Q(group__exact=None)]))
     context['object'] = surgeries_query
 
     if request.POST:
