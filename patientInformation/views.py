@@ -1141,12 +1141,14 @@ def group_add_surgeries(request, id):
                 surgery_string += f'Surgery #{str(surgery.id)}, '
 
             event_notes = f'{surgery_string[:len(surgery_string) - 2]} added to {group.name}'
-            print(event_notes)
             event = EventLog(user=request.user.email, event_type='Surgeries Added to Group', notes=event_notes)
             event.save()
         else:
             surgery_objects = SurgeryInformation.objects.filter(group=group)
             surgery_objects.update(group=None)
+        next_page = request.GET.get('next')
+        if next_page:
+            return HttpResponseRedirect(next_page)
         return redirect('group_page', group.id)
 
     return render(request, 'groups/group_add_surgeries.html', context)

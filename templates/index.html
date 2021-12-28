@@ -43,17 +43,7 @@
                         in the database.</p>
                 </div>
             </div>
-            <div class="row no-gutters p-3">
-                <div class="col">
-                    <div class="d-flex align-items-center position-relative">
-                        <input class="form-control search-patients pl-5 form-control-lg" type="text"
-                               placeholder="Search . . ."/>
-                        <i class="fas fa-search position-absolute search-icon ml-3">
-
-                        </i>
-                    </div>
-                </div>
-            </div>
+            {% include 'snippets/searchbar.html' %}
             {% include 'snippets/patient-toolbar.html' %}
             <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 h-100">
                 <div class="col d-flex flex-column flex-grow-1 h-100 overflow-auto">

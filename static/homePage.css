@@ -26,12 +26,3 @@
     color: slategray;
     opacity: 1;
 }
-
-.patient-list-item:nth-child(2n + 1) {
-    background: whitesmoke;
-}
-
-.highlight {
-    background: blue !important;
-    color: white !important;
-}

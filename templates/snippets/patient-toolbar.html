@@ -5,20 +5,20 @@
                 <button class="btn btn-secondary" type="button"
                         style="font-weight: bold;">{{ object.count }} {{ object_name }}</button>
             </div>
-            <div class="col d-flex justify-content-center align-items-center p-3">
+            <div class="col d-flex justify-content-center align-items-center {% if sort_by %}p-3{% endif %}">
                 {% if sort_by %}
-                    {% if field.error %}
+                    {% if field_error %}
                         <h4 class="m-0">
                             <span class="badge badge-danger">{{ field_error }}</span>
                         </h4>
                     {% else %}
-                        <h4 class="m-0">
-                            <span class="badge badge-light">Currently Sorting By: {{ sort_by.field|title }}</span>
+                        <h4 class="m-0 text-truncate">
+                            <span class="badge badge-light text-truncate">Currently Sorting By: {{ sort_by.field|title }}</span>
                         </h4>
                     {% endif %}
                 {% endif %}
             </div>
-            <div class="col-12 col-md-auto d-flex flex-row justify-content-between align-items-center p-3">
+            <div class="col-12 col-md-auto d-flex flex-row justify-content-around align-items-center p-3">
                 <div class="dropleft">
                     <button class="btn dropdown-toggle btn-transparent-success" type="button" data-toggle="dropdown">
                         Sort By

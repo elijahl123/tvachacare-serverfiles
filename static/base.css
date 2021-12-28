@@ -273,3 +273,18 @@ span.ripple {
     background: rgba(0, 0, 0, 0.14) !important;
     transition-duration: 0.2s;
 }
+
+@media (min-width: 768px) {
+    .overflow-md-auto {
+        overflow: auto !important;
+    }
+}
+
+.patient-list-item:nth-child(2n + 1) {
+    background: whitesmoke;
+}
+
+.highlight {
+    background: blue !important;
+    color: white !important;
+}

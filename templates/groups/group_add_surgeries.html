@@ -1,87 +1,114 @@
-{% extends 'groups/group_page1.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load getattribute %}
 
-{% block group_header %}
+{% block header %}
+    <title>Add Surgeries - {{ group.name }}</title>
     <link rel="stylesheet" href="{% static 'homePage.css' %}">
     <script src="{% static 'js/group_add_surgeries.js' %}"></script>
-    <style>
-        .toolbar-inner {
-            background-color: white;
-            border-radius: 8px;
-        }
-
-        .current-badge > .badge {
-            background-color: whitesmoke !important;
-        }
-
-        .list-group-item-success > .patient-name:hover, .hover-success > .patient-name:hover {
-            background-color: rgba(40, 167, 69, 0.20) !important;
-        }
-
-        .list-group-item-danger > .patient-name:hover, .hover-danger > .patient-name:hover {
-            background-color: rgba(220, 53, 69, 0.20) !important;
-        }
-
-    </style>
 {% endblock %}
 
-{% block group_content %}
-    <div class="row no-gutters flex-grow-1 overflow-auto" style="padding: 1rem;height: 100%;">
-        <div class="col d-flex flex-column overflow-auto" style="height: 100%;">
-            <h3 style="color: var(--main-color);font-weight: bold;margin-bottom: 1rem;">Add Surgeries</h3>
-            <div class="form-group"
-                 style="position:relative; width: 100%; display: flex; align-items: center;">
-                <input class="form-control search-patients pl-5" autocomplete="off" id="searchbar-nav"
-                       onfocusin="$('.search-icon').css('color', 'var(--accent-color)')"
-                       onfocusout="$('.search-icon').css('color', 'white')"
-                       placeholder="Search for surgeries..." name="search">
-                <i class="fas fa-search search-icon"
-                   style="position: absolute; margin-left: 15px; color: rgb(255, 255, 255);"></i>
-            </div>
-            {% include 'snippets/patient-toolbar.html' with url=request.path color='white' %}
-            <div class="row no-gutters flex-grow-1" style="height: 100%;">
-                <div class="col">
-                    <form class="d-flex flex-column flex-grow-1" method="post" enctype="multipart/form-data"
-                          style="height: 100%;">
-                        {% csrf_token %}
-                        <div class="flex-grow-1 overflow-auto" style="height: 100%;">
-                            <ul class="list-group mb-3" style="border-radius: 8px;">
-                                {% for surgery in object %}
-                                    <li class="list-group-item flex-row align-items-center surgery-list {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% endif %}" style="display: flex">
-                                        <div class="custom-control custom-checkbox patient-name"
-                                             style="width: 100%;cursor: pointer !important; padding: 5px 0 5px 1.75rem;">
-                                            <input type="checkbox" id="surgery_{{ surgery.id }}"
-                                                   class="custom-control-input" name="surgeries[]"
-                                                   value="{{ surgery.id }}"
-                                                   {% if surgery.group == group %}checked{% endif %}/>
-                                            <label class="custom-control-label" for="surgery_{{ surgery.id }}"
-                                                   style="font-weight: bold;width: 100%;cursor: pointer !important">
-                                                {{ surgery.patient.first_name }} {{ surgery.patient.last_name }}
-                                            </label>
-                                        </div>
-                                        <span class="{% if surgery.is_approved %}hover-success{% elif surgery.is_denied %}hover-danger{% endif %}" style="width: 100%;">
-                                            <a class="patient-name"
-                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                               style="font-weight: bold;">Surgery #{{ surgery.id }}</a>
-                                        </span>
-                                    {% if sort_by %}
-                                        <span class="{% if surgery.is_approved %}hover-success{% elif surgery.is_denied %}hover-danger{% endif %}" style="width: 100%;">
-                                            <a class="patient-name"
-                                               href="{% url 'surgery_page' surgery.patient.slug surgery.id %}"
-                                               style="font-weight: bold;">{{ sort_by.field|title }}: {{ surgery|getattribute:sort_by.value }}</a>
-                                        </span>
-                                    {% endif %}
-                                    </li>
-                                {% endfor %}
-                            </ul>
+{% block content %}
+
+    <main class="d-flex flex-column" style="background: white;font-family: Raleway, sans-serif;">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="container-fluid d-flex flex-column p-3" style="min-height: 100vh;">
+                <div class="row no-gutters p-3">
+                    <div class="col p-3" style="border-radius: 8px;background: whitesmoke;">
+                        <div class="row d-flex flex-column align-items-center flex-md-row mb-2">
+                            <div class="col py-3 py-md-0">
+                                <h2 class="text-center text-md-left mb-0"
+                                    style="font-weight: bold;color: var(--main-color);">
+                                    <strong>Add Surgeries - {{ group.name }}</strong>
+                                    <br/>
+                                </h2>
+                            </div>
+                            {% if request.user.group.name == 'Admin' %}
+                                <div class="col-auto py-3 py-md-0">
+                                    <a class="btn btn-transparent-success px-3 py-2 btn-sm" role="button"
+                                       style="font-weight: bold;border-style: none;"
+                                       href="{% url 'edit_group' group.id %}">
+                                        <i class="fas fa-pen mr-2"></i>Edit</a>
+                                </div>
+                            {% endif %}
+                            <div class="col-auto py-3 py-md-0">
+                                <a class="btn btn-transparent-secondary px-3 py-2 btn-sm" role="button"
+                                   style="font-weight: bold;border-style: none;" href="{% url 'groups' %}">
+                                    <i class="fas fa-arrow-left mr-2"></i>Group Home</a>
+                            </div>
                         </div>
-                        <button class="btn btn-success btn-block btn-lg" type="submit"
-                                style="border-radius: 8px;font-weight: bold;">Add Surgeries
+                        <div class="row">
+                            <div class="col">
+                                <p class="lead text-center text-md-left m-0"
+                                   style="font-weight: bold;color: var(--accent-color);">Here, you can add surgeries to
+                                    a specific group and view the surgeries already added to the system</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% include 'snippets/searchbar.html' %}
+                {% include 'snippets/patient-toolbar.html' %}
+                <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto">
+                    <div class="col d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto"
+                         style="border-radius: 8px;background: whitesmoke;">
+                        <ul class="list-group flex-grow-1 list-group-flush h-100 overflow-auto"
+                            style="border-style: solid;border-color: rgba(0,0,0,0.14);border-radius: 8px;">
+                            <li class="list-group-item list-group-item-secondary d-none d-md-block sticky-top"
+                                style="border-radius: 0;">
+                                <div class="row">
+                                    <div class="col-auto d-flex align-items-center invisible">
+                                        <input type="checkbox"/>
+                                    </div>
+                                    <div class="col d-flex align-items-center">
+                                        <span style="font-weight: bold;">Patient Name</span>
+                                    </div>
+                                    <div class="col d-flex align-items-center">
+                                        <span style="font-weight: bold;">Surgery ID</span>
+                                    </div>
+                                    {% if sort_by %}
+                                        <div class="col d-flex align-items-center">
+                                            <span style="font-weight: bold;">{{ sort_by.field|title }}</span>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                            {% for surgery in object %}
+                                <li class="list-group-item {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}{% endif %}"
+                                    style="border-radius: 0;">
+                                    <div class="row d-flex flex-column flex-md-row patient-row">
+                                        <div class="col-auto d-flex justify-content-center align-items-center">
+                                            <input type="checkbox" name="surgeries[]" value="{{ surgery.id }}"
+                                                   {% if surgery.group == group %}checked{% endif %}/>
+                                        </div>
+                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search">
+                                            <a class="patient-name p-1" href="#"
+                                               style="font-weight: bold;">{{ surgery.patient }}</a>
+                                        </div>
+                                        <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search">
+                                            <a class="patient-name p-1" href="#"
+                                               style="font-weight: bold;">#{{ surgery.id }}</a>
+                                        </div>
+                                        {% if sort_by %}
+                                            <div class="col text-truncate d-flex justify-content-center align-items-center justify-content-md-start py-2">
+                                                <span class="text-truncate"
+                                                      style="font-weight: bold;">{{ surgery|getattribute:sort_by.value|default:'None' }}</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="row no-gutters p-3">
+                    <div class="col">
+                        <button class="btn btn-success btn-block btn-lg font-weight-bold" type="submit">Add Surgeries
                         </button>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </form>
+    </main>
+
 {% endblock %}

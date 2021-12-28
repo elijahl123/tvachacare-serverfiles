@@ -3,7 +3,7 @@
 {% load getattribute %}
 
 {% block header %}
-    <title>Group - {{ group.name }}</title>
+    <title>Group - {{ group.name }} {% if group.locked %}[Locked]{% endif %}</title>
 {% endblock %}
 
 {% block content %}
@@ -11,27 +11,31 @@
         <div class="container-fluid d-flex flex-column p-3" style="min-height: 100vh;">
             <div class="row no-gutters p-3">
                 <div class="col p-3" style="border-radius: 8px;background: whitesmoke;">
-                    <div class="row d-flex flex-column align-items-center flex-md-row align-items-md-start">
+                    <div class="row d-flex flex-column align-items-center flex-md-row mb-2">
                         <div class="col py-3 py-md-0">
-                            <h1 class="text-center text-md-left mb-0 mb-lg-2"
+                            <h1 class="text-center text-md-left mb-0"
                                 style="font-weight: bold;color: var(--main-color);">
-                                <strong>{{ group.name }}</strong>
+                                <strong>{{ group.name }} {% if group.locked %}[Locked]{% endif %}</strong>
                                 <br/>
                             </h1>
                         </div>
+                        {% if request.user.group.can_add_surgeries and not group.locked %}
+                            <div class="col-auto py-3 py-md-0">
+                                <a class="btn btn-sm btn-transparent-tvachacare px-3 py-2" role="button"
+                                   style="font-weight: bold;border-style: none;"
+                                   href="{% url 'group_add_surgeries' group.id %}?next={{ request.path }}">
+                                    <i class="fas fa-plus mr-2"></i>Add Surgeries</a>
+                            </div>
+                        {% endif %}
+                        {% if request.user.group.name == 'Admin' %}
+                            <div class="col-auto py-3 py-md-0">
+                                <a class="btn btn-sm btn-transparent-success px-3 py-2" role="button"
+                                   style="font-weight: bold;border-style: none;" href="{% url 'edit_group' group.id %}">
+                                    <i class="fas fa-pen mr-2"></i>Edit</a>
+                            </div>
+                        {% endif %}
                         <div class="col-auto py-3 py-md-0">
-                            <a class="btn btn-transparent-tvachacare px-3 py-2" role="button"
-                               style="font-weight: bold;border-style: none;"
-                               href="{% url 'group_add_surgeries' group.id %}">
-                                <i class="fas fa-plus mr-2"></i>Add Surgeries</a>
-                        </div>
-                        <div class="col-auto py-3 py-md-0">
-                            <a class="btn btn-transparent-success px-3 py-2" role="button"
-                               style="font-weight: bold;border-style: none;" href="{% url 'edit_group' group.id %}">
-                                <i class="fas fa-pen mr-2"></i>Edit</a>
-                        </div>
-                        <div class="col-auto py-3 py-md-0">
-                            <a class="btn btn-transparent-secondary px-3 py-2" role="button"
+                            <a class="btn btn-sm btn-transparent-secondary px-3 py-2" role="button"
                                style="font-weight: bold;border-style: none;" href="{% url 'groups' %}">
                                 <i class="fas fa-arrow-left mr-2"></i>Group Home</a>
                         </div>
@@ -45,8 +49,8 @@
                 </div>
             </div>
             {% include 'snippets/patient-toolbar.html' %}
-            <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 overflow-auto">
-                <div class="col d-flex flex-column flex-grow-1 p-3 overflow-auto"
+            <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto">
+                <div class="col d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto"
                      style="border-radius: 8px;background: whitesmoke;">
                     {% if surgeries %}
                         <div class="row no-gutters">
@@ -54,13 +58,8 @@
                                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3">
                                     <div class="d-flex flex-column h-100 p-3 {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}list-group-item-secondary{% endif %}"
                                          style="border-radius: 8px;">
-                                        <img class="w-100 mb-3" src="
-
-
-
-
-
-                                                {% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
+                                        <img class="w-100 mb-3"
+                                             src="{% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                              style="object-fit: contain;border-radius: 8px;background: rgba(0,0,0,0.14);height: 150px;"
                                              alt="Surgery Image"/>
                                         <a class="patient-name flex-grow-1"
