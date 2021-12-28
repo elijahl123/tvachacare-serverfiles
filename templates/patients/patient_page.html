@@ -8,22 +8,6 @@
 {% endblock %}
 
 {% block content %}
-    <div class="justify-content-center align-items-center delete-patient d-none"
-         style="display: flex;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;z-index: 1000;background-color: rgba(128,128,128,0.57);">
-        <div class="d-flex flex-column"
-             style="background-color: white;padding: 50px;border-radius: 5px;box-shadow: 0 0 5px 0 var(--accent-color);">
-            <h1 style="color: var(--main-color);font-weight: bold;font-family: 'Open Sans', sans-serif;margin-bottom: 15px;">
-                Are
-                you sure?</h1>
-            <div role="group" class="btn-group">
-                <button class="btn btn-secondary" type="button" onclick="closeMenu()"
-                        style="border-radius: 5px;margin: 3px;">Cancel
-                </button>
-                <a class="btn btn-danger d-print-none" role="button" style="border-radius: 5px;margin: 3px;"
-                   href="{% url 'delete_patient' patient.slug %}">Delete</a>
-            </div>
-        </div>
-    </div>
     <div class="justify-content-center align-items-center d-none"
          style="overflow: auto;z-index: 99999;top: 0;left: 0;width: 100vw;height: 100vh;position: fixed;background-color: rgba(128,128,128,0.57);filter: blur(0px);"
          id="email-story">
@@ -56,13 +40,11 @@
     <main style="min-height: 100vh;font-family: Raleway, sans-serif;background: #fc9c34;padding: 15px;">
         <div class="container" style="background: white;border-radius: 8px;padding: 15px;">
             <div class="row no-gutters patient-images" style="margin-bottom: 1rem;">
-                <a href="
-                        {% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
+                <a href="{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}"
                    class="col" style="padding: 1rem;">
                     <div class="patient-picture" style="padding-top: 100%;border-radius: 8px;background: url('{% if patient.patient_image %}{{ patient.patient_image.url }}{% else %}{% static 'img/placeholder_patient.png' %}{% endif %}') center / contain no-repeat, whitesmoke"></div>
                 </a>
-                <a href="
-                        {% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
+                <a href="{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}"
                    class="col" style="padding: 1rem;">
                     <div class="injury-picture" style="padding-top: 100%; border-radius: 8px;background: url('{% if patient.injury_image %}{{ patient.injury_image.url }}{% else %}{% static 'img/placeholder_injury.png' %}{% endif %}') center / contain no-repeat, whitesmoke"></div>
                 </a>
@@ -92,8 +74,9 @@
                            role="button">Edit</a>
                     </div>
                     <div class="col col-12 col-lg-3" style="padding: 10px;">
-                        <button onclick="openMenu()" class="btn btn-block btn-transparent-danger" type="button">Delete
-                        </button>
+                        <a href="{% url 'delete_patient' patient.slug %}" class="btn btn-block btn-transparent-danger"
+                           role="button">Delete
+                        </a>
                     </div>
                 {% endif %}
             </div>

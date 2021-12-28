@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load verbose_name %}
+
+{% block header %}
+    <title>{{ title|default:'Delete Object' }}</title>
+{% endblock %}
+
+{% block content %}
+    <main class="bg-white">
+        <div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 100vh;">
+            <div class="row no-gutters p-3 col-12 col-md-6">
+                <div class="col p-3" style="background: whitesmoke;border-radius: 8px;">
+                    <div class="row mb-3">
+                        <div class="col">
+                            <h1 style="text-align: center;color: var(--main-color);font-weight: bold;">Are You
+                                Sure?</h1>
+                            <p class="lead" style="color: var(--accent-color);font-weight: bold;text-align: center;">Are
+                                you sure you would like to delete these items:</p>
+                            <ul class="list-group list-group-flush"
+                                style="border-radius: 8px;border: 3px solid rgba(0,0,0,0.14) ;">
+                                {% for object in objects %}
+                                <li class="list-group-item" style="text-align: center;">
+                                    <span style="color: var(--accent-color);font-weight: bold;">{{ object }} - {{ object|verbose_name|title }}</span>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col">
+                                <button class="btn btn-secondary btn-block btn-lg" type="button" onclick="window.history.back()"
+                                        style="font-weight: bold;">Cancel
+                                </button>
+                            </div>
+                            <div class="col">
+                                <button class="btn btn-danger btn-block btn-lg" type="submit"
+                                        style="font-weight: bold;">Delete
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

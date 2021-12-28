@@ -249,13 +249,17 @@ def delete_images(request, slug):
 @terms_required
 def delete_patient(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
-    event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
-    event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
-    event.save()
-    messages.add_message(request, messages.SUCCESS,
-                         'Patient %s was deleted successfully!' % patient.patient_record_number)
-    patient.delete()
-    return redirect('delete_images', slug=slug)
+    if request.POST:
+        event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
+        event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
+        event.save()
+        messages.add_message(request, messages.SUCCESS,
+                             'Patient %s was deleted successfully!' % patient.patient_record_number)
+        patient.delete()
+        return redirect('delete_images', slug=slug)
+    context['title'] = 'Delete Patient'
+    context['objects'] = [patient]
+    return render(request, 'delete_object.html', context)
 
 
 @login_required
@@ -398,12 +402,14 @@ def index(request):
     sort_by = request.session.get('sort_by', '')
 
     if request.user.group.can_approve:
-        surgery = try_sort_by(sort_by, context, SurgeryInformation, excluded_fields=['image', 'procedurecodes'], is_approved=False, is_denied=False)
+        surgery = try_sort_by(sort_by, context, SurgeryInformation, excluded_fields=['image', 'procedurecodes'],
+                              is_approved=False, is_denied=False)
         context['object'] = surgery
         context['object_name'] = 'Surgery Awaiting Approval' if surgery.count() == 1 else 'Surgeries Awaiting Approval'
         template = 'approver_index.html'
     else:
-        patient = try_sort_by(sort_by, context, PatientInformation, ['patient_image', 'injury_image', 'surgeryinformation'])
+        patient = try_sort_by(sort_by, context, PatientInformation,
+                              ['patient_image', 'injury_image', 'surgeryinformation'])
         context['object'] = patient
         template = 'index.html'
 
@@ -1089,10 +1095,14 @@ def delete_group(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
 
-    messages.success(request, f'{group.name} was deleted successfully')
+    if request.POST:
+        messages.success(request, f'{group.name} was deleted successfully')
+        group.delete()
+        return redirect('groups')
 
-    group.delete()
-    return redirect('groups')
+    context['title'] = 'Delete Group'
+    context['objects'] = [group]
+    return render(request, 'delete_object.html', context)
 
 
 @login_required
@@ -1101,7 +1111,8 @@ def group_page(request, id):
     context['account'] = request.user if request.user.is_authenticated else None
     group = get_object_or_404(SurgeryGroup, id=id)
     context['group'] = group
-    surgeries = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, ['image', 'procedurecodes'], group=group)
+    surgeries = try_sort_by(request.GET.get('sort-by'), context, SurgeryInformation, ['image', 'procedurecodes'],
+                            group=group)
     context['object'] = surgeries
 
     surgery_tuple = []
