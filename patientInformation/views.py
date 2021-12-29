@@ -141,10 +141,6 @@ def add_surgery(request, slug):
             obj = surgery_form.save(commit=False)
             obj.save()
             surgery_form = SurgeryForm
-            event_notes = f'Surgery ID #{obj.id} was uploaded'
-            event = EventLog(user=request.user.email, event_type='Add Surgery', notes=event_notes)
-            event.save()
-
             messages.add_message(request, messages.SUCCESS,
                                  'Surgery #%s was created successfully!' % obj.id)
 
@@ -187,9 +183,6 @@ def addpatient(request):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            event_notes = 'Patient ' + str(request.POST['patient_record_number']) + ' was uploaded'
-            event = EventLog(user=request.user.email, event_type='Add Patient', notes=event_notes)
-            event.save()
             form = AddPatient()
             messages.add_message(request, messages.SUCCESS,
                                  'Patient %s was created successfully!' % obj.patient_record_number)
@@ -211,7 +204,7 @@ def approve_surgery(request, slug, surgery_id):
     surgery.approver = request.user
     surgery.save()
     event_notes = f'Surgery ID #{str(surgery_id)} was Approved. Reason: {surgery.reason}'
-    event = EventLog(user=request.user.email, event_type='Surgery Approved', notes=event_notes)
+    event = EventLog(event_type='Surgery Approved', notes=event_notes, color='success', icon='fas fa-check')
     event.save()
     return redirect('home')
 
@@ -250,9 +243,6 @@ def delete_images(request, slug):
 def delete_patient(request, slug):
     patient = get_object_or_404(PatientInformation, slug=slug)
     if request.POST:
-        event_notes = 'Patient ID #' + str(patient.id) + ' was Deleted'
-        event = EventLog(user=request.user.email, event_type='Patient Deleted', notes=event_notes)
-        event.save()
         messages.add_message(request, messages.SUCCESS,
                              'Patient %s was deleted successfully!' % patient.patient_record_number)
         patient.delete()
@@ -266,9 +256,6 @@ def delete_patient(request, slug):
 @terms_required
 def delete_surgery(request, slug, surgery_id):
     surgery = get_object_or_404(SurgeryInformation, id=surgery_id)
-    event_notes = 'Surgery ID #' + str(surgery.id) + ' was Deleted'
-    event = EventLog(user=request.user.email, event_type='Surgery Deleted', notes=event_notes)
-    event.save()
     messages.add_message(request, messages.SUCCESS,
                          'Surgery #%s was deleted successfully!' % surgery.id)
     surgery.delete()
@@ -295,7 +282,7 @@ def deny_surgery(request, slug, surgery_id):
     surgery.approver = request.user
     surgery.save()
     event_notes = f'Surgery ID #{str(surgery_id)} was Denied. Reason: {surgery.reason}'
-    event = EventLog(user=request.user.email, event_type='Surgery Denied', notes=event_notes)
+    event = EventLog(event_type='Surgery Denied', notes=event_notes, color='danger', icon='fas fa-times')
     event.save()
     return redirect('home')
 
@@ -311,9 +298,6 @@ def edit_patient(request, slug):
         if form.is_valid():
             obj = form.save(commit=False)
             obj.save()
-            event_notes = 'Patient ID #' + str(patient.id) + ' was Edited'
-            event = EventLog(user=request.user.email, event_type='Patient Edited', notes=event_notes)
-            event.save()
             return redirect('patient_page', slug)
     else:
         form = AddPatient(instance=patient)
@@ -382,7 +366,7 @@ def hui_report(request):
         fields = ['patient__first_name', 'patient__last_name', 'date_of_surgery', 'patient__patient_record_number',
                   'is_approved']
         event_notes = 'HUI Report was created'
-        event = EventLog(user=request.user.email, event_type='Report Created', notes=event_notes)
+        event = EventLog(event_type='Report Created', notes=event_notes)
         event.save()
         write_response(date_start, date_end, fields, procedure_code_boolean=True)
 
@@ -416,6 +400,8 @@ def index(request):
     return render(request, template, context)
 
 
+@login_required
+@terms_required
 def approved_and_denied(request):
     context['account'] = request.user
     context['approved'] = SurgeryInformation.objects.filter(is_approved=True)
@@ -1152,7 +1138,7 @@ def group_add_surgeries(request, id):
                 surgery_string += f'Surgery #{str(surgery.id)}, '
 
             event_notes = f'{surgery_string[:len(surgery_string) - 2]} added to {group.name}'
-            event = EventLog(user=request.user.email, event_type='Surgeries Added to Group', notes=event_notes)
+            event = EventLog(event_type='Surgeries Added to Group', notes=event_notes, color='success', icon='fas fa-plus')
             event.save()
         else:
             surgery_objects = SurgeryInformation.objects.filter(group=group)
@@ -1172,87 +1158,8 @@ def activity(request):
 
     context['account'] = request.user if request.user.is_authenticated else None
 
-    events = EventLog.objects.all()
+    events = EventLog.objects.all().order_by('-event_time')
 
-    events_tuple = []
-
-    for event in events:
-        try:
-            user = Account.objects.get(email=event.user)
-        except ObjectDoesNotExist:
-            user = None
-
-        success_events = [
-            'Add Patient',
-            'Add Surgery',
-            'Surgery Approved',
-            'Surgeries Added to Group'
-        ]
-        danger_events = [
-            'Patient Deleted',
-            'Surgery Deleted',
-            'Surgery Denied'
-        ]
-        plus_events = [
-            'Add Patient',
-            'Add Surgery',
-            'Surgeries Added to Group'
-        ]
-        minus_events = [
-            'Patient Deleted',
-            'Surgery Deleted'
-        ]
-        check_events = [
-            'Surgery Approved'
-        ]
-        x_events = [
-            'Surgery Denied'
-        ]
-
-        if event.event_type in success_events:
-            color = 'success'
-        elif event.event_type in danger_events:
-            color = 'danger'
-        else:
-            color = 'tvachacare'
-
-        if event.event_type in plus_events:
-            icon = 'fas fa-plus'
-        elif event.event_type in minus_events:
-            icon = 'fas fa-minus'
-        elif event.event_type in check_events:
-            icon = 'fas fa-check'
-        elif event.event_type in x_events:
-            icon = 'fas fa-times'
-        else:
-            icon = 'fas fa-edit'
-
-        if event.event_type == 'Add Patient':
-            record_number = event.notes.split(' ')[1]
-            try:
-                patient = PatientInformation.objects.get(patient_record_number=record_number)
-                url = reverse('patient_page', args=[patient.slug])
-            except ObjectDoesNotExist:
-                url = None
-        elif event.event_type == 'Patient Edited':
-            patient_id = event.notes.split(' ')[2].replace('#', '')
-            try:
-                patient = PatientInformation.objects.get(id=patient_id)
-                url = reverse('patient_page', args=[patient.slug])
-            except ObjectDoesNotExist:
-                url = None
-        elif event.event_type == 'Add Surgery' or event.event_type == 'Surgery Approved' or event.event_type == 'Surgery Denied':
-            surgery_id = event.notes.split(' ')[2].replace('#', '')
-            try:
-                surgery = SurgeryInformation.objects.get(id=surgery_id)
-                url = reverse('surgery_page', args=[surgery.patient.slug, surgery.id])
-            except (ObjectDoesNotExist, ValueError):
-                url = None
-        else:
-            url = None
-
-        events_tuple.append((user, event, color, icon, url))
-
-    context['events'] = events_tuple
+    context['events'] = events
 
     return render(request, 'activity.html', context)

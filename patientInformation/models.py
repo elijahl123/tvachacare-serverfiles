@@ -35,20 +35,17 @@
 #
 
 import datetime
-import random
-import string
 import uuid
 
-from django.conf.global_settings import STATIC_URL
 from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import F, QuerySet
-from django.db.models.signals import post_delete, pre_save, post_save
+from django.db.models.signals import post_delete, pre_save, post_save, post_init
 from django.dispatch import receiver
-from django.utils.text import slugify
 
 from account.models import Account
+from base.models import BaseModel
 
 
 def upload_location(instance, filename):
@@ -151,7 +148,8 @@ class SurgeryInformation(models.Model):
     ]
     patient = models.ForeignKey('PatientInformation', on_delete=models.CASCADE)
     date_of_upload = models.DateField(auto_now_add=True, verbose_name='date of upload')
-    group = models.ForeignKey(SurgeryGroup, on_delete=models.SET_NULL, null=True, blank=True, limit_choices_to={'locked': False})
+    group = models.ForeignKey(SurgeryGroup, on_delete=models.SET_NULL, null=True, blank=True,
+                              limit_choices_to={'locked': False})
     hospital = models.TextField(blank=True, null=True)
     referral = models.CharField(max_length=120, blank=True, null=True)
     patient_district = models.CharField(blank=True, null=True, max_length=120)
@@ -220,12 +218,27 @@ class ProcedureCodes(models.Model):
     procedure_codes = models.TextField(blank=True, null=True, verbose_name='Procedures')
 
 
-class EventLog(models.Model):
+class EventLog(BaseModel):
     admin_form = 'EventLogForm'
 
-    user = models.EmailField(blank=True, null=True)
+    COLOR_CHOICES = [
+        ('success', 'success'),
+        ('danger', 'danger'),
+        ('tvachacare', 'tvachacare'),
+    ]
+
+    ICON_CHOICES = [
+        ('fas fa-plus', 'fas fa-plus'),
+        ('fas fa-minus', 'fas fa-minus'),
+        ('fas fa-check', 'fas fa-check'),
+        ('fas fa-times', 'fas fa-times'),
+        ('fas fa-edit', 'fas fa-edit')
+    ]
+
     event_type = models.CharField(blank=True, null=True, max_length=60)
     event_time = models.DateTimeField(auto_now_add=True)
+    color = models.CharField(max_length=120, default='tvachacare', choices=COLOR_CHOICES)
+    icon = models.CharField(max_length=120, default='fas fa-edit', choices=COLOR_CHOICES)
     notes = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -242,16 +255,60 @@ def submission_delete(sender, instance, **kwargs):
     instance.image.delete(True)
 
 
+@receiver(post_save, sender=PatientInformation)
+def patient_post_save(sender, instance, created, raw, using, update_fields, **kwargs):
+    if created:
+        event_type = 'Add Patient'
+        event_notes = f'Patient {instance.patient_record_number} was uploaded'
+        color = 'success'
+        icon = 'fas fa-plus'
+    else:
+        event_type = 'Edit Patient'
+        event_notes = f'Patient {instance.patient_record_number} was edited'
+        color = 'tvachacare'
+        icon = 'fas fa-edit'
+
+    event = EventLog(event_type=event_type, notes=event_notes, color=color, icon=icon)
+    event.save()
+
+
+@receiver(post_save, sender=SurgeryInformation)
+def surgery_post_save(sender, instance, created, raw, using, update_fields, **kwargs):
+    if created:
+        event_type = 'Add Surgery'
+        event_notes = f'Surgery #{instance.id} was uploaded'
+        color = 'success'
+        icon = 'fas fa-plus'
+    else:
+        event_type = 'Edit Surgery'
+        event_notes = f'Surgery #{instance.id} was edited'
+        color = 'tvachacare'
+        icon = 'fas fa-edit'
+
+    event = EventLog(event_type=event_type, notes=event_notes, color=color, icon=icon)
+    event.save()
+
+
+@receiver(post_delete, sender=PatientInformation)
+def patient_post_delete(sender, instance, **kwargs):
+    event_notes = f'Patient {instance.patient_record_number} was deleted'
+    event = EventLog(event_type='Patient Deleted', notes=event_notes, color='danger', icon='fas fa-minus')
+    event.save()
+    instance.patient_image.delete(True)
+    instance.injury_image.delete(True)
+
+
+@receiver(post_delete, sender=SurgeryInformation)
+def surgery_post_delete(sender, instance, **kwargs):
+    event_notes = f'Surgery #{instance.id} was deleted'
+    event = EventLog(event_type='Surgery Deleted', notes=event_notes, color='danger', icon='fas fa-minus')
+    event.save()
+
+
 @receiver(post_save, sender=EventLog)
 def submission_save(sender, instance, **kwargs):
     accounts = Account.objects.all()
     accounts.update(unread_activity=F('unread_activity') + 1)
-
-
-@receiver(post_delete, sender=PatientInformation)
-def submission_delete(sender, instance, **kwargs):
-    instance.patient_image.delete(True)
-    instance.injury_image.delete(True)
 
 
 def calculate_age(birth_date):

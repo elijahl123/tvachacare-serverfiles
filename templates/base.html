@@ -58,7 +58,7 @@
 {% endif %}
 <div class="container-fluid d-flex" style="padding: 0;min-height: 100vh;border-right-style: none;">
     <div class="row no-gutters d-flex flex-column flex-md-row flex-fill" style="height: 100%;min-height: 100vh; flex-wrap: wrap; width: 100vw; min-width: 0">
-        {% if account %}
+        {% if request.user.is_authenticated %}
             {% include 'snippets/navbar.html' %}
         {% endif %}
     <div class="col flex-grow-1 {% if account %}col-md-12 col-lg-7 col-xl-9{% endif %}"
