@@ -57,14 +57,17 @@
                             <li class="list-group-item list-group-item-secondary d-none d-md-block sticky-top"
                                 style="border-radius: 0;">
                                 <div class="row">
-                                    <div class="col-auto d-flex align-items-center invisible">
-                                        <input type="checkbox"/>
+                                    <div class="col-auto d-flex align-items-center custom-control invisible">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" id="sample-surgery" class="custom-control-input"/>
+                                                <label for="sample-surgery" class="custom-control-label"></label>
+                                            </div>
                                     </div>
                                     <div class="col d-flex align-items-center">
-                                        <span style="font-weight: bold;">Patient Name</span>
+                                        <span style="font-weight: bold;padding:0 5px">Patient Name</span>
                                     </div>
                                     <div class="col d-flex align-items-center">
-                                        <span style="font-weight: bold;">Surgery ID</span>
+                                        <span style="font-weight: bold;padding:0 5px">Surgery ID</span>
                                     </div>
                                     {% if sort_by %}
                                         <div class="col d-flex align-items-center">
@@ -77,9 +80,14 @@
                                 <li class="list-group-item {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}{% endif %}"
                                     style="border-radius: 0;">
                                     <div class="row d-flex flex-column flex-md-row patient-row">
-                                        <div class="col-auto d-flex justify-content-center align-items-center">
-                                            <input type="checkbox" name="surgeries[]" value="{{ surgery.id }}"
-                                                   {% if surgery.group == group %}checked{% endif %}/>
+                                        <div class="col-auto d-flex justify-content-center align-items-center custom-control">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" name="surgeries[]" id="surgery-{{ surgery.id }}"
+                                                       value="{{ surgery.id }}" class="custom-control-input"
+                                                       {% if surgery.group == group %}checked{% endif %}/>
+                                                <label for="surgery-{{ surgery.id }}"
+                                                       class="custom-control-label"></label>
+                                            </div>
                                         </div>
                                         <div class="col d-flex justify-content-center align-items-center justify-content-md-start py-2 include-in-search">
                                             <a class="patient-name p-1" href="#"

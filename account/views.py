@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import model_to_dict
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.text import slugify
 
 from account.forms import *
 from patientInformation.forms import *

@@ -48,14 +48,13 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.core.exceptions import FieldError, ObjectDoesNotExist
+from django.core.exceptions import FieldError
 from django.core.mail import EmailMessage, send_mail
 from django.db.models import Q
 from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
-from django.urls import reverse
 from django.views.static import serve
 
 from TvachaCare.settings import BASE_DIR
@@ -1138,7 +1137,8 @@ def group_add_surgeries(request, id):
                 surgery_string += f'Surgery #{str(surgery.id)}, '
 
             event_notes = f'{surgery_string[:len(surgery_string) - 2]} added to {group.name}'
-            event = EventLog(event_type='Surgeries Added to Group', notes=event_notes, color='success', icon='fas fa-plus')
+            event = EventLog(event_type='Surgeries Added to Group', notes=event_notes, color='success',
+                             icon='fas fa-plus')
             event.save()
         else:
             surgery_objects = SurgeryInformation.objects.filter(group=group)
