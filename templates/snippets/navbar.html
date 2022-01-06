@@ -57,6 +57,16 @@
                             <span class="badge badge-danger d-flex align-items-center justify-content-center ml-2">{{ account.unread_activity }}</span>
                             {% endif %}
                         </a>
+                        <a class="list-group-item list-group-item-action d-flex btn btn-transparent-tvachacare align-items-center"
+                           style="border-style: none;border-radius: 8px;font-weight: bold;margin-bottom: 0.5rem;"
+                           href="{% url 'appeals' %}">
+                            <i class="material-icons-round"
+                               style="margin-right: 15px;text-align: center;">chat_bubble</i>
+                            <span class="d-flex align-items-center" style="margin: 0;font-weight: bold;">Appeals</span>
+                            {% if account.unread_appeals %}
+                            <span class="badge badge-danger d-flex align-items-center justify-content-center ml-2">{{ account.unread_appeals }}</span>
+                            {% endif %}
+                        </a>
                         <a class="list-group-item list-group-item-action d-flex btn btn-transparent-tvachacare"
                            style="border-style: none;border-radius: 8px;font-weight: bold;margin-bottom: 0.5rem;"
                            href="{% url 'calendar' today.year today.month %}">

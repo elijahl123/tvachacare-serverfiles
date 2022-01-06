@@ -41,7 +41,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import F, QuerySet
-from django.db.models.signals import post_delete, pre_save, post_save, post_init
+from django.db.models.signals import post_delete, pre_save, post_save
 from django.dispatch import receiver
 
 from account.models import Account
@@ -250,6 +250,18 @@ class EventLog(BaseModel):
         verbose_name_plural = 'Event Logs'
 
 
+class Appeal(BaseModel):
+    uploaded = models.DateTimeField(auto_now_add=True)
+    surgery = models.ForeignKey(SurgeryInformation, on_delete=models.CASCADE, null=True)
+    message = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.message
+
+    class Meta:
+        ordering = ['-uploaded']
+
+
 @receiver(post_delete, sender=Image)
 def submission_delete(sender, instance, **kwargs):
     instance.image.delete(True)
@@ -309,6 +321,12 @@ def surgery_post_delete(sender, instance, **kwargs):
 def submission_save(sender, instance, **kwargs):
     accounts = Account.objects.all()
     accounts.update(unread_activity=F('unread_activity') + 1)
+
+
+@receiver(post_save, sender=Appeal)
+def submission_save_appeals(sender, instance, **kwargs):
+    accounts = Account.objects.all()
+    accounts.update(unread_appeals=F('unread_appeals') + 1)
 
 
 def calculate_age(birth_date):

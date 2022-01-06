@@ -49,7 +49,7 @@ from django.contrib import messages
 from django.contrib.auth import logout as lgout, login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.exceptions import FieldError
-from django.core.mail import EmailMessage, send_mail
+from django.core.mail import EmailMessage
 from django.db.models import Q
 from django.forms import formset_factory
 from django.http import HttpResponse, HttpResponseRedirect
@@ -61,7 +61,7 @@ from TvachaCare.settings import BASE_DIR
 from account.forms import *
 from account.models import Account
 from patientInformation.forms import *
-from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog
+from .models import PatientInformation, Image, SurgeryInformation, ProcedureCodes, EventLog, Appeal
 
 """
 This is a guide to the different context objects I use for each view: 
@@ -573,7 +573,8 @@ def surgery_page(request, slug, surgery_id):
         'date_of_admission',
         'date_of_discharge',
         'approver',
-        'reason'
+        'reason',
+        'appeal'
     ]
     fields = [field for field in SurgeryInformation._meta.get_fields() if field.name not in highlighted_fields]
     fields_tuple = []
@@ -611,17 +612,9 @@ def surgery_page(request, slug, surgery_id):
                                  'Surgery #%s was denied' % surgery.id)
             return redirect('home')
         if 'appeal' in request.POST:
-            subject = 'Appeal Request for ' + patient.first_name + ' ' + patient.last_name + ' Surgery ID #' + str(
-                surgery.id)
-            to_emails = Account.objects.filter(group__name='Approver').values_list('email', flat=True)
-            message = request.POST.get('appeal_request')
-            html_message = render_to_string('surgeries/appeal_email.html',
-                                            {'patient': patient, 'account': request.user, 'message': message,
-                                             'surgery': surgery})
-            for email in to_emails:
-                send_mail(subject, message, from_email='Appeal Request <contact@tvachacare.com>',
-                          recipient_list=[email],
-                          html_message=html_message)
+            appeal = Appeal.objects.create(surgery=surgery, message=request.POST.get('appeal_request', ''))
+            messages.success(request, f'Appeal Successfully Created')
+            return redirect('surgery_page', patient.slug, surgery.id)
 
     return render(request, 'surgeries/surgery_page.html', context)
 
@@ -1163,3 +1156,22 @@ def activity(request):
     context['events'] = events
 
     return render(request, 'activity.html', context)
+
+
+@login_required
+@terms_required
+def appeals(request):
+    context['account'] = request.user
+    context['appeals'] = Appeal.objects.all()
+    request.user.unread_appeals = 0
+    request.user.save()
+    return render(request, 'appeals.html', context)
+
+
+@login_required
+@terms_required
+def appeals_resolve(request, appeal_id):
+    appeal = get_object_or_404(Appeal, id=appeal_id)
+    appeal.delete()
+    messages.success(request, 'Appeal Resolved Successfully')
+    return redirect('appeals')

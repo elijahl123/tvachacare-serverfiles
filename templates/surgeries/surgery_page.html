@@ -267,19 +267,20 @@
                 <div class="row no-gutters" style="padding:1rem">
                     <div class="col" style="padding: 1rem; background: whitesmoke; border-radius: 8px">
                         <div class="media">
-                    <img src="{% static 'img/logoTvachaSolidBackground.png' %}" class="align-self-start mr-3" alt="Logo" style="width: 64px; border-radius: 8px">
-                    <div class="media-body">
-                        <h4 class="mt-0" style="font-weight: bold; color: slategray">
-                            Surgery
-                            {% if surgery.is_approved == True and surgery.is_denied == False %}
-                                Approved
-                                {% else %}
-                                Denied
-                        {% endif %} by {{ surgery.approver.first_name }} {{ surgery.approver.last_name }}
-                        </h4>
-                        <p>{{ surgery.reason }}</p>
-                    </div>
-                </div>
+                            <img src="{% static 'img/logoTvachaSolidBackground.png' %}" class="align-self-start mr-3"
+                                 alt="Logo" style="width: 64px; border-radius: 8px">
+                            <div class="media-body">
+                                <h4 class="mt-0" style="font-weight: bold; color: slategray">
+                                    Surgery
+                                    {% if surgery.is_approved == True and surgery.is_denied == False %}
+                                        Approved
+                                    {% else %}
+                                        Denied
+                                    {% endif %} by {{ surgery.approver.first_name }} {{ surgery.approver.last_name }}
+                                </h4>
+                                <p>{{ surgery.reason }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -295,9 +296,18 @@
                         Appeal Denial
                     </a>
                 </div>
+            {% elif surgery.is_approved == True and account.group.can_approve %}
+                <div role="group" class="btn-group"
+                     style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
+                    <a class="btn btn-success d-flex justify-content-center align-items-center"
+                       role="button" href="{% url 'deny_surgery' surgery.patient.slug surgery.id %}"
+                       style="font-family:Raleway, sans-serif; font-weight: bold">
+                        Appeal Approval
+                    </a>
+                </div>
             {% endif %}
 
-            {% if surgery.is_denied == True and not account.group.can_approve %}
+            {% if not account.group.can_approve %}
                 <div class="row no-gutters" style="padding: 1rem">
                     <div class="col" style="padding: 1rem; background: whitesmoke; border-radius: 8px">
                         <form method="post" style="width: 100%"
@@ -309,7 +319,7 @@
                                       class="form-control"></textarea>
                             <div role="group" class="btn-group"
                                  style="font-family: 'Open Sans', sans-serif;width: 100%;height: 60px;">
-                                <input class="btn btn-danger d-flex justify-content-center align-items-center appeal-button"
+                                <input class="btn btn-secondary d-flex justify-content-center align-items-center appeal-button"
                                        style="font-family:Raleway, sans-serif; font-weight: bold"
                                        type="submit"
                                        value="Request Appeal" name="appeal">

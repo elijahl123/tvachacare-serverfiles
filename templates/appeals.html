@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <title>Appeals</title>
+{% endblock %}
+
+{% block content %}
+    <main class="bg-white">
+        <div class="container-fluid d-flex flex-column p-3" style="min-height: 100vh;">
+            <div class="row no-gutters p-3">
+                <div class="col p-3" style="border-radius: 8px;background: whitesmoke;">
+                    <h1 class="text-center text-md-left mb-0 mb-lg-2"
+                        style="font-weight: bold;color: var(--main-color);">Appeals</h1>
+                    <p class="lead mb-0 d-none d-lg-block" style="font-weight: bold;color: var(--accent-color);">Here,
+                        you can view the appeals made by data entry in the system.</p>
+                </div>
+            </div>
+            <div class="row no-gutters d-flex flex-column flex-grow-1 p-3 overflow-md-auto">
+                <div class="col d-flex flex-column flex-grow-1 p-3 overflow-md-auto"
+                     style="border-radius: 8px;background: whitesmoke;">
+                    {% for appeal in appeals %}
+                        <div class="row no-gutters mb-3">
+                            <div class="col p-4 list-group-item-secondary" style="border-radius: 8px;">
+                                <div class="row d-flex flex-column flex-md-row">
+                                    <div class="col-auto d-flex justify-content-center justify-content-md-start py-2 py-md-0">
+                                        <i class="far fa-comment" style="font-size: 2.5rem;"></i>
+                                    </div>
+                                    <div class="col d-flex flex-column align-items-center align-items-md-start py-2 py-md-0">
+                                        <div class="row no-gutters w-100 mb-2">
+                                            <div class="col">
+                                                <h2 class="text-center text-md-left" style="font-weight: bold;">
+                                                    {{ appeal.surgery.patient.first_name }} {{ appeal.surgery.patient.last_name }}
+                                                    Surgery #{{ appeal.surgery.id }}
+                                                </h2>
+                                            </div>
+                                            <div class="col-12 col-md-auto text-center text-md-left">
+                                                <span class="font-weight-bold">{{ appeal.uploaded }}</span>
+                                            </div>
+                                        </div>
+                                        <span class="border rounded-pill px-3 py-2 text-white bg-secondary font-weight-bold mb-3">
+                                    <i class="fas fa-user mr-2"></i>{{ appeal.creator.first_name }} {{ appeal.creator.last_name }}</span>
+                                        <p class="lead text-center text-md-left"
+                                           style="font-weight: bold;">{{ appeal.message }}</p>
+
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-auto py-2 py-md-0">
+                                                <a class="btn btn-success font-weight-bold" role="button"
+                                                   href="{% url 'appeals_resolve' appeal.id %}">
+                                                    Resolve
+                                                </a>
+                                            </div>
+                                            <div class="col-auto py-2 py-md-0">
+                                                <a class="btn btn-light font-weight-bold" role="button"
+                                                   href="{% url 'surgery_page' appeal.surgery.patient.slug appeal.surgery.id %}">
+                                                    Go to Surgery
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
