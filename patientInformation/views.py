@@ -1146,6 +1146,25 @@ def group_add_surgeries(request, id):
 
 @login_required
 @terms_required
+def groups_bulk_approve(request, group_id):
+    group = get_object_or_404(SurgeryGroup, id=group_id)
+    surgeries = SurgeryInformation.objects.filter(group=group)
+    if group.percent_completed() == 100:
+        surgeries.update(is_approved=True, is_denied=False)
+
+        event_notes = f'Surgeries Bulk Approved to Group \'{group.name}\''
+        event = EventLog(event_type='Surgeries Bulk Approved', notes=event_notes, color='success',
+                         icon='fas fa-plus')
+        event.save()
+        messages.success(request, 'Surgeries Successfully Bulk Approved')
+    else:
+        messages.error(request, 'Group Threshold Not Reached')
+        return redirect('group_page', group.id)
+    return redirect('groups')
+
+
+@login_required
+@terms_required
 def activity(request):
     Account.objects.filter(id=request.user.id).update(unread_activity=0)
 
@@ -1175,3 +1194,4 @@ def appeals_resolve(request, appeal_id):
     appeal.delete()
     messages.success(request, 'Appeal Resolved Successfully')
     return redirect('appeals')
+

@@ -132,16 +132,28 @@ class SurgeryForm(forms.ModelForm):
         }
 
 
+class RangeInput(forms.NumberInput):
+    input_type = 'range'
+    template_name = 'forms/widgets/range.html'
+
+
 class SurgeryGroupForm(forms.ModelForm):
     class Meta:
         model = SurgeryGroup
         exclude = ['locked']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': '4'}),
+            'threshold': RangeInput(
+                attrs={
+                    'class': 'form-control-range',
+                    'max': '100',
+                }
+            )
+        }
 
     def __init__(self, *args, **kwargs):
         super(SurgeryGroupForm, self).__init__(*args, **kwargs)
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
-            visible.field.widget.attrs['rows'] = '4'
 
 
 class DivErrorList(ErrorList):

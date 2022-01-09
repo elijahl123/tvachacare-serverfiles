@@ -1,0 +1,13 @@
+<script>
+    function onRangeChange(val) {
+        $('#text_for_{{ widget.attrs.id }}').text(`${val}%`)
+    }
+</script>
+<div class="form-row">
+    <div class="col d-flex justify-content-center align-items-center">
+        <input type="{{ widget.type }}" name="{{ widget.name }}" oninput="onRangeChange(this.value)" {% if widget.value != None %} value="{{ widget.value|stringformat:'s' }}"{% endif %}{% include "django/forms/widgets/attrs.html" %}>
+    </div>
+    <div class="col-auto d-flex justify-content-center align-items-center">
+        <span id="text_for_{{ widget.attrs.id }}" style="color: var(--accent-color);font-weight: bold;">{{ widget.value }}%</span>
+    </div>
+</div>

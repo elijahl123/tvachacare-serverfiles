@@ -44,6 +44,11 @@
                                                 <br/>
                                             </p>
                                         </a>
+                                        <div class="progress" style="height: 30px;font-weight: bold;font-size: 16px;">
+                                            <div class="progress-bar bg-success" aria-valuenow="25" aria-valuemin="0"
+                                                 aria-valuemax="100" style="width: {{ group.percent_completed }}%;">{{ group.percent_completed }}%
+                                            </div>
+                                        </div>
                                         <div class="row no-gutters d-flex flex-column align-items-center flex-sm-row"
                                              style="margin-left: -10px;margin-right: -10px;">
                                             {% if not group.locked and request.user.group.can_add_surgeries %}

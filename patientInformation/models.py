@@ -123,9 +123,19 @@ class SurgeryGroup(models.Model):
     name = models.CharField(max_length=120, null=True, blank=False, unique=True)
     description = models.TextField(blank=True, null=True)
     locked = models.BooleanField(default=False)
+    threshold = models.PositiveIntegerField(default=25, help_text='Percentage of surgeries required to be reviewed')
 
     def __str__(self):
         return self.name
+
+    def percent_completed(self):
+        threshold = self.threshold / 100
+        goal = round(self.surgery_count() * threshold)
+        approved = SurgeryInformation.objects.filter(group=self, is_approved=True).count()
+        try:
+            return int((approved / goal) * 100)
+        except ZeroDivisionError:
+            return 100
 
     def surgery_count(self):
         return SurgeryInformation.objects.filter(group=self).count()

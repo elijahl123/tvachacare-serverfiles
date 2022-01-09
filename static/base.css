@@ -294,3 +294,9 @@ span.ripple {
     background: blue !important;
     color: white !important;
 }
+
+.form-range {
+    width: 100%;
+    height: 1.5rem;
+    padding: 0;
+}
