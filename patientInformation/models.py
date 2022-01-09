@@ -133,7 +133,8 @@ class SurgeryGroup(models.Model):
         goal = round(self.surgery_count() * threshold)
         approved = SurgeryInformation.objects.filter(group=self, is_approved=True).count()
         try:
-            return int((approved / goal) * 100)
+            out = int((approved / goal) * 100)
+            return out if out <= 100 else 100
         except ZeroDivisionError:
             return 100
 
