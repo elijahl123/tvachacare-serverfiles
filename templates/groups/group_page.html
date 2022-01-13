@@ -79,17 +79,17 @@
                 <div class="col d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto"
                      style="border-radius: 8px;background: whitesmoke;">
                     {% if surgeries %}
-                        <div class="row no-gutters d-flex flex-column flex-md-row p-3"
+                        <div class="row no-gutters d-flex flex-column justify-content-around flex-md-row p-3"
                              style="border-radius: 8px;background: white;">
-                            <div class="col d-flex align-items-center py-2 py-md-0">
+                            <div class="col d-flex justify-content-start align-items-center justify-content-md-center py-2 py-md-0">
                                 <div class="bg-success mr-3" style="width: 20px;height: 20px;border-radius: 4px;"></div>
                                 <span style="font-weight: bold;color: var(--accent-color);">Approved</span>
                             </div>
-                            <div class="col d-flex align-items-center py-2 py-md-0">
+                            <div class="col d-flex justify-content-start align-items-center justify-content-md-center py-2 py-md-0">
                                 <div class="bg-danger mr-3" style="width: 20px;height: 20px;border-radius: 4px;"></div>
                                 <span style="font-weight: bold;color: var(--accent-color);">Denied</span>
                             </div>
-                            <div class="col d-flex align-items-center py-2 py-md-0">
+                            <div class="col d-flex justify-content-start align-items-center justify-content-md-center py-2 py-md-0">
                                 <div class="bg-secondary mr-3"
                                      style="width: 20px;height: 20px;border-radius: 4px;"></div>
                                 <span style="font-weight: bold;color: var(--accent-color);">Awaiting Approval</span>
@@ -101,7 +101,8 @@
                                     <div class="d-flex flex-column h-100 p-3 {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}list-group-item-secondary{% endif %}"
                                          style="border-radius: 8px;">
                                         <img class="w-100 mb-3"
-                                             src="{% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
+                                             src="
+                                                     {% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                              style="object-fit: contain;border-radius: 8px;background: rgba(0,0,0,0.14);height: 150px;"
                                              alt="Surgery Image"/>
                                         <a class="patient-name flex-grow-1"
