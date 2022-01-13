@@ -64,11 +64,12 @@
                             </div>
                         </div>
                         {% if group.percent_completed == 100 and request.user.group.can_approve %}
-                        <div class="col-auto d-flex flex-column justify-content-center py-2 py-md-0">
-                            <a class="btn btn-success" role="button" href="{% url 'groups_bulk_approve' group.id %}" style="font-weight: bold;">
-                                Bulk Approve
-                            </a>
-                        </div>
+                            <div class="col-auto d-flex flex-column justify-content-center py-2 py-md-0">
+                                <a class="btn btn-success" role="button" href="{% url 'groups_bulk_approve' group.id %}"
+                                   style="font-weight: bold;">
+                                    Bulk Approve
+                                </a>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -78,17 +79,29 @@
                 <div class="col d-flex flex-column flex-grow-1 p-3 overflow-visible overflow-md-auto"
                      style="border-radius: 8px;background: whitesmoke;">
                     {% if surgeries %}
+                        <div class="row no-gutters d-flex flex-column flex-md-row p-3"
+                             style="border-radius: 8px;background: white;">
+                            <div class="col d-flex align-items-center py-2 py-md-0">
+                                <div class="bg-success mr-3" style="width: 20px;height: 20px;border-radius: 4px;"></div>
+                                <span style="font-weight: bold;color: var(--accent-color);">Approved</span>
+                            </div>
+                            <div class="col d-flex align-items-center py-2 py-md-0">
+                                <div class="bg-danger mr-3" style="width: 20px;height: 20px;border-radius: 4px;"></div>
+                                <span style="font-weight: bold;color: var(--accent-color);">Denied</span>
+                            </div>
+                            <div class="col d-flex align-items-center py-2 py-md-0">
+                                <div class="bg-secondary mr-3"
+                                     style="width: 20px;height: 20px;border-radius: 4px;"></div>
+                                <span style="font-weight: bold;color: var(--accent-color);">Awaiting Approval</span>
+                            </div>
+                        </div>
                         <div class="row no-gutters">
                             {% for surgery, image in surgeries %}
                                 <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3">
                                     <div class="d-flex flex-column h-100 p-3 {% if surgery.is_approved %}list-group-item-success{% elif surgery.is_denied %}list-group-item-danger{% else %}list-group-item-secondary{% endif %}"
                                          style="border-radius: 8px;">
                                         <img class="w-100 mb-3"
-                                             src="
-
-
-
-                                                     {% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
+                                             src="{% if image %}{{ image }}{% else %}{% static 'img/placeholder_surgery.png' %}{% endif %}"
                                              style="object-fit: contain;border-radius: 8px;background: rgba(0,0,0,0.14);height: 150px;"
                                              alt="Surgery Image"/>
                                         <a class="patient-name flex-grow-1"
