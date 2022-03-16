@@ -216,7 +216,11 @@ class Image(models.Model):
     date_of_upload_image = models.DateField(blank=True, auto_now=False, auto_now_add=False, null=True)
 
     def __str__(self):
-        return self.image.url
+        try:
+            url = self.image.url
+        except ValueError:
+            url = None
+        return url
 
     class Meta:
         ordering = ['-date_of_upload_image']
