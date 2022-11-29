@@ -50,14 +50,13 @@ def admin_delete(request, model, id):
         if PatientInformation.objects.filter(id=id).exists():
             return redirect('admin_delete', 'patients', id)
         return redirect('admin_template', 'patients')
-    elif model == 'surgeries':
+    if model == 'surgeries':
         item = get_object_or_404(SurgeryInformation, id=id)
         item.delete()
         if SurgeryInformation.objects.filter(id=id).exists():
             return redirect('admin_delete', 'surgeries', id)
         return redirect('admin_template', 'surgeries')
-    else:
-        return redirect('admin-console')
+    return redirect('admin-console')
 
 
 @login_required
